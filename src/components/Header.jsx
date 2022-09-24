@@ -1,11 +1,11 @@
 
 const Header = ({title, links}) => {
-    return <div class="sticky top-0 p-4 bg-purple-800 text-slate-200 flex">
+    return <header class="sticky top-0 p-4 bg-purple-800 text-slate-200 flex item-start mx-auto max-w-6xl">
         <p class="text-xl flex-1">Welcome to {title}</p>
         {
             links.map(Link => <Link />)
         }
-    </div>
+    </header>
 }
 
 export default Header;
