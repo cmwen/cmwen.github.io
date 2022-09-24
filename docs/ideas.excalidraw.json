@@ -1,0 +1,46 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "TkX6RPDAOiZQ_EJOXawHp",
+      "type": "text",
+      "x": 630.796875,
+      "y": 195.078125,
+      "width": 445,
+      "height": 175,
+      "angle": 0,
+      "strokeColor": "#000000",
+      "backgroundColor": "transparent",
+      "fillStyle": "hachure",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "strokeSharpness": "sharp",
+      "seed": 1727279737,
+      "version": 222,
+      "versionNonce": 1199854935,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1663983012861,
+      "link": null,
+      "locked": false,
+      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "baseline": 168,
+      "containerId": null,
+      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n"
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
