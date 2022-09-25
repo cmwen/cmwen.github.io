@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Github",
+    "url": "https://github.com",
+    "description": "",
+    "tags": []
+  },
+  {
+    "name": "Dynalist",
+    "url": "https://dynalist.io/",
+    "description": "",
+    "tags": []
+  },
+  {
+    "name": "Gmail",
+    "url": "https://mail.google.com/",
+    "description": "",
+    "tags": []
+  },
+  {
+    "name": "Keeweb",
+    "url": "https://keeweb.info/",
+    "description": "PWA for keepass. Work with dropbox.",
+    "tags": []
+  },
+  {
+    "name": "excalidraw",
+    "url": "https://excalidraw.com/",
+    "description": "Online sketch tool",
+    "tags": []
+  }
+]

@@ -1,14 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Counter from "../components/Solid";
-import Header from "../components/Header";
 ---
 
 <Layout title="Welcome to Astro.">
-  <main class="dark:bg-slate-900 bg-slate-50">
-	<Header title="Min's Blog" links={[Counter]} />
-    <Counter client:load />
+  <main class="dark:bg-slate-900 bg-slate-50 h-screen text-slate-50">
+    <div><Counter client:load /></div>
 
-	<p class="text-3xl text-slate-800">Work in progress</p>
+	<p class="text-3xl text-slate-80 text-center">Work in progress</p>
   </main>
 </Layout>
