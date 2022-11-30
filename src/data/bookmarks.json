@@ -3,7 +3,7 @@
     "name": "Github",
     "url": "https://github.com",
     "description": "",
-    "tags": []
+    "tags": ["webapp"]
   },
   {
     "name": "Dynalist",
@@ -27,6 +27,18 @@
     "name": "excalidraw",
     "url": "https://excalidraw.com/",
     "description": "Online sketch tool",
-    "tags": []
+    "tags": ["editor", "tools"]
+  },
+  {
+    "name": "VSCode",
+    "url": "https://code.visualstudio.com/",
+    "description": "",
+    "tags": ["ide", "editor", "tools"]
+  },
+  {
+    "name": "MDN",
+    "url": "https://developer.mozilla.org/",
+    "description": "",
+    "tags": ["reference"]
   }
 ]
