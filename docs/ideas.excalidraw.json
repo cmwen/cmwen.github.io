@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "text",
-      "version": 815,
-      "versionNonce": 1597689438,
+      "version": 860,
+      "versionNonce": 243483247,
       "isDeleted": false,
       "id": "TkX6RPDAOiZQ_EJOXawHp",
       "fillStyle": "hachure",
@@ -15,7 +15,7 @@
       "roughness": 1,
       "opacity": 100,
       "angle": 0,
-      "x": 325.37109375,
+      "x": 324.96484375,
       "y": 83.66796875,
       "strokeColor": "#000000",
       "backgroundColor": "transparent",
@@ -25,17 +25,17 @@
       "groupIds": [],
       "roundness": null,
       "boundElements": [],
-      "updated": 1675592890171,
+      "updated": 1676118746466,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n",
+      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n- Use ChatGPT to generate content.",
       "baseline": 443,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n"
+      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n- Use ChatGPT to generate content."
     },
     {
       "type": "text",
