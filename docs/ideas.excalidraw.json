@@ -39,8 +39,8 @@
     },
     {
       "type": "text",
-      "version": 370,
-      "versionNonce": 1634094722,
+      "version": 461,
+      "versionNonce": 216312399,
       "isDeleted": false,
       "id": "UKGXi96dskdthqkFRgkRS",
       "fillStyle": "hachure",
@@ -54,22 +54,22 @@
       "strokeColor": "#000000",
       "backgroundColor": "transparent",
       "width": 388,
-      "height": 300,
+      "height": 350,
       "seed": 885389846,
       "groupIds": [],
       "roundness": null,
       "boundElements": [],
-      "updated": 1675592890171,
+      "updated": 1676203139986,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "TODOs\n- Bookmarks\n    - Apps I use most\n    - Windows/Mac OS/Web Apps\n- Porfolio \n    - Projects I've been working on\n    - Showcase\n- About Me\n    - Links to LinkedIn, Github, twitter\n    - Work experience\n- Blogs\n- ",
-      "baseline": 293,
+      "text": "TODOs\n- Bookmarks\n    - Apps I use most\n    - Windows/Mac OS/Web Apps\n- Porfolio \n    - Projects I've been working on\n    - Showcase\n- About Me\n    - Links to LinkedIn, Github, twitter\n    - Work experience\n- Blogs\n- Books\n    - Add books I enjoyed \n- Maybe habit tracker?",
+      "baseline": 343,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "TODOs\n- Bookmarks\n    - Apps I use most\n    - Windows/Mac OS/Web Apps\n- Porfolio \n    - Projects I've been working on\n    - Showcase\n- About Me\n    - Links to LinkedIn, Github, twitter\n    - Work experience\n- Blogs\n- "
+      "originalText": "TODOs\n- Bookmarks\n    - Apps I use most\n    - Windows/Mac OS/Web Apps\n- Porfolio \n    - Projects I've been working on\n    - Showcase\n- About Me\n    - Links to LinkedIn, Github, twitter\n    - Work experience\n- Blogs\n- Books\n    - Add books I enjoyed \n- Maybe habit tracker?"
     }
   ],
   "appState": {
