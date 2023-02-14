@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "text",
-      "version": 1248,
-      "versionNonce": 145125615,
+      "version": 1323,
+      "versionNonce": 738310831,
       "isDeleted": false,
       "id": "TkX6RPDAOiZQ_EJOXawHp",
       "fillStyle": "hachure",
@@ -20,22 +20,22 @@
       "strokeColor": "#000000",
       "backgroundColor": "transparent",
       "width": 1005,
-      "height": 525,
+      "height": 600,
       "seed": 1727279737,
       "groupIds": [],
       "roundness": null,
       "boundElements": [],
-      "updated": 1676288579206,
+      "updated": 1676374723985,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n- Use ChatGPT to generate content.",
-      "baseline": 518,
+      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n- Use ChatGPT to generate content.\n- Learn AI?\n",
+      "baseline": 593,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n- Use ChatGPT to generate content."
+      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n- Use ChatGPT to generate content.\n- Learn AI?\n"
     },
     {
       "type": "text",
