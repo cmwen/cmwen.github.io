@@ -5,8 +5,8 @@
   "elements": [
     {
       "type": "text",
-      "version": 1323,
-      "versionNonce": 738310831,
+      "version": 1425,
+      "versionNonce": 1186129991,
       "isDeleted": false,
       "id": "TkX6RPDAOiZQ_EJOXawHp",
       "fillStyle": "hachure",
@@ -20,22 +20,22 @@
       "strokeColor": "#000000",
       "backgroundColor": "transparent",
       "width": 1005,
-      "height": 600,
+      "height": 625,
       "seed": 1727279737,
       "groupIds": [],
       "roundness": null,
       "boundElements": [],
-      "updated": 1676374723985,
+      "updated": 1676464791219,
       "link": null,
       "locked": false,
       "fontSize": 20,
       "fontFamily": 1,
-      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n- Use ChatGPT to generate content.\n- Learn AI?\n",
-      "baseline": 593,
+      "text": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n    - Pushing teams with a deadline will just produce crapy code. \n- Use ChatGPT to generate content.\n- Learn AI?\n",
+      "baseline": 618,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n- Use ChatGPT to generate content.\n- Learn AI?\n"
+      "originalText": "Using Excalidraw to manage todos and ideas\n\n- Learn Astro\n    - Island arch\n- Learn Partytown \n    - Manage 3rd scripts\n- Learn WSAM\n    - With Rust?\n- Learn Web Worker\n- Learn Service Worker\n- Learn Animation\n- Learn WebGL\n- Latest Frontend Tech\n    - Codux - Vistual component editor\n- Software Engineering\n     - Don't try to break the UI application into multiple repo just because we have multiple squad.\nif you don't have module federation, it just introduce lots of limitation to the application.\n    - Company should leverage the tech to increase produbility\n    - Don't spend time on meetings that doesn't have agenda and no clear goal\n    - Enterprise means lots of department, lots of controls, lots of governance, meaning moving slow?\n    - If you thank someone, they might thank you back.\n    - Pushing teams with a deadline will just produce crapy code. \n- Use ChatGPT to generate content.\n- Learn AI?\n"
     },
     {
       "type": "text",
