@@ -5,12 +5,8 @@ pubDatetime: 2024-08-25T16:16:56.000Z
 author: Min Wen, Gemini
 description: How AI is revolutionizing learning by tailoring content to your specific needs. Discover the benefits and potential pitfalls of proactive learning in the AI era.
 slug: learning-ai-era-reactive-proactive
-tags:
-  - AI
-  - learning
-  - education
-  - technology
 featured: true
+tags: ["AI", "learning", "education", "technology"]
 ---
 
 ## Learning in the AI Era: From Reactive to Proactive
