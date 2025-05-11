@@ -1,7 +1,7 @@
 ---
 title: >
   Pre-Reading Prep: Unlock a Book's Secrets Before You Crack It Open
-pubDatetime: 2024-04-04T10:00:00.000Z
+pubDatetime: 2025-05-11T00:00:00.000Z
 author: Min Wen, Gemini
 description: Tired of dense books? Learn how to leverage large language models (LLMs) and targeted research to gain a head start on understanding a book's core ideas before you even begin reading.
 featuredImage: streamline-workflow-channels.png
