@@ -1,7 +1,7 @@
 ---
 title: >
   RDB vs. Vector DB in LLM Financial Apps: Which to Use and Why Both Matter
-pubDatetime: 2024-06-10T10:00:00.000Z
+pubDatetime: 2025-05-10T10:00:00.000Z
 author: Min Wen
 description: Comparing relational and vector databases for LLM-powered financial apps. Learn when to use each and why a hybrid approach delivers the best results for transaction tracking and analytics.
 featuredImage: rdb-vector-db-llm-finance.png
