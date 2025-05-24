@@ -13,6 +13,8 @@ tags:
   - Productivity
 ---
 
+import Mermaid from "~/components/Mermaid.astro";
+
 ## Enhance Productivity with VS Code Copilot's #fetch Feature
 
 Imagine you’re working on a project and need some quick, accurate information—how do you retrieve it? Traditionally, developers and data scientists integrate Retrieval-Augmented Generation (RAG) pipelines or build custom tools to combine Large Language Models (LLMs) with real-time internet data. But what if you didn’t have to write a single line of code?
@@ -66,13 +68,13 @@ While `#fetch` may not replace fully-customized RAG pipelines or apps (like Lang
 
 Here’s a simple diagram to show how Copilot combines prompts with internet data retrieval using `#fetch`:
 
-```mermaid
-graph TD
+<Mermaid
+  diagram={`graph TD
     A[Custom Prompt] -->|Instructs Copilot| B(Copilot Agent Mode)
     B -->|Fetches Data| C[Website/Online Source]
     C -->|Returns Results| D[Copilot Summarizes Info]
-    D -->|Delivers Insights| E[User]
-```
+    D -->|Delivers Insights| E[User]`}
+/>
 
 ---
 

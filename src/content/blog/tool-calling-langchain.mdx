@@ -1,16 +1,18 @@
 ---
 title: "Understanding LLM Tool Calling in LangChain"
-description: "A step-by-step guide to how LLM Tool Calling works in LangChain, complete with a sequence diagram."
-author: "cmwen"
 pubDatetime: 2025-05-03T11:12:11.572Z
+author: "cmwen"
+description: "A step-by-step guide to how LLM Tool Calling works in LangChain, complete with a sequence diagram."
+slug: llm-tool-calling-langchain
+featured: true
 tags:
   - LangChain
   - AI Tools
   - LLM Integration
   - Sequence Diagram
-featured: true
-slug: llm-tool-calling-langchain
 ---
+
+import Mermaid from "~/components/Mermaid.astro";
 
 ## Introduction
 
@@ -59,12 +61,12 @@ LangChain provides a powerful framework for integrating tools with Language Lear
 
 Here’s a sequence diagram illustrating the interactions between the **User**, **Application**, **LLM**, and **Tool**:
 
-```mermaid
+<Mermaid diagram={`
 sequenceDiagram
-    participant User
-    participant Application
-    participant LLM
-    participant Tool
+participant User
+participant Application
+participant LLM
+participant Tool
 
     User->>Application: Provide input (e.g., "Calculate 5 * 10")
     Application->>LLM: Send user input and tool descriptions
@@ -78,7 +80,8 @@ sequenceDiagram
     end
     LLM-->>Application: Final response (e.g., "The product of 5 and 10 is 50")
     Application-->>User: Provide final response
-```
+
+`} />
 
 ---
 

@@ -1,0 +1,41 @@
+---
+import mermaid from "mermaid";
+
+export interface Props {
+  diagram: string;
+}
+
+const { diagram } = Astro.props;
+
+// Initialize Mermaid - this should ideally run once, perhaps in a layout or a client-side script
+// For Astro components that can be rendered multiple times on a page, consider how to manage initialization.
+// If mermaid.initialize is called multiple times with different configs, it might lead to unexpected behavior.
+// However, for this specific setup, it's called with the same config each time a component instance is created.
+mermaid.initialize({
+  startOnLoad: false, // We don't want Mermaid to automatically find and render elements with class="mermaid"
+  theme: "neutral", // Or any other theme like 'dark', 'forest', 'default'
+});
+
+let svgDiagram: string = "";
+
+if (diagram && typeof diagram === "string") {
+  try {
+    // mermaid.render(id, txt, cb, container)
+    // When cb is not provided, it returns a promise that resolves with the svg code.
+    // The 'id' can be any unique string for this diagram instance.
+    const { svg } = await mermaid.render(
+      `mermaid-diagram-${Date.now()}-${Math.random().toString(36).substring(2)}`,
+      diagram
+    );
+    svgDiagram = svg;
+  } catch (error) {
+    console.error("Mermaid rendering error:", error);
+    // Provide a more user-friendly error message or visual indicator
+    svgDiagram = `<pre class="mermaid-error">Error rendering diagram: ${error instanceof Error ? error.message : String(error)}</pre>`;
+  }
+} else {
+  svgDiagram = "<p>No diagram provided or diagram is not a string.</p>";
+}
+---
+
+<Fragment set:html={svgDiagram} />
