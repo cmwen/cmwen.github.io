@@ -1,0 +1,158 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+<Layout title="JavaScript REPL">
+  <div class="max-w-2xl mx-auto p-6 bg-skin-card rounded-lg shadow-md my-8">
+    <h2 class="text-2xl font-semibold text-skin-base mb-4">JavaScript REPL (WASM)</h2>
+    
+    <p id="loadingMessage" class="text-skin-base mb-4">Loading QuickJS WASM...</p>
+    
+    <textarea 
+      id="codeInput" 
+      placeholder="Enter JavaScript code here..."
+      class="w-full min-h-[150px] p-3 font-mono bg-skin-fill text-skin-base border border-skin-line rounded-md focus:ring-2 focus:ring-skin-accent focus:border-skin-accent mb-4 resize-y"
+      disabled
+    ></textarea>
+    
+    <button 
+      id="evalButton"
+      class="px-6 py-2 font-mono bg-skin-accent text-skin-inverted rounded-md hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-skin-accent focus:ring-offset-2 focus:ring-offset-skin-card mb-4 disabled:opacity-50"
+      disabled
+    >
+      Evaluate
+    </button>
+    
+    <h3 class="text-xl font-semibold text-skin-base my-4">Output:</h3>
+    
+    <pre 
+      id="outputArea"
+      class="w-full min-h-[100px] p-3 font-mono bg-skin-fill text-skin-base border border-skin-line rounded-md whitespace-pre-wrap overflow-x-auto"
+    ></pre>
+  </div>
+
+  <script is:inline>
+    import { newQuickJSWASMModuleFromVariant } from "quickjs-emscripten-core";
+    import RELEASE_SYNC from "@jitl/quickjs-wasmfile-release-sync";
+
+    const codeInput = document.getElementById('codeInput');
+    const evalButton = document.getElementById('evalButton');
+    const outputArea = document.getElementById('outputArea');
+    const loadingMessage = document.getElementById('loadingMessage');
+
+    let QuickJS;
+
+    async function initQuickJS() {
+      try {
+        QuickJS = await newQuickJSWASMModuleFromVariant(RELEASE_SYNC);
+        if (loadingMessage) loadingMessage.style.display = 'none';
+        if (codeInput) codeInput.disabled = false;
+        if (evalButton) evalButton.disabled = false;
+        outputArea.textContent = 'QuickJS WASM Loaded. Ready to evaluate.';
+      } catch (err) {
+        console.error("Failed to load QuickJS WASM:", err);
+        if (loadingMessage) loadingMessage.textContent = 'Error loading QuickJS WASM. REPL will not function.';
+        if (outputArea) outputArea.textContent = `Failed to load QuickJS: ${err.message || err}. Check console for details.`;
+      }
+      return QuickJS;
+    }
+
+    function safeDump(vm, handle) {
+      if (!handle) return 'undefined';
+      const value = vm.dump(handle);
+      handle.dispose(); // Dispose of the handle after dumping
+      if (typeof value === 'object' && value !== null) {
+        try {
+          return JSON.stringify(value, null, 2);
+        } catch (e) {
+          return Object.prototype.toString.call(value);
+        }
+      }
+      if (typeof value === 'symbol') {
+        return value.toString();
+      }
+      return String(value);
+    }
+    
+    function safeFullDump(vm, handle) {
+        if (!handle) return 'undefined';
+        const value = vm.dump(handle, {bigint: 'string'}); // dump with options if needed
+        // Do not dispose here, let the caller manage if it's result.value or result.error
+        if (typeof value === 'object' && value !== null) {
+            try {
+                return JSON.stringify(value, (key, val) =>
+                    typeof val === 'bigint' ? val.toString() : val, 2);
+            } catch (e) {
+                return Object.prototype.toString.call(value);
+            }
+        }
+        if (typeof value === 'symbol') {
+            return value.toString();
+        }
+        if (typeof value === 'bigint') {
+            return value.toString();
+        }
+        return String(value);
+    }
+
+
+    async function evaluateCodeWithQuickJS(codeToRun) {
+      if (!QuickJS) {
+        outputArea.textContent = "QuickJS is not initialized. Please wait or refresh.";
+        return;
+      }
+
+      const vm = QuickJS.newContext();
+      const logMessages = [];
+      outputArea.textContent = ''; // Clear previous output
+
+      // Setup console.log
+      const logHandle = vm.newFunction("log", (...argsHandles) => {
+        const nativeArgs = argsHandles.map(handle => safeDump(vm, handle));
+        logMessages.push(nativeArgs.join(" "));
+      });
+      const consoleHandle = vm.newObject();
+      vm.setProp(consoleHandle, "log", logHandle);
+      vm.setProp(vm.global, "console", consoleHandle);
+      // logHandle and consoleHandle are disposed by vm.dispose() implicitly
+      // if they are set as properties of objects that vm owns (like global console object)
+      // However, explicit dispose is safer if not sure:
+      logHandle.dispose();
+      consoleHandle.dispose();
+
+
+      let outputString = "";
+      const result = vm.evalCode(codeToRun);
+
+      if (logMessages.length > 0) {
+        outputString += `Console Logs:\n${logMessages.join("\n")}\n\n`;
+      }
+
+      if (result.error) {
+        outputString += "Error:\n" + safeFullDump(vm, result.error.value); // Use .value for error object
+        result.error.dispose();
+      } else {
+        outputString += "Return Value:\n" + safeFullDump(vm, result.value);
+        result.value.dispose();
+      }
+      
+      outputArea.textContent = outputString.trim();
+      if (outputArea.textContent === '') {
+        outputArea.textContent = 'Code executed. No output or return value.';
+      }
+
+      vm.dispose();
+    }
+
+    if (evalButton && codeInput && outputArea && loadingMessage) {
+      evalButton.addEventListener('click', () => {
+        const code = codeInput.value;
+        evaluateCodeWithQuickJS(code);
+      });
+      // Initialize QuickJS when the script is loaded
+      initQuickJS();
+    } else {
+      console.error("REPL DOM elements not found. Script might be running too early or IDs are incorrect.");
+      if(loadingMessage) loadingMessage.textContent = "Error: REPL UI elements missing.";
+    }
+  </script>
+</Layout>
