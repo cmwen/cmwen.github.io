@@ -13,6 +13,10 @@ mode: "agent"
 - The blog post should be at least 500 words long.
 - The blog post should be well-structured and easy to read.
 - The blog post should include a title, author, description, and tags.
+  - `pubDatetime` in the frontmatter should be set to the current date. `2024-04-20T11:12:11.572Z`
+  - `author` is Min Wen
+  - `slug` should be a URL-friendly version of the title, e.g., `reflections-on-upgrading-to-github-copilot-pro`
+  - `featured` is boolean.
 - The blog post should be informative and engaging.
 - The blog post should be original and not plagiarized.
 - The blog post should be written in a professional tone.
