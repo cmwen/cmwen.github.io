@@ -1,0 +1,20 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import AgentsApp from "@components/agents/AgentsApp";
+import { SITE } from "@config";
+
+const title = "AI Agents & Prompts";
+const description =
+  "Curated collection of AI prompt templates and agents for various tasks. Select your preferred LLM provider and launch with pre-filled prompts.";
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header activeNav="agents" />
+  <Main pageTitle={title} pageDesc={description}>
+    <AgentsApp client:load />
+  </Main>
+  <Footer />
+</Layout>
