@@ -1,8 +1,9 @@
 ---
-title: "Agentic SDLC with Human-in-the-Loop (HITL) Playbook"
-description: "A practical playbook for integrating LLM-based agents into the Software Development Life Cycle while keeping humans in the loop at critical decision points."
+title: >
+  Agentic SDLC with Human-in-the-Loop (HITL) Playbook
+description: A practical playbook for integrating LLM-based agents into the Software Development Life Cycle while keeping humans in the loop at critical decision points.
 pubDatetime: 2025-08-25T12:00:00.000Z
-author: "Min Wen"
+author: Min Wen
 tags:
   - agents
   - sdlc
