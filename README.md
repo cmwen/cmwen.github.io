@@ -6,6 +6,8 @@
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white&style=for-the-badge)](https://conventionalcommits.org)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 
+---
+
 AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro blog theme. This theme is designed and crafted based on [my personal blog](https://satnaing.dev/blog).
 
 This theme follows best practices and provides accessibility out of the box. Light and dark mode are supported by default. Moreover, additional color schemes can also be configured.
@@ -87,72 +89,73 @@ Documentation can be read in two formats\_ _markdown_ & _blog post_.
 
 ## 💻 Tech Stack
 
-**Main Framework** - [Astro](https://astro.build/)  
-**Type Checking** - [TypeScript](https://www.typescriptlang.org/)  
-**Component Framework** - [ReactJS](https://reactjs.org/)  
-**Styling** - [TailwindCSS](https://tailwindcss.com/)  
-**UI/UX** - [Figma](https://figma.com)  
-**Fuzzy Search** - [FuseJS](https://fusejs.io/)  
-**Icons** - [Boxicons](https://boxicons.com/) | [Tablers](https://tabler-icons.io/)  
-**Code Formatting** - [Prettier](https://prettier.io/)  
-**Deployment** - [Cloudflare Pages](https://pages.cloudflare.com/)  
-**Illustration in About Page** - [https://freesvgillustration.com](https://freesvgillustration.com/)  
-**Linting** - [ESLint](https://eslint.org)
+# cmwen.github.io
 
-## 👨🏻‍💻 Running Locally
+Personal blog built with AstroPaper (Astro + TypeScript + React + TailwindCSS). Focused on AI-assisted development, agent systems, and practical engineering playbooks.
 
-The easiest way to run this project locally is to run the following command in your desired directory.
+## Tech
 
-```bash
-# npm 6.x
-npm create astro@latest --template satnaing/astro-paper
+- Astro, React, TypeScript, TailwindCSS
+- Content collections with frontmatter validation (`src/content/config.ts`)
+- Client search via FuseJS
+- Dynamic OG images
 
-# npm 7+, extra double-dash is needed:
-npm create astro@latest -- --template satnaing/astro-paper
+## Project structure
 
-# yarn
-yarn create astro --template satnaing/astro-paper
-```
+- Posts: `src/content/blog/`
+- Pages: `src/pages/`
+- Layouts: `src/layouts/`
+- Components: `src/components/`
+- Utilities: `src/utils/`
 
-## Google Site Verification (optional)
+## Local development
 
-You can easily add your [Google Site Verification HTML tag](https://support.google.com/webmasters/answer/9008080#meta_tag_verification&zippy=%2Chtml-tag) in AstroPaper using environment variable. This step is optional. If you don't add the following env variable, the google-site-verification tag won't appear in the html `<head>` section.
+Use pnpm for all commands.
 
 ```bash
-# in your environment variable file (.env)
-PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-site-verification-value
+pnpm install
+pnpm run dev
+# open http://localhost:4321
 ```
 
-## 🧞 Commands
+Build and preview:
 
-All commands are run from the root of the project, from a terminal:
+```bash
+pnpm run build
+pnpm run preview
+```
 
-> **_Note!_** For `Docker` commands we must have it [installed](https://docs.docker.com/engine/install/) in your machine.
+Formatting and linting:
 
-| Command                              | Action                                                                                                                           |
-| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
-| `npm install`                        | Installs dependencies                                                                                                            |
-| `npm run dev`                        | Starts local dev server at `localhost:4321`                                                                                      |
-| `npm run build`                      | Build your production site to `./dist/`                                                                                          |
-| `npm run preview`                    | Preview your build locally, before deploying                                                                                     |
-| `npm run format:check`               | Check code format with Prettier                                                                                                  |
-| `npm run format`                     | Format codes with Prettier                                                                                                       |
-| `npm run sync`                       | Generates TypeScript types for all Astro modules. [Learn more](https://docs.astro.build/en/reference/cli-reference/#astro-sync). |
-| `npm run cz`                         | Commit code changes with commitizen                                                                                              |
-| `npm run lint`                       | Lint with ESLint                                                                                                                 |
-| `docker compose up -d`               | Run AstroPaper on docker, You can access with the same hostname and port informed on `dev` command.                              |
-| `docker compose run app npm install` | You can run any command above into the docker container.                                                                         |
+```bash
+pnpm run format:check
+pnpm run format
+pnpm run lint
+```
 
-> **_Warning!_** Windows PowerShell users may need to install the [concurrently package](https://www.npmjs.com/package/concurrently) if they want to [run diagnostics](https://docs.astro.build/en/reference/cli-reference/#astro-check) during development (`astro check --watch & astro dev`). For more info, see [this issue](https://github.com/satnaing/astro-paper/issues/113).
+## Writing a post
 
-## ✨ Feedback & Suggestions
+Create a Markdown file in `src/content/blog/` with required frontmatter:
 
-If you have any suggestions/feedback, you can contact me via [my email](mailto:contact@satnaing.dev). Alternatively, feel free to open an issue if you find bugs or want to request new features.
-
-## 📜 License
-
-Licensed under the MIT License, Copyright © 2023
-
+```yaml
 ---
+title: Your title
+description: One-line description
+pubDatetime: 2025-08-26
+author: Your name
+tags: [ai, agents]
+featured: false
+draft: false
+---
+```
 
+Images go in `public/` or reference external URLs. Draft posts are excluded from build.
+
+## CI/CD
+
+GitHub Actions builds and deploys to `gh-pages` and runs basic Playwright smoke tests (see `.github/workflows/`). Use `pnpm run cz` for conventional commit messages.
+
+## License
+
+MIT
 Made with 🤍 by [Sat Naing](https://satnaing.dev) 👨🏻‍💻 and [contributors](https://github.com/satnaing/astro-paper/graphs/contributors).

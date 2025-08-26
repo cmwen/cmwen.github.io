@@ -5,22 +5,22 @@
 @layer base {
   :root,
   html[data-theme="light"] {
-  /* light theme - slightly softened white with green accent */
-  --color-fill: 245, 251, 240; /* slightly off-white */
-  --color-text-base: 40, 39, 40;
-  --color-accent: 16, 185, 129; /* emerald / green */
-  --color-card: 236, 251, 240;
-  --color-card-muted: 214, 238, 220;
-  --color-border: 220, 233, 220;
+    /* light theme - slightly softened white with green accent */
+    --color-fill: 245, 251, 240; /* slightly off-white */
+    --color-text-base: 40, 39, 40;
+    --color-accent: 16, 185, 129; /* emerald / green */
+    --color-card: 236, 251, 240;
+    --color-card-muted: 214, 238, 220;
+    --color-border: 220, 233, 220;
   }
   html[data-theme="dark"] {
-  /* dark theme - darker background and green accent */
-  --color-fill: 12, 16, 22; /* much darker page background */
-  --color-text-base: 236, 241, 244;
-  --color-accent: 16, 185, 129; /* emerald / green */
-  --color-card: 24, 30, 40;
-  --color-card-muted: 36, 60, 48;
-  --color-border: 38, 50, 40;
+    /* dark theme - darker background and green accent */
+    --color-fill: 12, 16, 22; /* much darker page background */
+    --color-text-base: 236, 241, 244;
+    --color-accent: 16, 185, 129; /* emerald / green */
+    --color-card: 24, 30, 40;
+    --color-card-muted: 36, 60, 48;
+    --color-border: 38, 50, 40;
   }
   #sun-svg,
   html[data-theme="dark"] #moon-svg {

@@ -3,34 +3,34 @@ layout: ../layouts/AboutLayout.astro
 title: "About"
 ---
 
-AstroPaper is a minimal, responsive and SEO-friendly Astro blog theme. I designed and crafted this based on [my personal blog](https://satnaing.dev/blog).
+I’m a software builder focused on AI-assisted development and practical agent systems. I care about shipping reliable features, improving developer experience, and turning research into workflows teams can use today.
 
-This theme is aimed to be accessible out of the box. Light and dark mode are supported by
-default and additional color schemes can also be configured.
+What I do
 
-This theme is self-documented \_ which means articles/posts in this theme can also be considered as documentations. So, see the documentation for more info.
+- Design agentic workflows for real apps (retrieval, tool use, evaluation)
+- Bridge product and engineering to move from prototype to production
+- Share practical patterns for GitHub Copilot, RAG, LangChain, and data choices
+- Advocate human-in-the-loop systems that are observable, testable, and safe
 
-<div>
-  <img src="/assets/dev.svg" class="sm:w-1/2 mx-auto" alt="coding dev illustration">
-</div>
+Principles
 
-## Tech Stack
+- Start simple, measure, iterate
+- Humans stay in the loop
+- Shipping > demos
+- Privacy and security by default
 
-This theme is written in vanilla JavaScript (+ TypeScript for type checking) and a little bit of ReactJS for some interactions. TailwindCSS is used for styling; and Markdown is used for blog contents.
+Currently exploring
 
-## Features
+- Agents for production developer workflows and CI
+- Copilot-native team practices and code review
+- Evaluation harnesses, datasets, and telemetry for AI quality
 
-Here are certain features of this site.
+A bit more
 
-- fully responsive and accessible
-- SEO-friendly
-- light & dark mode
-- fuzzy search
-- super fast performance
-- draft posts
-- pagination
-- sitemap & rss feed
-- highly customizable
+- I write playbooks to operationalize LLMs: prompts → tools → evals → shipping.
+- I prefer boring, composable systems that scale with observability and tests.
+- I care about clear docs and small feedback loops more than shiny demos.
 
-If you like this theme, you can star/contribute to the [repo](https://github.com/satnaing/astro-paper).  
-Or you can even give any feedback via my [email](mailto:contact@satnaing.dev).
+Connect
+
+- LinkedIn: https://www.linkedin.com/in/chung-min-wen/
