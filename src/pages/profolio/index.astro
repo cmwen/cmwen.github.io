@@ -1,0 +1,163 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+
+const title = "Profolio";
+const description = "A small portfolio of personal apps and MCP servers.";
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header activeNav="profolio" />
+  <Main pageTitle={title} pageDesc={description}>
+    <section class="space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">PWA</h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/learn-japanese/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Japanese Learning (Kanji-Go)
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A Progressive Web App for learning basic Japanese (Hiragana,
+            Katakana, and essential vocabulary) with offline-first experience
+            and flashcards.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">Tech stack:</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Svelte + Vite</li>
+              <li>PWA/offline-first; GitHub Pages deployment</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            Source: <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/learn-japanese"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/learn-japanese</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/podcast-pwa/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Podcast Lister App (WIP)
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A lightweight installable PWA for subscribing to podcasts via RSS,
+            managing playlists, and listening offline.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">Tech stack:</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Preact + TypeScript, Vite</li>
+              <li>
+                Vite PWA, IndexedDB (idb), Cache API; fast-xml-parser,
+                SortableJS
+              </li>
+              <li>Vitest, Playwright, ESLint/Prettier; Lighthouse CI</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            Source: <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/podcast-pwa"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/podcast-pwa</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">MCP Servers</h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/min-kb-mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @cmwen/min-kb-mcp — Minimalist Knowledge Base MCP
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A minimalist, file‑based knowledge base server for AI agents via the
+            Model Context Protocol. Uses Markdown files and a WASM SQLite index
+            with optional FTS5.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">Tech stack:</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript, Node.js</li>
+              <li>sql.js (WASM SQLite), optional FTS5</li>
+              <li>MCP server (stdio/HTTP dev), Zod schemas</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            Source: <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-kb-mcp"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/min-kb-mcp</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/min-n8n-mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @cmwen/min-n8n-mcp — n8n MCP Server
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A TypeScript-based MCP server that exposes n8n workflow management
+            as tools for AI agents. Provides STDIO and HTTP modes with robust
+            error handling and typed schemas.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">Tech stack:</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript, Node.js, Zod validation</li>
+              <li>HTTP client infra, retries/timeouts, caching</li>
+              <li>MCP server (stdio/HTTP), MCP Inspector compatible</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            Source: <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-n8n-mcp"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/min-n8n-mcp</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+  </Main>
+  <Footer />
+</Layout>
