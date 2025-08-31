@@ -15,6 +15,13 @@ test.describe('Agents page', () => {
   await expect(page.locator('#main-content h1')).toContainText('AI Agents & Prompts');
   });
 
+  test('No errors in console on Agents page', async ({ page }) => {
+    const errors: string[] = [];
+    page.on('pageerror', (err) => errors.push(err.message));
+    await page.goto('/agents/');
+    expect(errors).toEqual([]);
+  });
+
   test.fixme('Provider selection persists across reload', async ({ page }) => {
     // TODO: Enable after stabilizing client-hydrated UI in headless tests
   });

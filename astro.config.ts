@@ -32,7 +32,13 @@ export default defineConfig({
     },
   },
   vite: {
+    resolve: {
+      // Ensure a single React instance between renderer and components
+      dedupe: ["react", "react-dom"],
+    },
     optimizeDeps: {
+      // Pre-bundle a single copy of react/react-dom; exclude heavy wasm dep
+      include: ["react", "react-dom"],
       exclude: ["@resvg/resvg-js"],
     },
   },

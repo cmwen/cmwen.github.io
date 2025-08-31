@@ -1,0 +1,66 @@
+---
+import type { Tool } from "@data/toolbox";
+
+export interface Props {
+  tool: Tool;
+}
+
+const { tool } = Astro.props;
+---
+
+<details
+  class="group rounded-md border border-skin-line bg-skin-card p-4 transition-shadow hover:shadow"
+  name="toolbox-tools"
+>
+  <summary class="cursor-pointer list-none">
+    <div class="flex items-start justify-between gap-3">
+      <h3
+        class="text-lg font-semibold text-skin-accent flex items-center gap-2"
+      >
+        {tool.name}
+        {tool.current && <span title="Currently using">🔥</span>}
+      </h3>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 shrink-0 transition-transform group-open:rotate-180"
+        ><path d="M12 15.5 6 9.5 7.4 8.1 12 12.7 16.6 8.1 18 9.5z"></path></svg
+      >
+    </div>
+    {tool.why && <p class="mt-1 text-sm text-skin-muted">{tool.why}</p>}
+  </summary>
+
+  {
+    (tool.links?.length || tool.tags?.length) && (
+      <div class="mt-3 space-y-3">
+        {tool.links?.length && (
+          <div class="flex flex-wrap items-center gap-2">
+            {tool.links.map(link => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 rounded border border-skin-line px-2 py-1 text-sm hover:border-skin-accent hover:text-skin-accent"
+              >
+                {link.label}
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3">
+                  <path d="M14 3h7v7h-2V6.414l-9.293 9.293-1.414-1.414L17.586 5H14z" />
+                  <path d="M19 19H3V3h9v2H5v12h12v-7h2v9z" />
+                </svg>
+              </a>
+            ))}
+          </div>
+        )}
+
+        {tool.tags?.length && (
+          <div class="flex flex-wrap gap-2">
+            {tool.tags.map(tag => (
+              <span class="rounded-full bg-skin-fill px-2 py-0.5 text-xs text-skin-muted">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+</details>

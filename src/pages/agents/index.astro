@@ -14,7 +14,7 @@ const description =
 <Layout title={`${title} | ${SITE.title}`}>
   <Header activeNav="agents" />
   <Main pageTitle={title} pageDesc={description}>
-    <AgentsApp client:load />
+    <AgentsApp client:only="react" />
   </Main>
   <Footer />
 </Layout>

@@ -1,0 +1,41 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import ToolCard from "@components/toolbox/ToolCard.astro";
+import { TOOLBOX } from "@data/toolbox";
+import { SITE } from "@config";
+
+const title = "Toolbox";
+const description =
+  "A curated list of tools I use regularly, grouped by category.";
+---
+
+<Layout title={`${title} | ${SITE.title}`}>
+  <Header activeNav="toolbox" />
+  <Main pageTitle={title} pageDesc={description}>
+    <div class="space-y-10">
+      {
+        TOOLBOX.map(section => (
+          <section id={section.id}>
+            <h2 class="mb-3 text-2xl font-semibold tracking-wide">
+              {section.title}
+            </h2>
+            <div class="grid gap-4 sm:grid-cols-2">
+              {section.tools.map(tool => {
+                const isSingleton = section.tools.length === 1;
+                const effectiveTool = {
+                  ...tool,
+                  current: tool.current ?? isSingleton,
+                };
+                return <ToolCard tool={effectiveTool} />;
+              })}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </Main>
+  <Footer />
+</Layout>

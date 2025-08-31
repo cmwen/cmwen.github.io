@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { providers, agents } from "@data/agents";
 import type { Agent, Provider } from "@data/agents";
 import ProviderSelector from "./ProviderSelector";
@@ -12,12 +12,22 @@ import {
 } from "@utils/agents";
 
 export default function AgentsApp() {
-  const [selectedProvider, setSelectedProviderState] = useState<Provider>(() =>
-    getSelectedProvider(providers)
+  // Important: keep SSR and first client render identical to avoid hydration mismatch flicker
+  const [selectedProvider, setSelectedProviderState] = useState<Provider>(
+    providers[0]
   );
   const [filteredAgents, setFilteredAgents] = useState<Agent[]>(agents);
   const [selectedAgent, setSelectedAgent] = useState<Agent | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // After mount, read persisted provider and update state if different
+  useEffect(() => {
+    const saved = getSelectedProvider(providers);
+    if (saved && saved.id !== selectedProvider.id) {
+      setSelectedProviderState(saved);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleProviderChange = useCallback((provider: Provider) => {
     setSelectedProviderState(provider);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import type { Agent, Provider } from "@data/agents";
 
 interface AgentDetailsProps {
@@ -37,7 +37,7 @@ export default function AgentDetails({
     }
   }, [agent]);
 
-  const processedPrompt = React.useMemo(() => {
+  const processedPrompt = useMemo(() => {
     let processed = editedPrompt;
     Object.entries(variables).forEach(([key, value]) => {
       processed = processed.replace(

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import type { Agent } from "@data/agents";
 
 interface AgentSearchProps {
@@ -14,13 +14,13 @@ export default function AgentSearch({
   const [selectedTag, setSelectedTag] = useState("");
 
   // Get all unique tags
-  const allTags = React.useMemo(() => {
+  const allTags = useMemo(() => {
     const tags = agents.flatMap(agent => agent.tags);
     return [...new Set(tags)].sort();
   }, [agents]);
 
   // Filter agents based on search term and selected tag
-  React.useEffect(() => {
+  useEffect(() => {
     let filtered = agents;
 
     if (searchTerm) {

@@ -1,4 +1,3 @@
-import React from "react";
 import type { Provider } from "@data/agents";
 
 interface ProviderSelectorProps {

@@ -1,4 +1,3 @@
-import React from "react";
 import type { Agent } from "@data/agents";
 
 interface AgentCardProps {
