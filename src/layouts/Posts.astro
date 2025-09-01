@@ -7,24 +7,52 @@ import Footer from "@components/Footer.astro";
 import Pagination from "@components/Pagination.astro";
 import Card from "@components/Card";
 import { SITE } from "@config";
+import { defaultLocale, type Locale } from "@i18n/config";
+import { messages } from "@i18n/dict";
 
 export interface Props {
   currentPage: number;
   totalPages: number;
   paginatedPosts: CollectionEntry<"blog">[];
+  lang?: Locale;
 }
 
+// Respect explicitly provided lang; otherwise infer from URL prefix
 const { currentPage, totalPages, paginatedPosts } = Astro.props;
+const passedLang = (Astro.props as any).lang as Locale | undefined;
+const lang: Locale =
+  passedLang ??
+  (Astro.url.pathname.startsWith("/zh-hant/") ? "zh-hant" : defaultLocale);
+const t = messages[lang];
+const base = lang === "zh-hant" ? "/zh-hant" : "";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout title={`Posts | ${SITE.title}`}>
-  <Header activeNav="posts" />
-  <Main pageTitle="Posts" pageDesc="All the articles I've posted.">
+<Layout
+  title={`${t.nav.posts} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: base
+      ? new URL(Astro.url.pathname.replace(/^\/zh-hant/, ""), Astro.site).href
+      : canonical,
+    "zh-hant": base
+      ? canonical
+      : new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+  }}
+>
+  <Header activeNav="posts" {lang} />
+  <Main
+    pageTitle={t.nav.posts}
+    pageDesc={lang === "zh-hant"
+      ? "我發佈的所有文章。"
+      : "All the articles I've posted."}
+  >
     <ul>
       {
-        paginatedPosts.map(({ data, slug }) => (
-          <Card href={`/posts/${slug}/`} frontmatter={data} />
-        ))
+        paginatedPosts.map(({ data, slug }) => {
+          const s = (data as any).baseSlug ?? slug;
+          return <Card href={`${base}/posts/${s}/`} frontmatter={data} />;
+        })
       }
     </ul>
   </Main>
@@ -32,8 +60,8 @@ const { currentPage, totalPages, paginatedPosts } = Astro.props;
   <Pagination
     {currentPage}
     {totalPages}
-    prevUrl={`/posts${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
-    nextUrl={`/posts/${currentPage + 1}/`}
+    prevUrl={`${base}/posts${currentPage - 1 !== 1 ? "/" + (currentPage - 1) : ""}/`}
+    nextUrl={`${base}/posts/${currentPage + 1}/`}
   />
 
   <Footer noMarginTop={totalPages > 1} />

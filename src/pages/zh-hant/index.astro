@@ -6,38 +6,36 @@ import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
 import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
-import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
-import { SOCIALS } from "@config";
-import { defaultLocale } from "@i18n/config";
 import { messages } from "@i18n/dict";
+import type { CollectionEntry } from "astro:content";
 
-const posts = await getCollection("blog", ({ data }) => data.lang === "en");
+const lang = "zh-hant" as const;
+const t = messages[lang];
+
+const allPosts = await getCollection("blog");
+const posts = allPosts.filter(
+  (p: CollectionEntry<"blog">) => p.data.lang === lang
+);
 
 const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 
-const socialCount = SOCIALS.filter(social => social.active).length;
-const lang = defaultLocale;
-const t = messages[lang];
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout
   lang={lang}
-  alternates={{
-    en: canonical,
-    "zh-hant": new URL(`/zh-hant/`, Astro.site).href,
-  }}
+  alternates={{ en: new URL(`/`, Astro.site).href, "zh-hant": canonical }}
 >
   <Header {lang} />
   <main id="main-content">
     <section id="hero">
-      <h1>About Min</h1>
+      <h1>關於 Min</h1>
       <a
         target="_blank"
-        href="/rss.xml"
+        href="/zh-hant/rss.xml"
         class="rss-link"
         aria-label="rss feed"
         title="RSS Feed"
@@ -53,30 +51,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
       </a>
 
       <p>
-        Highly motivated Tech Lead known for taking initiative and driving
-        results. Passionate about sharing knowledge and inspiring productivity.
-        Possesses a pragmatic approach to solving problems, crafting efficient
-        solutions, and prioritizing transparency in team collaboration. Eager to
-        tackle new challenges and continuously improve processes.
+        積極主動的技術主管，善於主導與推動成果。熱衷於分享知識、提升生產力並啟發他人；以務實的方式解題、打造高效解法，重視團隊透明溝通。樂於迎接挑戰並持續優化流程。
       </p>
-      <!-- <p>
-        Read the blog posts or check
-        <LinkButton
-          className="underline decoration-dashed underline-offset-4 hover:text-skin-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
-      </p> -->
-      {
-        // only display if at least one social link is enabled
-        socialCount > 0 && (
-          <div class="social-wrapper">
-            <div class="social-links">Social Links:</div>
-            <Socials />
-          </div>
-        )
-      }
     </section>
 
     <Hr />
@@ -89,7 +65,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
             <ul>
               {featuredPosts.map(({ data, slug }) => (
                 <Card
-                  href={`/posts/${(data as any).baseSlug ?? slug}/`}
+                  href={`/zh-hant/posts/${(data as any).baseSlug ?? slug}/`}
                   frontmatter={data}
                   secHeading={false}
                 />
@@ -110,7 +86,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               ({ data, slug }, index) =>
                 index < 4 && (
                   <Card
-                    href={`/posts/${(data as any).baseSlug ?? slug}/`}
+                    href={`/zh-hant/posts/${(data as any).baseSlug ?? slug}/`}
                     frontmatter={data}
                     secHeading={false}
                   />
@@ -122,7 +98,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     }
 
     <div class="all-posts-btn-wrapper">
-      <LinkButton href="/posts/">
+      <LinkButton href="/zh-hant/posts/">
         {t.common.allPosts}
         <svg xmlns="http://www.w3.org/2000/svg"
           ><path

@@ -7,14 +7,16 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import SearchBar from "@components/Search";
 import getSortedPosts from "@utils/getSortedPosts";
-import { defaultLocale, type Locale } from "@i18n/config";
 import { messages } from "@i18n/dict";
 
-const lang: Locale = defaultLocale;
+const lang = "zh-hant" as const;
 const t = messages[lang];
 
-// Retrieve all published EN articles
-const posts = await getCollection("blog", ({ data }) => data.lang === lang);
+// Retrieve all published zh-hant articles
+const posts = await getCollection(
+  "blog",
+  ({ data }) => !data.draft && data.lang === lang
+);
 const sortedPosts = getSortedPosts(posts);
 
 // List of items to search in
@@ -32,13 +34,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   title={`${t.nav.searchAria} | ${SITE.title}`}
   lang={lang}
   alternates={{
-    en: canonical,
-    "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+    en: new URL(`/search/`, Astro.site).href,
+    "zh-hant": canonical,
   }}
 >
   <Header activeNav="search" {lang} />
   <Main pageTitle={t.nav.searchAria} pageDesc={t.common.searchPlaceholder}>
-    <SearchBar client:load searchList={searchList} />
+    <SearchBar
+      client:load
+      searchList={searchList}
+      basePrefix="/zh-hant"
+      placeholder={t.common.searchPlaceholder}
+    />
   </Main>
   <Footer />
 </Layout>

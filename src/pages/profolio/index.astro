@@ -4,13 +4,28 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Main from "@layouts/Main.astro";
 import { SITE } from "@config";
+import { defaultLocale, type Locale } from "@i18n/config";
+import { messages } from "@i18n/dict";
 
-const title = "Profolio";
-const description = "A small portfolio of personal apps and MCP servers.";
+const lang: Locale = defaultLocale;
+const t = messages[lang];
+const title = t.nav.profolio;
+const description =
+  lang === "zh-hant"
+    ? "個人應用與 MCP 伺服器的簡要作品集。"
+    : "A small portfolio of personal apps and MCP servers.";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<Layout title={`${title} | ${SITE.title}`}>
-  <Header activeNav="profolio" />
+<Layout
+  title={`${title} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: canonical,
+    "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+  }}
+>
+  <Header activeNav="profolio" {lang} />
   <Main pageTitle={title} pageDesc={description}>
     <section class="space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">PWA</h2>

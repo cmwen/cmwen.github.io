@@ -4,21 +4,26 @@ import Layout from "@layouts/Layout.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import LinkButton from "@components/LinkButton.astro";
+import { defaultLocale, type Locale } from "@i18n/config";
+// Infer locale from the requested path so 404s under /zh-hant/ are localized
+const lang: Locale = Astro.url.pathname.startsWith("/zh-hant/")
+  ? ("zh-hant" as Locale)
+  : (defaultLocale as Locale);
 ---
 
-<Layout title={`404 Not Found | ${SITE.title}`}>
-  <Header />
+<Layout title={`404 Not Found | ${SITE.title}`} lang={lang}>
+  <Header {lang} />
 
   <main id="main-content">
     <div class="not-found-wrapper">
       <h1 aria-label="404 Not Found">404</h1>
       <span aria-hidden="true">¯\_(ツ)_/¯</span>
-      <p>Page Not Found</p>
+      <p>{lang === "zh-hant" ? "找不到頁面" : "Page Not Found"}</p>
       <LinkButton
-        href="/"
+        href={lang === "zh-hant" ? "/zh-hant/" : "/"}
         className="my-6 text-lg underline decoration-dashed underline-offset-8"
       >
-        Go back home
+        {lang === "zh-hant" ? "回到首頁" : "Go back home"}
       </LinkButton>
     </div>
   </main>

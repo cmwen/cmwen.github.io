@@ -50,6 +50,7 @@ export default (post: CollectionEntry<"blog">) => {
             margin: "20px",
             width: "90%",
             height: "90%",
+            fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
           }}
         >
           <p
@@ -58,6 +59,7 @@ export default (post: CollectionEntry<"blog">) => {
               fontWeight: "bold",
               maxHeight: "84%",
               overflow: "hidden",
+              fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
             }}
           >
             {post.data.title}
@@ -69,6 +71,7 @@ export default (post: CollectionEntry<"blog">) => {
               width: "100%",
               marginBottom: "8px",
               fontSize: 28,
+              fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
             }}
           >
             <span>

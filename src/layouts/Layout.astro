@@ -1,5 +1,6 @@
 ---
-import { LOCALE, SITE } from "@config";
+import { SITE } from "@config";
+import { defaultLocale, toHtmlLang, type Locale } from "@i18n/config";
 import "@styles/base.css";
 import { ViewTransitions } from "astro:transitions";
 
@@ -14,6 +15,8 @@ export interface Props {
   pubDatetime?: Date;
   modDatetime?: Date | null;
   scrollSmooth?: boolean;
+  lang?: Locale;
+  alternates?: Partial<Record<Locale, string>>;
 }
 
 const {
@@ -25,6 +28,8 @@ const {
   pubDatetime,
   modDatetime,
   scrollSmooth = false,
+  lang = Astro.url.pathname.startsWith("/zh-hant/") ? "zh-hant" : defaultLocale,
+  alternates,
 } = Astro.props;
 
 const socialImageURL = new URL(
@@ -34,15 +39,32 @@ const socialImageURL = new URL(
 ---
 
 <!doctype html>
-<html
-  lang=`${LOCALE.lang ?? "en"}`
-  class={`${scrollSmooth && "scroll-smooth"}`}
->
+<html lang={toHtmlLang(lang)} class={`${scrollSmooth && "scroll-smooth"}`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
+    {
+      alternates && alternates.en && (
+        <link rel="alternate" hreflang="en" href={alternates.en} />
+      )
+    }
+    {
+      alternates && alternates["zh-hant"] && (
+        <link rel="alternate" hreflang="zh-Hant" href={alternates["zh-hant"]} />
+      )
+    }
+    {
+      alternates && (
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={alternates.en ?? canonicalURL}
+        />
+      )
+    }
+
     <meta name="generator" content={Astro.generator} />
 
     <!-- General Meta Tags -->

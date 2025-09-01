@@ -1,0 +1,29 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+import { messages } from "@i18n/dict";
+
+const lang = "zh-hant" as const;
+const t = messages[lang];
+const title = t.nav.profolio;
+const description = "個人應用與 MCP 伺服器的簡要作品集。";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout
+  title={`${title} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: new URL(`/profolio/`, Astro.site).href,
+    "zh-hant": canonical,
+  }}
+>
+  <Header activeNav="profolio" {lang} />
+  <Main pageTitle={title} pageDesc={description}>
+    <slot />
+  </Main>
+  <Footer />
+</Layout>

@@ -4,19 +4,18 @@ import getSortedPosts from "@utils/getSortedPosts";
 import { SITE } from "@config";
 
 export async function GET() {
-  // Only include English posts in the default (EN) feed
   const posts = await getCollection(
     "blog",
-    (entry: CollectionEntry<"blog">) => entry.data.lang === "en"
+    (entry: CollectionEntry<"blog">) => entry.data.lang === "zh-hant"
   );
   const sortedPosts = getSortedPosts(posts);
   return rss({
-    title: SITE.title,
+    title: `${SITE.title} (中文)`,
     description: SITE.desc,
     site: SITE.website,
     items: sortedPosts.map(({ data, slug }) => ({
       // Use baseSlug (our cross-locale canonical key) when available
-      link: `posts/${data.baseSlug ?? slug}/`,
+      link: `zh-hant/posts/${data.baseSlug ?? slug}/`,
       title: data.title,
       description: data.description,
       pubDate: new Date(data.modDatetime ?? data.pubDatetime),

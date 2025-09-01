@@ -49,6 +49,7 @@ export default () => {
             margin: "20px",
             width: "90%",
             height: "90%",
+            fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
           }}
         >
           <div
@@ -63,8 +64,23 @@ export default () => {
               textAlign: "center",
             }}
           >
-            <p style={{ fontSize: 72, fontWeight: "bold" }}>{SITE.title}</p>
-            <p style={{ fontSize: 28 }}>{SITE.desc}</p>
+            <p
+              style={{
+                fontSize: 72,
+                fontWeight: "bold",
+                fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
+              }}
+            >
+              {SITE.title}
+            </p>
+            <p
+              style={{
+                fontSize: 28,
+                fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
+              }}
+            >
+              {SITE.desc}
+            </p>
           </div>
 
           <div
@@ -74,6 +90,7 @@ export default () => {
               width: "100%",
               marginBottom: "8px",
               fontSize: 28,
+              fontFamily: 'IBM Plex Mono, "Noto Sans TC", sans-serif',
             }}
           >
             <span style={{ overflow: "hidden", fontWeight: "bold" }}>

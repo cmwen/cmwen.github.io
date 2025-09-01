@@ -5,6 +5,11 @@ const blog = defineCollection({
   type: "content",
   schema: ({ image }) =>
     z.object({
+      // i18n
+      lang: z.enum(["en", "zh-hant"]).default("en"),
+      translatedFrom: z.string().optional(),
+      // Optional base slug to share URL path across locales
+      baseSlug: z.string().optional(),
       author: z.string().default(SITE.author),
       pubDatetime: z.date(),
       modDatetime: z.date().optional().nullable(),

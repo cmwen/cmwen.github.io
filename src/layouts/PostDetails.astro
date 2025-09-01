@@ -8,12 +8,15 @@ import type { CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
+import { defaultLocale, type Locale } from "@i18n/config";
 
 export interface Props {
   post: CollectionEntry<"blog">;
+  lang?: Locale;
 }
 
-const { post } = Astro.props;
+const { post, lang = (post.data.lang as Locale) ?? defaultLocale } =
+  Astro.props;
 
 const {
   title,
@@ -34,6 +37,23 @@ const ogUrl = new URL(
   Astro.url.origin
 ).href;
 
+// Build alternates: if sibling translation exists, point to it; otherwise, fall back to locale home
+let alternates: { en?: string; "zh-hant"?: string } | undefined;
+try {
+  const slug = (post.data as any)?.baseSlug ?? post.slug;
+  const baseEn = new URL(`/posts/${slug}/`, Astro.site).href;
+  const baseZh = new URL(`/zh-hant/posts/${slug}/`, Astro.site).href;
+  alternates = {
+    en: lang === "en" ? new URL(Astro.url.pathname, Astro.site).href : baseEn,
+    "zh-hant":
+      lang === "zh-hant"
+        ? new URL(Astro.url.pathname, Astro.site).href
+        : baseZh,
+  };
+} catch {
+  // Ignore errors when building alternates
+}
+
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
   author,
@@ -43,11 +63,13 @@ const layoutProps = {
   canonicalURL,
   ogImage: ogUrl,
   scrollSmooth: true,
+  lang,
+  alternates,
 };
 ---
 
 <Layout {...layoutProps}>
-  <Header />
+  <Header {lang} />
 
   <!-- <div class="progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill">
     <div class="progress-bar h-1 w-0 bg-skin-accent" id="myBar"></div>
@@ -62,7 +84,7 @@ const layoutProps = {
         ><path
           d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
         ></path>
-      </svg><span>Go back</span>
+      </svg><span>{lang === "zh-hant" ? "返回" : "Go back"}</span>
     </button>
   </div>
   <main id="main-content">
@@ -78,7 +100,14 @@ const layoutProps = {
     </article>
 
     <ul class="my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+      {
+        tags.map(tag => (
+          <Tag
+            tag={slugifyStr(tag)}
+            basePrefix={lang === "zh-hant" ? "/zh-hant" : ""}
+          />
+        ))
+      }
     </ul>
 
     <div
@@ -93,7 +122,7 @@ const layoutProps = {
             d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
           ></path>
         </svg>
-        <span>Back to Top</span>
+        <span>{lang === "zh-hant" ? "回到頂端" : "Back to Top"}</span>
       </button>
 
       <ShareLinks />

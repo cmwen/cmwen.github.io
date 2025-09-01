@@ -5,14 +5,11 @@ import Footer from "@components/Footer.astro";
 import Main from "@layouts/Main.astro";
 import AgentsApp from "@components/agents/AgentsApp";
 import { SITE } from "@config";
-import { defaultLocale, type Locale } from "@i18n/config";
 
-const lang: Locale = defaultLocale;
-const title = lang === "zh-hant" ? "AI 代理與提示" : "AI Agents & Prompts";
+const lang = "zh-hant" as const;
+const title = "AI 代理與提示";
 const description =
-  lang === "zh-hant"
-    ? "精選各式任務的 AI 提示與代理。選擇偏好的 LLM 供應商，一鍵載入並啟動。"
-    : "Curated collection of AI prompt templates and agents for various tasks. Select your preferred LLM provider and launch with pre-filled prompts.";
+  "精選各式任務的 AI 提示與代理。選擇偏好的 LLM 供應商，一鍵載入並啟動。";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -20,8 +17,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   title={`${title} | ${SITE.title}`}
   lang={lang}
   alternates={{
-    en: canonical,
-    "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+    en: new URL(`/agents/`, Astro.site).href,
+    "zh-hant": canonical,
   }}
 >
   <Header activeNav="agents" {lang} />

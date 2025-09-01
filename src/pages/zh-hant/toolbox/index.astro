@@ -6,16 +6,12 @@ import Main from "@layouts/Main.astro";
 import ToolCard from "@components/toolbox/ToolCard.astro";
 import { TOOLBOX } from "@data/toolbox";
 import { SITE } from "@config";
-import { defaultLocale, type Locale } from "@i18n/config";
 import { messages } from "@i18n/dict";
 
-const lang: Locale = defaultLocale;
+const lang = "zh-hant" as const;
 const t = messages[lang];
 const title = t.nav.toolbox;
-const description =
-  lang === "zh-hant"
-    ? "我常用工具的精選清單，依分類整理。"
-    : "A curated list of tools I use regularly, grouped by category.";
+const description = "我常用工具的精選清單，依分類整理。";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -23,8 +19,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   title={`${title} | ${SITE.title}`}
   lang={lang}
   alternates={{
-    en: canonical,
-    "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+    en: new URL(`/toolbox/`, Astro.site).href,
+    "zh-hant": canonical,
   }}
 >
   <Header activeNav="toolbox" {lang} />

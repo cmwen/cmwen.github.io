@@ -6,19 +6,24 @@ import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
 
+const lang = "zh-hant" as const;
+
 export interface Props {
   post: CollectionEntry<"blog">;
 }
 
 export async function getStaticPaths() {
   const all = await getCollection("blog");
-  const posts = all.filter(p => !p.data.draft && p.data.lang === "en");
+  // Use literal here to avoid scope issues during build-time transformation
+  const posts = all.filter(
+    (p: CollectionEntry<"blog">) => !p.data.draft && p.data.lang === "zh-hant"
+  );
 
-  const postResult = posts.map(post => {
+  const postResult = posts.map((post: CollectionEntry<"blog">) => {
     const s = (post.data as any).baseSlug ?? post.slug;
     return {
       params: { slug: s },
-      props: { post: { ...post, slug: s } as any, lang: "en" },
+      props: { post: { ...post, slug: s } as any },
     };
   });
 
@@ -32,7 +37,9 @@ export async function getStaticPaths() {
 const { slug } = Astro.params;
 const { post } = Astro.props;
 
-const posts = await getCollection("blog", ({ data }) => data.lang === "en");
+const posts = (await getCollection("blog")).filter(
+  (p: CollectionEntry<"blog">) => p.data.lang === lang
+);
 
 const sortedPosts = getSortedPosts(posts);
 
@@ -42,4 +49,4 @@ const pagination = getPagination({
 });
 ---
 
-{post ? <PostDetails post={post} /> : <Posts {...pagination} lang="en" />}
+{post ? <PostDetails post={post} /> : <Posts {...pagination} />}

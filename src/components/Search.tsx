@@ -12,6 +12,7 @@ export type SearchItem = {
 
 interface Props {
   searchList: SearchItem[];
+  placeholder?: string;
 }
 
 interface SearchResult {
@@ -19,7 +20,11 @@ interface SearchResult {
   refIndex: number;
 }
 
-export default function SearchBar({ searchList }: Props) {
+export default function SearchBar({
+  searchList,
+  placeholder = "Search for anything...",
+  basePrefix = "",
+}: Props & { basePrefix?: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputVal, setInputVal] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[] | null>(
@@ -87,7 +92,7 @@ export default function SearchBar({ searchList }: Props) {
         border-opacity-40 bg-skin-fill py-3 pl-10
         pr-3 placeholder:italic placeholder:text-opacity-75 
         focus:border-skin-accent focus:outline-none"
-          placeholder="Search for anything..."
+          placeholder={placeholder}
           type="text"
           name="search"
           value={inputVal}
@@ -112,7 +117,7 @@ export default function SearchBar({ searchList }: Props) {
         {searchResults &&
           searchResults.map(({ item, refIndex }) => (
             <Card
-              href={`/posts/${item.slug}/`}
+              href={`${basePrefix}/posts/${(item.data as any).baseSlug ?? item.slug}/`}
               frontmatter={item.data}
               key={`${refIndex}-${item.slug}`}
             />

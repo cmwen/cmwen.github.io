@@ -7,34 +7,28 @@ import Main from "@layouts/Main.astro";
 import Tag from "@components/Tag.astro";
 import getUniqueTags from "@utils/getUniqueTags";
 import { SITE } from "@config";
-import { defaultLocale } from "@i18n/config";
 import { messages } from "@i18n/dict";
 
-const posts = await getCollection("blog", ({ data }) => data.lang === "en");
+const lang = "zh-hant" as const;
+const t = messages[lang];
+
+const posts = await getCollection("blog", ({ data }) => data.lang === lang);
 
 let tags = getUniqueTags(posts);
-const lang = defaultLocale;
-const t = messages[lang];
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout
   title={`${t.nav.tags} | ${SITE.title}`}
   lang={lang}
   alternates={{
-    en: canonical,
-    "zh-hant": new URL(`/zh-hant/tags/`, Astro.site).href,
+    en: new URL(`/tags/`, Astro.site).href,
+    "zh-hant": new URL(Astro.url.pathname, Astro.site).href,
   }}
 >
   <Header activeNav="tags" {lang} />
-  <Main
-    pageTitle={t.nav.tags}
-    pageDesc={lang === "zh-hant"
-      ? "所有使用過的標籤。"
-      : "All the tags used in posts."}
-  >
+  <Main pageTitle={t.nav.tags} pageDesc="中文標籤清單">
     <ul>
-      {tags.map(({ tag }) => <Tag {tag} size="lg" />)}
+      {tags.map(({ tag }) => <Tag {tag} size="lg" basePrefix="/zh-hant" />)}
     </ul>
   </Main>
   <Footer />
