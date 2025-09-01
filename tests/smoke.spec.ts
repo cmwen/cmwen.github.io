@@ -11,10 +11,13 @@ test('Homepage loads and shows title', async ({ page }) => {
 
 test('Navigation links are present', async ({ page }) => {
   await page.goto(PROD_URL);
-  const navLinks = ['Posts', 'Tags', 'About', 'Podcasts', 'search'];
+  // Visible text links in the header nav
+  const navLinks = ['Posts', 'Tags', 'Agents', 'Profolio', 'Toolbox', 'About'];
   for (const link of navLinks) {
     await expect(page.locator(`nav >> text=${link}`)).toBeVisible();
   }
+  // Search is an icon link with an accessible name (aria-label/title), not visible text
+  await expect(page.getByRole('link', { name: /search/i })).toBeVisible();
 });
 
 test('Featured and Recent Posts sections are visible', async ({ page }) => {
