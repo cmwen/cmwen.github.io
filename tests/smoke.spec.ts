@@ -17,7 +17,7 @@ test('Navigation links are present', async ({ page }) => {
     await expect(page.locator(`nav >> text=${link}`)).toBeVisible();
   }
   // Search is an icon link with an accessible name (aria-label/title), not visible text
-  await expect(page.getByRole('link', { name: /search/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Search', exact: true })).toBeVisible();
 });
 
 test('Featured and Recent Posts sections are visible', async ({ page }) => {
