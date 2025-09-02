@@ -1,61 +1,54 @@
 # Copilot Instructions for cmwen.github.io (AstroPaper Blog)
 
-## Project Architecture
+## Big picture
 
-This is an **AstroPaper theme** blog built with Astro, TypeScript, React, and TailwindCSS. Key architectural patterns:
+- Astro + React + TypeScript + Tailwind on top of AstroPaper. Content-driven blog; routes under `src/pages/` render `.astro/.md/.tsx` automatically.
+- Two locales: `en` and `zh-hant` (`src/i18n/config.ts`). Use `alternates` in page layouts (see `src/pages/agents/index.astro`). ZH pages live under `/zh-hant/`.
+- Posts are Markdown in `src/content/blog/` validated by `src/content/config.ts` via Astro Collections.
+- Utilities in `src/utils/` wire core flows: filter/sort (`postFilter`, `getSortedPosts`), pagination (`getPagination`, `getPageNumbers`), tags (`getUniqueTags`).
 
-- **Content-driven**: Blog posts live in `src/content/blog/` as Markdown with frontmatter schema validation via `src/content/config.ts`
-- **File-based routing**: Pages in `src/pages/` generate routes automatically (`.astro`, `.md`, `.tsx`)
-- **Layout composition**: Multiple layouts (`Layout.astro`, `Main.astro`, `PostDetails.astro`, `Posts.astro`, `TagPosts.astro`) compose for different page types
-- **Utility-first**: Helper functions in `src/utils/` handle common operations (sorting, pagination, slugification)
+## Conventions and schema
 
-## Critical Development Workflows
+- Frontmatter (see `src/content/config.ts`):
+  - lang: "en" | "zh-hant"; translatedFrom?: string; baseSlug?: string (shared canonical slug across locales)
+  - author (defaults to `SITE.author`), title, description, tags (default ["others"]), featured?, draft?
+  - pubDatetime: Date; modDatetime?: Date (sorting prefers modDatetime)
+  - ogImage?: image|string (>=1200x630), canonicalURL?: string
+- Scheduled publishing: `postFilter` hides drafts and future posts until `SITE.scheduledPostMargin` is passed.
+- Path aliases (TS/Vite): `@config`, `@components/*`, `@utils/*`, `@layouts/*`, `@i18n/*`, etc. (see `tsconfig.json`).
 
-**Development**: `pnpm run dev` (localhost:4321) | **Build**: `pnpm run build` | **Preview**: `pnpm run preview`
-**Package manager**: Use `pnpm` for all install/build/test commands (CI uses pnpm, see `.github/workflows/main.yaml`)
-**Commits**: `pnpm run cz` (Commitizen with conventional commits - enforced)
-**Formatting**: `pnpm run format` (Prettier) | **Linting**: `pnpm run lint` (ESLint)
-**Testing**: Playwright smoke tests in `tests/smoke.spec.ts` run via GitHub Actions after deployment
+## Routing and data flow
 
-## Project-Specific Conventions
+- Posts listing/pagination: `src/pages/posts/[slug]/index.astro`
+  - `getStaticPaths()` returns both post slugs (using `baseSlug ?? post.slug`) and numeric page paths.
+  - At runtime: if a `post` prop exists render `PostDetails`, else render `Posts` with pagination from `getPagination`.
+- Tags: `src/pages/tags/[tag]/index.astro` builds paths from `getUniqueTags()` (slugified).
+- i18n home: `src/pages/zh-hant/index.astro` shows featured/recent using the same utils and respects `baseSlug` for links.
 
-**Blog post schema** (required frontmatter):
+## OG image generation
 
-```yaml
----
-title: string
-description: string
-pubDatetime: Date
-author: string (defaults to SITE.author)
-tags: string[] (defaults to ["others"])
-featured: boolean (optional - shows in Featured section)
-draft: boolean (optional - excludes from build)
-ogImage: image | string (optional - must be 1200x630+)
----
-```
+- Site OG: `src/pages/og.png.ts` → `generateOgImageForSite()`.
+- Per-post OG: `src/pages/posts/[slug]/index.png.ts` pre-renders PNG for posts without `ogImage` using `generateOgImages.tsx` (Satori + Resvg) and templates in `src/utils/og-templates/`.
+- Fonts: prefers vendored OTFs under `src/assets/fonts/`; otherwise fetches. Vite config excludes `@resvg/resvg-js` from optimizeDeps.
 
-**Routing patterns**:
+## Agents mini-app
 
-- `/posts/[slug]/` - Individual posts via `getStaticPaths()` in `src/pages/posts/[slug]/index.astro`
-- `/posts/[page]/` - Paginated post lists
-- `/tags/[tag]/[page]/` - Tag-filtered posts with pagination
-- Dynamic OG images generated at `/posts/[slug].png` via `src/utils/generateOgImages.tsx`
+- React UI at `/agents/` (`src/components/agents/*`, page in `src/pages/agents/index.astro`). Client-rendered (`client:only="react"`).
+- Providers/agents in `src/data/agents.ts`; UX helpers in `src/utils/agents.ts` (persist provider in localStorage, deep-link or copy-to-clipboard, URL length guard).
+- Keep initial state deterministic on first render to avoid hydration mismatch (see `AgentsApp.tsx` useEffect note).
 
-**Configuration**: Central config in `src/config.ts` exports `SITE`, `LOCALE`, `SOCIALS` used throughout
+## Build, test, CI
 
-## Integration Points
+- Commands: dev `pnpm dev`, build `pnpm build`, preview `pnpm preview`, lint `pnpm lint`, format `pnpm format`, commits `pnpm cz`.
+- Markdown search: FuseJS in `src/components/Search.tsx` (links use `(data as any).baseSlug ?? slug`).
+- CI: `.github/workflows/main.yaml` builds with Node 22 + pnpm 9 and deploys to `gh-pages`. Playwright runs separately (`tests/*.spec.ts`); `tests/smoke.spec.ts` hits production; others assume local baseURL.
 
-**Astro Collections**: `getCollection("blog")` is the primary data fetching pattern
-**Search**: Client-side fuzzy search via FuseJS in `src/components/Search.tsx`
-**RSS/Sitemap**: Auto-generated via `@astrojs/rss` and `@astrojs/sitemap`
-**Deployment**: GitHub Actions deploys to `gh-pages` branch, triggers Playwright smoke tests
-**Markdown**: Enhanced with `remark-toc` and `remark-collapse` plugins
+## Config touchpoints
 
-## Key Files/Patterns
+- `astro.config.ts`: Tailwind (no base styles), React, Sitemap, Shiki theme, remark plugins (TOC + collapsible), React dedupe, exclude `@resvg/resvg-js` from optimizeDeps.
+- `src/config.ts`: `SITE` (title, website, postPerPage, scheduledPostMargin), `LOCALE`, `SOCIALS`.
 
-- `src/content/config.ts` - Blog schema validation
-- `src/utils/getSortedPosts.ts` - Primary post filtering/sorting logic
-- `src/pages/posts/[slug]/index.astro` - Dynamic route handling for posts and pagination
-- `src/layouts/PostDetails.astro` - Individual post layout with OG image generation
-- `src/components/Card.tsx` - Reusable post preview component
-- `.github/workflows/` - CI/CD with automated testing
+Examples to follow
+
+- Use `baseSlug` when linking across locales (e.g., Card hrefs, RSS items) and add `alternates` for canonical/locale URLs.
+- To add a new post: put `.md` under `src/content/blog/` with the schema above; omit `ogImage` to auto-generate per-post PNG.
