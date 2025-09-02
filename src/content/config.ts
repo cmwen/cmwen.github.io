@@ -25,6 +25,9 @@ const blog = defineCollection({
         .optional(),
       description: z.string(),
       canonicalURL: z.string().optional(),
+      // Optional: key ideas to power the LLM chat link component
+      // When provided (non-empty array), a chat launcher appears on the post page
+      llmKeyIdeas: z.array(z.string()).optional(),
     }),
 });
 

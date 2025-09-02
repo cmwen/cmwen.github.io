@@ -9,6 +9,7 @@ import { slugifyStr } from "@utils/slugify";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
+import ChatLink from "@components/ChatLink";
 
 export interface Props {
   post: CollectionEntry<"blog">;
@@ -27,6 +28,7 @@ const {
   pubDatetime,
   modDatetime,
   tags,
+  llmKeyIdeas,
 } = post.data;
 
 const { Content } = await post.render();
@@ -95,6 +97,17 @@ const layoutProps = {
       size="lg"
       className="my-2"
     />
+    {
+      Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (
+        <ChatLink
+          client:only="react"
+          title={title}
+          url={Astro.url.href}
+          keyIdeas={llmKeyIdeas}
+          lang={lang}
+        />
+      )
+    }
     <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
       <Content />
     </article>

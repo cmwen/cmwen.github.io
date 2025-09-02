@@ -6,6 +6,11 @@ title: "Copilot Pro 心法：月底重置與小型模型比拚（Bakeoff）"
 author: Min Wen
 description: "善用 Copilot Pro 每月 premium 重置，在月末進行多模型小實驗；固定規格做 bakeoff，觀察體驗與可重複性。"
 pubDatetime: 2025-08-31T00:00:00.000Z
+llmKeyIdeas:
+  - "每月 premium 重置"
+  - "模型比拚"
+  - "實驗"
+  - "生產力"
 tags:
   - Copilot
   - GitHub

@@ -5,6 +5,11 @@ description: "Practical tips for getting the most from GitHub Copilot Pro's mont
 pubDatetime: 2025-08-31T00:00:00.000Z
 slug: copilot-pro-monthly-reset-and-model-bakeoff
 featured: false
+llmKeyIdeas:
+  - "Monthly premium reset"
+  - "Model bakeoff"
+  - "Experimentation"
+  - "Productivity"
 tags:
   - Copilot
   - GitHub
