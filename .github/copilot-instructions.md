@@ -12,6 +12,7 @@
 - Frontmatter (see `src/content/config.ts`):
   - lang: "en" | "zh-hant"; translatedFrom?: string; baseSlug?: string (shared canonical slug across locales)
   - author (defaults to `SITE.author`), title, description, tags (default ["others"]), featured?, draft?
+  - llmKeyIdeas?: array of short phrases (3–8 items). Purpose: short, discoverable topics that downstream LLMs or chat UIs can use as suggested follow-up questions, search keywords, or conversation starters.
   - pubDatetime: Date; modDatetime?: Date (sorting prefers modDatetime)
   - ogImage?: image|string (>=1200x630), canonicalURL?: string
 - Scheduled publishing: `postFilter` hides drafts and future posts until `SITE.scheduledPostMargin` is passed.

@@ -17,6 +17,8 @@ mode: "agent"
   - `author` is Min Wen
   - `slug` should be a URL-friendly version of the title, e.g., `reflections-on-upgrading-to-github-copilot-pro`
   - `featured` is boolean.
+  - `llmKeyIdeas`: include an array of 3 to 8 short, comma-separated phrases (3–5 words each max) in the frontmatter to surface topics for follow-up LLM chat (example: `["monthly premium reset", "model bakeoff", "IndexedDB offline storage"]`).
+    Purpose: these are short, discoverable topics that downstream LLMs or chat UIs can use as suggested follow-up questions, search keywords, or conversation starters.
 - The blog post should be informative and engaging.
 - The blog post should be original and not plagiarized.
 - The blog post should be written in a professional tone.
