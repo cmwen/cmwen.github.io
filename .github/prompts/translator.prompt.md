@@ -15,6 +15,7 @@ Translate an English blog post (Markdown) to Traditional Chinese and save the tr
 - Set frontmatter `lang` to `"zh-hant"`.
 - Add `translatedFrom` (string) set to the original language code of the source post (for English use `"en"`). Add `baseSlug` with the original post's canonical slug so cross-locale linking works.
 - Preserve `author`, `pubDatetime`, `tags`, `ogImage`, `canonicalURL`, and `draft` unless you are explicitly instructed to change them. Do not move or rename any images or asset paths referenced in the post.
+- Don't preserve `slug`.
 - Keep `pubDatetime` unchanged. Do not set `pubDatetime` to now. You may add or update `modDatetime` if necessary but prefer leaving it unchanged unless asked.
 
 Translation rules
@@ -37,6 +38,7 @@ Original frontmatter (English):
 lang: "en"
 title: "Why X is useful"
 description: "A short summary"
+slug: "why-x-is-useful"
 author: "Alice"
 pubDatetime: 2024-06-01
 tags: ["tools", "howto"]
