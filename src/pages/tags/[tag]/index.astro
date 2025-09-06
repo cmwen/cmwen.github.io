@@ -7,7 +7,7 @@ import getUniqueTags from "@utils/getUniqueTags";
 import { defaultLocale } from "@i18n/config";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const posts = await getCollection("blog", ({ data }) => data.lang === "en");
 
   const tags = getUniqueTags(posts);
 
