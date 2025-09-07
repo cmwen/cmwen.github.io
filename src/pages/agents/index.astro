@@ -7,7 +7,9 @@ import AgentsApp from "@components/agents/AgentsApp";
 import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
 
-const lang: Locale = defaultLocale;
+const lang: Locale = Astro.url.pathname.startsWith("/zh-hant/")
+  ? "zh-hant"
+  : defaultLocale;
 const title = lang === "zh-hant" ? "AI 代理與提示" : "AI Agents & Prompts";
 const description =
   lang === "zh-hant"

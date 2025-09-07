@@ -7,7 +7,9 @@ import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
 import { messages } from "@i18n/dict";
 
-const lang: Locale = defaultLocale;
+const lang: Locale = Astro.url.pathname.startsWith("/zh-hant/")
+  ? "zh-hant"
+  : defaultLocale;
 const t = messages[lang];
 const title = t.nav.profolio;
 const description =
@@ -28,7 +30,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   <Header activeNav="profolio" {lang} />
   <Main pageTitle={title} pageDesc={description}>
     <section class="space-y-5">
-      <h2 class="mb-2 text-2xl font-semibold tracking-wide">PWA</h2>
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.profolio.sections.pwa}
+      </h2>
       <div class="space-y-4">
         <div class="rounded-md border border-skin-line bg-skin-card p-4">
           <h3 class="text-lg font-semibold">
@@ -38,23 +42,22 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               target="_blank"
               rel="noopener noreferrer"
             >
-              Japanese Learning (Kanji-Go)
+              {t.profolio.projects.japaneseLearningSuffix}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A Progressive Web App for learning basic Japanese (Hiragana,
-            Katakana, and essential vocabulary) with offline-first experience
-            and flashcards.
+            {t.profolio.projects.japaneseDescription}
           </p>
           <div class="mt-2 text-sm">
-            <span class="font-medium">Tech stack:</span>
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
               <li>Svelte + Vite</li>
-              <li>PWA/offline-first; GitHub Pages deployment</li>
+              <li>{t.profolio.tech.pwaPwa}</li>
             </ul>
           </div>
           <p class="mt-2 text-sm">
-            Source: <a
+            {t.toolbox.common.source}
+            <a
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/learn-japanese"
               target="_blank"
@@ -71,15 +74,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               target="_blank"
               rel="noopener noreferrer"
             >
-              Podcast Lister App (WIP)
+              {t.profolio.projects.podcastWipSuffix}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A lightweight installable PWA for subscribing to podcasts via RSS,
-            managing playlists, and listening offline.
+            {t.profolio.projects.podcastDescription}
           </p>
           <div class="mt-2 text-sm">
-            <span class="font-medium">Tech stack:</span>
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
               <li>Preact + TypeScript, Vite</li>
               <li>
@@ -90,7 +92,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
             </ul>
           </div>
           <p class="mt-2 text-sm">
-            Source: <a
+            {t.toolbox.common.source}
+            <a
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/podcast-pwa"
               target="_blank"
@@ -103,7 +106,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
     <section class="mt-8 space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">
-        CLI Applications
+        {t.profolio.sections.cli}
       </h2>
       <div class="space-y-4">
         <div class="rounded-md border border-skin-line bg-skin-card p-4">
@@ -114,26 +117,24 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               target="_blank"
               rel="noopener noreferrer"
             >
-              @cmwen/todo-app — Multi-mode TODO Application
+              {t.profolio.projects.todoMultimode}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A comprehensive TODO app CLI with three modes: traditional CLI
-            interface, modern web UI with real-time updates, and MCP server for
-            AI agent integration. Single executable orchestrating multiple
-            interfaces.
+            {t.profolio.projects.todoDescription}
           </p>
           <div class="mt-2 text-sm">
-            <span class="font-medium">Tech stack:</span>
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
-              <li>TypeScript monorepo with shared types</li>
-              <li>SQLite database, WebSocket real-time updates</li>
-              <li>Next.js frontend, MCP stdio server</li>
-              <li>CLI orchestrator with global npm installation</li>
+              <li>{t.profolio.tech.typescriptMonorepo}</li>
+              <li>{t.profolio.tech.sqliteWebsocket}</li>
+              <li>{t.profolio.tech.nextjsMcp}</li>
+              <li>{t.profolio.tech.cliOrchestrator}</li>
             </ul>
           </div>
           <p class="mt-2 text-sm">
-            Source: <a
+            {t.toolbox.common.source}
+            <a
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/todo-app"
               target="_blank"
@@ -145,7 +146,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     </section>
 
     <section class="mt-8 space-y-5">
-      <h2 class="mb-2 text-2xl font-semibold tracking-wide">MCP Servers</h2>
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.profolio.sections.mcp}
+      </h2>
       <div class="space-y-4">
         <div class="rounded-md border border-skin-line bg-skin-card p-4">
           <h3 class="text-lg font-semibold">
@@ -155,24 +158,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               target="_blank"
               rel="noopener noreferrer"
             >
-              @cmwen/min-kb-mcp — Minimalist Knowledge Base MCP
+              {t.profolio.projects.minKbSuffix}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A minimalist, file‑based knowledge base server for AI agents via the
-            Model Context Protocol. Uses Markdown files and a WASM SQLite index
-            with optional FTS5.
+            {t.profolio.projects.minKbDescription}
           </p>
           <div class="mt-2 text-sm">
-            <span class="font-medium">Tech stack:</span>
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
-              <li>TypeScript, Node.js</li>
-              <li>sql.js (WASM SQLite), optional FTS5</li>
-              <li>MCP server (stdio/HTTP dev), Zod schemas</li>
+              <li>{t.profolio.tech.typescriptNodejs}</li>
+              <li>{t.profolio.tech.sqliteWasm}</li>
+              <li>{t.profolio.tech.mcpServer}</li>
             </ul>
           </div>
           <p class="mt-2 text-sm">
-            Source: <a
+            {t.toolbox.common.source}
+            <a
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/min-kb-mcp"
               target="_blank"
@@ -189,24 +191,23 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               target="_blank"
               rel="noopener noreferrer"
             >
-              @cmwen/min-n8n-mcp — n8n MCP Server
+              {t.profolio.projects.minN8nSuffix}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A TypeScript-based MCP server that exposes n8n workflow management
-            as tools for AI agents. Provides STDIO and HTTP modes with robust
-            error handling and typed schemas.
+            {t.profolio.projects.minN8nDescription}
           </p>
           <div class="mt-2 text-sm">
-            <span class="font-medium">Tech stack:</span>
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
               <li>TypeScript, Node.js, Zod validation</li>
-              <li>HTTP client infra, retries/timeouts, caching</li>
-              <li>MCP server (stdio/HTTP), MCP Inspector compatible</li>
+              <li>{t.profolio.tech.httpClientInfra}</li>
+              <li>{t.profolio.tech.mcpServerMode}</li>
             </ul>
           </div>
           <p class="mt-2 text-sm">
-            Source: <a
+            {t.toolbox.common.source}
+            <a
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/min-n8n-mcp"
               target="_blank"
