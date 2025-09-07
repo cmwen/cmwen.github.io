@@ -102,6 +102,49 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     </section>
 
     <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        CLI Applications
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/todo-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @cmwen/todo-app — Multi-mode TODO Application
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A comprehensive TODO app CLI with three modes: traditional CLI
+            interface, modern web UI with real-time updates, and MCP server for
+            AI agent integration. Single executable orchestrating multiple
+            interfaces.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">Tech stack:</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript monorepo with shared types</li>
+              <li>SQLite database, WebSocket real-time updates</li>
+              <li>Next.js frontend, MCP stdio server</li>
+              <li>CLI orchestrator with global npm installation</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            Source: <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/todo-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/todo-app</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">MCP Servers</h2>
       <div class="space-y-4">
         <div class="rounded-md border border-skin-line bg-skin-card p-4">
