@@ -25,7 +25,7 @@ featured: true
 
 ## 統一標準的興起：AGENTS.md
 
-為了解決這種碎片化的問題，一個新的開放標準應運而生：`AGENTS.md`。由 Google、OpenAI 和 Sourcegraph 等行業領導者合作發起，`AGENTS.md` 旨在為編碼助理提供一個單一、統一的指令檔案。
+為了解決這種碎片化的問題，一個新的開放標準應運而生：[`AGENTS.md`](https://agents.md/)。由 Google、OpenAI 和 Sourcegraph 等行業領導者合作發起，`AGENTS.md` 旨在為編碼助理提供一個單一、統一的指令檔案。
 
 您可以將它視為 AI 的 `README.md`。`README.md` 是為人類設計的，提供專案概述和設定說明；而 `AGENTS.md` 則是為助理設計的，提供關於以下方面的詳細指導：
 
@@ -33,6 +33,29 @@ featured: true
 - **建置與測試程序：** 如何建置軟體和運行測試的說明。
 - **程式碼風格與慣例：** 確保生成程式碼符合專案標準的指南。
 - **安全考量：** 重要的安全協議和實踐。
+
+## 哪些工具支援 AGENTS.md？
+
+`AGENTS.md` 標準獲得了越來越多的 AI 編碼助理和工具的支援，其中包括：
+
+- Aider
+- Amp
+- Cursor
+- Devin
+- Factory
+- Gemini CLI
+- GitHub Copilot
+- Jules
+- Kilo Code
+- Ona
+- OpenAI Codex
+- opencode
+- Phoenix
+- RooCode
+- Semgrep
+- VS Code
+- Warp
+- Zed
 
 ## 為何採用 AGENTS.md？
 
@@ -47,4 +70,4 @@ featured: true
 
 開始使用 `AGENTS.md` 非常簡單。只需在您的專案根目錄中建立一個 `AGENTS.md` 檔案，並填入必要的指令。如果您已經有現成的指令檔案，可以將它們整合到新的 `AGENTS.md` 檔案中，並刪除舊的檔案。
 
-該標準已獲得大多數主流編碼助理的支援，所以您今天就可以開始使用它來簡化您的 AI 輔助開發工作流程。透過採用 `AGENTS.md`，您可以花更少的時間管理設定檔，將更多時間投入到打造優秀的軟體上。
+透過採用 `AGENTS.md`，您可以花更少的時間管理設定檔，將更多時間投入到打造優秀的軟體上。

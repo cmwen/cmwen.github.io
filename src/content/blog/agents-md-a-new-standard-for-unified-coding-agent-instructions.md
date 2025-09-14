@@ -24,7 +24,7 @@ Files like `.github/copilot-instructions.md`, `claude.md`, `gemini.md`, and `.cu
 
 ## The Rise of a Unified Standard: AGENTS.md
 
-To address this fragmentation, a new open standard has emerged: `AGENTS.md`. Spearheaded by a collaboration of industry leaders including Google, OpenAI, and Sourcegraph, `AGENTS.md` aims to provide a single, unified file for instructing coding agents.
+To address this fragmentation, a new open standard has emerged: [`AGENTS.md`](https://agents.md/). Spearheaded by a collaboration of industry leaders including Google, OpenAI, and Sourcegraph, `AGENTS.md` aims to provide a single, unified file for instructing coding agents.
 
 Think of it as a `README.md` for AI. While `README.md` is for humans, providing project overviews and setup instructions, `AGENTS.md` is for agents, offering detailed guidance on:
 
@@ -32,6 +32,29 @@ Think of it as a `README.md` for AI. While `README.md` is for humans, providing 
 - **Build and Test Procedures:** Instructions on how to build the software and run tests.
 - **Code Style and Conventions:** Guidelines to ensure generated code aligns with the project's standards.
 - **Security Considerations:** Important security protocols and practices to follow.
+
+## Who Supports AGENTS.md?
+
+The `AGENTS.md` standard is supported by a growing ecosystem of AI coding agents and tools, including:
+
+- Aider
+- Amp
+- Cursor
+- Devin
+- Factory
+- Gemini CLI
+- GitHub Copilot
+- Jules
+- Kilo Code
+- Ona
+- OpenAI Codex
+- opencode
+- Phoenix
+- RooCode
+- Semgrep
+- VS Code
+- Warp
+- Zed
 
 ## Why Adopt AGENTS.md?
 
@@ -46,4 +69,4 @@ Adopting `AGENTS.md` offers several key benefits:
 
 Getting started with `AGENTS.md` is straightforward. Simply create an `AGENTS.md` file in the root of your project and populate it with the necessary instructions. If you already have existing instruction files, you can consolidate them into your new `AGENTS.md` file and remove the old ones.
 
-The standard is supported by most mainstream coding assistants, so you can start using it today to streamline your AI-assisted development workflow. By adopting `AGENTS.md`, you can spend less time managing configuration files and more time building great software.
+By adopting `AGENTS.md`, you can spend less time managing configuration files and more time building great software.
