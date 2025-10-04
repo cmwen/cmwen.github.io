@@ -6,7 +6,6 @@ applyTo: "content/blog/**/*.md"
 
 - Use front matter to define the metadata of the blog post.
 - Use the following keys in the front matter:
-
   - `title`: The title of the blog post.
   - `author`: The author of the blog post.
   - `description`: A short description of the blog post.

@@ -1,113 +1,320 @@
-# AGENTS.MD: Instructions for AI Coding Agents
+# AGENTS.md: Instructions for AI Coding Agents
 
-This document provides a comprehensive guide for AI agents working on the AstroPaper project. It combines information from the original `AGENTS.MD` and `.github/copilot-instructions.md`.
+This document provides comprehensive guidance for AI agents working on the cmwen.github.io AstroPaper blog project. It combines technical architecture, development practices, and project-specific conventions.
 
 ## 1. Project Overview
 
-AstroPaper is a content-driven blog built on the AstroPaper theme. It uses Astro, React, TypeScript, and Tailwind CSS. The site supports two locales, `en` and `zh-hant`, with content stored in Markdown files.
+**cmwen.github.io** is a content-driven blog built on the AstroPaper theme with modern web technologies:
 
-- **Core Idea**: A fast, modern blog with i18n support.
-- **Key Features**: Markdown-based content, automatic OG image generation, a mini-app for "AI Agents", and a clean, minimalist design.
-
-## 2. Key Technologies
-
-- **Framework**: Astro
-- **UI Components**: React (for interactive parts)
+- **Framework**: Astro with React components
 - **Styling**: Tailwind CSS
 - **Language**: TypeScript
+- **Content**: Markdown with frontmatter validation
+- **Deployment**: GitHub Pages via GitHub Actions
 - **Package Manager**: pnpm
-- **Testing**: Playwright
-- **Search**: Fuse.js
-- **Deployment**: GitHub Pages
 
-## 3. Project Structure
+### Core Features
+- ✅ **Bilingual support**: English (`en`) and Traditional Chinese (`zh-hant`)
+- ✅ **SEO optimization**: Auto-generated OG images, sitemap, RSS feeds
+- ✅ **Content management**: Astro Collections with schema validation
+- ✅ **Interactive components**: React-based agents directory, search functionality
+- ✅ **Podcast generation**: Python-based TTS system with multi-language support
+- ✅ **Developer experience**: Hot reload, TypeScript, ESLint, Prettier, conventional commits
 
-The project follows a standard Astro project structure. Here are some of the key directories:
+## 2. Architecture Overview
 
--   `src/`: Contains most of the source code.
--   `src/pages/`: Contains the pages of the website. Routes are generated automatically from files here.
--   `src/layouts/`: Contains layout components for pages.
--   `src/components/`: Contains reusable components (Astro, React, TSX).
--   `src/content/blog/`: Stores blog posts as Markdown files, validated by Astro Collections.
--   `src/i18n/`: Contains internationalization configuration (`config.ts`, `dict.ts`).
--   `src/utils/`: Contains utility functions for core logic (post filtering, pagination, tags).
--   `public/`: Contains static assets like images and fonts.
--   `tests/`: Contains Playwright tests.
--   `tsconfig.json`: Defines path aliases like `@config`, `@components/*`, etc.
+### Frontend Stack
+```
+Astro (SSG) 
+├── React (Interactive components)
+├── TypeScript (Type safety)
+├── Tailwind CSS (Styling)
+└── Vite (Build tool)
+```
 
-## 4. Content and Schema
+### Content System
+```
+src/content/blog/
+├── *.md (English posts)
+└── zh-hant/
+    └── *.zh-hant.md (Chinese posts)
+```
 
-### Adding a New Blog Post
+### Routing Strategy
+- **Static generation**: Routes auto-generated from `src/pages/`
+- **Dynamic pages**: `[slug]` patterns with `getStaticPaths()`
+- **Internationalization**: `/zh-hant/` prefix for Chinese content
+- **SEO**: Canonical URLs and alternates for language switching
 
-1.  Create a new Markdown file in `src/content/blog/`. The filename becomes the slug (e.g., `my-new-post.md`).
-2.  Add the frontmatter at the top of the file, following the schema defined in `src/content/config.ts`.
-3.  To auto-generate the Open Graph (OG) image, omit the `ogImage` property in the frontmatter.
+## 3. Development Environment
 
-### Frontmatter Schema
+### Prerequisites
+- **Node.js**: v18+ (specified in `.nvmrc`)
+- **Package Manager**: pnpm (lockfile: `pnpm-lock.yaml`)
+- **Python**: 3.8+ for podcast generation (managed via `uv`)
+- **Optional**: Docker via `.devcontainer/` for consistent environment
 
--   `lang`: `"en"` or `"zh-hant"`.
--   `baseSlug`: A shared canonical slug to link translated posts.
--   `translatedFrom`: The `baseSlug` of the original post if it's a translation.
--   `title`, `description`, `author`.
--   `pubDatetime`: The publication date.
--   `modDatetime`: The modification date (used for sorting).
--   `tags`: An array of strings (defaults to `["others"]`).
--   `featured`: A boolean to mark a post as featured.
--   `draft`: A boolean to mark a post as a draft.
--   `llmKeyIdeas`: An array of short phrases (3-8 items) for downstream LLMs (e.g., as suggested questions).
--   `ogImage`: A URL to an OG image (>=1200x630). If omitted, it's auto-generated.
--   `canonicalURL`: A URL for the canonical version of the post.
+### Setup Commands
+```bash
+# Frontend development
+pnpm install          # Install dependencies
+pnpm dev              # Start dev server (http://localhost:4321)
+pnpm build            # Build for production
+pnpm preview          # Preview production build
 
-**Scheduled Publishing**: The `postFilter` utility hides drafts and posts with future dates until `SITE.scheduledPostMargin` is passed.
+# Python podcast system
+uv sync               # Install Python dependencies
+uv run podcast-generate --help  # See podcast CLI options
 
-## 5. Routing and Data Flow
+# Code quality
+pnpm lint             # ESLint
+pnpm format           # Prettier
+pnpm test             # Playwright tests
+pnpm cz               # Conventional commits
+```
 
-- **Post Listing & Pagination**: `src/pages/posts/[slug]/index.astro` uses `getStaticPaths` to generate paths for both individual posts (by `baseSlug` or `slug`) and paginated index pages.
-- **Tags**: `src/pages/tags/[tag]/index.astro` generates paths from `getUniqueTags()`.
-- **i18n**: The `zh-hant` homepage is at `src/pages/zh-hant/index.astro`. Links across locales should use `baseSlug` and the `alternates` property in layouts for canonical/locale URLs.
+## 4. Content Management
 
-## 6. OG Image Generation
+### Blog Post Schema
+All posts must include frontmatter validated by `src/content/config.ts`:
 
--   **Site OG Image**: `src/pages/og.png.ts` generates the main site's OG image.
--   **Per-Post OG Image**: `src/pages/posts/[slug]/index.png.ts` pre-renders a PNG for each post that doesn't have an `ogImage` in its frontmatter. This uses Satori and Resvg, with templates in `src/utils/og-templates/`.
+```yaml
+---
+title: "Your Post Title"
+description: "SEO description"
+lang: "en" | "zh-hant"
+author: "Min Wen"  # Defaults to SITE.author
+pubDatetime: 2025-01-01T00:00:00Z
+modDatetime: 2025-01-02T00:00:00Z  # Optional, used for sorting
+tags: ["ai", "coding"]  # Defaults to ["others"]
+featured: false
+draft: false
+ogImage: "/path/to/image.jpg"  # Optional, auto-generated if omitted
+canonicalURL: "https://example.com"  # Optional
+baseSlug: "shared-slug"  # For linking translations
+translatedFrom: "original-base-slug"  # If this is a translation
+llmKeyIdeas: ["key-concept-1", "key-concept-2"]  # For AI/chat UIs
+---
 
-## 7. Agents Mini-App
+Your markdown content here...
+```
 
--   A React-based UI is available at `/agents/`.
--   **Code**: `src/pages/agents/index.astro` (the page) and `src/components/agents/*` (the React components). It's a client-side only app (`client:only="react"`).
--   **Data**: Providers and agents are defined in `src/data/agents.ts`.
--   **Logic**: `src/utils/agents.ts` contains helpers for persisting the selected provider in `localStorage`, building deep links, and handling long prompts.
+### Multilingual Content
+- **English posts**: `src/content/blog/post-name.md`
+- **Chinese posts**: `src/content/blog/zh-hant/post-name.zh-hant.md`
+- **Linking translations**: Use `baseSlug` and `translatedFrom` fields
+- **URL structure**: English at `/posts/slug/`, Chinese at `/zh-hant/posts/slug/`
 
-## 8. Development Environment
+### Content Processing
+- **Scheduled publishing**: `SITE.scheduledPostMargin` hides future posts
+- **Draft filtering**: `draft: true` posts excluded from production
+- **Sorting**: By `modDatetime` then `pubDatetime` (newest first)
+- **SEO**: Auto-generated OG images via Satori + Resvg if `ogImage` omitted
 
-### Devcontainer (Recommended)
+## 5. Component Architecture
 
-This project includes a devcontainer setup. If you have Docker and the VS Code "Remote - Containers" extension, you'll be prompted to reopen the project in a container, which has all dependencies pre-installed.
+### File Organization
+```
+src/
+├── components/
+│   ├── *.astro          # Astro components (SSG)
+│   ├── *.tsx            # React components (interactive)
+│   └── agents/          # Agents mini-app components
+├── layouts/             # Page layouts
+├── pages/               # Route definitions
+├── utils/               # Utility functions
+└── i18n/               # Internationalization
+```
 
-### Manual Setup
+### Key Components
+- **`Card.tsx`**: Blog post preview cards with i18n support
+- **`Search.tsx`**: Fuse.js-powered search with baseSlug awareness
+- **`agents/AgentsApp.tsx`**: Client-side React app for AI agents directory
+- **`Header.astro`**: Navigation with language switching
+- **OG templates**: `src/utils/og-templates/` for auto-generated images
 
-1.  Install Node.js v18.
-2.  Install pnpm globally: `npm install -g pnpm`
-3.  Install dependencies: `pnpm install`
+### Component Guidelines
+- **Astro components**: For static content, layouts, SEO-critical elements
+- **React components**: For interactivity, state management, real-time features
+- **Hydration**: Use `client:load` sparingly, prefer `client:idle` or `client:visible`
+- **TypeScript**: All components must be typed, use `src/types.ts` for shared types
 
-## 9. Build, Test, and CI
+## 6. Podcast Generation System
 
-### Commands
+### Architecture
+Pure Python system for converting blog posts to podcasts:
 
--   `pnpm dev`: Start the development server at `http://localhost:4321`.
--   `pnpm build`: Build the project for production (output to `dist/`).
--   `pnpm preview`: Preview the production build locally.
--   `pnpm test` or `pnpm playwright test`: Run Playwright tests.
--   `pnpm lint`: Run the linter (ESLint).
--   `pnpm format`: Format the code (Prettier).
--   `pnpm cz`: Use Commitizen for conventional commits.
+```
+podcast_generator/
+├── main.py           # CLI interface (Click + Rich)
+├── blog_parser.py    # Markdown → structured data
+├── tts_engine.py     # Kokoro TTS integration
+├── feed_generator.py # RSS feed generation
+└── __init__.py       # Package exports
+```
 
-### CI/CD
+### Multi-Language TTS
+- **English**: Kokoro v1.0 model, `af_sarah` voice, direct text input
+- **Chinese**: Kokoro v1.1-zh model, `zf_001` voice, misaki phonemization
+- **Auto-switching**: TTS engine reinitializes for language changes
+- **Voice options**: 90+ Chinese voices available (`zf_001`-`zf_099`, `zm_009`-`zm_100`)
 
--   The `.github/workflows/main.yaml` workflow builds the project with Node 22 and pnpm 9, and deploys it to GitHub Pages.
--   Playwright tests run in a separate workflow. `smoke.spec.ts` runs against production, while others assume a local `baseURL`.
+### Usage Patterns
+```bash
+# Generate specific posts
+uv run podcast-generate --posts "post-slug"
 
-## 10. Configuration Touchpoints
+# Generate all posts
+uv run podcast-generate --all
 
--   `astro.config.ts`: Main Astro configuration, including integrations (Tailwind, React, Sitemap), Markdown settings (Shiki theme, remark plugins), and Vite options (React dedupe, excluding `@resvg/resvg-js` from `optimizeDeps`).
--   `src/config.ts`: Site-wide constants like `SITE` (title, author, posts per page), `LOCALE`, and `SOCIALS`.
+# Force regeneration
+uv run podcast-generate --posts "slug" --force
+
+# Test Chinese voices
+python test_chinese_voices.py  # If testing script exists
+```
+
+### Output Structure
+```
+public/podcasts/
+├── feed.xml              # Main RSS feed
+├── post-slug.mp3         # English podcasts
+├── post-slug.zh-hant.mp3 # Chinese podcasts
+├── en/
+│   └── feed.xml          # English-specific feed
+└── zh-hant/
+    └── feed.xml          # Chinese-specific feed
+```
+
+## 7. Build and Deployment
+
+### CI/CD Pipeline
+GitHub Actions workflow (`.github/workflows/main.yaml`):
+
+1. **Environment**: Node.js 22, pnpm 9
+2. **Dependencies**: Install and cache
+3. **Build**: `pnpm build` → `dist/`
+4. **Deploy**: Push to `gh-pages` branch
+5. **Testing**: Playwright (separate workflow)
+
+### Build Optimizations
+- **Image optimization**: Astro's built-in image processing
+- **Code splitting**: Automatic via Vite
+- **Static generation**: All routes pre-rendered
+- **Asset optimization**: CSS purging, JS minification
+
+### Performance Targets
+- **Lighthouse scores**: >90 on all metrics
+- **Core Web Vitals**: LCP <2.5s, FID <100ms, CLS <0.1
+- **Bundle size**: Minimal JavaScript for static content
+
+## 8. Development Practices
+
+### Code Quality
+- **TypeScript**: Strict mode enabled, no `any` types
+- **ESLint**: Astro + TypeScript configuration
+- **Prettier**: Consistent formatting
+- **Husky**: Pre-commit hooks for linting
+
+### Git Workflow
+- **Conventional commits**: Use `pnpm cz` for structured messages
+- **Branch strategy**: Direct to `main` for single developer
+- **Deployment**: Automatic on push to `main`
+
+### Testing Strategy
+- **E2E testing**: Playwright (`tests/*.spec.ts`)
+- **Smoke tests**: Production validation (`tests/smoke.spec.ts`)
+- **Component testing**: Manual for now, consider Vitest for unit tests
+
+## 9. Configuration Reference
+
+### Key Config Files
+- **`astro.config.ts`**: Framework configuration, integrations, build settings
+- **`src/config.ts`**: Site constants, metadata, feature flags
+- **`tsconfig.json`**: TypeScript + path aliases (`@components/*`, `@utils/*`)
+- **`pyproject.toml`**: Python dependencies and package configuration
+- **`package.json`**: Node.js dependencies and npm scripts
+
+### Path Aliases
+```typescript
+// Available in all TypeScript files
+import { SITE } from '@config';
+import Card from '@components/Card.tsx';
+import { slugify } from '@utils/slugify';
+import Layout from '@layouts/Layout.astro';
+import { dict } from '@i18n/dict';
+```
+
+### Environment Variables
+- **Development**: `.env.example` shows available options
+- **Production**: Set in GitHub repository settings
+- **Build-time**: Prefix with `PUBLIC_` for client-side access
+
+## 10. Troubleshooting
+
+### Common Issues
+
+1. **Build failures**: Check TypeScript errors, missing imports
+2. **Hydration mismatches**: Ensure deterministic initial state in React components
+3. **Missing translations**: Verify `baseSlug` and file naming conventions
+4. **Podcast generation**: Check Python environment, model downloads in `~/.cache/kokoro-onnx/`
+5. **OG image generation**: Verify fonts in `src/assets/fonts/`
+
+### Debug Commands
+```bash
+# Check for issues
+pnpm build --verbose       # Detailed build output
+pnpm dev --host            # Debug on other devices
+pnpm test --debug          # Playwright debugging
+uv run podcast-generate --dry-run  # Test without generation
+```
+
+### Performance Debugging
+- **Bundle analyzer**: Add `vite-bundle-analyzer` for bundle inspection
+- **Lighthouse CI**: Run locally with `lhci autorun`
+- **Network tab**: Check for oversized assets, failed requests
+
+## 11. AI Agent Guidelines
+
+### When Working on This Project
+
+1. **Content creation**: Follow frontmatter schema, use proper file naming
+2. **Component development**: Prefer Astro for static, React for interactive
+3. **Internationalization**: Always consider both languages, use `baseSlug` for linking
+4. **Performance**: Minimize client-side JavaScript, optimize images
+5. **SEO**: Maintain meta tags, structured data, OG images
+6. **Accessibility**: Use semantic HTML, proper heading hierarchy, alt texts
+
+### Code Generation Best Practices
+- **Type safety**: Generate TypeScript, avoid `any`
+- **Consistency**: Follow existing patterns in codebase
+- **Documentation**: Include JSDoc for complex functions
+- **Testing**: Consider test implications for new features
+- **Dependencies**: Minimize new dependencies, check bundle impact
+
+### Podcast System Best Practices
+- **Voice selection**: Test Chinese voices for user preferences
+- **Content preparation**: Clean markdown properly for TTS
+- **Error handling**: Graceful failures for TTS generation
+- **Model management**: Respect cache directory structure
+- **RSS compliance**: Ensure podcast feeds validate
+
+## 12. Future Considerations
+
+### Potential Enhancements
+- **Search improvements**: Consider Algolia or local search index
+- **Analytics**: Privacy-friendly analytics integration
+- **Comments**: GitHub Discussions or Giscus integration
+- **Newsletter**: Email subscription system
+- **PWA**: Service worker for offline reading
+- **API**: Headless CMS integration for dynamic content
+
+### Scalability
+- **CDN**: CloudFlare or similar for global distribution
+- **Images**: External image optimization service
+- **Search**: Dedicated search service for large content volumes
+- **Podcasts**: Separate storage for audio files (S3, etc.)
+
+---
+
+This document serves as the authoritative guide for AI agents working on this project. Keep it updated as the project evolves, and refer to it when making architectural decisions or onboarding new contributors.

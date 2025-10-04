@@ -23,19 +23,15 @@ LangChain provides a powerful framework for integrating tools with Language Lear
 ### Step-by-Step Workflow
 
 1. **User Input**:
-
    - The user provides a query or instruction (e.g., "What is the product of 5 and 10?").
 
 2. **Tool Collection**:
-
    - The application collects all available tools and their descriptions, including schemas for input parameters.
 
 3. **Sending to LLM**:
-
    - The user input and tool descriptions are sent to the LLM, allowing it to decide whether a tool is necessary for processing the request.
 
 4. **LLM Decision**:
-
    - The LLM determines whether a tool is needed based on the query.
    - If a tool is required:
      - It returns a structured response specifying the tool name and parameters.
@@ -43,11 +39,9 @@ LangChain provides a powerful framework for integrating tools with Language Lear
      - The LLM directly provides a response to the user.
 
 5. **Tool Execution**:
-
    - If a tool is called, the application executes the tool with the specified parameters and retrieves the result.
 
 6. **Feedback to LLM**:
-
    - The application sends the tool's output back to the LLM for further reasoning or finalizing the response.
 
 7. **Final Response**:

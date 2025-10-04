@@ -1,0 +1,47 @@
+[project]
+name = "blog-podcast-generator"
+version = "0.1.0"
+description = "Generate podcasts from blog posts using Kokoro TTS"
+authors = [
+    {name = "cmwen", email = "cmwen@example.com"}
+]
+readme = "PODCAST_PYTHON.md"
+license = {text = "MIT"}
+requires-python = ">=3.8"
+dependencies = [
+    "kokoro-onnx",
+    "click",
+    "rich",
+    "onnxruntime",
+    "soundfile",
+    "numpy",
+    "pyyaml",
+    "feedgen",
+    "misaki[zh]>=0.9.0",
+    "python-frontmatter",
+]
+
+[project.scripts]
+podcast-generate = "podcast_generator.main:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["podcast_generator"]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.black]
+line-length = 100
+target-version = ['py310']

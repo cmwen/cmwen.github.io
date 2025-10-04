@@ -38,6 +38,17 @@
 - Providers/agents in `src/data/agents.ts`; UX helpers in `src/utils/agents.ts` (persist provider in localStorage, deep-link or copy-to-clipboard, URL length guard).
 - Keep initial state deterministic on first render to avoid hydration mismatch (see `AgentsApp.tsx` useEffect note).
 
+## Podcast generation system
+
+- Pure Python system using Kokoro TTS for multi-language audio generation (`podcast_generator/`).
+- Multi-language support: English (Kokoro v1.0), Chinese (Kokoro v1.1-zh) with automatic model switching.
+- Blog post conversion: Markdown → cleaned text → phonemized speech → MP3 with FFmpeg.
+- Package management: `uv` for Python dependencies (`pyproject.toml`), automatic model download to `~/.cache/kokoro-onnx/`.
+- Chinese TTS: Uses misaki[zh] for G2P phonemization, 90+ voice options (`zf_001`-`zf_099` female, `zm_009`-`zm_100` male).
+- RSS feed generation: Language-specific feeds for podcast apps (`public/podcasts/{lang}/feed.xml`).
+- Commands: `uv run podcast-generate --posts "slug" --force` or `pnpm podcast:generate` (wrapper).
+- Output: MP3 files in `public/podcasts/`, automatic chunking for long content, timezone-aware publication dates.
+
 ## Build, test, CI
 
 - Commands: dev `pnpm dev`, build `pnpm build`, preview `pnpm preview`, lint `pnpm lint`, format `pnpm format`, commits `pnpm cz`.

@@ -24,12 +24,10 @@ This workflow has two complementary approaches:
 High-level steps
 
 1. Produce a clean diff that represents the pattern you want to capture
-
    - Make commits that isolate the pattern. Use a focused branch and write small commits with clear messages.
    - Prefer unified diffs from git: git format-patch or git diff --binary between two commits or tags. The diff should contain enough context (surrounding lines) so the LLM can infer structural intent.
 
 2. Ask the LLM to analyze the diff and extract the pattern
-
    - Provide the diff as the evidence artifact. If the diff is large, chunk it and label each chunk (e.g., "Change group A: API rename", "Change group B: helper extraction").
    - Request a concise summary of the transformation: what was added, removed, renamed, or restructured, and why (if not obvious from commit messages).
    - Ask for a 3–5 bullet "contract" describing inputs (file types, AST nodes, typical code shapes), outputs, and error modes.
