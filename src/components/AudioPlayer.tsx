@@ -8,12 +8,13 @@ type AudioPlayerProps = {
 const PLAYBACK_SPEED_KEY = "audio-playback-speed";
 
 export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
-  const audioRef = useRef<HTMLAudioElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [playbackSpeed, setPlaybackSpeed] = useState(1.0);
   const [audioExists, setAudioExists] = useState<boolean | null>(null);
+  const listenersAttached = useRef(false);
 
   // Construct the audio URL based on slug and language
   const audioUrl =
@@ -48,74 +49,103 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
   // Apply playback speed to audio element
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio) {
+    if (audio && audio.readyState > 0) {
       audio.playbackRate = playbackSpeed;
-
-      // Also set on loadedmetadata to ensure it's applied
-      const handleLoadedMetadata = () => {
-        audio.playbackRate = playbackSpeed;
-      };
-      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-
-      return () => {
-        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      };
     }
   }, [playbackSpeed]);
 
-  // Update current time as audio plays
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const updateTime = () => {
-      setCurrentTime(audio.currentTime);
-    };
-    const handleEnded = () => {
-      setIsPlaying(false);
-    };
-    const handleLoadedMetadata = () => {
-      // Update duration when metadata loads
-      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
-        setDuration(audio.duration);
-      }
-    };
-    const handleDurationChange = () => {
-      // Also listen for durationchange event as backup
-      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
-        setDuration(audio.duration);
-      }
-    };
-    const handleCanPlay = () => {
-      // Set duration when audio can play
-      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
-        setDuration(audio.duration);
-      }
-    };
-
-    audio.addEventListener("timeupdate", updateTime);
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
-    audio.addEventListener("durationchange", handleDurationChange);
-    audio.addEventListener("canplay", handleCanPlay);
-    audio.addEventListener("ended", handleEnded);
-
-    // Set initial duration if already loaded
-    if (
-      !isNaN(audio.duration) &&
-      isFinite(audio.duration) &&
-      audio.duration > 0
-    ) {
-      setDuration(audio.duration);
-    }
-
-    return () => {
+  // Set up audio element with callback ref to ensure listeners are attached
+  const setAudioElement = (element: HTMLAudioElement | null) => {
+    // Clean up old listeners if ref is being updated
+    if (audioRef.current && listenersAttached.current) {
+      const audio = audioRef.current;
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
       audio.removeEventListener("durationchange", handleDurationChange);
       audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("ended", handleEnded);
-    };
-  }, [audioUrl]); // Re-run when audioUrl changes to ensure listeners are attached
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+      listenersAttached.current = false;
+    }
+
+    audioRef.current = element;
+
+    // Set up new listeners when element is available
+    if (element && !listenersAttached.current) {
+      element.addEventListener("timeupdate", updateTime);
+      element.addEventListener("loadedmetadata", handleLoadedMetadata);
+      element.addEventListener("durationchange", handleDurationChange);
+      element.addEventListener("canplay", handleCanPlay);
+      element.addEventListener("ended", handleEnded);
+      element.addEventListener("play", handlePlay);
+      element.addEventListener("pause", handlePause);
+      listenersAttached.current = true;
+
+      // Set initial state if audio is already loaded
+      if (element.readyState > 0) {
+        if (
+          !isNaN(element.duration) &&
+          isFinite(element.duration) &&
+          element.duration > 0
+        ) {
+          setDuration(element.duration);
+        }
+        if (element.currentTime > 0) {
+          setCurrentTime(element.currentTime);
+        }
+        element.playbackRate = playbackSpeed;
+      }
+    }
+  };
+
+  // Event handlers defined outside to be reusable
+  const updateTime = () => {
+    if (audioRef.current) {
+      setCurrentTime(audioRef.current.currentTime);
+    }
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+  };
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+  };
+
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+      // Apply playback speed when metadata is loaded
+      audio.playbackRate = playbackSpeed;
+    }
+  };
+
+  const handleDurationChange = () => {
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    }
+  };
+
+  const handleCanPlay = () => {
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    }
+  };
 
   const togglePlayPause = () => {
     if (!audioRef.current) return;
@@ -173,7 +203,7 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
               : "Generated by Kokoro TTS"}
           </p>
 
-          <audio ref={audioRef} src={audioUrl} preload="metadata" />
+          <audio ref={setAudioElement} src={audioUrl} preload="metadata" />
 
           <div className="mt-3 space-y-3">
             {/* Playback controls */}
