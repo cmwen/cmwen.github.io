@@ -21,18 +21,20 @@ console = Console()
 @click.option('--provider', default='kokoro', help='TTS provider (currently only kokoro)')
 @click.option('--force', is_flag=True, help='Force regenerate existing podcasts')
 @click.option('--dry-run', is_flag=True, help='Show what would be generated without doing it')
+@click.option('--refresh-feeds', is_flag=True, help='Rebuild feeds from existing audio only (no new TTS)')
 @click.option('--output-dir', default='public/podcasts', help='Output directory for podcasts')
-def cli(posts, all, provider, force, dry_run, output_dir):
+def cli(posts, all, provider, force, dry_run, refresh_feeds, output_dir):
     """Generate podcasts from blog posts using Kokoro TTS"""
     
     console.print("🎙️  [bold blue]Blog-to-Podcast Generator[/bold blue]")
     console.print(f"Provider: {provider}")
     console.print(f"Force regenerate: {force}")
     console.print(f"Dry run: {dry_run}")
+    console.print(f"Refresh feeds only: {refresh_feeds}")
     console.print()
     
     try:
-        main_generate(posts, all, provider, force, dry_run, output_dir)
+        main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_dir)
     except KeyboardInterrupt:
         console.print("\n❌ Generation cancelled by user")
         sys.exit(1)
@@ -41,25 +43,32 @@ def cli(posts, all, provider, force, dry_run, output_dir):
         sys.exit(1)
 
 
-def main_generate(posts, all, provider, force, dry_run, output_dir):
-    """Main generation logic"""
+def main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_dir):
+    """Main generation logic.
+
+    Feed preservation fix: Always aggregate all existing audio episodes when writing feeds so
+    partial generation runs (e.g., --posts slug1) do not wipe earlier entries from feed.xml.
+    Use --refresh-feeds to rebuild feed(s) from existing audio without generating new audio.
+    """
     
-    # Initialize components
     blog_parser = BlogParser()
-    tts_engine = KokoroTTSEngine()
     feed_generator = PodcastFeedGenerator()
+    tts_engine = None  # Lazy init only if we actually synthesize
     
     # Parse blog posts
     console.print("📚 Loading blog posts...")
     
-    if posts:
-        post_slugs = [slug.strip() for slug in posts.split(',')]
-        blog_posts = blog_parser.load_posts_by_slugs(post_slugs)
-    elif all:
+    if refresh_feeds:
         blog_posts = blog_parser.load_all_posts()
     else:
-        console.print("❌ Please specify --posts or --all")
-        return
+        if posts:
+            post_slugs = [slug.strip() for slug in posts.split(',') if slug.strip()]
+            blog_posts = blog_parser.load_posts_by_slugs(post_slugs)
+        elif all:
+            blog_posts = blog_parser.load_all_posts()
+        else:
+            console.print("❌ Please specify --posts, --all, or --refresh-feeds")
+            return
     
     console.print(f"Found {len(blog_posts)} blog post(s)")
     
@@ -67,20 +76,33 @@ def main_generate(posts, all, provider, force, dry_run, output_dir):
         console.print("No posts to generate. Exiting.")
         return
     
-    if dry_run:
+    if dry_run and not refresh_feeds:
         console.print("\n🔍 Dry run - Posts that would be generated:")
         for post in blog_posts:
             console.print(f"  • {post.title} ({post.lang})")
         return
     
+    output_path = Path(output_dir)
+    output_path.mkdir(parents=True, exist_ok=True)
+    
+    if refresh_feeds:
+        console.print("\n♻️  Refreshing feeds from existing audio (no synthesis)...")
+        existing = _collect_existing_episodes(blog_posts, output_path)
+        if not existing:
+            console.print("⚠️ No existing audio files found to build feeds from.")
+            return
+        console.print(f"Found {len(existing)} existing episode(s)")
+        console.print("\n📡 Generating podcast RSS feeds...")
+        feed_generator.generate_feeds(existing, output_path)
+        console.print(f"\n✅ Refreshed feeds containing {len(existing)} episode(s)")
+        console.print("\n🎉 Feed refresh complete!")
+        return
+    
     # Setup TTS engine
     console.print(f"\n🎤 Setting up {provider} TTS...")
-    
-    # Detect languages in the posts
-    languages = set(post.lang for post in blog_posts)
+    tts_engine = KokoroTTSEngine()
+    languages = {post.lang for post in blog_posts}
     console.print(f"Detected languages: {', '.join(languages)}")
-    
-    # Download models for all languages (without full initialization)
     for lang in languages:
         console.print(f"Ensuring {lang} models are available...")
         if lang in ['zh-hant', 'zh']:
@@ -91,9 +113,6 @@ def main_generate(posts, all, provider, force, dry_run, output_dir):
     
     # Generate podcasts
     console.print("\n🎵 Generating podcast audio files...")
-    
-    output_path = Path(output_dir)
-    output_path.mkdir(parents=True, exist_ok=True)
     
     episodes = []
     current_tts_language = None  # Track the currently loaded TTS model language
@@ -157,11 +176,20 @@ def main_generate(posts, all, provider, force, dry_run, output_dir):
             
             progress.remove_task(task)
     
-    # Generate RSS feeds
+    # Merge with existing episodes on disk for feed completeness
+    console.print("\n🔎 Aggregating existing audio for feed completeness...")
+    all_posts = blog_parser.load_all_posts()
+    existing_all = _collect_existing_episodes(all_posts, output_path)
+    existing_map = {e['slug']: e for e in existing_all}
+    for e in episodes:
+        existing_map[e['slug']] = e
+    merged = list(existing_map.values())
+    console.print(f"Total episodes for feeds: {len(merged)} (new: {len(episodes)})")
+
     console.print("\n📡 Generating podcast RSS feeds...")
-    feed_generator.generate_feeds(episodes, output_path)
+    feed_generator.generate_feeds(merged, output_path)
     
-    console.print(f"\n✅ Generated {len(episodes)} podcast episode(s)")
+    console.print(f"\n✅ Generated {len(episodes)} new episode(s); {len(merged)} total in feeds")
     console.print("\n🎉 Podcast generation complete!")
 
 
@@ -172,3 +200,31 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+def _collect_existing_episodes(blog_posts, output_path: Path):
+    """Collect existing audio (*.mp3) in output_path and map to blog metadata.
+
+    Skips orphaned audio files that no longer have a corresponding blog post.
+    Returns list of episode dicts compatible with feed generator.
+    """
+    index = {p.slug: p for p in blog_posts}
+    episodes = []
+    for audio_file in output_path.glob('*.mp3'):
+        slug = audio_file.stem
+        post = index.get(slug)
+        if not post:
+            continue
+        try:
+            episodes.append({
+                'slug': slug,
+                'title': post.title,
+                'description': post.description,
+                'lang': post.lang,
+                'pub_date': post.pub_date,
+                'audio_file': audio_file,
+                'file_size': audio_file.stat().st_size
+            })
+        except OSError:
+            continue
+    return episodes
