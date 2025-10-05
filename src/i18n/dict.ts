@@ -35,6 +35,7 @@ type Dict = {
       pwa: string;
       cli: string;
       mcp: string;
+      opensource: string;
     };
     projects: {
       japaneseLearningSuffix: string;
@@ -47,6 +48,8 @@ type Dict = {
       minKbDescription: string;
       minN8nSuffix: string;
       minN8nDescription: string;
+      antennapodTitle: string;
+      antennapodDescription: string;
     };
     tech: {
       pwaPwa: string;
@@ -100,12 +103,13 @@ export const messages: Record<Locale, Dict> = {
         pwa: "PWA",
         cli: "CLI Applications",
         mcp: "MCP Servers",
+        opensource: "Personalized Opensource Projects",
       },
       projects: {
         japaneseLearningSuffix: "Japanese Learning (Kanji-Go)",
         japaneseDescription:
           "A Progressive Web App for learning basic Japanese (Hiragana, Katakana, and essential vocabulary) with offline-first experience and flashcards.",
-        podcastWipSuffix: "Podcast Lister App (WIP)",
+        podcastWipSuffix: "Podcast Listener App",
         podcastDescription:
           "A lightweight installable PWA for subscribing to podcasts via RSS, managing playlists, and listening offline.",
         todoMultimode: "@cmwen/todo-app — Multi-mode TODO Application",
@@ -117,6 +121,9 @@ export const messages: Record<Locale, Dict> = {
         minN8nSuffix: "@cmwen/min-n8n-mcp — n8n MCP Server",
         minN8nDescription:
           "A TypeScript-based MCP server that exposes n8n workflow management as tools for AI agents. Provides STDIO and HTTP modes with robust error handling and typed schemas.",
+        antennapodTitle: "AntennaPod — Open Source Podcast Manager",
+        antennapodDescription:
+          "A personalized fork of the popular open-source Android podcast player. Contributing custom features and improvements while maintaining compatibility with the main project.",
       },
       tech: {
         pwaPwa: "PWA/offline-first; GitHub Pages deployment",
@@ -168,12 +175,13 @@ export const messages: Record<Locale, Dict> = {
         pwa: "PWA 應用",
         cli: "CLI 應用程式",
         mcp: "MCP 伺服器",
+        opensource: "個人化開源專案",
       },
       projects: {
         japaneseLearningSuffix: "日語學習 (Kanji-Go)",
         japaneseDescription:
           "一個用於學習基礎日語（平假名、片假名和必備詞彙）的漸進式網頁應用，具有離線優先體驗和卡片學習功能。",
-        podcastWipSuffix: "Podcast 播放器應用（開發中）",
+        podcastWipSuffix: "Podcast 播放器應用",
         podcastDescription:
           "一個輕量級可安裝的 PWA，用於透過 RSS 訂閱播客、管理播放清單和離線收聽。",
         todoMultimode: "@cmwen/todo-app — 多模式待辦事項應用",
@@ -185,6 +193,9 @@ export const messages: Record<Locale, Dict> = {
         minN8nSuffix: "@cmwen/min-n8n-mcp — n8n MCP 伺服器",
         minN8nDescription:
           "一個基於 TypeScript 的 MCP 伺服器，將 n8n 工作流程管理作為工具提供給 AI 代理程式。提供 STDIO 和 HTTP 模式，具備強健的錯誤處理和型別結構描述。",
+        antennapodTitle: "AntennaPod — 開源播客管理器",
+        antennapodDescription:
+          "流行開源 Android 播客播放器的個人化分支。在保持與主專案相容的同時，貢獻自訂功能和改進。",
       },
       tech: {
         pwaPwa: "PWA/離線優先；GitHub Pages 部署",
