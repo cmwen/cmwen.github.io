@@ -91,16 +91,9 @@ const layoutProps = {
     </button>
   </div>
   <main id="main-content" class="post-layout">
-    <div class="post-content">
-      <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
-      <Datetime
-        pubDatetime={pubDatetime}
-        modDatetime={modDatetime}
-        size="lg"
-        className="my-2"
-      />
-      <!-- Audio player and chat link appear on top on mobile, in sidebar on desktop -->
-      <div class="lg:hidden">
+    <!-- Sidebar that moves to top on mobile -->
+    <aside class="post-sidebar">
+      <div class="sidebar-sticky">
         <AudioPlayer client:only="react" slug={post.slug} lang={lang} />
         {
           Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (
@@ -114,6 +107,15 @@ const layoutProps = {
           )
         }
       </div>
+    </aside>
+    <div class="post-content">
+      <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+      <Datetime
+        pubDatetime={pubDatetime}
+        modDatetime={modDatetime}
+        size="lg"
+        className="my-2"
+      />
       <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
         <Content />
       </article>
@@ -147,23 +149,6 @@ const layoutProps = {
         <ShareLinks />
       </div>
     </div>
-    <!-- Sidebar appears on desktop screens only -->
-    <aside class="post-sidebar hidden lg:block">
-      <div class="sidebar-sticky">
-        <AudioPlayer client:only="react" slug={post.slug} lang={lang} />
-        {
-          Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (
-            <ChatLink
-              client:only="react"
-              title={title}
-              url={Astro.url.href}
-              keyIdeas={llmKeyIdeas}
-              lang={lang}
-            />
-          )
-        }
-      </div>
-    </aside>
   </main>
   <Footer />
 </Layout>
@@ -187,22 +172,28 @@ const layoutProps = {
 
   .post-content {
     flex: 1;
+    /* On mobile, content comes after sidebar */
+    order: 2;
   }
 
   @media (min-width: 1024px) {
     .post-content {
       max-width: 48rem;
+      /* On desktop, content comes first (left side) */
+      order: 1;
     }
   }
 
   .post-sidebar {
-    display: none;
+    /* On mobile, sidebar appears first (at top) */
+    order: 1;
   }
 
   @media (min-width: 1024px) {
     .post-sidebar {
-      display: block;
       width: 20rem;
+      /* On desktop, sidebar comes second (right side) */
+      order: 2;
     }
   }
 
