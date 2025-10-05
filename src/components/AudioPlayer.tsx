@@ -47,8 +47,19 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
 
   // Apply playback speed to audio element
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = playbackSpeed;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.playbackRate = playbackSpeed;
+
+      // Also set on loadedmetadata to ensure it's applied
+      const handleLoadedMetadata = () => {
+        audio.playbackRate = playbackSpeed;
+      };
+      audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+
+      return () => {
+        audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      };
     }
   }, [playbackSpeed]);
 
@@ -57,25 +68,54 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const updateTime = () => setCurrentTime(audio.currentTime);
-    const updateDuration = () => setDuration(audio.duration);
-    const handleEnded = () => setIsPlaying(false);
+    const updateTime = () => {
+      setCurrentTime(audio.currentTime);
+    };
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
     const handleLoadedMetadata = () => {
-      setDuration(audio.duration);
-      // Ensure playback rate is set when audio metadata loads
-      audio.playbackRate = playbackSpeed;
+      // Update duration when metadata loads
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    const handleDurationChange = () => {
+      // Also listen for durationchange event as backup
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+    const handleCanPlay = () => {
+      // Set duration when audio can play
+      if (!isNaN(audio.duration) && isFinite(audio.duration)) {
+        setDuration(audio.duration);
+      }
     };
 
     audio.addEventListener("timeupdate", updateTime);
     audio.addEventListener("loadedmetadata", handleLoadedMetadata);
+    audio.addEventListener("durationchange", handleDurationChange);
+    audio.addEventListener("canplay", handleCanPlay);
     audio.addEventListener("ended", handleEnded);
+
+    // Set initial duration if already loaded
+    if (
+      !isNaN(audio.duration) &&
+      isFinite(audio.duration) &&
+      audio.duration > 0
+    ) {
+      setDuration(audio.duration);
+    }
 
     return () => {
       audio.removeEventListener("timeupdate", updateTime);
       audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      audio.removeEventListener("durationchange", handleDurationChange);
+      audio.removeEventListener("canplay", handleCanPlay);
       audio.removeEventListener("ended", handleEnded);
     };
-  }, [playbackSpeed]);
+  }, [audioUrl]); // Re-run when audioUrl changes to ensure listeners are attached
 
   const togglePlayPause = () => {
     if (!audioRef.current) return;
@@ -193,7 +233,7 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
               </label>
               <select
                 id="playback-speed"
-                value={playbackSpeed}
+                value={playbackSpeed.toString()}
                 onChange={handleSpeedChange}
                 className="rounded-md border border-skin-line bg-skin-fill px-2 py-1 text-sm focus:border-skin-accent focus:outline-none focus:ring-1 focus:ring-skin-accent"
               >

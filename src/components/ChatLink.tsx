@@ -74,16 +74,13 @@ export default function ChatLink({
               : "Pick your favorite chat LLM and start a conversation with key ideas and the link."}
           </p>
 
-          <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center">
-            <label
-              htmlFor="chat-provider"
-              className="text-sm opacity-80 sm:whitespace-nowrap"
-            >
+          <div className="mt-3 flex flex-col gap-2">
+            <label htmlFor="chat-provider" className="text-sm opacity-80">
               {lang === "zh-hant" ? "目標 LLM" : "Target LLM"}
             </label>
             <select
               id="chat-provider"
-              className="max-w-xs rounded-md border border-skin-line bg-skin-fill px-3 py-2 text-sm focus:border-skin-accent focus:outline-none focus:ring-1 focus:ring-skin-accent"
+              className="w-full rounded-md border border-skin-line bg-skin-fill px-3 py-2 text-sm focus:border-skin-accent focus:outline-none focus:ring-1 focus:ring-skin-accent"
               value={selectedProvider.id}
               onChange={handleProviderChange}
             >
@@ -95,7 +92,7 @@ export default function ChatLink({
             </select>
             <button
               onClick={handleLaunch}
-              className="inline-flex items-center justify-center gap-2 rounded-md bg-skin-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-skin-accent px-3 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               <span>🚀</span>
               <span>{lang === "zh-hant" ? "開始對話" : "Start chatting"}</span>
