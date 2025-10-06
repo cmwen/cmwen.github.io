@@ -69,6 +69,9 @@ const layoutProps = {
   lang,
   alternates,
 };
+
+const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
+  .default;
 ---
 
 <Layout {...layoutProps}>
@@ -215,7 +218,11 @@ const layoutProps = {
   }
 </style>
 
-<script is:inline>
+<script
+  is:inline
+  data-mermaid-module={mermaidClientModuleUrl}
+  define:vars={{ MERMAID_MODULE_URL: mermaidClientModuleUrl }}
+>
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
@@ -312,6 +319,46 @@ const layoutProps = {
     }
   }
   attachCopyButtons();
+
+  // Use the injected variable from define:vars
+  const MERMAID_MODULE =
+    window.MERMAID_MODULE_URL || document.currentScript?.dataset.mermaidModule;
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!MERMAID_MODULE) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(MERMAID_MODULE);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run when navigating with View Transitions
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
 
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */

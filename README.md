@@ -29,6 +29,7 @@ This theme is self-documented \_ which means articles/posts in this theme can al
 - [x] highly customizable
 - [x] dynamic OG image generation for blog posts [#15](https://github.com/satnaing/astro-paper/pull/15) ([Blog Post](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/))
 - [x] **🎙️ blog-to-podcast system** - Convert blog posts to audio with RSS feeds ([See docs](scripts/podcast/README.md))
+- [x] **📊 Mermaid diagram support** - Create flowcharts, sequence diagrams, and more in markdown ([See guide](docs/MERMAID_GUIDE.md))
 
 _Note: I've tested screen-reader accessibility of AstroPaper using **VoiceOver** on Mac and **TalkBack** on Android. I couldn't test all other screen-readers out there. However, accessibility enhancements in AstroPaper should be working fine on others as well._
 
@@ -100,6 +101,7 @@ Personal blog built with AstroPaper (Astro + TypeScript + React + TailwindCSS). 
 - Content collections with frontmatter validation (`src/content/config.ts`)
 - Client search via FuseJS
 - Dynamic OG images
+- Vendored OG fonts (IBM Plex Mono, Noto Sans TC) under `src/assets/fonts` for reliable multilingual rendering
 
 ## Project structure
 

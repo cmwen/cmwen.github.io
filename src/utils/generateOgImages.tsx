@@ -4,21 +4,43 @@ import { type CollectionEntry } from "astro:content";
 import postOgImage from "./og-templates/post";
 import siteOgImage from "./og-templates/site";
 import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-async function tryReadLocal(path: string): Promise<ArrayBuffer | null> {
+async function tryReadLocal(target: string): Promise<ArrayBuffer | null> {
   try {
-    // Support both relative via import.meta.url and project root paths
-    const byUrl =
-      path.startsWith(".") || path.startsWith("/")
-        ? new URL(path, import.meta.url)
-        : null;
-    const buf = byUrl ? await fs.readFile(byUrl) : await fs.readFile(path);
+    const candidates: string[] = [];
+
+    if (target.startsWith("file://")) {
+      candidates.push(fileURLToPath(new URL(target)));
+    } else if (target.startsWith("/")) {
+      candidates.push(target);
+    } else if (target.startsWith(".")) {
+      const moduleDir = fileURLToPath(new URL(".", import.meta.url));
+      candidates.push(path.resolve(moduleDir, target));
+      candidates.push(path.resolve(process.cwd(), "src/utils", target));
+      candidates.push(path.resolve(process.cwd(), target));
+    }
+
+    // Always add the raw target as a last resort (covers absolute Windows paths or cwd-relative strings)
+    candidates.push(target);
+
+    for (const candidate of [...new Set(candidates)]) {
+      try {
+        const buf = await fs.readFile(candidate);
+        const u8 = new Uint8Array(buf);
+        return u8.buffer.slice(0);
+      } catch {
+        continue;
+      }
+    }
+
     // Ensure we return a plain ArrayBuffer (not SharedArrayBuffer)
-    const u8 = new Uint8Array(buf);
-    return u8.buffer.slice(0);
   } catch {
     return null;
   }
+
+  return null;
 }
 
 async function tryFetch(url: string): Promise<ArrayBuffer | null> {
@@ -36,12 +58,12 @@ async function fetchFonts() {
   const fonts: SatoriOptions["fonts"] = [];
 
   // IBM Plex Mono (Latin) — optional
-  const ibmLocalRegular = await tryReadLocal(
-    "../assets/fonts/IBMPlexMono-Regular.otf"
-  );
-  const ibmLocalBold = await tryReadLocal(
-    "../assets/fonts/IBMPlexMono-Bold.otf"
-  );
+  const ibmLocalRegular =
+    (await tryReadLocal("../assets/fonts/IBMPlexMono-Regular.ttf")) ??
+    (await tryReadLocal("../assets/fonts/IBMPlexMono-Regular.otf"));
+  const ibmLocalBold =
+    (await tryReadLocal("../assets/fonts/IBMPlexMono-Bold.ttf")) ??
+    (await tryReadLocal("../assets/fonts/IBMPlexMono-Bold.otf"));
   if (ibmLocalRegular)
     fonts.push({
       name: "IBM Plex Mono",
@@ -58,12 +80,12 @@ async function fetchFonts() {
     });
   if (!ibmLocalRegular || !ibmLocalBold) {
     const ibmCandidates = [
-      "https://raw.githubusercontent.com/IBM/plex/main/IBM-Plex-Mono/fonts/complete/otf/IBM-Plex-Mono/IBMPlexMono-Regular.otf",
-      "https://github.com/IBM/plex/raw/main/IBM-Plex-Mono/fonts/complete/otf/IBM-Plex-Mono/IBMPlexMono-Regular.otf",
+      "https://raw.githubusercontent.com/IBM/plex/main/IBM-Plex-Mono/fonts/complete/ttf/IBM-Plex-Mono/IBMPlexMono-Regular.ttf",
+      "https://github.com/IBM/plex/raw/main/IBM-Plex-Mono/fonts/complete/ttf/IBM-Plex-Mono/IBMPlexMono-Regular.ttf",
     ];
     const ibmBoldCandidates = [
-      "https://raw.githubusercontent.com/IBM/plex/main/IBM-Plex-Mono/fonts/complete/otf/IBM-Plex-Mono/IBMPlexMono-Bold.otf",
-      "https://github.com/IBM/plex/raw/main/IBM-Plex-Mono/fonts/complete/otf/IBM-Plex-Mono/IBMPlexMono-Bold.otf",
+      "https://raw.githubusercontent.com/IBM/plex/main/IBM-Plex-Mono/fonts/complete/ttf/IBM-Plex-Mono/IBMPlexMono-Bold.ttf",
+      "https://github.com/IBM/plex/raw/main/IBM-Plex-Mono/fonts/complete/ttf/IBM-Plex-Mono/IBMPlexMono-Bold.ttf",
     ];
     const ibmRegData =
       ibmLocalRegular ??
@@ -104,55 +126,111 @@ async function fetchFonts() {
     }
   }
 
-  // Noto Sans TC (Traditional Chinese)
-  // Try local first
-  let notoRegular = await tryReadLocal(
-    "../assets/fonts/NotoSansTC-Regular.otf"
+  // Source Han Sans / Noto Sans TC (Traditional Chinese)
+  // Try vendored Source Han Sans first (recommended), fall back to vendored Noto, then remote sources.
+  let cjkFontName = "Source Han Sans TC";
+  let cjkRegular = await tryReadLocal(
+    "../assets/fonts/SourceHanSansTC-Regular.otf"
   );
-  let notoBold = await tryReadLocal("../assets/fonts/NotoSansTC-Bold.otf");
-  if (!notoRegular || !notoBold) {
-    // Try multiple remote candidates (paths change across releases)
-    const notoRegCandidates = [
-      "https://raw.githubusercontent.com/googlefonts/noto-cjk/main/Sans/OTF/TraditionalChinese/NotoSansTC-Regular.otf",
-      "https://github.com/googlefonts/noto-cjk/releases/download/Sans2.004/NotoSansTC-Regular.otf",
+  let cjkBold = await tryReadLocal("../assets/fonts/SourceHanSansTC-Bold.otf");
+
+  if (!cjkRegular || !cjkBold) {
+    const notoRegularLocal =
+      (await tryReadLocal("../assets/fonts/NotoSansTC-Regular.ttf")) ??
+      (await tryReadLocal("../assets/fonts/NotoSansTC-VF.ttf")) ??
+      (await tryReadLocal("../assets/fonts/NotoSansTC-Regular.otf"));
+    const notoBoldLocal =
+      (await tryReadLocal("../assets/fonts/NotoSansTC-Bold.ttf")) ??
+      (await tryReadLocal("../assets/fonts/NotoSansTC-VF.ttf")) ??
+      (await tryReadLocal("../assets/fonts/NotoSansTC-Bold.otf")) ??
+      notoRegularLocal;
+    if (notoRegularLocal && notoBoldLocal) {
+      cjkRegular = notoRegularLocal;
+      cjkBold =
+        notoRegularLocal === notoBoldLocal ? notoRegularLocal : notoBoldLocal;
+      cjkFontName = "Noto Sans TC";
+    }
+  }
+
+  if (!cjkRegular || !cjkBold) {
+    type Candidate = {
+      name: "Source Han Sans TC" | "Noto Sans TC";
+      urls: string[];
+    };
+    const remoteCandidates: Candidate[] = [
+      {
+        name: "Source Han Sans TC",
+        urls: [
+          "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/release/OTF/TraditionalChinese/SourceHanSansTC-Regular.otf",
+        ],
+      },
+      {
+        name: "Noto Sans TC",
+        urls: [
+          "https://raw.githubusercontent.com/googlefonts/noto-cjk/main/Sans/OTF/TraditionalChinese/NotoSansTC-Regular.otf",
+          "https://github.com/googlefonts/noto-cjk/releases/download/Sans2.004/NotoSansTC-Regular.otf",
+        ],
+      },
     ];
-    const notoBoldCandidates = [
-      "https://raw.githubusercontent.com/googlefonts/noto-cjk/main/Sans/OTF/TraditionalChinese/NotoSansTC-Bold.otf",
-      "https://github.com/googlefonts/noto-cjk/releases/download/Sans2.004/NotoSansTC-Bold.otf",
+    const remoteBoldCandidates: Candidate[] = [
+      {
+        name: "Source Han Sans TC",
+        urls: [
+          "https://raw.githubusercontent.com/adobe-fonts/source-han-sans/release/OTF/TraditionalChinese/SourceHanSansTC-Bold.otf",
+        ],
+      },
+      {
+        name: "Noto Sans TC",
+        urls: [
+          "https://raw.githubusercontent.com/googlefonts/noto-cjk/main/Sans/OTF/TraditionalChinese/NotoSansTC-Bold.otf",
+          "https://github.com/googlefonts/noto-cjk/releases/download/Sans2.004/NotoSansTC-Bold.otf",
+        ],
+      },
     ];
-    if (!notoRegular) {
-      for (const u of notoRegCandidates) {
-        const d = await tryFetch(u);
-        if (d) {
-          notoRegular = d;
-          break;
+
+    if (!cjkRegular) {
+      for (const candidate of remoteCandidates) {
+        for (const url of candidate.urls) {
+          const data = await tryFetch(url);
+          if (data) {
+            cjkRegular = data;
+            cjkFontName = candidate.name;
+            break;
+          }
         }
+        if (cjkRegular) break;
       }
     }
-    if (!notoBold) {
-      for (const u of notoBoldCandidates) {
-        const d = await tryFetch(u);
-        if (d) {
-          notoBold = d;
-          break;
+
+    if (!cjkBold) {
+      for (const candidate of remoteBoldCandidates) {
+        for (const url of candidate.urls) {
+          const data = await tryFetch(url);
+          if (data) {
+            cjkBold = data;
+            cjkFontName = candidate.name;
+            break;
+          }
         }
+        if (cjkBold) break;
       }
     }
   }
-  if (!notoRegular || !notoBold) {
+
+  if (!cjkRegular || !cjkBold) {
     console.warn(
-      "Warning: Noto Sans TC could not be loaded. OG images may not render Traditional Chinese correctly. Consider vendoring OTFs under src/assets/fonts/."
+      "Warning: CJK font assets could not be loaded. OG images may not render Traditional Chinese correctly. Consider vendoring Source Han Sans TC or Noto Sans TC OTFs under src/assets/fonts/."
     );
   } else {
     fonts.push({
-      name: "Noto Sans TC",
-      data: notoRegular,
+      name: cjkFontName,
+      data: cjkRegular,
       weight: 400,
       style: "normal",
     });
     fonts.push({
-      name: "Noto Sans TC",
-      data: notoBold,
+      name: cjkFontName,
+      data: cjkBold,
       weight: 700,
       style: "normal",
     });
