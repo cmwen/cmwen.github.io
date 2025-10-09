@@ -1,0 +1,223 @@
+---
+title: "Tmux Quick Reference"
+description: "Essential Tmux commands and shortcuts for terminal multiplexing"
+pubDatetime: 2025-01-28T00:00:00Z
+tags: ["tmux", "terminal", "cheatsheet", "productivity"]
+---
+
+# Tmux Quick Reference
+
+Tmux (Terminal Multiplexer) allows you to manage multiple terminal sessions from a single window. This cheatsheet covers the essential commands and key bindings.
+
+## Default Prefix Key
+
+The default prefix is `Ctrl+b` (shown as `C-b` below). Press the prefix, release, then press the command key.
+
+## Session Management
+
+```bash
+# Start new session
+tmux
+tmux new
+tmux new-session
+tmux new -s myname              # Start session with name
+
+# Attach to session
+tmux a                           # Attach to last session
+tmux at
+tmux attach
+tmux attach -t myname            # Attach to named session
+
+# List sessions
+tmux ls
+tmux list-sessions
+
+# Kill session
+tmux kill-session -t myname
+tmux kill-session -a             # Kill all sessions except current
+tmux kill-session -a -t myname   # Kill all sessions except named
+
+# Detach from session
+C-b d                            # Detach current client
+```
+
+## Windows (Tabs)
+
+```bash
+# Create windows
+C-b c                            # Create new window
+C-b ,                            # Rename current window
+C-b w                            # List windows
+C-b &                            # Kill current window
+
+# Navigate windows
+C-b n                            # Next window
+C-b p                            # Previous window
+C-b 0-9                          # Switch to window number
+C-b f                            # Find window by name
+C-b l                            # Toggle last active window
+```
+
+## Panes (Split Windows)
+
+```bash
+# Create panes
+C-b %                            # Split vertically (left/right)
+C-b "                            # Split horizontally (top/bottom)
+C-b !                            # Convert pane to window
+
+# Navigate panes
+C-b o                            # Next pane
+C-b ;                            # Last active pane
+C-b q                            # Show pane numbers (type number to jump)
+C-b {                            # Move current pane left
+C-b }                            # Move current pane right
+C-b ↑/↓/←/→                      # Switch to pane in direction
+
+# Resize panes
+C-b C-↑/↓/←/→                    # Resize in direction (hold Ctrl)
+C-b M-↑/↓/←/→                    # Resize in direction (Alt, larger steps)
+C-b z                            # Toggle pane zoom (fullscreen)
+
+# Close pane
+C-b x                            # Kill current pane
+exit                             # Exit shell (closes pane)
+```
+
+## Copy Mode (Scrollback)
+
+```bash
+# Enter/exit copy mode
+C-b [                            # Enter copy mode
+q                                # Exit copy mode
+
+# Navigate in copy mode (vi-style by default)
+Space                            # Start selection
+Enter                            # Copy selection
+C-b ]                            # Paste buffer
+
+# Search in copy mode
+/                                # Search forward
+?                                # Search backward
+n                                # Next search result
+N                                # Previous search result
+```
+
+## Miscellaneous
+
+```bash
+# General
+C-b ?                            # List all key bindings
+C-b :                            # Enter command mode
+C-b t                            # Show time
+C-b r                            # Reload config (if configured)
+
+# Synchronize panes (type in all panes at once)
+C-b : setw synchronize-panes on
+C-b : setw synchronize-panes off
+```
+
+## Configuration
+
+Tmux configuration file: `~/.tmux.conf`
+
+### Useful Configuration Options
+
+```bash
+# Change prefix to Ctrl+a (more convenient)
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+
+# Enable mouse support
+set -g mouse on
+
+# Start window numbering at 1
+set -g base-index 1
+set -g pane-base-index 1
+
+# Reload config with prefix+r
+bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+
+# Split panes using | and -
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+
+# Switch panes using Alt-arrow without prefix
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+
+# Enable vi mode
+setw -g mode-keys vi
+
+# Status bar customization
+set -g status-position bottom
+set -g status-bg colour234
+set -g status-fg colour137
+```
+
+## Common Workflows
+
+### Development Setup
+
+```bash
+# Create a dev session
+tmux new -s dev
+
+# Split into editor + terminal
+C-b %                            # Vertical split
+# Left: editor (vim/nvim), Right: terminal for commands
+```
+
+### Server Monitoring
+
+```bash
+# Create monitoring session
+tmux new -s monitor
+
+# Create layout
+C-b "                            # Horizontal split (logs)
+C-b %                            # Vertical split (system stats)
+# Watch logs, htop, etc. in different panes
+```
+
+### Remote Development
+
+```bash
+# SSH into server
+ssh user@server
+
+# Start or attach to tmux
+tmux a || tmux new
+
+# Your work persists even if SSH disconnects
+# Reconnect and: tmux a
+```
+
+## Tips
+
+- **Persistence**: Tmux sessions survive SSH disconnections and terminal closures
+- **Prefix delay**: If you find the prefix slow, reduce `escape-time` in config: `set -sg escape-time 0`
+- **Copy/paste**: Use copy mode for scrollback and text selection
+- **Layouts**: `C-b Space` cycles through preset pane layouts
+- **Swap panes**: `C-b C-o` rotates panes in current window
+- **Resize panes**: Hold prefix and arrow keys for fine-grained resizing
+
+## Resources
+
+- [Tmux Documentation](https://github.com/tmux/tmux/wiki)
+- [Tmux Cheat Sheet (official)](https://tmuxcheatsheet.com/)
+- [The Tao of Tmux](https://leanpub.com/the-tao-of-tmux/read)
+
+## Plugins
+
+Consider using [Tmux Plugin Manager (TPM)](https://github.com/tmux-plugins/tpm) for extended functionality:
+
+- **tmux-resurrect**: Save/restore tmux sessions
+- **tmux-continuum**: Automatic session saving
+- **tmux-yank**: Better copy/paste integration
+- **tmux-pain-control**: Improved pane navigation

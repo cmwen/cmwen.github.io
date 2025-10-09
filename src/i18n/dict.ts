@@ -40,6 +40,8 @@ type Dict = {
     projects: {
       japaneseLearningSuffix: string;
       japaneseDescription: string;
+      textEditorSuffix: string;
+      textEditorDescription: string;
       podcastWipSuffix: string;
       podcastDescription: string;
       todoMultimode: string;
@@ -109,6 +111,9 @@ export const messages: Record<Locale, Dict> = {
         japaneseLearningSuffix: "Japanese Learning (Kanji-Go)",
         japaneseDescription:
           "A Progressive Web App for learning basic Japanese (Hiragana, Katakana, and essential vocabulary) with offline-first experience and flashcards.",
+        textEditorSuffix: "Text Editor PWA",
+        textEditorDescription:
+          "A lightweight, offline-capable text editor Progressive Web App with autosave, dark mode, and local storage. Perfect for quick notes and drafts without cloud dependencies.",
         podcastWipSuffix: "Podcast Listener App",
         podcastDescription:
           "A lightweight installable PWA for subscribing to podcasts via RSS, managing playlists, and listening offline.",
@@ -181,6 +186,9 @@ export const messages: Record<Locale, Dict> = {
         japaneseLearningSuffix: "日語學習 (Kanji-Go)",
         japaneseDescription:
           "一個用於學習基礎日語（平假名、片假名和必備詞彙）的漸進式網頁應用，具有離線優先體驗和卡片學習功能。",
+        textEditorSuffix: "文字編輯器 PWA",
+        textEditorDescription:
+          "一個輕量級、支援離線的文字編輯器漸進式網頁應用，具有自動儲存、深色模式和本地儲存功能。適合快速筆記和草稿，無需雲端依賴。",
         podcastWipSuffix: "Podcast 播放器應用",
         podcastDescription:
           "一個輕量級可安裝的 PWA，用於透過 RSS 訂閱播客、管理播放清單和離線收聽。",

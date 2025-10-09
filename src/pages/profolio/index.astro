@@ -70,6 +70,38 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
           <h3 class="text-lg font-semibold">
             <a
               class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/text-editor-pwa/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.profolio.projects.textEditorSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.profolio.projects.textEditorDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Vanilla JavaScript + Vite</li>
+              <li>{t.profolio.tech.pwaPwa}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/text-editor-pwa"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/text-editor-pwa</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/project-initiator"
               target="_blank"
               rel="noopener noreferrer"
