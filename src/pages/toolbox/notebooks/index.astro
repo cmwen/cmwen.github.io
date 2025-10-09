@@ -1,0 +1,92 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Hr from "@components/Hr.astro";
+import NotebookCard from "@components/NotebookCard";
+import NotebookSearch from "@components/NotebookSearch";
+import getSortedNotebooks from "@utils/getSortedNotebooks";
+
+const notebooks = await getCollection("notebooks", ({ data }) => !data.draft);
+const sortedNotebooks = getSortedNotebooks(notebooks);
+
+// Prepare notebooks for search
+const searchList = sortedNotebooks.map(({ data, slug }) => ({
+  title: data.title,
+  description: data.description,
+  slug,
+  data: {
+    title: data.title,
+    description: data.description,
+    pubDatetime: data.pubDatetime,
+    modDatetime: data.modDatetime,
+    tags: data.tags,
+  },
+}));
+---
+
+<Layout title="Notebooks">
+  <Header activeNav="toolbox" activeSubNav="notebooks" />
+  <main id="main-content">
+    <section id="hero">
+      <h1>Notebooks</h1>
+      <p>
+        Quick reference cheatsheets and notes. These are frequently updated and
+        subject to change.
+      </p>
+    </section>
+
+    <Hr />
+
+    {
+      sortedNotebooks.length > 0 && (
+        <section class="pb-6 pt-8">
+          <NotebookSearch
+            searchList={searchList as any}
+            placeholder="Search notebooks..."
+            baseHref="/toolbox/notebooks"
+            client:load
+          />
+        </section>
+      )
+    }
+
+    {
+      sortedNotebooks.length === 0 ? (
+        <div class="my-8">
+          <p>No notebooks yet. Check back soon!</p>
+        </div>
+      ) : (
+        <section id="notebooks" class="pb-6 pt-4">
+          <ul>
+            {sortedNotebooks.map(({ data, slug }) => (
+              <NotebookCard
+                href={`/toolbox/notebooks/${slug}/`}
+                frontmatter={data}
+                secHeading={false}
+              />
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  #hero {
+    @apply pb-6 pt-8;
+  }
+  #hero h1 {
+    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
+  }
+  #hero p {
+    @apply my-2;
+  }
+  #main-content {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+</style>

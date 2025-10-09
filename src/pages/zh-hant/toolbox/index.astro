@@ -23,7 +23,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     "zh-hant": canonical,
   }}
 >
-  <Header activeNav="toolbox" {lang} />
+  <Header activeNav="toolbox" activeSubNav="tools" {lang} />
   <Main pageTitle={title} pageDesc={description}>
     <div class="space-y-10">
       {

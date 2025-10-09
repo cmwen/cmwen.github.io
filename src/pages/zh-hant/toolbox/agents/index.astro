@@ -17,11 +17,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   title={`${title} | ${SITE.title}`}
   lang={lang}
   alternates={{
-    en: new URL(`/agents/`, Astro.site).href,
+    en: new URL(`/toolbox/agents/`, Astro.site).href,
     "zh-hant": canonical,
   }}
 >
-  <Header activeNav="agents" {lang} />
+  <Header activeNav="toolbox" activeSubNav="agents" {lang} />
   <Main pageTitle={title} pageDesc={description}>
     <AgentsApp client:only="react" />
   </Main>

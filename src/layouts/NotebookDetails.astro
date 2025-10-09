@@ -1,0 +1,70 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Tag from "@components/Tag.astro";
+import Datetime from "@components/Datetime";
+import type { CollectionEntry } from "astro:content";
+import { slugifyStr } from "@utils/slugify";
+
+export interface Props {
+  notebook: CollectionEntry<"notebooks">;
+}
+
+const { notebook } = Astro.props;
+
+const { title, description, pubDatetime, modDatetime, tags } = notebook.data;
+
+const { Content } = await notebook.render();
+
+const ogImageUrl = `/og.png`; // Use default OG image for notebooks
+const ogUrl = new URL(ogImageUrl, Astro.url.origin).href;
+---
+
+<Layout
+  title={title}
+  author="Site"
+  description={description}
+  ogImage={ogUrl}
+  scrollSmooth={true}
+>
+  <Header activeNav="toolbox" activeSubNav="notebooks" />
+  <div class="mx-auto flex w-full max-w-3xl justify-start px-2">
+    <button
+      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      onclick="(() => (history.length === 1) ? window.location = '/toolbox/notebooks' : history.back())()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg"
+        ><path
+          d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"
+        ></path>
+      </svg><span>Back</span>
+    </button>
+  </div>
+  <main id="main-content">
+    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+    <Datetime
+      pubDatetime={pubDatetime}
+      modDatetime={modDatetime}
+      size="lg"
+      className="my-2"
+    />
+    <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl">
+      <Content />
+    </article>
+
+    <ul class="my-8">
+      {tags.map(tag => <Tag tag={slugifyStr(tag)} />)}
+    </ul>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  main {
+    @apply mx-auto w-full max-w-3xl px-4 pb-12;
+  }
+  .post-title {
+    @apply text-2xl font-semibold text-skin-accent;
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+title: "TypeScript Quick Reference"
+description: "Essential TypeScript syntax and patterns for daily use"
+pubDatetime: 2025-01-27T00:00:00Z
+tags: ["typescript", "javascript", "programming"]
+---
+
+# TypeScript Quick Reference
+
+## Basic Types
+
+```typescript
+// Primitives
+let name: string = "Alice";
+let age: number = 30;
+let isActive: boolean = true;
+
+// Arrays
+let numbers: number[] = [1, 2, 3];
+let names: Array<string> = ["Alice", "Bob"];
+
+// Tuples
+let tuple: [string, number] = ["age", 30];
+
+// Any and unknown
+let anything: any = "whatever";
+let mystery: unknown = "something";
+```
+
+## Interfaces and Types
+
+```typescript
+// Interface
+interface User {
+  id: number;
+  name: string;
+  email?: string; // Optional
+}
+
+// Type alias
+type Point = {
+  x: number;
+  y: number;
+};
+
+// Union types
+type ID = string | number;
+
+// Intersection types
+type Employee = User & {
+  department: string;
+};
+```
+
+## Functions
+
+```typescript
+// Function with types
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+// Arrow function
+const multiply = (a: number, b: number): number => a * b;
+
+// Optional parameters
+function greet(name: string, greeting?: string): string {
+  return `${greeting ?? "Hello"}, ${name}!`;
+}
+
+// Default parameters
+function log(message: string, level: string = "info"): void {
+  console.log(`[${level}] ${message}`);
+}
+```
+
+## Generics
+
+```typescript
+// Generic function
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// Generic interface
+interface Container<T> {
+  value: T;
+  getValue: () => T;
+}
+
+// Generic constraints
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+```
+
+## Utility Types
+
+```typescript
+// Partial - makes all properties optional
+type PartialUser = Partial<User>;
+
+// Required - makes all properties required
+type RequiredUser = Required<User>;
+
+// Pick - select specific properties
+type UserPreview = Pick<User, "id" | "name">;
+
+// Omit - exclude specific properties
+type UserWithoutEmail = Omit<User, "email">;
+
+// Record - create object type with specific keys
+type PageInfo = Record<string, { title: string; url: string }>;
+```
+
+## Type Guards
+
+```typescript
+// typeof guard
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+
+// instanceof guard
+class Dog {
+  bark() {
+    console.log("Woof!");
+  }
+}
+
+function isDog(animal: any): animal is Dog {
+  return animal instanceof Dog;
+}
+
+// Custom type guard
+interface Fish {
+  swim: () => void;
+}
+
+interface Bird {
+  fly: () => void;
+}
+
+function isFish(pet: Fish | Bird): pet is Fish {
+  return (pet as Fish).swim !== undefined;
+}
+```
+
+## Async/Await
+
+```typescript
+// Promise types
+async function fetchData(): Promise<string> {
+  const response = await fetch("https://api.example.com/data");
+  return response.text();
+}
+
+// Handling errors
+async function safeFetch(): Promise<string | null> {
+  try {
+    const data = await fetchData();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
+```
+
+## Common Patterns
+
+```typescript
+// Readonly
+interface Config {
+  readonly apiKey: string;
+  readonly endpoint: string;
+}
+
+// Index signatures
+interface Dictionary {
+  [key: string]: any;
+}
+
+// Function overloads
+function format(value: string): string;
+function format(value: number): string;
+function format(value: string | number): string {
+  return String(value);
+}
+
+// Enum
+enum Status {
+  Pending = "PENDING",
+  Active = "ACTIVE",
+  Completed = "COMPLETED",
+}
+```
+
+## Tips
+
+- Use `unknown` instead of `any` when type is truly unknown
+- Enable `strict` mode in tsconfig.json
+- Prefer interfaces for object shapes, types for unions/intersections
+- Use `const` assertions for literal types: `as const`
+- Leverage type inference when possible

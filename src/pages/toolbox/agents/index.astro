@@ -26,7 +26,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
     "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
   }}
 >
-  <Header activeNav="agents" {lang} />
+  <Header activeNav="toolbox" activeSubNav="agents" {lang} />
   <Main pageTitle={title} pageDesc={description}>
     <AgentsApp client:only="react" />
   </Main>

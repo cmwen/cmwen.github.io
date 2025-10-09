@@ -1,0 +1,21 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import NotebookDetails from "@layouts/NotebookDetails.astro";
+
+export interface Props {
+  notebook: CollectionEntry<"notebooks">;
+}
+
+export async function getStaticPaths() {
+  const notebooks = await getCollection("notebooks", ({ data }) => !data.draft);
+
+  return notebooks.map(notebook => ({
+    params: { slug: notebook.slug },
+    props: { notebook },
+  }));
+}
+
+const { notebook } = Astro.props;
+---
+
+<NotebookDetails notebook={notebook} />

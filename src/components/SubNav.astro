@@ -1,0 +1,83 @@
+---
+import { defaultLocale, type Locale } from "@i18n/config";
+
+export interface Props {
+  activeSubNav?: "agents" | "notebooks" | "toolbox-home";
+  lang?: Locale;
+}
+
+const { activeSubNav, lang = defaultLocale } = Astro.props;
+const base = lang === "zh-hant" ? "/zh-hant" : "";
+---
+
+<nav class="subnav" aria-label="Toolbox navigation">
+  <div class="subnav-container">
+    <ul class="subnav-list">
+      <li>
+        <a
+          href={`${base}/toolbox/`}
+          class={activeSubNav === "toolbox-home" ? "active" : ""}
+        >
+          Tools
+        </a>
+      </li>
+      <li>
+        <a
+          href={`${base}/toolbox/agents/`}
+          class={activeSubNav === "agents" ? "active" : ""}
+        >
+          Agents
+        </a>
+      </li>
+      <li>
+        <a
+          href={`${base}/toolbox/notebooks/`}
+          class={activeSubNav === "notebooks" ? "active" : ""}
+        >
+          Notebooks
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .subnav {
+    @apply border-b border-skin-line bg-skin-fill;
+  }
+
+  .subnav-container {
+    @apply mx-auto max-w-3xl px-4;
+  }
+
+  .subnav-list {
+    @apply flex space-x-6 overflow-x-auto py-3;
+    scrollbar-width: thin;
+  }
+
+  .subnav-list li {
+    @apply flex-shrink-0;
+  }
+
+  .subnav-list a {
+    @apply whitespace-nowrap text-sm font-medium text-skin-base/80 hover:text-skin-accent;
+    @apply transition-colors duration-200;
+  }
+
+  .subnav-list a.active {
+    @apply text-skin-accent underline decoration-2 underline-offset-4;
+  }
+
+  /* Mobile scrollbar styling */
+  .subnav-list::-webkit-scrollbar {
+    @apply h-1;
+  }
+
+  .subnav-list::-webkit-scrollbar-track {
+    @apply bg-skin-fill;
+  }
+
+  .subnav-list::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-skin-card;
+  }
+</style>
