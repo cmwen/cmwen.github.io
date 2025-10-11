@@ -276,7 +276,9 @@
 
   // Use the injected variable from define:vars
   const MERMAID_MODULE =
-    window.MERMAID_MODULE_URL || document.currentScript?.dataset.mermaidModule;
+    MERMAID_MODULE_URL ||
+    window.MERMAID_MODULE_URL ||
+    document.currentScript?.dataset.mermaidModule;
 
   /** Initialize Mermaid diagrams in code blocks */
   async function initMermaidDiagrams() {
