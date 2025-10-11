@@ -158,6 +158,16 @@ Images go in `public/` or reference external URLs. Draft posts are excluded from
 
 GitHub Actions builds and deploys to `gh-pages` and runs basic Playwright smoke tests (see `.github/workflows/`). Use `pnpm run cz` for conventional commit messages.
 
+## Automated dependency updates
+
+Dependabot keeps the project evergreen by regularly checking for new releases:
+
+- **npm (pnpm)** dependencies are reviewed weekly so Astro, AstroPaper, and other direct dependencies stay current.
+- **GitHub Actions** workflows are refreshed weekly to pick up the latest CI features and fixes.
+- **Python** tooling for the podcast generator is scanned monthly to balance stability with security updates.
+
+When Dependabot raises a pull request, run `pnpm install` (for JavaScript) or `uv sync` (for Python) locally to verify the lockfiles and execute the relevant test suites before merging.
+
 ## License
 
 MIT
