@@ -4,7 +4,6 @@ author: "Min Wen"
 description: "比較 Sora 2 與 Suno 的技術差異、社群機制、法律風險，以及 Sora 2 若要成為文化平台所需的策略選擇。"
 tags: ["AI 影片", "生成式音樂", "社群平台", "深偽治理"]
 pubDatetime: 2025-10-11T00:00:00.000Z
-slug: "sora-2-vs-suno-why-sora2-might-or-might-not-become-mainstream"
 baseSlug: "sora-2-vs-suno-why-sora2-might-or-might-not-become-mainstream"
 translatedFrom: "sora-2-vs-suno-why-sora2-might-or-might-not-become-mainstream"
 featured: true
