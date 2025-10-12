@@ -2,6 +2,8 @@
 import { LOGO_IMAGE, SITE } from "@config";
 import { messages } from "@i18n/dict";
 import { defaultLocale, type Locale } from "@i18n/config";
+import { Image } from "astro:assets";
+import logoPng from "@assets/logo.png";
 import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
@@ -41,12 +43,25 @@ function otherLocalePath(): string {
       <a href={home} class="logo whitespace-nowrap">
         {
           LOGO_IMAGE.enable ? (
-            <img
-              src={`/assets/${LOGO_IMAGE.svg ? "logo.svg" : "logo.png"}`}
-              alt={SITE.title}
-              width={LOGO_IMAGE.width}
-              height={LOGO_IMAGE.height}
-            />
+            LOGO_IMAGE.svg ? (
+              <img
+                src="/assets/logo.svg"
+                alt={SITE.title}
+                width={LOGO_IMAGE.width}
+                height={LOGO_IMAGE.height}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <Image
+                src={logoPng}
+                alt={SITE.title}
+                width={LOGO_IMAGE.width}
+                height={LOGO_IMAGE.height}
+                layout="constrained"
+                class="logo-image"
+              />
+            )
           ) : (
             SITE.title
           )
