@@ -1,0 +1,46 @@
+---
+const userAgent = Astro.request.headers.get("user-agent") ?? "your device";
+const acceptLanguage = Astro.request.headers.get("accept-language") ?? "";
+const primaryLocale = acceptLanguage.split(",")[0]?.trim();
+// Cache the personalized response briefly to avoid recomputing on every request
+Astro.response.headers.set(
+  "Cache-Control",
+  "public, max-age=0, s-maxage=60, stale-while-revalidate=300"
+);
+---
+
+<section class="user-agent-island" aria-live="polite">
+  <p class="headline">Tailored for you</p>
+  <p>
+    You are browsing from <span class="highlight">{userAgent}</span>
+    {
+      primaryLocale && (
+        <>
+          {" "}
+          with a preferred locale of{" "}
+          <span class="highlight">{primaryLocale}</span>
+        </>
+      )
+    }
+    .
+  </p>
+  <p class="note">
+    This fragment streams after the page shell so the rest of the homepage can
+    stay aggressively cached.
+  </p>
+</section>
+
+<style>
+  .user-agent-island {
+    @apply mt-6 rounded-lg border border-skin-line bg-skin-card px-4 py-3 text-sm text-skin-base shadow;
+  }
+  .headline {
+    @apply mb-1 text-xs font-semibold uppercase tracking-wide text-skin-accent;
+  }
+  .highlight {
+    @apply font-medium text-skin-accent;
+  }
+  .note {
+    @apply mt-2 text-xs text-skin-base opacity-75;
+  }
+</style>
