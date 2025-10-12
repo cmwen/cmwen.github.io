@@ -4,7 +4,7 @@ translatedFrom: en
 baseSlug: copilot-cli-vs-codex-cli
 title: "Copilot CLI vs Codex CLI：終端機 AI 助手全面比較"
 description: "深入比較 GitHub Copilot CLI 與 OpenAI Codex CLI 在終端機整合、遠端代理、自訂程度與文件體驗上的差異。"
-pubDatetime: 2025-10-15T00:00:00.000Z
+pubDatetime: 2025-10-12T00:00:00.000Z
 featured: false
 tags:
   - GitHub Copilot

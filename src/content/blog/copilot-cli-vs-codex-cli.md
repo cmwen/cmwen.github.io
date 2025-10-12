@@ -1,7 +1,7 @@
 ---
 title: "Copilot CLI vs Codex CLI: Terminal AI Assistants Compared"
 description: "A hands-on comparison of GitHub Copilot CLI and OpenAI Codex CLI across shell integration, remote agents, configuration, and documentation experience."
-pubDatetime: 2025-10-15T00:00:00.000Z
+pubDatetime: 2025-10-12T00:00:00.000Z
 slug: copilot-cli-vs-codex-cli
 baseSlug: copilot-cli-vs-codex-cli
 featured: false
