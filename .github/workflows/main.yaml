@@ -58,6 +58,7 @@ jobs:
         run: pnpm build
 
       - name: Deploy
+        if: github.event_name != 'pull_request' || github.actor != 'dependabot[bot]'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
