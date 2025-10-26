@@ -41,8 +41,13 @@ const ogUrl = new URL(ogImageUrl, Astro.url.origin).href;
       </svg><span>Back</span>
     </button>
   </div>
-  <main id="main-content">
-    <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
+    <h1
+      transition:name={slugifyStr(title)}
+      class="post-title text-2xl font-semibold text-skin-accent"
+    >
+      {title}
+    </h1>
     <Datetime
       pubDatetime={pubDatetime}
       modDatetime={modDatetime}
@@ -59,12 +64,3 @@ const ogUrl = new URL(ogImageUrl, Astro.url.origin).href;
   </main>
   <Footer />
 </Layout>
-
-<style>
-  main {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
-  }
-  .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
-  }
-</style>

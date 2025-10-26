@@ -21,6 +21,13 @@ const lang: Locale =
 const t = messages[lang];
 const base = lang === "zh-hant" ? "/zh-hant" : "";
 const home = base ? `${base}/` : "/";
+const navLinkBase =
+  "w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1";
+const navLinkActive =
+  "text-skin-accent underline decoration-wavy decoration-2 underline-offset-4";
+const subNavLinkBase =
+  "block w-full px-4 py-2 text-center text-sm font-medium text-skin-base/70 hover:text-skin-accent sm:px-2 sm:py-1";
+const subNavLinkActive = "text-skin-accent";
 
 function otherLocalePath(): string {
   const other: Locale = lang === "en" ? "zh-hant" : "en";
@@ -37,10 +44,23 @@ function otherLocalePath(): string {
 ---
 
 <header>
-  <a id="skip-to-content" href="#main-content">{t.common.skipToContent}</a>
-  <div class="nav-container">
-    <div class="top-nav-wrap">
-      <a href={home} class="logo whitespace-nowrap">
+  <a
+    id="skip-to-content"
+    class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4"
+    href="#main-content"
+  >
+    {t.common.skipToContent}
+  </a>
+  <div
+    class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row"
+  >
+    <div
+      class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8"
+    >
+      <a
+        href={home}
+        class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl"
+      >
         {
           LOGO_IMAGE.enable ? (
             LOGO_IMAGE.svg ? (
@@ -67,9 +87,12 @@ function otherLocalePath(): string {
           )
         }
       </a>
-      <nav id="nav-menu">
+      <nav
+        id="nav-menu"
+        class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0"
+      >
         <button
-          class="hamburger-menu focus-outline"
+          class="hamburger-menu focus-outline self-end p-2 sm:hidden"
           aria-label="Open Menu"
           aria-expanded="false"
           aria-controls="menu-items"
@@ -84,7 +107,7 @@ function otherLocalePath(): string {
             stroke-width="1.5"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="menu-icon"
+            class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent"
           >
             <line x1="7" y1="12" x2="21" y2="12" class="line"></line>
             <line x1="3" y1="6" x2="21" y2="6" class="line"></line>
@@ -93,35 +116,38 @@ function otherLocalePath(): string {
             <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
           </svg>
         </button>
-        <ul id="menu-items" class="display-none sm:flex">
-          <li>
+        <ul
+          id="menu-items"
+          class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0"
+        >
+          <li class="col-span-2 flex items-center justify-center">
             <a
               href={`${base}/posts/`}
-              class={activeNav === "posts" ? "active" : ""}
+              class={`${navLinkBase} ${activeNav === "posts" ? navLinkActive : ""}`}
             >
               {t.nav.posts}
             </a>
           </li>
-          <li>
+          <li class="col-span-2 flex items-center justify-center">
             <a
               href={`${base}/tags/`}
-              class={activeNav === "tags" ? "active" : ""}
+              class={`${navLinkBase} ${activeNav === "tags" ? navLinkActive : ""}`}
             >
               {t.nav.tags}
             </a>
           </li>
-          <li>
+          <li class="col-span-2 flex items-center justify-center">
             <a
               href={`${base}/profolio/`}
-              class={activeNav === "profolio" ? "active" : ""}
+              class={`${navLinkBase} ${activeNav === "profolio" ? navLinkActive : ""}`}
             >
               {t.nav.profolio}
             </a>
           </li>
-          <li>
+          <li class="col-span-2 flex items-center justify-center">
             <a
               href={`${base}/toolbox/`}
-              class={activeNav === "toolbox" ? "active" : ""}
+              class={`${navLinkBase} ${activeNav === "toolbox" ? navLinkActive : ""}`}
             >
               {t.nav.toolbox}
             </a>
@@ -129,28 +155,28 @@ function otherLocalePath(): string {
           <!-- Toolbox Subnav - shown when toolbox is active -->
           {
             activeNav === "toolbox" && (
-              <li class="toolbox-subnav">
-                <ul class="subnav-list">
-                  <li>
+              <li class="toolbox-subnav col-span-2 flex w-full items-center justify-center border-t border-skin-line pt-2 sm:col-span-1 sm:border-0 sm:pt-0">
+                <ul class="subnav-list flex flex-col gap-1 sm:mx-2 sm:flex-row sm:gap-4 sm:border-l sm:border-skin-line sm:pl-4">
+                  <li class="w-full sm:w-auto">
                     <a
                       href={`${base}/toolbox/`}
-                      class={activeSubNav === "tools" ? "active" : ""}
+                      class={`${subNavLinkBase} ${activeSubNav === "tools" ? subNavLinkActive : ""}`}
                     >
                       Tools
                     </a>
                   </li>
-                  <li>
+                  <li class="w-full sm:w-auto">
                     <a
                       href={`${base}/toolbox/agents/`}
-                      class={activeSubNav === "agents" ? "active" : ""}
+                      class={`${subNavLinkBase} ${activeSubNav === "agents" ? subNavLinkActive : ""}`}
                     >
                       Agents
                     </a>
                   </li>
-                  <li>
+                  <li class="w-full sm:w-auto">
                     <a
                       href={`${base}/toolbox/notebooks/`}
-                      class={activeSubNav === "notebooks" ? "active" : ""}
+                      class={`${subNavLinkBase} ${activeSubNav === "notebooks" ? subNavLinkActive : ""}`}
                     >
                       Notebooks
                     </a>
@@ -159,26 +185,26 @@ function otherLocalePath(): string {
               </li>
             )
           }
-          <li>
+          <li class="col-span-2 flex items-center justify-center">
             <a
               href={`${base}/about/`}
-              class={activeNav === "about" ? "active" : ""}
+              class={`${navLinkBase} ${activeNav === "about" ? navLinkActive : ""}`}
             >
               {t.nav.about}
             </a>
           </li>
-          <li>
+          <li class="col-span-2 flex items-center justify-center">
             <LinkButton
               href={`${base}/search/`}
-              className={`focus-outline p-3 sm:p-1 ${
-                activeNav === "search" ? "active" : ""
-              } flex`}
+              className={`${navLinkBase} focus-outline flex ${
+                activeNav === "search" ? navLinkActive : ""
+              }`}
               ariaLabel={t.nav.searchAria}
               title={t.nav.searchAria}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                class="scale-125 sm:scale-100"
+                class={`scale-125 sm:scale-100 ${activeNav === "search" ? "fill-skin-accent" : "fill-skin-base"}`}
                 ><path
                   d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
                 ></path>
@@ -188,28 +214,36 @@ function otherLocalePath(): string {
           </li>
           {
             SITE.lightAndDarkMode && (
-              <li>
+              <li class="col-span-1 flex items-center justify-center">
                 <button
                   id="theme-btn"
-                  class="focus-outline"
+                  class="focus-outline p-3 sm:p-1"
                   title="Toggles light & dark"
                   aria-label="auto"
                   aria-live="polite"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    id="moon-svg"
+                    class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100"
+                  >
                     <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" />
                   </svg>
-                  <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    id="sun-svg"
+                    class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100"
+                  >
                     <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" />
                   </svg>
                 </button>
               </li>
             )
           }
-          <li>
+          <li class="col-span-1 flex items-center justify-center">
             <a
               href={otherLocalePath()}
-              class="px-2 py-1 hover:text-skin-accent"
+              class="w-auto px-2 py-1 text-center hover:text-skin-accent"
             >
               {lang === "en" ? "中文" : "EN"}
             </a>
@@ -222,107 +256,22 @@ function otherLocalePath(): string {
 </header>
 
 <style>
-  #skip-to-content {
-    @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
-  }
-  .nav-container {
-    @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
-  }
-  .top-nav-wrap {
-    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
-  }
-  .logo {
-    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
-  }
-  .hamburger-menu {
-    @apply self-end p-2 sm:hidden;
-  }
-  .hamburger-menu svg {
-    @apply h-6 w-6 scale-125 fill-skin-base;
-  }
-
-  nav {
-    @apply flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0;
-  }
-  nav ul {
-    @apply mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:gap-x-5 sm:gap-y-0;
-  }
-  nav ul li {
-    @apply col-span-2 flex items-center justify-center;
-  }
-  nav ul li a {
-    @apply w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1;
-  }
-  nav ul li:nth-last-child(2) a {
-    @apply w-auto;
-  }
-  nav ul li:nth-last-child(1),
-  nav ul li:nth-last-child(2) {
-    @apply col-span-1;
-  }
-  nav a.active {
-    @apply underline decoration-wavy decoration-2 underline-offset-4;
-  }
-  nav a.active svg {
-    @apply fill-skin-accent;
-  }
-
-  nav button {
-    @apply p-1;
-  }
-  nav button svg {
-    @apply h-6 w-6 fill-skin-base hover:fill-skin-accent;
-  }
-  #theme-btn {
-    @apply p-3 sm:p-1;
-  }
-  #theme-btn svg {
-    @apply scale-125 hover:rotate-12 sm:scale-100;
-  }
-
   .menu-icon line {
-    @apply transition-opacity duration-75 ease-in-out;
+    transition-property: opacity;
+    transition-duration: 75ms;
+    transition-timing-function: ease-in-out;
   }
+
   .menu-icon .close {
     opacity: 0;
   }
+
   .menu-icon.is-active .line {
-    @apply opacity-0;
+    opacity: 0;
   }
+
   .menu-icon.is-active .close {
-    @apply opacity-100;
-  }
-
-  /* Toolbox Subnav Styles */
-  .toolbox-subnav {
-    @apply col-span-2 w-full border-t border-skin-line pt-2 sm:col-span-1 sm:border-0 sm:pt-0;
-  }
-
-  .subnav-list {
-    @apply flex flex-col gap-1 sm:flex-row sm:gap-3;
-  }
-
-  .subnav-list li {
-    @apply w-full sm:w-auto;
-  }
-
-  .subnav-list a {
-    @apply block w-full px-4 py-2 text-center text-sm font-medium text-skin-base/70 hover:text-skin-accent sm:px-2 sm:py-1;
-  }
-
-  .subnav-list a.active {
-    @apply text-skin-accent;
-  }
-
-  /* Desktop: Show subnav inline */
-  @media (min-width: 640px) {
-    nav ul li.toolbox-subnav {
-      @apply col-span-2 flex items-center justify-center;
-    }
-
-    .toolbox-subnav .subnav-list {
-      @apply mx-2 flex-row gap-4 border-l border-skin-line pl-4;
-    }
+    opacity: 1;
   }
 </style>
 
