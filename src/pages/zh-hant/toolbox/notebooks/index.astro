@@ -30,10 +30,12 @@ const lang = "zh-hant" as const;
 
 <Layout title="筆記本">
   <Header activeNav="toolbox" activeSubNav="notebooks" {lang} />
-  <main id="main-content">
-    <section id="hero">
-      <h1>筆記本</h1>
-      <p>快速參考備忘單和筆記。這些內容會經常更新並可能變更。</p>
+  <main id="main-content" class="mx-auto w-full max-w-3xl px-4 pb-12">
+    <section id="hero" class="pb-6 pt-8">
+      <h1 class="my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl">
+        筆記本
+      </h1>
+      <p class="my-2">快速參考備忘單和筆記。這些內容會經常更新並可能變更。</p>
     </section>
 
     <Hr />
@@ -74,18 +76,3 @@ const lang = "zh-hant" as const;
 
   <Footer />
 </Layout>
-
-<style>
-  #hero {
-    @apply pb-6 pt-8;
-  }
-  #hero h1 {
-    @apply my-4 inline-block text-3xl font-bold sm:my-8 sm:text-5xl;
-  }
-  #hero p {
-    @apply my-2;
-  }
-  #main-content {
-    @apply mx-auto w-full max-w-3xl px-4 pb-12;
-  }
-</style>

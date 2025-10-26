@@ -75,6 +75,8 @@ export default defineConfig({
     command: 'pnpm -s build && pnpm -s preview --port 4321',
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
-    timeout: 120_000,
+    timeout: process.env.PLAYWRIGHT_WEB_SERVER_TIMEOUT
+      ? Number(process.env.PLAYWRIGHT_WEB_SERVER_TIMEOUT)
+      : 120_000,
   },
 });

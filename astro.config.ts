@@ -1,5 +1,5 @@
 import { defineConfig, envField } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwind from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import remarkToc from "remark-toc";
@@ -24,14 +24,7 @@ export default defineConfig({
       }),
     },
   },
-  integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
-    react(),
-    mdx(),
-    sitemap(),
-  ],
+  integrations: [react(), mdx(), sitemap()],
   markdown: {
     remarkPlugins: [
       remarkToc,
@@ -48,6 +41,7 @@ export default defineConfig({
     },
   },
   vite: {
+    plugins: [tailwind()],
     resolve: {
       // Ensure a single React instance between renderer and components
       dedupe: ["react", "react-dom"],

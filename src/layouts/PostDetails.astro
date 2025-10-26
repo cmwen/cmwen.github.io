@@ -93,10 +93,13 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
       </svg><span>{lang === "zh-hant" ? "返回" : "Go back"}</span>
     </button>
   </div>
-  <main id="main-content" class="post-layout">
+  <main
+    id="main-content"
+    class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"
+  >
     <!-- Sidebar that moves to top on mobile -->
-    <aside class="post-sidebar">
-      <div class="sidebar-sticky">
+    <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96">
+      <div class="sidebar-sticky lg:sticky lg:top-24">
         <AudioPlayer client:only="react" slug={post.slug} lang={lang} />
         {
           Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (
@@ -111,8 +114,13 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
         }
       </div>
     </aside>
-    <div class="post-content">
-      <h1 transition:name={slugifyStr(title)} class="post-title">{title}</h1>
+    <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl">
+      <h1
+        transition:name={slugifyStr(title)}
+        class="post-title text-2xl font-semibold text-skin-accent"
+      >
+        {title}
+      </h1>
       <Datetime
         pubDatetime={pubDatetime}
         modDatetime={modDatetime}
@@ -155,68 +163,6 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
   </main>
   <Footer />
 </Layout>
-
-<style>
-  main {
-    @apply mx-auto w-full max-w-7xl px-4 pb-12;
-  }
-
-  .post-layout {
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (min-width: 1024px) {
-    .post-layout {
-      flex-direction: row;
-      gap: 2rem;
-    }
-  }
-
-  .post-content {
-    flex: 1;
-    /* On mobile, content comes after sidebar */
-    order: 2;
-  }
-
-  @media (min-width: 1024px) {
-    .post-content {
-      max-width: 48rem;
-      /* On desktop, content comes first (left side) */
-      order: 1;
-    }
-  }
-
-  .post-sidebar {
-    /* On mobile, sidebar appears first (at top) */
-    order: 1;
-  }
-
-  @media (min-width: 1024px) {
-    .post-sidebar {
-      width: 20rem;
-      /* On desktop, sidebar comes second (right side) */
-      order: 2;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .post-sidebar {
-      width: 24rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .sidebar-sticky {
-      position: sticky;
-      top: 6rem;
-    }
-  }
-
-  .post-title {
-    @apply text-2xl font-semibold text-skin-accent;
-  }
-</style>
 
 <script
   is:inline
