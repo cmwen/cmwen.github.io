@@ -11,6 +11,52 @@ updates:
         patterns:
           - "astro*"
           - "@astrojs/*"
+      react-stack:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "@astrojs/tailwind"
+          - "prettier-plugin-tailwindcss"
+      typescript:
+        patterns:
+          - "typescript"
+          - "tsx"
+          - "@types/*"
+      linting:
+        patterns:
+          - "eslint"
+          - "eslint-*"
+          - "@typescript-eslint/*"
+          - "astro-eslint-parser"
+      formatting:
+        patterns:
+          - "prettier"
+          - "prettier-plugin-*"
+      testing:
+        patterns:
+          - "@playwright/test"
+      commit-tooling:
+        patterns:
+          - "husky"
+          - "lint-staged"
+          - "commitizen"
+          - "cz-*"
+      content-pipeline:
+        patterns:
+          - "remark-*"
+          - "rss"
+          - "@types/rss"
+          - "satori"
+          - "@resvg/*"
+          - "fuse.js"
+          - "github-slugger"
+          - "mermaid"
+          - "dotenv"
     commit-message:
       prefix: "chore"
       include: "scope"
