@@ -32,8 +32,12 @@
   body {
     @apply flex min-h-[100svh] flex-col bg-skin-fill font-mono text-skin-base;
   }
-  body::selection {
-    background-color: rgb(var(--color-accent) / 0.7);
+  ::selection {
+    background-color: rgba(var(--color-accent), 0.45);
+    color: rgb(var(--color-text-base));
+  }
+  html[data-theme="dark"] ::selection {
+    background-color: rgba(var(--color-accent), 0.5);
     color: rgb(var(--color-fill));
   }
   section,
@@ -201,5 +205,21 @@
   .focus-outline:focus-visible {
     text-decoration: none;
     outline-style: dashed;
+  }
+}
+
+@layer utilities {
+  html[data-theme="dark"] .prose {
+    --tw-prose-body: rgb(var(--color-text-base));
+    --tw-prose-headings: rgb(var(--color-text-base));
+    --tw-prose-bold: rgb(var(--color-text-base));
+    --tw-prose-links: rgb(var(--color-text-base));
+    --tw-prose-links-hover: rgb(var(--color-accent));
+    --tw-prose-captions: rgb(var(--color-text-base) / 0.7);
+  }
+  html[data-theme="dark"]
+    .prose
+    :where(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+    color: rgb(var(--color-text-base));
   }
 }
