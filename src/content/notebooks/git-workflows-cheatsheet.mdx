@@ -1,0 +1,80 @@
+---
+title: "Git Workflows Cheatsheet"
+description: "Quick reference for worktrees, squashing commits, and cherry-picking changes across branches."
+pubDatetime: 2025-02-10T00:00:00Z
+tags: ["git", "cheatsheet", "workflow"]
+---
+
+# Git Workflows Cheatsheet
+
+Fast reminders for daily Git housekeeping: creating isolated worktrees, tidying history with squashed commits, and moving patches with cherry-pick.
+
+## Worktrees
+
+- `git worktree add ../feature-main feature/main` – create a sibling checkout at `../feature-main` from `feature/main` without touching your primary working tree.
+- `git worktree list --porcelain` – enumerate worktrees with paths, branches, and linked commits (great for scripts).
+- `git worktree remove ../feature-main` – delete a finished worktree safely after cleaning its working directory.
+- `git worktree prune --verbose` – clear out worktree metadata for directories removed out-of-band.
+
+```bash
+# Typical flow
+git fetch origin
+git worktree add ../bugfix-login origin/bugfix/login
+cd ../bugfix-login
+# ... work, commit, push ...
+cd -
+git worktree remove ../bugfix-login
+```
+
+**Tips**
+
+- Worktrees share the same `.git` directory, so hooks and config remain consistent.
+- Keep worktree paths short and descriptive; prefix with the branch type (`feature-`, `hotfix-`, etc.).
+
+## Squashing Commits
+
+### Interactive rebase (preferred)
+
+```bash
+git fetch origin
+git rebase -i origin/main
+# mark commits as `squash` or `fixup`
+git push --force-with-lease
+```
+
+- Use `s` (squash) to merge commit messages or `f` (fixup) to keep the parent message.
+- `--autosquash` pairs naturally with `git commit --fixup=<hash>`.
+
+### Merge squash for feature branch handoff
+
+```bash
+git checkout main
+git pull origin main
+git merge --squash feature/login-audit
+git commit -m "feat: add login audit trail"
+```
+
+- Produces a single commit without preserving the feature branch; remember to delete the source branch afterward.
+
+## Cherry-picking Commits
+
+- `git cherry-pick <hash>` – apply a single commit onto the current branch.
+- `git cherry-pick A^..B` – apply a range inclusive of commit `A`’s parent through `B`.
+- `git cherry-pick --no-commit <hash>` – stage the changes without committing; useful for bundling multiple commits into one.
+
+```bash
+git checkout release/2025.02
+git cherry-pick f2c1d7e
+# resolve conflicts if any, then
+git cherry-pick --continue
+```
+
+**Conflict handling**
+
+- If a cherry-pick goes sideways, run `git cherry-pick --abort` to return to the pre-pick state.
+- Re-run with `--strategy-option theirs` when the target branch should win on conflicts.
+
+## Related Reads
+
+- `man git-worktree`, `man git-rebase`, and `man git-cherry-pick` for exhaustive flags.
+- Consider aliases in `~/.gitconfig` (`wta`, `gps`, `gcp`) to keep muscle memory sharp.

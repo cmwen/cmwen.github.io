@@ -12,7 +12,8 @@ const skinUtilities = plugin(({ addUtilities }) => {
     "card-muted": "--color-card-muted",
     line: "--color-border",
     border: "--color-border",
-    muted: "--color-card-muted",
+    muted: "--color-text-muted",
+    "surface-muted": "--color-card-muted",
   };
 
   const toColor = (variable: string) => `rgb(var(${variable}))`;

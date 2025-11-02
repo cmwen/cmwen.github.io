@@ -36,21 +36,26 @@ export const TOOLBOX: ToolboxSection[] = [
         tags: ["browser", "firefox", "productivity"],
       },
       {
-        name: "Dia",
-        why: "AI-first browser: chat with the current page, summarize YouTube, skills (predefined prompts), access multiple tabs.",
-        links: [{ label: "Website", href: "https://www.diabrowser.com/" }],
-        tags: ["browser", "ai", "youtube", "prompts"],
+        name: "OpenAI Atlas",
+        why: "Current AI-native browser I rely on daily; blends browsing with GPT-5 agents, tab memory, and automation.",
+        links: [{ label: "Website", href: "https://atlas.openai.com/" }],
+        tags: ["browser", "ai", "automation"],
         current: true,
       },
       {
+        name: "Dia",
+        why: "AI-first browser: chat with the current page, summarize YouTube, skills (predefined prompts), access multiple tabs. Paused use after switching to Atlas.",
+        links: [{ label: "Website", href: "https://www.diabrowser.com/" }],
+        tags: ["browser", "ai", "youtube", "prompts"],
+      },
+      {
         name: "Comet",
-        why: "AI-powered browser from Perplexity. Similar to Dia plus UI automation that can take over to do tasks. Currently using; exploring more.",
+        why: "AI-powered browser from Perplexity. Similar to Dia plus UI automation that can take over to do tasks. On hold while Atlas is my primary.",
         links: [
           { label: "Website", href: "https://www.perplexity.ai/comet" },
           { label: "Perplexity", href: "https://www.perplexity.ai/" },
         ],
         tags: ["browser", "ai", "automation"],
-        current: true,
       },
       {
         name: "Edge",

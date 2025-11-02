@@ -7,6 +7,7 @@
     /* light theme - slightly softened white with green accent */
     --color-fill: 245, 251, 240; /* slightly off-white */
     --color-text-base: 40, 39, 40;
+    --color-text-muted: 88, 96, 92;
     --color-accent: 16, 185, 129; /* emerald / green */
     --color-card: 236, 251, 240;
     --color-card-muted: 214, 238, 220;
@@ -16,6 +17,7 @@
     /* dark theme - darker background and green accent */
     --color-fill: 12, 16, 22; /* much darker page background */
     --color-text-base: 236, 241, 244;
+    --color-text-muted: 196, 206, 208;
     --color-accent: 16, 185, 129; /* emerald / green */
     --color-card: 24, 30, 40;
     --color-card-muted: 36, 60, 48;
