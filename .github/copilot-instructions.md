@@ -15,6 +15,9 @@
   - llmKeyIdeas?: array of short phrases (3–8 items). Purpose: short, discoverable topics that downstream LLMs or chat UIs can use as suggested follow-up questions, search keywords, or conversation starters.
   - pubDatetime: Date; modDatetime?: Date (sorting prefers modDatetime)
   - ogImage?: image|string (>=1200x630), canonicalURL?: string
+  - **CRITICAL**: pubDatetime must be in past (UTC). Future dates filtered by `postFilter` until `SITE.scheduledPostMargin` (~15min) passes.
+  - **YAML formatting**: Use single-line arrays `["tag1", "tag2"]` not multi-line. No trailing commas. Malformed YAML breaks content loader.
+  - **Slug collisions**: Translated posts should omit explicit `slug` field, use only `baseSlug` + `translatedFrom` to avoid routing ambiguity.
 - Scheduled publishing: `postFilter` hides drafts and future posts until `SITE.scheduledPostMargin` is passed.
 - Path aliases (TS/Vite): `@config`, `@components/*`, `@utils/*`, `@layouts/*`, `@i18n/*`, etc. (see `tsconfig.json`).
 
@@ -48,6 +51,7 @@
 - RSS feed generation: Language-specific feeds for podcast apps (`public/podcasts/{lang}/feed.xml`).
 - Commands: `uv run podcast-generate --posts "slug" --force` or `pnpm podcast:generate` (wrapper).
 - Output: MP3 files in `public/podcasts/`, automatic chunking for long content, timezone-aware publication dates.
+- **Troubleshooting**: If posts not found by slug, verify frontmatter validity (use `BlogParser._parse_post_file()` directly or check dev server collection).
 
 ## Build, test, CI
 
@@ -60,7 +64,14 @@
 - `astro.config.ts`: Tailwind (no base styles), React, Sitemap, Shiki theme, remark plugins (TOC + collapsible), React dedupe, exclude `@resvg/resvg-js` from optimizeDeps.
 - `src/config.ts`: `SITE` (title, website, postPerPage, scheduledPostMargin), `LOCALE`, `SOCIALS`.
 
-Examples to follow
+## Examples to follow
 
 - Use `baseSlug` when linking across locales (e.g., Card hrefs, RSS items) and add `alternates` for canonical/locale URLs.
 - To add a new post: put `.md` under `src/content/blog/` with the schema above; omit `ogImage` to auto-generate per-post PNG.
+- When creating translations: EN file gets `baseSlug: "shared-slug"`, ZH file gets `baseSlug: "shared-slug"` + `translatedFrom: "shared-slug"` (no explicit `slug` field).
+
+## Common pitfalls
+
+- **Post not appearing**: Check `pubDatetime` is past (UTC), YAML arrays valid, no slug collision between locales.
+- **Podcast generator "Found 0 posts"**: Verify frontmatter passes Astro schema validation; check dev server `/posts/` to confirm post loads.
+- **Hydration mismatch (React)**: Initial state must be deterministic; use `useEffect` for localStorage/URL reads (see `AgentsApp.tsx`).
