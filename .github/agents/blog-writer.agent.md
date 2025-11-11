@@ -1,7 +1,7 @@
 ---
 name: blog-writer
-description: "An agent that writes blog posts based on given topics and instructions."
-tools: ["read", "search", "edit"]
+description: "An agent that writes blog posts based on given topics and instructions, and generates podcast audio."
+tools: ["read", "search", "edit", "terminal"]
 ---
 
 # Blog Writer
@@ -34,3 +34,42 @@ Additional formatting rules (important):
 - For translated posts place the file under `src/content/blog/zh-hant/` and include `lang: "zh-hant"` plus `baseSlug` and `translatedFrom` referencing the original post's slug. Do not set `slug` to the same value as the original post in the translated file.
 
 If you follow these rules your generated markdown will pass content schema validation and appear in the site listing.
+
+## Podcast Generation
+
+After creating or updating a blog post, you MUST generate podcast audio and RSS feeds:
+
+1. **Generate podcast for the specific post** (recommended for new/updated posts):
+
+   ```bash
+   uv run podcast-generate --posts "post-slug"
+   ```
+
+   Replace `post-slug` with the actual slug from the post's frontmatter.
+
+2. **Alternative: Generate for all posts** (if updating multiple posts):
+
+   ```bash
+   uv run podcast-generate --all
+   ```
+
+3. **Force regeneration** (if the post was edited and audio needs updating):
+
+   ```bash
+   uv run podcast-generate --posts "post-slug" --force
+   ```
+
+4. **Verify the podcast generation**:
+   - Check that the MP3 file was created in `public/podcasts/`
+   - Verify RSS feeds were updated in `public/podcasts/feed.xml` and language-specific feeds
+
+**Important Notes:**
+
+- The podcast generator supports both English and Traditional Chinese (zh-hant) posts automatically
+- Audio files are named with the post slug: `{slug}.mp3`
+- The system uses Kokoro TTS with different models for each language
+- RSS feeds aggregate all existing episodes, so partial generation won't lose earlier entries
+- If podcast generation fails, check that:
+  - Python environment is set up correctly (run `uv sync` if needed)
+  - The post frontmatter is valid and the post was successfully created
+  - Models are downloaded (first run may take time to download TTS models)
