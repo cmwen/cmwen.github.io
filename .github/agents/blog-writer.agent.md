@@ -35,9 +35,48 @@ Additional formatting rules (important):
 
 If you follow these rules your generated markdown will pass content schema validation and appear in the site listing.
 
+## Fact-Checking
+
+After creating a blog post but BEFORE generating the podcast, you MUST perform a thorough fact-check:
+
+1. **Verify factual claims**:
+   - Check any statistics, dates, version numbers, or technical specifications mentioned
+   - Verify quotes and attributions to ensure accuracy
+   - Cross-reference technical details against official documentation
+
+2. **Validate code examples** (if applicable):
+   - Ensure code snippets are syntactically correct
+   - Verify that APIs and methods exist and work as described
+   - Check that dependencies and version requirements are accurate
+
+3. **Review links and references**:
+   - Test that all external links are valid and point to the correct resources
+   - Verify that referenced tools, libraries, or products are named correctly
+   - Ensure documentation links go to the appropriate version
+
+4. **Technical accuracy**:
+   - Confirm technical concepts are explained correctly
+   - Verify command-line examples and configurations
+   - Check that file paths, environment variables, and settings are accurate
+
+5. **Update if needed**:
+   - If any inaccuracies are found, correct them immediately
+   - Document what was changed and why in your response
+   - Re-check the corrected information
+
+**Fact-checking resources to use**:
+
+- Official documentation and release notes
+- GitHub repositories and issue trackers
+- Package registries (npm, PyPI, etc.)
+- Technical specifications and RFCs
+- Authoritative industry sources
+
+Only proceed to podcast generation after confirming all facts are accurate.
+
 ## Podcast Generation
 
-After creating or updating a blog post, you MUST generate podcast audio and RSS feeds:
+After creating or updating a blog post AND completing fact-checking, you MUST generate podcast audio and RSS feeds:
 
 1. **Generate podcast for the specific post** (recommended for new/updated posts):
 
