@@ -35,7 +35,9 @@ type Dict = {
       pwa: string;
       cli: string;
       mcp: string;
-      opensource: string;
+      extensions: string;
+      android: string;
+      webapps: string;
     };
     projects: {
       japaneseLearningSuffix: string;
@@ -50,8 +52,12 @@ type Dict = {
       minKbDescription: string;
       minN8nSuffix: string;
       minN8nDescription: string;
-      antennapodTitle: string;
-      antennapodDescription: string;
+      ownBrowseTitle: string;
+      ownBrowseDescription: string;
+      quickLogTitle: string;
+      quickLogDescription: string;
+      gamifyTaxTitle: string;
+      gamifyTaxDescription: string;
     };
     tech: {
       pwaPwa: string;
@@ -105,7 +111,9 @@ export const messages: Record<Locale, Dict> = {
         pwa: "PWA",
         cli: "CLI Applications",
         mcp: "MCP Servers",
-        opensource: "Personalized Opensource Projects",
+        extensions: "Browser Extensions",
+        android: "Android Apps",
+        webapps: "Web Applications",
       },
       projects: {
         japaneseLearningSuffix: "Japanese Learning (Kanji-Go)",
@@ -126,9 +134,15 @@ export const messages: Record<Locale, Dict> = {
         minN8nSuffix: "@cmwen/min-n8n-mcp — n8n MCP Server",
         minN8nDescription:
           "A TypeScript-based MCP server that exposes n8n workflow management as tools for AI agents. Provides STDIO and HTTP modes with robust error handling and typed schemas.",
-        antennapodTitle: "AntennaPod — Open Source Podcast Manager",
-        antennapodDescription:
-          "A personalized fork of the popular open-source Android podcast player. Contributing custom features and improvements while maintaining compatibility with the main project.",
+        ownBrowseTitle: "Own-Browse — Privacy-First Browser Extension",
+        ownBrowseDescription:
+          "A browser extension that enhances your browsing experience with privacy-focused features and customizable shortcuts. Built with modern web extension APIs for cross-browser compatibility.",
+        quickLogTitle: "Min Quick Log — Fast Mobile Logging",
+        quickLogDescription:
+          "A lightweight Android app for quick note-taking and time logging on the go. Designed for speed and simplicity with minimal UI and instant capture.",
+        gamifyTaxTitle: "Gamify Tax Deduction — Gamified Receipt Tracker",
+        gamifyTaxDescription:
+          "An Android app designed to encourage users to keep receipts for tax deductions through gamification. Makes tax documentation engaging with game mechanics and rewards.",
       },
       tech: {
         pwaPwa: "PWA/offline-first; GitHub Pages deployment",
@@ -180,7 +194,9 @@ export const messages: Record<Locale, Dict> = {
         pwa: "PWA 應用",
         cli: "CLI 應用程式",
         mcp: "MCP 伺服器",
-        opensource: "個人化開源專案",
+        extensions: "瀏覽器擴充功能",
+        android: "Android 應用程式",
+        webapps: "網頁應用程式",
       },
       projects: {
         japaneseLearningSuffix: "日語學習 (Kanji-Go)",
@@ -201,9 +217,15 @@ export const messages: Record<Locale, Dict> = {
         minN8nSuffix: "@cmwen/min-n8n-mcp — n8n MCP 伺服器",
         minN8nDescription:
           "一個基於 TypeScript 的 MCP 伺服器，將 n8n 工作流程管理作為工具提供給 AI 代理程式。提供 STDIO 和 HTTP 模式，具備強健的錯誤處理和型別結構描述。",
-        antennapodTitle: "AntennaPod — 開源播客管理器",
-        antennapodDescription:
-          "流行開源 Android 播客播放器的個人化分支。在保持與主專案相容的同時，貢獻自訂功能和改進。",
+        ownBrowseTitle: "Own-Browse — 注重隱私的瀏覽器擴充功能",
+        ownBrowseDescription:
+          "一個瀏覽器擴充功能，透過注重隱私的功能和可自訂快捷鍵來增強您的瀏覽體驗。使用現代 Web 擴充 API 建構，支援跨瀏覽器相容性。",
+        quickLogTitle: "Min Quick Log — 快速行動記錄",
+        quickLogDescription:
+          "一個輕量級 Android 應用程式，用於在行動中快速記錄筆記和時間。專為速度和簡潔而設計，具有最小化 UI 和即時捕捉功能。",
+        gamifyTaxTitle: "Gamify Tax Deduction — 遊戲化收據追蹤器",
+        gamifyTaxDescription:
+          "一個 Android 應用程式，透過遊戲化設計鼓勵使用者保留收據以進行稅務扣除。透過遊戲機制和獎勵系統，讓稅務文件記錄變得有趣。",
       },
       tech: {
         pwaPwa: "PWA/離線優先；GitHub Pages 部署",

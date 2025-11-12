@@ -323,38 +323,111 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
     <section class="mt-8 space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">
-        {t.profolio.sections.opensource}
+        {t.profolio.sections.extensions}
       </h2>
       <div class="space-y-4">
         <div class="rounded-md border border-skin-line bg-skin-card p-4">
           <h3 class="text-lg font-semibold">
             <a
               class="text-skin-accent hover:underline"
-              href="https://github.com/cmwen/AntennaPod"
+              href="https://github.com/cmwen/own-browse"
               target="_blank"
               rel="noopener noreferrer"
             >
-              {t.profolio.projects.antennapodTitle}
+              {t.profolio.projects.ownBrowseTitle}
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            {t.profolio.projects.antennapodDescription}
+            {t.profolio.projects.ownBrowseDescription}
           </p>
           <div class="mt-2 text-sm">
             <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
-              <li>Android (Kotlin/Java)</li>
-              <li>Media playback, RSS feed parsing</li>
-              <li>Open-source contribution and personalization</li>
+              <li>JavaScript, Web Extensions API</li>
+              <li>Cross-browser compatibility (Chrome, Firefox, Edge)</li>
+              <li>Privacy-focused features</li>
             </ul>
           </div>
           <p class="mt-2 text-sm">
             {t.toolbox.common.source}
             <a
               class="text-skin-accent hover:underline"
-              href="https://github.com/cmwen/AntennaPod"
+              href="https://github.com/cmwen/own-browse"
               target="_blank"
-              rel="noopener noreferrer">github.com/cmwen/AntennaPod</a
+              rel="noopener noreferrer">github.com/cmwen/own-browse</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.profolio.sections.android}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-quick-log-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.profolio.projects.quickLogTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.profolio.projects.quickLogDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Android (Kotlin)</li>
+              <li>Material Design UI</li>
+              <li>Local storage and quick capture</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-quick-log-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/min-quick-log-app</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/gamify-tax-deduction"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.profolio.projects.gamifyTaxTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.profolio.projects.gamifyTaxDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Android (Kotlin)</li>
+              <li>Gamification mechanics and rewards</li>
+              <li>Receipt capture and tax tracking</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/gamify-tax-deduction"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/gamify-tax-deduction</a
             >
           </p>
         </div>
