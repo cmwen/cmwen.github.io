@@ -1,0 +1,976 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/multi-agent-pattern-vscode-autogen-sdlc/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/multi-agent-pattern-vscode-autogen-sdlc/"><meta name="generator" content="Astro v5.15.5"><!-- General Meta Tags --><title>超越 VSCode 的多代理系統：一種模式浮現 | Min Wen</title><meta name="title" content="超越 VSCode 的多代理系統：一種模式浮現 | Min Wen"><meta name="description" content="VSCode 自訂代理、AutoGen 與 Agentic SDLC 共享相同架構——專門化代理與結構化交接。探討為何這種模式正成為 AI 編排的標準。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="超越 VSCode 的多代理系統：一種模式浮現 | Min Wen"><meta property="og:description" content="VSCode 自訂代理、AutoGen 與 Agentic SDLC 共享相同架構——專門化代理與結構化交接。探討為何這種模式正成為 AI 編排的標準。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/"><meta property="og:image" content="https://cmwen.github.io/posts/%E8%B6%85%E8%B6%8A-vscode-%E7%9A%84%E5%A4%9A%E4%BB%A3%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%80%E7%A8%AE%E6%A8%A1%E5%BC%8F%E6%B5%AE%E7%8F%BE.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2025-11-13T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/"><meta property="twitter:title" content="超越 VSCode 的多代理系統：一種模式浮現 | Min Wen"><meta property="twitter:description" content="VSCode 自訂代理、AutoGen 與 Agentic SDLC 共享相同架構——專門化代理與結構化交接。探討為何這種模式正成為 AI 編排的標準。"><meta property="twitter:image" content="https://cmwen.github.io/posts/%E8%B6%85%E8%B6%8A-vscode-%E7%9A%84%E5%A4%9A%E4%BB%A3%E7%90%86%E7%B3%BB%E7%B5%B1%E4%B8%80%E7%A8%AE%E6%A8%A1%E5%BC%8F%E6%B5%AE%E7%8F%BE.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.elfUsALL.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/about.CljJ0eGQ.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+:where([data-astro-image]){object-fit:var(--fit);object-position:var(--pos);height:auto}:where([data-astro-image=full-width]){width:100%}:where([data-astro-image=constrained]){max-width:100%}
+</style><style>[data-astro-transition-scope="astro-wi2w6ztr-1"] { view-transition-name: \8D85\8D8A-vscode-\7684\591A\4EE3\7406\7CFB\7D71\4E00\7A2E\6A21\5F0F\6D6E\73FE; }@layer astro { ::view-transition-old(\8D85\8D8A-vscode-\7684\591A\4EE3\7406\7CFB\7D71\4E00\7A2E\6A21\5F0F\6D6E\73FE) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\8D85\8D8A-vscode-\7684\591A\4EE3\7406\7CFB\7D71\4E00\7A2E\6A21\5F0F\6D6E\73FE) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\8D85\8D8A-vscode-\7684\591A\4EE3\7406\7CFB\7D71\4E00\7A2E\6A21\5F0F\6D6E\73FE) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\8D85\8D8A-vscode-\7684\591A\4EE3\7406\7CFB\7D71\4E00\7A2E\6A21\5F0F\6D6E\73FE) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: agents; }@layer astro { ::view-transition-old(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: patterns; }@layer astro { ::view-transition-old(patterns) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(patterns) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(patterns) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(patterns) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-6"] { view-transition-name: orchestration; }@layer astro { ::view-transition-old(orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body>  <header class="astro-3ef6ksr2"> <a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-3ef6ksr2" href="#main-content"> 跳至內容 </a> <div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-3ef6ksr2"> <div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-3ef6ksr2"> <a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-3ef6ksr2"> Min Wen </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-3ef6ksr2"> <button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-3ef6ksr2" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-3ef6ksr2"> <line x1="7" y1="12" x2="21" y2="12" class="line astro-3ef6ksr2"></line> <line x1="3" y1="6" x2="21" y2="6" class="line astro-3ef6ksr2"></line> <line x1="12" y1="18" x2="21" y2="18" class="line astro-3ef6ksr2"></line> <line x1="18" y1="6" x2="6" y2="18" class="close astro-3ef6ksr2"></line> <line x1="6" y1="6" x2="18" y2="18" class="close astro-3ef6ksr2"></line> </svg> </button> <ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-3ef6ksr2"> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 文章 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 標籤 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/profolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 作品集 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 工具箱 </a> </li> <!-- Toolbox Subnav - shown when toolbox is active -->  <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 關於 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex  astro-3ef6ksr2" aria-label="搜尋" title="搜尋"> <svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-3ef6ksr2"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-3ef6ksr2"></path> </svg> <span class="sr-only astro-3ef6ksr2">搜尋</span> </a> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-3ef6ksr2" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-3ef6ksr2"></path> </svg> <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-3ef6ksr2"></path> </svg> </button> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <a href="/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-3ef6ksr2"> EN </a> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-skin-line" aria-hidden="true"> </div> </header>  <script type="module">function n(){const e=document.querySelector(".hamburger-menu"),u=document.querySelector(".menu-icon"),a=document.querySelector("#menu-items");e?.addEventListener("click",()=>{const t=e.getAttribute("aria-expanded")==="true";u?.classList.toggle("is-active"),e.setAttribute("aria-expanded",t?"false":"true"),e.setAttribute("aria-label",t?"Open Menu":"Close Menu"),a?.classList.toggle("display-none")})}n();document.addEventListener("astro:after-swap",n);</script>  <div class="mx-auto flex w-full max-w-7xl justify-start px-2"> <button class="focus-outline mb-2 mt-8 flex hover:opacity-75" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"> <svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg><span>返回</span> </button> </div> <main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"> <!-- Sidebar that moves to top on mobile --> <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"> <div class="sidebar-sticky lg:sticky lg:top-24"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="Z1h9eSU" component-url="/_astro/AudioPlayer.DxyHS5E7.js" component-export="default" renderer-url="/_astro/client.BLUn-lwI.js" props="{&quot;slug&quot;:[0,&quot;multi-agent-pattern-vscode-autogen-sdlc&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> <astro-island uid="ZHm8uy" component-url="/_astro/ChatLink.CAriHuh0.js" component-export="default" renderer-url="/_astro/client.BLUn-lwI.js" props="{&quot;title&quot;:[0,&quot;超越 VSCode 的多代理系統：一種模式浮現&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;專門化代理角色&quot;],[0,&quot;交接編排&quot;],[0,&quot;人在回路關卡&quot;],[0,&quot;工具限制模式&quot;],[0,&quot;證據驅動決策&quot;],[0,&quot;多代理收斂&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </aside> <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"> <h1 class="post-title text-2xl font-semibold text-skin-accent" data-astro-transition-scope="astro-wi2w6ztr-1"> 超越 VSCode 的多代理系統：一種模式浮現 </h1> <div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2025-11-13T00:00:00.000Z">Nov 13, 2025</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">12:00 AM</span></span></div> <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"> <p>三個不同團隊——Microsoft 的 VSCode 工程師、Microsoft Research（AutoGen）以及建構 Agentic SDLC 系統的企業 AI 實踐者——獨立地達到了極為相似的解決方案。這不是巧合，而是收斂演化揭示了可靠、可擴展 AI 系統的基本模式。</p>
+<h2 id="模式專門化代理--結構化交接">模式：專門化代理 + 結構化交接</h2>
+<p>這個新興的多代理模式核心包含四個關鍵組成部分：</p>
+<ol>
+<li><strong>專門化代理</strong>，具有明確界定的責任範圍</li>
+<li><strong>工具限制</strong>，與每個代理的角色相符</li>
+<li><strong>結構化交接</strong>，明確地在代理間轉移上下文</li>
+<li><strong>人工關卡</strong>，設於關鍵決策點</li>
+</ol>
+<p>這種模式在不同實作中持續出現，從 VSCode 新推出的自訂代理功能（v1.106）到 Microsoft Research 的 AutoGen 框架，再到實際的 Agentic SDLC 部署。讓我們探討為何這種架構有效以及何時應該使用它。</p>
+<h2 id="vscode-自訂代理為開發者設計的交接機制">VSCode 自訂代理：為開發者設計的交接機制</h2>
+<p>VSCode 1.106 引入了自訂代理——這個功能將 GitHub Copilot 從單一助手轉變為專門化團隊。不再是一個代理試圖做所有事情，你可以為不同任務創建專注的代理：研究、寫作、程式碼審查、測試。</p>
+<h3 id="架構深度解析">架構深度解析</h3>
+<p>自訂代理定義在 <code>.github/agents/</code> 目錄中的 <code>.agent.md</code> 檔案：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"><span style="color:#E06C75">name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">researcher</span></span>
+<span class="line"><span style="color:#E06C75">description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">蒐集主題的全面資訊</span></span>
+<span class="line"><span style="color:#E06C75">tools</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"fetch"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"search"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"githubRepo"</span><span style="color:#ABB2BF">] </span><span style="color:#7F848E;font-style:italic"># 唯讀工具</span></span>
+<span class="line"><span style="color:#E06C75">handoffs</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">label</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">產生想法</span></span>
+<span class="line"><span style="color:#E06C75">    agent</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ideas-generator</span></span>
+<span class="line"><span style="color:#E06C75">    prompt</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"根據上述研究，產生 3-5 個部落格文章想法"</span></span>
+<span class="line"><span style="color:#E06C75">    send</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">false</span><span style="color:#7F848E;font-style:italic"> # 需要人工批准</span></span>
+<span class="line"><span style="color:#ABB2BF">---</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 研究代理</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#98C379">你是一個徹底的研究者，蒐集準確且有來源的資訊。</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#98C379">你的責任：</span></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#98C379">搜尋文件與程式碼儲存庫</span></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#98C379">取得相關網路資源</span></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#98C379">將發現組織成結構化報告</span></span>
+<span class="line"><span style="color:#ABB2BF">- </span><span style="color:#98C379">引用所有來源以供驗證</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#98C379">不要撰寫程式碼或編輯檔案。純粹專注於資訊蒐集。</span></span></code></pre>
+<p>神奇的地方在於交接配置。當研究者完成任務時，聊天介面會出現「產生想法」按鈕。點擊它，你會自動切換到 <code>ideas-generator</code> 代理，研究上下文已預先填入。人類保持控制權——在繼續之前審查每個轉換。</p>
+<h3 id="實際範例部落格生成管道">實際範例：部落格生成管道</h3>
+<p>考慮一個 5 代理內容創作工作流程：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>研究者 → 想法產生器 → 部落格寫手 → 事實查核 → 翻譯者</span></span></code></pre>
+<p>每個代理精確擁有它所需的工具：</p>
+<ul>
+<li><strong>研究者</strong>：<code>['fetch', 'search', 'githubRepo']</code> — 不會意外編輯檔案</li>
+<li><strong>想法產生器</strong>：<code>['search']</code> — 專注於綜合分析而無程式碼存取權</li>
+<li><strong>部落格寫手</strong>：<code>['edit', 'runCommands', 'problems']</code> — 完整編輯能力</li>
+<li><strong>事實查核</strong>：<code>['fetch', 'githubRepo', 'search']</code> — 驗證但不更改</li>
+<li><strong>翻譯者</strong>：<code>['edit', 'search', 'problems']</code> — 創建本地化版本</li>
+</ul>
+<p>這實作了<strong>最小權限原則</strong>：每個代理獲得其角色所需的最小權限。研究者不會意外覆寫你的程式碼。寫手不會無意中觸發生產部署。</p>
+<h3 id="交接機制">交接機制</h3>
+<p>交接創建明確的工作流程轉換：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#E06C75">handoffs</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#E06C75">label</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"撰寫部落格文章"</span><span style="color:#7F848E;font-style:italic"> # 顯示給使用者的按鈕文字</span></span>
+<span class="line"><span style="color:#E06C75">    agent</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">blog-writer</span><span style="color:#7F848E;font-style:italic"> # 目標代理 ID</span></span>
+<span class="line"><span style="color:#E06C75">    prompt</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"根據大綱 #{{N}} 撰寫完整部落格文章"</span></span>
+<span class="line"><span style="color:#E06C75">    send</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">false</span><span style="color:#7F848E;font-style:italic"> # false = 人工審查，true = 自動提交</span></span></code></pre>
+<p>當 <code>send: false</code> 時，提示會預先填入但不會發送——人類可以審查並修改它。當 <code>send: true</code> 時，它會自動提交以進行完全自動化的工作流程。這給你一個調節自動化與監督的旋鈕。</p>
+<h2 id="autogen事件驅動的多代理框架">AutoGen：事件驅動的多代理框架</h2>
+<p>VSCode 專注於面向開發者的工作流程，而 Microsoft Research 的 AutoGen 則處理建構複雜、分散式多代理系統的更廣泛問題。</p>
+<h3 id="架構哲學">架構哲學</h3>
+<p>AutoGen v0.4（2024-2025 年釋出）使用<strong>非同步、事件驅動架構</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#C678DD">from</span><span style="color:#ABB2BF"> autogen </span><span style="color:#C678DD">import</span><span style="color:#ABB2BF"> Agent, Sequential, ConversableAgent</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 定義專門化代理</span></span>
+<span class="line"><span style="color:#ABB2BF">researcher </span><span style="color:#56B6C2">=</span><span style="color:#61AFEF"> ConversableAgent</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    name</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"researcher"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    system_message</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"你從多個來源蒐集資訊..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    llm_config</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">{</span><span style="color:#98C379">"model"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"gpt-4"</span><span style="color:#ABB2BF">},</span></span>
+<span class="line"><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">analyzer </span><span style="color:#56B6C2">=</span><span style="color:#61AFEF"> ConversableAgent</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    name</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"analyzer"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    system_message</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"你分析研究並識別模式..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">    llm_config</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">{</span><span style="color:#98C379">"model"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"claude-sonnet-4"</span><span style="color:#ABB2BF">},</span></span>
+<span class="line"><span style="color:#ABB2BF">)</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 創建帶轉換的工作流程</span></span>
+<span class="line"><span style="color:#ABB2BF">workflow </span><span style="color:#56B6C2">=</span><span style="color:#61AFEF"> Sequential</span><span style="color:#ABB2BF">([researcher, analyzer])</span></span>
+<span class="line"><span style="color:#C678DD">await</span><span style="color:#ABB2BF"> workflow.</span><span style="color:#61AFEF">run</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">"研究多代理模式"</span><span style="color:#ABB2BF">)</span></span></code></pre>
+<p>與 VSCode 方法的主要差異：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>面向</th><th>VSCode 自訂代理</th><th>AutoGen</th></tr></thead><tbody><tr><td><strong>定義</strong></td><td><code>.agent.md</code> 檔案</td><td>基於程式碼的代理</td></tr><tr><td><strong>編排</strong></td><td>交接按鈕（UI）</td><td>事件驅動訊息傳遞</td></tr><tr><td><strong>人工控制</strong></td><td>手動點擊</td><td>可配置政策</td></tr><tr><td><strong>規模</strong></td><td>單一工作區</td><td>分散式系統</td></tr><tr><td><strong>使用案例</strong></td><td>開發者工作流程</td><td>生產 AI 系統</td></tr></tbody></table>
+<h3 id="進階功能">進階功能</h3>
+<p>AutoGen 在複雜場景中表現出色：</p>
+<ol>
+<li><strong>非同步訊息傳遞</strong>：代理透過事件溝通，支援請求/回應和發布/訂閱模式</li>
+<li><strong>跨語言支援</strong>：代理可以用 Python、.NET 或其他語言撰寫，仍然可以互操作</li>
+<li><strong>內建可觀測性</strong>：OpenTelemetry 整合用於追蹤代理互動</li>
+<li><strong>模組化元件</strong>：可插拔的工具、記憶體系統和模型後端</li>
+<li><strong>分散式執行</strong>：代理可以跨組織邊界執行</li>
+</ol>
+<p>當你需要長期執行、具企業可觀測性需求的生產級多代理系統時，AutoGen 提供了 VSCode 更簡單模型不嘗試的基礎設施。</p>
+<h2 id="agentic-sdlc大規模人在回路">Agentic SDLC：大規模人在回路</h2>
+<p>超越框架，實際部署揭示了企業如何將多代理模式應用於軟體開發本身。</p>
+<h3 id="基於角色的觀點">基於角色的觀點</h3>
+<p>不是將代理對應到職稱（產品經理、工程師、QA），而是圍繞<strong>觀點</strong>組織它們：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>願景/策略代理</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>設計/架構代理</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>執行代理</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>風險與合規代理</span></span>
+<span class="line"><span>    ↓</span></span>
+<span class="line"><span>可觀測性代理</span></span></code></pre>
+<p>一個<strong>統籌者</strong>協調這些代理，打包證據供人類審查，並管理升級。</p>
+<h3 id="人在回路關卡">人在回路關卡</h3>
+<p>關鍵創新：人類審查<strong>證據包</strong>，而非完整產物。</p>
+<p>傳統程式碼審查：「請審查這個 500 行的 pull request。」</p>
+<p>Agentic SDLC：「請審查這個證據包：</p>
+<ul>
+<li><strong>變更摘要</strong>：在 API 閘道增加快取層</li>
+<li><strong>影響分析</strong>：影響 3 個下游服務，向後相容</li>
+<li><strong>測試證據</strong>：覆蓋率從 78% 增加到 84%，所有整合測試通過</li>
+<li><strong>安全掃描</strong>：無新漏洞，相依套件授權 OK</li>
+<li><strong>回滾計畫</strong>：已測試功能旗標切換，30 秒回滾時間」</li>
+</ul>
+<p>人類基於綜合證據做決策，而非閱讀每一行程式碼。這在不成為瓶頸的情況下擴展人工監督。</p>
+<h3 id="基於風險的路由">基於風險的路由</h3>
+<p>不是所有變更都需要人工批准。使用風險分數來路由決策：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>風險 = 關鍵性(1-5) × 變更大小(1-5)</span></span>
+<span class="line"><span>       + 覆蓋率缺口%(0-5)</span></span>
+<span class="line"><span>       + 變動率(0-3)</span></span>
+<span class="line"><span>       + 新穎性(0-3)</span></span></code></pre>
+<p><strong>路由政策</strong>：</p>
+<ul>
+<li><strong>高風險（≥10）</strong>：需要人工審查</li>
+<li><strong>中風險（6-9）</strong>：同儕代理審查</li>
+<li><strong>低風險（≤5）</strong>：自動合併搭配 10-20% 隨機抽樣</li>
+</ul>
+<p>這允許低風險工作的自動化，同時保留人類判斷用於高影響決策。</p>
+<h3 id="hitl-關卡範例">HITL 關卡範例</h3>
+<ol>
+<li>
+<p><strong>願景關卡</strong>：人類批准業務目標、KPI、限制。代理呈現選項與權衡。</p>
+</li>
+<li>
+<p><strong>需求承諾關卡</strong>：1-3 天可交付的薄切片凍結。變更產生新切片並附影響分析。</p>
+</li>
+<li>
+<p><strong>高風險設計關卡</strong>：對於模式變更、外部合約或影響 SLO 的設計。人類審查 ADR 摘要 + 威脅模型摘要。</p>
+</li>
+<li>
+<p><strong>程式碼變更關卡</strong>：風險分數決定路徑（見上述路由政策）。</p>
+</li>
+<li>
+<p><strong>釋出關卡</strong>：人類批准推出策略（功能旗標、金絲雀、回滾計畫），不一定是完整差異。</p>
+</li>
+<li>
+<p><strong>事件關卡</strong>：SLO 違反觸發統籌者打包日誌/追蹤與建議修復，供人類主導的無責審查。</p>
+</li>
+<li>
+<p><strong>模型/工具變更關卡</strong>：對 AI 堆疊本身的每個變更都是高風險且需要人工簽核。</p>
+</li>
+</ol>
+<p>這創建了一個<strong>漸進自主模型</strong>：例行工作自動流動，例外案例升級給人類並附預先打包的證據。</p>
+<h2 id="收斂設計為何這種模式有效">收斂設計：為何這種模式有效</h2>
+<p>三個獨立實作收斂到相似架構，因為它們解決了基本問題：</p>
+<h3 id="1-認知負荷降低">1. 認知負荷降低</h3>
+<p>單一代理受「試圖做所有事」症候群之苦。它們需要同時：</p>
+<ul>
+<li>研究與綜合資訊</li>
+<li>以適當風格撰寫程式碼</li>
+<li>考慮安全性影響</li>
+<li>思考測試策略</li>
+<li>記錄它們的決策</li>
+</ul>
+<p>這種認知負荷導致：</p>
+<ul>
+<li>所有維度的平庸結果</li>
+<li>根據提示措辭而不一致的品質</li>
+<li>除錯困難（哪部分失敗？）</li>
+</ul>
+<p><strong>多代理解決方案</strong>：每個代理專注於一件事。研究者不擔心程式碼風格。安全審查者不產生文件。狹窄範圍 = 更好的性能。</p>
+<h3 id="2-透過限制實現安全">2. 透過限制實現安全</h3>
+<p>工具限制防止整類失敗：</p>
+<ul>
+<li>具唯讀存取權的研究代理不會意外刪除生產資料</li>
+<li>沒有網路存取的程式碼產生代理不能外洩秘密</li>
+<li>沒有部署權限的測試代理不能推送到生產</li>
+</ul>
+<p>這是<strong>最小權限原則</strong>應用於 AI——與使 Unix 權限、IAM 政策和網路分段有效的概念相同。</p>
+<h3 id="3-可審計性與除錯">3. 可審計性與除錯</h3>
+<p>當單代理會話出錯時，對話是研究、撰寫、回溯和修正的混亂。找到失敗點是考古學。</p>
+<p>多代理交接創建自然的<strong>審計邊界</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>[研究者完成] → 交接 → [想法產生器開始]</span></span>
+<span class="line"><span>[想法產生器完成] → 交接 → [寫手開始]</span></span>
+<span class="line"><span>[寫手完成] → 交接 → [事實查核開始]</span></span>
+<span class="line"><span>[事實查核：發現 3 個問題] → 交接 → [寫手重新開始並附回饋]</span></span></code></pre>
+<p>每個轉換都是檢查點。交接時的日誌準確顯示出錯的位置以及當時可用的上下文。</p>
+<h3 id="4-可組合性與重用">4. 可組合性與重用</h3>
+<p>在單代理架構中，你無法輕易提取並在不同上下文中重用「好的研究提示」。它埋藏在特定對話中。</p>
+<p>多代理架構使代理成為<strong>建構區塊</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span># 研究工作流程</span></span>
+<span class="line"><span>研究者 → 分析者 → 報告者</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># 內容工作流程</span></span>
+<span class="line"><span>研究者 → 想法產生器 → 寫手</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span># 程式碼工作流程</span></span>
+<span class="line"><span>程式碼閱讀器 → 架構師 → 程式碼產生器</span></span></code></pre>
+<p><code>研究者</code> 代理可跨工作流程重用。改進其提示一次，所有工作流程受益。</p>
+<h3 id="5-靈活編排">5. 靈活編排</h3>
+<p>不同任務需要不同的代理序列：</p>
+<p><strong>低風險內容</strong>：自動發送通過整個管道</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>研究（自動）→ 想法（自動）→ 寫作（自動）→ 發布</span></span></code></pre>
+<p><strong>高風險程式碼</strong>：關鍵點的人工關卡</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>研究（自動）→ 設計（HITL）→ 程式碼（自動）→ 安全審查（HITL）→ 部署</span></span></code></pre>
+<p><strong>迭代改進</strong>：循環直到達到品質閾值</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>產生 → 測試 → （通過？退出：附回饋產生）</span></span></code></pre>
+<p>單一代理無法優雅地處理這些變化。具可配置交接的多代理系統可以。</p>
+<h2 id="何時使用多代理-vs-單代理">何時使用多代理 vs. 單代理</h2>
+<p>這種模式並非總是正確選擇。這裡有個決策框架：</p>
+<h3 id="單代理足夠">單代理足夠</h3>
+<p>使用單代理當：</p>
+<ul>
+<li><strong>簡單、單步驟任務</strong>：「解釋這個錯誤訊息」</li>
+<li><strong>低風險</strong>：錯誤答案後果最小</li>
+<li><strong>快速迭代</strong>：重新提示比建構工作流程更快</li>
+<li><strong>探索性</strong>：你還在摸索需要什麼</li>
+</ul>
+<h3 id="多代理更好">多代理更好</h3>
+<p>使用多個代理當：</p>
+<ul>
+<li><strong>複雜工作流程</strong>：具不同關注點的多個明確步驟</li>
+<li><strong>需要角色分離</strong>：研究不應編輯，編輯者不應部署</li>
+<li><strong>安全需求</strong>：需要工具限制或批准關卡</li>
+<li><strong>可重用性</strong>：相同代理在多個工作流程中有用</li>
+<li><strong>團隊使用</strong>：多人使用相同模式</li>
+<li><strong>可審計性</strong>：需要清楚的決策與轉換記錄</li>
+</ul>
+<h3 id="決策矩陣">決策矩陣</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>因素</th><th>單代理</th><th>多代理</th></tr></thead><tbody><tr><td><strong>任務複雜度</strong></td><td>1-2 步驟</td><td>3+ 步驟</td></tr><tr><td><strong>風險等級</strong></td><td>低</td><td>中高</td></tr><tr><td><strong>工具多樣性</strong></td><td>相似工具</td><td>不同工具集</td></tr><tr><td><strong>重用頻率</strong></td><td>一次性</td><td>重複模式</td></tr><tr><td><strong>團隊規模</strong></td><td>個人</td><td>團隊</td></tr><tr><td><strong>審計需求</strong></td><td>最小</td><td>詳細追蹤</td></tr></tbody></table>
+<h2 id="多代理系統的設計原則">多代理系統的設計原則</h2>
+<p>如果你正在建構多代理系統，遵循這些原則：</p>
+<h3 id="1-最小權限原則">1. 最小權限原則</h3>
+<p>給每個代理其角色所需的<strong>最小工具</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 不好：太多工具</span></span>
+<span class="line"><span style="color:#E06C75">researcher</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  tools</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'fetch'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'search'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'edit'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'runCommands'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'deploy'</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 好：只有所需的</span></span>
+<span class="line"><span style="color:#E06C75">researcher</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  tools</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">'fetch'</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">'search'</span><span style="color:#ABB2BF">]</span></span></code></pre>
+<h3 id="2-明確轉換">2. 明確轉換</h3>
+<p>絕不允許隱式代理切換。每個轉換應該：</p>
+<ul>
+<li><strong>可見</strong>：使用者看到交接發生</li>
+<li><strong>記錄</strong>：代理變更的審計追蹤</li>
+<li><strong>可控</strong>：使用者可以批准/拒絕/修改</li>
+</ul>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 不好：隱藏代理切換</span></span>
+<span class="line"><span style="color:#E06C75">agent-a</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  instructions</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"如果你需要程式碼，直接呼叫 code-writer 代理"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 好：明確交接</span></span>
+<span class="line"><span style="color:#E06C75">agent-a</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  handoffs</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#E06C75">agent</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">code-writer</span></span>
+<span class="line"><span style="color:#E06C75">      label</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"產生程式碼"</span></span></code></pre>
+<h3 id="3-預設人在回路">3. 預設人在回路</h3>
+<p>從 <code>send: false</code>（需人工批准）開始。只在以下情況後移至 <code>send: true</code>（自動提交）：</p>
+<ul>
+<li>工作流程經證實穩定</li>
+<li>風險明顯低</li>
+<li>存在回滾機制</li>
+</ul>
+<p>這是<strong>安全優先</strong>方法：在證明安全後選擇自動化，不要在事件發生後選擇退出安全。</p>
+<h3 id="4-證據優於產物">4. 證據優於產物</h3>
+<p>設計代理產生<strong>決策就緒摘要</strong>，而非僅原始輸出：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E06C75"># ❌ 不好：原始輸出</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">這裡是 47 頁的研究報告...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75"># ✅ 好：證據包</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">## 研究摘要</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **關鍵發現**</span><span style="color:#ABB2BF">：模式 X 在 3/3 實作中出現</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **信心**</span><span style="color:#ABB2BF">：高（主要來源，多重確認）</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **缺口**</span><span style="color:#ABB2BF">：大規模性能的有限資料</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **建議**</span><span style="color:#ABB2BF">：進行試點，監控指標</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#D19A66"> **來源**</span><span style="color:#ABB2BF">：[</span><span style="color:#61AFEF">1</span><span style="color:#ABB2BF">] VSCode 文件，[</span><span style="color:#61AFEF">2</span><span style="color:#ABB2BF">] AutoGen 論文，[</span><span style="color:#61AFEF">3</span><span style="color:#ABB2BF">] 企業案例研究</span></span></code></pre>
+<h3 id="5-可組合性">5. 可組合性</h3>
+<p>將代理設計為<strong>獨立、可重用單元</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># ❌ 不好：緊密耦合</span></span>
+<span class="line"><span style="color:#E06C75">blog-researcher-for-technical-posts</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  instructions</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"研究技術主題的部落格文章..."</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># ✅ 好：通用且可重用</span></span>
+<span class="line"><span style="color:#E06C75">researcher</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  instructions</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"徹底研究任何主題..."</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># 在多個上下文中使用：</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - 部落格工作流程：researcher → blog-writer</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - 文件工作流程：researcher → doc-writer</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># - 規劃工作流程：researcher → strategist</span></span></code></pre>
+<h2 id="實作模式">實作模式</h2>
+<p>實作多代理模式的三種常見方法：</p>
+<h3 id="模式-1基於檔案vscode-風格">模式 1：基於檔案（VSCode 風格）</h3>
+<p><strong>最適合</strong>：開發者工具、團隊工作流程、版本控制配置</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>.github/agents/</span></span>
+<span class="line"><span>├── researcher.agent.md</span></span>
+<span class="line"><span>├── writer.agent.md</span></span>
+<span class="line"><span>└── reviewer.agent.md</span></span></code></pre>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>Git 版本控制</li>
+<li>非技術使用者可編輯</li>
+<li>簡單發現（檔案系統）</li>
+<li>無執行時相依</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>較不動態</li>
+<li>需要檔案系統存取</li>
+<li>限於靜態配置</li>
+</ul>
+<h3 id="模式-2基於程式碼autogen-風格">模式 2：基於程式碼（AutoGen 風格）</h3>
+<p><strong>最適合</strong>：生產系統、複雜邏輯、程式化控制</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="python"><code><span class="line"><span style="color:#C678DD">def</span><span style="color:#61AFEF"> create_research_workflow</span><span style="color:#ABB2BF">(</span><span style="color:#D19A66;font-style:italic">topic</span><span style="color:#ABB2BF">: </span><span style="color:#56B6C2">str</span><span style="color:#ABB2BF">):</span></span>
+<span class="line"><span style="color:#ABB2BF">    researcher </span><span style="color:#56B6C2">=</span><span style="color:#61AFEF"> Agent</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        name</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"researcher"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        system_message</span><span style="color:#56B6C2">=</span><span style="color:#C678DD">f</span><span style="color:#98C379">"研究 </span><span style="color:#D19A66">{</span><span style="color:#ABB2BF">topic</span><span style="color:#D19A66">}</span><span style="color:#98C379">..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        tools</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">[fetch_tool, search_tool]</span></span>
+<span class="line"><span style="color:#ABB2BF">    )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">    analyzer </span><span style="color:#56B6C2">=</span><span style="color:#61AFEF"> Agent</span><span style="color:#ABB2BF">(</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        name</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"analyzer"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        system_message</span><span style="color:#56B6C2">=</span><span style="color:#98C379">"分析研究..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75;font-style:italic">        tools</span><span style="color:#56B6C2">=</span><span style="color:#ABB2BF">[analysis_tool]</span></span>
+<span class="line"><span style="color:#ABB2BF">    )</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#C678DD">    return</span><span style="color:#61AFEF"> Sequential</span><span style="color:#ABB2BF">([researcher, analyzer])</span></span></code></pre>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>完全動態</li>
+<li>程式化控制</li>
+<li>易於測試</li>
+<li>豐富生態系統（Python/JS 函式庫）</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>需要編碼技能</li>
+<li>部署複雜性</li>
+<li>對非開發者較困難</li>
+</ul>
+<h3 id="模式-3基於服務企業">模式 3：基於服務（企業）</h3>
+<p><strong>最適合</strong>：多租戶系統、集中治理、熱重載</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">POST /api/workflows</span></span>
+<span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "workflow_id"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"research-pipeline"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "agents"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#ABB2BF">    {</span></span>
+<span class="line"><span style="color:#E06C75">      "id"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"researcher"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "instructions"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "tools"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"fetch"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"search"</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#E06C75">      "handoffs"</span><span style="color:#ABB2BF">: [{</span><span style="color:#E06C75">"target"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"analyzer"</span><span style="color:#ABB2BF">}]</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  ]</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p><strong>優點</strong>：</p>
+<ul>
+<li>語言無關</li>
+<li>無需重啟的熱重載</li>
+<li>集中管理</li>
+<li>多租戶隔離</li>
+</ul>
+<p><strong>缺點</strong>：</p>
+<ul>
+<li>基礎設施開銷</li>
+<li>網路延遲</li>
+<li>營運複雜性</li>
+</ul>
+<h2 id="未來標準模式浮現">未來：標準模式浮現</h2>
+<p>VSCode、AutoGen 和企業 SDLC 之間的收斂並非偶然。我們正見證 AI 編排<strong>標準模式</strong>的出現，類似於 REST API、微服務和事件驅動架構如何成為傳統軟體的標準模式。</p>
+<h3 id="新興標準">新興標準</h3>
+<ol>
+<li><strong>AGENTS.md</strong>：統一指令格式（Google、OpenAI、Sourcegraph 和 20+ 工具支持）</li>
+<li><strong>交接協定</strong>：具人工關卡的明確轉換機制</li>
+<li><strong>工具限制模型</strong>：基於權限的代理能力</li>
+<li><strong>基於證據的 HITL</strong>：審查摘要，非完整產物</li>
+<li><strong>風險評分路由</strong>：自動化低風險，人工高風險</li>
+</ol>
+<h3 id="接下來會發生什麼">接下來會發生什麼</h3>
+<ol>
+<li><strong>學習型交接</strong>：基於任務特徵決定最佳代理轉換的 ML 模型</li>
+<li><strong>動態代理綜合</strong>：為新任務按需產生專門代理的系統</li>
+<li><strong>跨組織工作流程</strong>：跨公司邊界的聯邦代理網路，具驗證交接</li>
+<li><strong>可驗證審計追蹤</strong>：代理動作和人類批准的區塊鏈或密碼學證明</li>
+<li><strong>自然語言編排</strong>：「為我建構一個代理工作流程來分析客戶回饋並產生產品洞察」</li>
+</ol>
+<h2 id="開始使用">開始使用</h2>
+<p>準備應用多代理模式？從這裡開始：</p>
+<h3 id="第一週繪製你的工作流程">第一週：繪製你的工作流程</h3>
+<ol>
+<li>列出你要求 AI 做的明確任務</li>
+<li>按相似性分組（研究、寫作、審查、分析等）</li>
+<li>識別每組的工具需求</li>
+<li>注意哪些步驟需要人工監督</li>
+</ol>
+<h3 id="第二週建構第一個代理對">第二週：建構第一個代理對</h3>
+<ol>
+<li>選擇最高價值工作流程（例如程式碼審查）</li>
+<li>創建兩個代理：分析者 → 建議者</li>
+<li>配置它們之間的交接</li>
+<li>用實際任務測試</li>
+<li>蒐集回饋</li>
+</ol>
+<h3 id="第三週擴展與改進">第三週：擴展與改進</h3>
+<ol>
+<li>新增互補代理（例如安全審查者）</li>
+<li>根據輸出品質調整指令</li>
+<li>如果過於限制/寬鬆，調整工具權限</li>
+<li>記錄有效的模式</li>
+</ol>
+<h3 id="第四週測量與迭代">第四週：測量與迭代</h3>
+<p>追蹤指標：</p>
+<ul>
+<li><strong>品質</strong>：交接時的人工批准率</li>
+<li><strong>效率</strong>：相比手動方法節省的時間</li>
+<li><strong>安全</strong>：工具限制防止的事件</li>
+<li><strong>採用</strong>：團隊使用頻率</li>
+</ul>
+<p>使用資料來：</p>
+<ul>
+<li>識別哪些代理需要改進</li>
+<li>決定哪些交接可以自動化（<code>send: true</code>）</li>
+<li>找出缺失的代理（工作流程中的缺口）</li>
+<li>優化代理指令</li>
+</ul>
+<h2 id="結論">結論</h2>
+<p>多代理交接模式不再是實驗性的——它正成為可靠、可擴展 AI 系統的標準架構。從 VSCode 對開發者友善的自訂代理到 AutoGen 的企業級框架，再到實際的 Agentic SDLC 部署，相同的原則浮現：</p>
+<ul>
+<li>圍繞清楚的責任<strong>專門化代理</strong></li>
+<li><strong>限制工具</strong>以匹配每個角色</li>
+<li>透過結構化交接<strong>使轉換明確</strong></li>
+<li>在關鍵決策點<strong>新增人工關卡</strong></li>
+<li><strong>審查證據</strong>，非完整產物</li>
+</ul>
+<p>這不是萬靈丹。簡單任務仍然用單代理就好。但對於需要安全、可審計性和團隊協作的複雜工作流程，多代理模式提供了經證實的前進道路。</p>
+<p>從小開始。建構兩個代理與一個交接。學習在你的情境中什麼有效。然後系統化擴展。多個團隊的收斂演化表明你不是在實驗——你正在採用一個新興標準。</p>
+<p>AI 輔助工作的未來不是單一超級智慧代理。而是專門化代理協同工作，人類在決策關卡審查證據。那個未來已經到來。模式已經證實。是時候實作它了。</p>
+<hr>
+<p>**你正在建構什麼多代理工作流程？**在評論中分享你的經驗或<a href="https://x.com/cmwen">在 Twitter/X 上聯繫我</a>。我特別對內容創作和程式碼審查之外的新應用感興趣——你如何在你的領域應用這種模式？</p> </article> <ul class="my-8"> <li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/agents/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-2"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>agents</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-3"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>architecture</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/patterns/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-4"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>patterns</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-5"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>ai</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/orchestration/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-6"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>orchestration</span> </a> </li> </ul> <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"> <button id="back-to-top" class="focus-outline whitespace-nowrap py-1 hover:opacity-75"> <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"> <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg> <span>回到頂端</span> </button> <div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg> <span class="sr-only">Tweet this post</span> </a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&#38;body=https://cmwen.github.io/zh-hant/posts/multi-agent-pattern-vscode-autogen-sdlc/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> </div> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-skin-line" aria-hidden="true"> </div> <div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="social-icons flex flex-wrap gap-1 justify-center"> <a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg> <span class="sr-only"> Min Wen on Github</span> </a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg> <span class="sr-only">Min Wen on LinkedIn</span> </a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Send an email to Min Wen</span> </a> </div> <div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2025</span> <span class="separator hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  </body></html> <script data-mermaid-module="data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K">(function(){const MERMAID_MODULE_URL = "data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K";
+
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  // Use the injected variable from define:vars
+  const MERMAID_MODULE =
+    MERMAID_MODULE_URL ||
+    window.MERMAID_MODULE_URL ||
+    document.currentScript?.dataset.mermaidModule;
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!MERMAID_MODULE) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(MERMAID_MODULE);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run when navigating with View Transitions
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+})();</script>
