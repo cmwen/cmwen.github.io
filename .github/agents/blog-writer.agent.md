@@ -1,7 +1,8 @@
 ---
 name: blog-writer
+argument-hint: "You will be given a topic and instructions to write a blog post in Markdown format."
 description: "An agent that writes blog posts based on given topics and instructions, and generates podcast audio."
-tools: ["read", "search", "edit", "terminal"]
+tools: ["runCommands", "edit", "search", "problems"]
 ---
 
 # Blog Writer
