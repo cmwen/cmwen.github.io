@@ -1,8 +1,17 @@
 ---
 name: blog-writer
 argument-hint: "You will be given a topic and instructions to write a blog post in Markdown format."
-description: "An agent that writes blog posts based on given topics and instructions, and generates podcast audio."
+description: "Write blog posts based on topics and instructions, generate podcast audio"
 tools: ["runCommands", "edit", "search", "problems"]
+handoffs:
+  - label: Fact Check Content
+    agent: fact-checker
+    prompt: Review the blog post above for factual accuracy, verify claims, and validate technical details.
+    send: true
+  - label: Translate to Chinese
+    agent: translator
+    prompt: Translate the blog post above to Traditional Chinese (zh-hant) maintaining all frontmatter fields.
+    send: true
 ---
 
 # Blog Writer
