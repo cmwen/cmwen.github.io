@@ -13,13 +13,15 @@ Complete documentation for the blog generation agentic system.
 
 ## 🤖 Agent Files
 
-| Agent               | File                                             | Purpose                                 |
-| ------------------- | ------------------------------------------------ | --------------------------------------- |
-| **Researcher**      | [researcher.agent.md](./researcher.agent.md)     | Research and information gathering      |
-| **Ideas Generator** | [ideas.agent.md](./ideas.agent.md)               | Ideation and outline creation           |
-| **Blog Writer**     | [blog-writer.agent.md](./blog-writer.agent.md)   | Content creation and podcast generation |
-| **Fact Checker**    | [fact-checker.agent.md](./fact-checker.agent.md) | Accuracy verification                   |
-| **Translator**      | [translator.agent.md](./translator.agent.md)     | Translation to Traditional Chinese      |
+| Agent                 | File                                                       | Purpose                                 |
+| --------------------- | ---------------------------------------------------------- | --------------------------------------- |
+| **Researcher**        | [researcher.agent.md](./researcher.agent.md)               | Research and information gathering      |
+| **Ideas Generator**   | [ideas.agent.md](./ideas.agent.md)                         | Ideation and outline creation           |
+| **Blog Writer**       | [blog-writer.agent.md](./blog-writer.agent.md)             | Content creation and podcast generation |
+| **Fact Checker**      | [fact-checker.agent.md](./fact-checker.agent.md)           | Accuracy verification                   |
+| **Translator**        | [translator.agent.md](./translator.agent.md)               | Translation to Traditional Chinese      |
+| **Podcast Generator** | [podcast-generator.agent.md](./podcast-generator.agent.md) | TTS transcript and audio generation     |
+| **GitHub Publisher**  | [github-publisher.agent.md](./github-publisher.agent.md)   | CI/CD deployment and monitoring         |
 
 ## 🎯 Quick Navigation
 
@@ -115,12 +117,14 @@ Complete documentation for the blog generation agentic system.
 │   ├─→ Common issues
 │   └─→ Troubleshooting
 │
-└── *.agent.md (5 agents)
+└── *.agent.md (7 agents)
     ├─→ researcher.agent.md
     ├─→ ideas.agent.md
     ├─→ blog-writer.agent.md
     ├─→ fact-checker.agent.md
-    └─→ translator.agent.md
+    ├─→ translator.agent.md
+    ├─→ podcast-generator.agent.md
+    └─→ github-publisher.agent.md
 ```
 
 ## 📋 Common Questions
