@@ -46,7 +46,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
     "@types/node": "^24.10.0",
-    "@types/react": "^19.2.2",
+    "@types/react": "^19.2.5",
     "@types/rss": "^0.0.32",
     "@typescript-eslint/parser": "^8.46.4",
     "astro-eslint-parser": "^1.2.2",
