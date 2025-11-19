@@ -22,6 +22,8 @@ class BlogPost:
     pub_date: datetime
     author: str
     tags: List[str]
+    base_slug: Optional[str] = None
+    llm_transcript: Optional[str] = None
     featured: bool = False
 
 
@@ -91,7 +93,9 @@ class BlogParser:
             return None
         
         # Extract basic info
-        slug = file_path.stem
+        # Prefer a canonical baseSlug from frontmatter for translations; fall back to file stem
+        base_slug = metadata.get('baseSlug')
+        slug = base_slug or file_path.stem
         title = metadata.get('title', slug.replace('-', ' ').title())
         description = metadata.get('description', '')
         lang = metadata.get('lang', 'en')
@@ -118,21 +122,57 @@ class BlogParser:
         if pub_date > datetime.now(timezone.utc):
             return None
         
-        # Process content for TTS
-        content_for_tts = self._prepare_content_for_tts(content, title, author)
+        # Check for LLM-generated transcript first
+        # The agent may place a TTS-optimized transcript at src/content/blog/transcripts/<slug>.txt
+        transcript = self._read_transcript_file(slug, lang)
+
+        # Process content for TTS, preferring LLM transcript if available
+        if transcript:
+            content_for_tts = transcript
+        else:
+            content_for_tts = self._prepare_content_for_tts(content, title, author)
         
         return BlogPost(
             slug=slug,
+            base_slug=base_slug,
             title=title,
             description=description,
             content=content,
             content_for_tts=content_for_tts,
+            llm_transcript=transcript,
             lang=lang,
             pub_date=pub_date,
             author=author,
             tags=tags,
             featured=featured
         )
+
+    def _read_transcript_file(self, slug: str, lang: str) -> Optional[str]:
+        """Read an LLM-generated transcript if it exists.
+
+        Transcript files are looked up in two places:
+        1. src/content/blog/transcripts/<slug>.<lang>.txt  (e.g., my-post.en.txt or my-post.zh-hant.txt)
+        2. src/content/blog/transcripts/<slug>.txt
+
+        Returns the transcript string or None if not found.
+        """
+
+        transcripts_dir = self.content_dir / "transcripts"
+        if not transcripts_dir.exists():
+            return None
+
+        # Prefer language-expanded transcript file
+        lang_suffix = f"{slug}.{lang}.txt"
+        lang_file = transcripts_dir / lang_suffix
+        if lang_file.exists():
+            return lang_file.read_text(encoding='utf-8').strip()
+
+        # Fall back to generic slug.txt
+        generic_file = transcripts_dir / f"{slug}.txt"
+        if generic_file.exists():
+            return generic_file.read_text(encoding='utf-8').strip()
+
+        return None
     
     def _prepare_content_for_tts(self, content: str, title: str, author: str) -> str:
         """Prepare markdown content for text-to-speech synthesis"""

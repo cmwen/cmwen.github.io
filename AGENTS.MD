@@ -159,6 +159,18 @@ podcast_generator/
 - **Auto-switching**: TTS engine reinitializes for language changes
 - **Voice options**: 90+ Chinese voices available (`zf_001`-`zf_099`, `zm_009`-`zm_100`)
 
+### LLM transcripts for better audio
+
+The podcast generator supports optional LLM-generated transcripts. Use an LLM (via the `agents` UI) to create a TTS-optimized transcript and save it in `src/content/blog/transcripts/`.
+
+Naming conventions:
+- `slug.txt` — generic transcript for any language
+- `slug.en.txt` / `slug.zh-hant.txt` — language-specific transcript
+
+If a transcript exists for a post, the generator will prefer the transcript over the derived markdown text. This lets the LLM remove code blocks, tables, or add spoken clarifications.
+
+Agent workflow: generate a transcript, save the file, run `uv run podcast-generate --posts "slug"`, then push audio to GitHub.
+
 ### Usage Patterns
 ```bash
 # Generate specific posts

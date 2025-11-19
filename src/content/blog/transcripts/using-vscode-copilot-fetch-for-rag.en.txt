@@ -1,0 +1,57 @@
+Unlocking the Power of VS Code Copilot: Using Fetch for RAG
+
+Imagine you're working on a project and need some quick, accurate information. How do you retrieve it? Traditionally, developers and data scientists build Retrieval-Augmented Generation pipelines or custom tools to combine Large Language Models with real-time internet data. But what if you didn't have to write a single line of code?
+
+Thanks to VS Code Copilot's Agent Mode combined with the fetch feature, you can now unlock internet-assisted productivity directly from your editor using simple prompts. Let's explore this game-changing capability.
+
+What is the Fetch Tool?
+
+In Agent Mode, VS Code Copilot doesn't just generate code—it can also search the internet for information using the fetch command. Think of it as a mini research assistant embedded into your IDE. With fetch, you can:
+
+First, prompt Copilot to retrieve online data from websites.
+Second, direct it to process or summarize search results.
+Third, it allows non-developers to leverage LLM-powered workflows for tasks like Retrieval-Augmented Generation simply by customizing their instructions.
+
+How Fetch Works: An Example Use Case
+
+Let's say you're investigating a new technology and want detailed documentation from its official site. Traditionally, you would open a browser, manually search the website, and skim through pages for relevant content.
+
+With fetch, you can use a custom prompt to do all of this within VS Code. Here's how:
+
+First, instruct Copilot to search a website. Write a prompt that includes a search URL and tells Copilot to look for content on a specific topic.
+
+Second, extract relevant insights. Once Copilot fetches data, guide it to summarize the most pertinent details.
+
+Here's an example of a custom prompt written in natural language: "Copilot, use fetch to search the documentation at example dot com slash docs for the topic API integration. Find the section most relevant to handling OAuth tokens and provide a summary with key implementation steps."
+
+Now you've just performed a targeted search without touching your browser!
+
+Why Use This for RAG?
+
+While fetch may not replace fully-customized Retrieval-Augmented Generation pipelines or apps like LangChain-powered tools, it dramatically simplifies information workflows for researchers, writers, and everyday users. Anyone—not just developers—can stay productive without adding technical complexity.
+
+Some key advantages include:
+
+Accessibility. No coding skills required. Just write your prompt in plain language.
+
+Flexibility. Use Copilot as a search-and-summarize tool for research, troubleshooting, or brainstorming.
+
+Speed. Combine the power of a conversational Large Language Model with real-time web data.
+
+Limitations to Keep in Mind
+
+While incredibly useful, fetch has its limitations. Consider these points:
+
+First, the quality of retrieved data depends on how well-structured the source content is.
+
+Second, performance constraints mean it may not handle deep, complex queries as effectively as a specialized app.
+
+Third, ethical considerations. Always verify that your use of fetch complies with a site's terms of service.
+
+Conclusion
+
+VS Code Copilot's fetch tool opens up exciting new ways to streamline your work directly from the editor. Whether you're conducting research, troubleshooting code, or just hunting for precise answers, this feature helps you do more with less effort.
+
+The best part? All you need is some creativity in crafting your custom prompts.
+
+So next time you're stuck searching for information, why not let fetch do the heavy lifting for you? Give it a try and watch your productivity soar!

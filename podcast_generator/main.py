@@ -126,8 +126,11 @@ def main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_di
         for post in blog_posts:
             task = progress.add_task(f"Generating: {post.title}", total=None)
             
-            # Check if already exists
-            audio_file = output_path / f"{post.slug}.mp3"
+            # Determine audio filename; include language suffix for non-English episodes
+            if post.lang and post.lang != 'en':
+                audio_file = output_path / f"{post.slug}.{post.lang}.mp3"
+            else:
+                audio_file = output_path / f"{post.slug}.mp3"
             if audio_file.exists() and not force:
                 console.print(f"✓ Podcast already exists for: {post.slug}")
                 episodes.append({
@@ -149,9 +152,12 @@ def main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_di
                     tts_engine.setup(language=post.lang)
                     current_tts_language = post.lang
                 
+                # Use LLM transcript if provided; otherwise fallback to prepared content
+                tts_text = post.llm_transcript or post.content_for_tts
+
                 # Generate TTS audio
                 audio_data = tts_engine.synthesize(
-                    text=post.content_for_tts,
+                    text=tts_text,
                     voice=tts_engine.get_voice_for_language(post.lang),
                     language=post.lang
                 )
@@ -213,14 +219,23 @@ def _collect_existing_episodes(blog_posts, output_path: Path):
     for audio_file in output_path.glob('*.mp3'):
         slug = audio_file.stem
         post = index.get(slug)
+
+        # Support language-suffixed audio files like `slug.zh-hant.mp3` or `slug.en.mp3`.
+        # If not found, try splitting the stem on the last '.' and match base slug.
+        lang_override = None
+        if not post and '.' in slug:
+            base_slug, possible_lang = slug.rsplit('.', 1)
+            post = index.get(base_slug)
+            if post:
+                lang_override = possible_lang
         if not post:
             continue
         try:
             episodes.append({
-                'slug': slug,
+                'slug': base_slug if lang_override else slug,
                 'title': post.title,
                 'description': post.description,
-                'lang': post.lang,
+                'lang': lang_override or post.lang,
                 'pub_date': post.pub_date,
                 'audio_file': audio_file,
                 'file_size': audio_file.stat().st_size

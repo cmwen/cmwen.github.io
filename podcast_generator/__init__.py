@@ -22,12 +22,12 @@ __author__ = "cmwen"
 
 from .blog_parser import BlogParser
 from .tts_engine import KokoroTTSEngine
-from .feed_generator import FeedGenerator
+from .feed_generator import PodcastFeedGenerator
 from .main import cli
 
 __all__ = [
     "BlogParser",
     "KokoroTTSEngine", 
-    "FeedGenerator",
+    "PodcastFeedGenerator",
     "cli",
 ]

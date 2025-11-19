@@ -99,7 +99,11 @@ class PodcastFeedGenerator:
             fe = fg.add_entry()
             
             # Basic episode info
-            fe.id(f"{self.site_url}/podcasts/{episode['slug']}")
+            # Use language-specific id when language is not English to avoid collisions
+            if episode.get('lang') and episode.get('lang') != 'en':
+                fe.id(f"{self.site_url}/podcasts/{episode['slug']}.{episode['lang']}")
+            else:
+                fe.id(f"{self.site_url}/podcasts/{episode['slug']}")
             fe.title(episode['title'])
             fe.description(episode['description'])
             fe.pubDate(episode['pub_date'])
