@@ -1,0 +1,788 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/posts/webmcp-discovery-problem/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/webmcp-discovery-problem/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/webmcp-discovery-problem/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/webmcp-discovery-problem/"><meta name="generator" content="Astro v5.15.9"><!-- General Meta Tags --><title>The Discovery Problem: How Will Agents Find Your WebMCP Tools? | Min Wen</title><meta name="title" content="The Discovery Problem: How Will Agents Find Your WebMCP Tools? | Min Wen"><meta name="description" content="WebMCP's biggest unsolved challenge is tool discovery—the future of agent-web interaction depends on solving how AI agents find your website's structured tools without expensive navigation."><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="The Discovery Problem: How Will Agents Find Your WebMCP Tools? | Min Wen"><meta property="og:description" content="WebMCP's biggest unsolved challenge is tool discovery—the future of agent-web interaction depends on solving how AI agents find your website's structured tools without expensive navigation."><meta property="og:url" content="https://cmwen.github.io/posts/webmcp-discovery-problem/"><meta property="og:image" content="https://cmwen.github.io/posts/the-discovery-problem-how-will-agents-find-your-webmcp-tools.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2025-11-21T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/posts/webmcp-discovery-problem/"><meta property="twitter:title" content="The Discovery Problem: How Will Agents Find Your WebMCP Tools? | Min Wen"><meta property="twitter:description" content="WebMCP's biggest unsolved challenge is tool discovery—the future of agent-web interaction depends on solving how AI agents find your website's structured tools without expensive navigation."><meta property="twitter:image" content="https://cmwen.github.io/posts/the-discovery-problem-how-will-agents-find-your-webmcp-tools.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/about.BfgwGmPY.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+:where([data-astro-image]){object-fit:var(--fit);object-position:var(--pos);height:auto}:where([data-astro-image=full-width]){width:100%}:where([data-astro-image=constrained]){max-width:100%}
+</style><style>[data-astro-transition-scope="astro-wi2w6ztr-1"] { view-transition-name: the-discovery-problem-how-will-agents-find-your-webmcp-tools; }@layer astro { ::view-transition-old(the-discovery-problem-how-will-agents-find-your-webmcp-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(the-discovery-problem-how-will-agents-find-your-webmcp-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(the-discovery-problem-how-will-agents-find-your-webmcp-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(the-discovery-problem-how-will-agents-find-your-webmcp-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: webmcp; }@layer astro { ::view-transition-old(webmcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(webmcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(webmcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(webmcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: discovery; }@layer astro { ::view-transition-old(discovery) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(discovery) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(discovery) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(discovery) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: agents; }@layer astro { ::view-transition-old(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: web-standards; }@layer astro { ::view-transition-old(web-standards) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(web-standards) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(web-standards) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(web-standards) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-6"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body>  <header class="astro-3ef6ksr2"> <a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-3ef6ksr2" href="#main-content"> Skip to content </a> <div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-3ef6ksr2"> <div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-3ef6ksr2"> <a href="/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-3ef6ksr2"> Min Wen </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-3ef6ksr2"> <button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-3ef6ksr2" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-3ef6ksr2"> <line x1="7" y1="12" x2="21" y2="12" class="line astro-3ef6ksr2"></line> <line x1="3" y1="6" x2="21" y2="6" class="line astro-3ef6ksr2"></line> <line x1="12" y1="18" x2="21" y2="18" class="line astro-3ef6ksr2"></line> <line x1="18" y1="6" x2="6" y2="18" class="close astro-3ef6ksr2"></line> <line x1="6" y1="6" x2="18" y2="18" class="close astro-3ef6ksr2"></line> </svg> </button> <ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-3ef6ksr2"> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Posts </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Tags </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/profolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Profolio </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Toolbox </a> </li> <!-- Toolbox Subnav - shown when toolbox is active -->  <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> About </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex  astro-3ef6ksr2" aria-label="Search" title="Search"> <svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-3ef6ksr2"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-3ef6ksr2"></path> </svg> <span class="sr-only astro-3ef6ksr2">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-3ef6ksr2" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-3ef6ksr2"></path> </svg> <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-3ef6ksr2"></path> </svg> </button> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/posts/webmcp-discovery-problem/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-3ef6ksr2"> 中文 </a> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-skin-line" aria-hidden="true"> </div> </header>  <script type="module">function n(){const e=document.querySelector(".hamburger-menu"),u=document.querySelector(".menu-icon"),a=document.querySelector("#menu-items");e?.addEventListener("click",()=>{const t=e.getAttribute("aria-expanded")==="true";u?.classList.toggle("is-active"),e.setAttribute("aria-expanded",t?"false":"true"),e.setAttribute("aria-label",t?"Open Menu":"Close Menu"),a?.classList.toggle("display-none")})}n();document.addEventListener("astro:after-swap",n);</script>  <div class="mx-auto flex w-full max-w-7xl justify-start px-2"> <button class="focus-outline mb-2 mt-8 flex hover:opacity-75" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"> <svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg><span>Go back</span> </button> </div> <main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"> <!-- Sidebar that moves to top on mobile --> <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"> <div class="sidebar-sticky lg:sticky lg:top-24"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="F9vLV" component-url="/_astro/AudioPlayer.DxyHS5E7.js" component-export="default" renderer-url="/_astro/client.BLUn-lwI.js" props="{&quot;slug&quot;:[0,&quot;webmcp-discovery-problem&quot;],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> <astro-island uid="bktzt" component-url="/_astro/ChatLink.CAriHuh0.js" component-export="default" renderer-url="/_astro/client.BLUn-lwI.js" props="{&quot;title&quot;:[0,&quot;The Discovery Problem: How Will Agents Find Your WebMCP Tools?&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/posts/webmcp-discovery-problem/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;tool discovery challenge&quot;],[0,&quot;declarative manifests&quot;],[0,&quot;PWA service workers&quot;],[0,&quot;agent SEO future&quot;],[0,&quot;directory protocols&quot;]]],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </aside> <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"> <h1 class="post-title text-2xl font-semibold text-skin-accent" data-astro-transition-scope="astro-wi2w6ztr-1"> The Discovery Problem: How Will Agents Find Your WebMCP Tools? </h1> <div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2025-11-21T00:00:00.000Z">Nov 21, 2025</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">12:00 AM</span></span></div> <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"> <p>You’ve built the perfect WebMCP implementation. Your e-commerce site exposes elegant tools like <code>searchProducts(query)</code>, <code>addToCart(productId)</code>, and <code>checkout()</code>. An AI agent could complete purchases in milliseconds instead of fumbling through your UI with expensive vision models.</p>
+<p>There’s just one problem: <strong>How does an agent in San Francisco know your tools exist?</strong></p>
+<p>This is WebMCP’s biggest unsolved challenge, and it’s explicitly acknowledged in the <a href="https://github.com/webmachinelearning/webmcp">official proposal</a>. While the protocol defines <em>how</em> agents interact with web tools, it doesn’t solve <em>how</em> agents discover those tools in the first place. And without discovery, even the most efficient tool interface sits unused.</p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<p></p><details><summary>Open Table of Contents</summary><p></p>
+<ul>
+<li><a href="#the-current-state-navigation-required">The Current State: Navigation Required</a>
+<ul>
+<li><a href="#why-this-breaks-down">Why This Breaks Down</a></li>
+</ul>
+</li>
+<li><a href="#solution-1-the-declarative-manifest-approach">Solution 1: The Declarative Manifest Approach</a>
+<ul>
+<li><a href="#how-it-could-work">How It Could Work</a></li>
+<li><a href="#the-limitations">The Limitations</a></li>
+<li><a href="#the-hybrid-compromise">The Hybrid Compromise</a></li>
+</ul>
+</li>
+<li><a href="#solution-2-progressive-web-apps--service-workers">Solution 2: Progressive Web Apps + Service Workers</a>
+<ul>
+<li><a href="#the-architecture">The Architecture</a></li>
+<li><a href="#the-user-experience">The User Experience</a></li>
+<li><a href="#the-discovery-challenge-remains">The Discovery Challenge Remains</a></li>
+</ul>
+</li>
+<li><a href="#solution-3-directories-and-search-apis">Solution 3: Directories and Search APIs</a>
+<ul>
+<li><a href="#the-centralized-model">The Centralized Model</a></li>
+<li><a href="#the-decentralized-model">The Decentralized Model</a></li>
+<li><a href="#the-search-engine-pivot">The Search Engine Pivot</a></li>
+</ul>
+</li>
+<li><a href="#solution-4-ai-native-discovery">Solution 4: AI-Native Discovery</a>
+<ul>
+<li><a href="#how-it-works">How It Works</a></li>
+<li><a href="#the-training-challenge">The Training Challenge</a></li>
+</ul>
+</li>
+<li><a href="#what-developers-should-do-today">What Developers Should Do Today</a>
+<ul>
+<li><a href="#1-add-semantic-metadata">1. Add Semantic Metadata</a></li>
+<li><a href="#2-document-your-tools-prominently">2. Document Your Tools Prominently</a></li>
+<li><a href="#3-experiment-with-well-known-endpoints">3. Experiment with <code>.well-known</code> Endpoints</a></li>
+<li><a href="#4-join-the-conversation">4. Join the Conversation</a></li>
+</ul>
+</li>
+<li><a href="#the-future-agent-seo">The Future: Agent SEO</a></li>
+<li><a href="#conclusion-the-last-mile-problem">Conclusion: The Last Mile Problem</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+</ul>
+<p></p></details><p></p>
+<h2 id="the-current-state-navigation-required">The Current State: Navigation Required</h2>
+<p>Today, WebMCP discovery works like this:</p>
+<ol>
+<li>Agent decides to visit your website (somehow)</li>
+<li>Browser navigates to your page</li>
+<li>JavaScript executes and registers tools via <code>navigator.modelContext.provideContext()</code></li>
+<li>Agent discovers available tools</li>
+<li>Agent can now invoke tools</li>
+</ol>
+<p>The “somehow” in step 1 is the problem. Agents must already know to visit your site before they can discover your tools. It’s a chicken-and-egg problem that makes WebMCP discovery fundamentally inefficient compared to backend alternatives.</p>
+<h3 id="why-this-breaks-down">Why This Breaks Down</h3>
+<p>Consider a user asking their agent: <em>“Find me a red dress under $200 for a summer wedding.”</em></p>
+<p>With backend MCP servers, the agent might:</p>
+<ul>
+<li>Query a directory service: “Which e-commerce sites have clothing search APIs?”</li>
+<li>Get list of relevant MCP servers with capabilities</li>
+<li>Connect directly to servers and invoke <code>searchProducts()</code> tools</li>
+<li>Present results without ever opening a browser</li>
+</ul>
+<p>With WebMCP, the agent must:</p>
+<ul>
+<li>Navigate to each potential e-commerce site (Nordstrom, Wildebloom, Lulus, etc.)</li>
+<li>Wait for page load and JavaScript execution on each site</li>
+<li>Discover what tools each site offers</li>
+<li>Invoke tools on relevant sites</li>
+<li>Waste tokens and time on irrelevant sites that don’t have useful tools</li>
+</ul>
+<p><strong>Every navigation is expensive</strong>: page load time, DOM parsing, JavaScript execution, and most critically, token budget burned on sites that may not even support WebMCP.</p>
+<p>The WebMCP proposal candidly states: <em>“There is no built-in mechanism for client applications to discover which sites provide callable tools without visiting or querying them directly.”</em></p>
+<h2 id="solution-1-the-declarative-manifest-approach">Solution 1: The Declarative Manifest Approach</h2>
+<p>The most obvious solution is letting sites declare their tools <em>before</em> agents navigate to them. This is similar to how web apps already advertise their capabilities through Web App Manifests, <code>robots.txt</code>, and OpenGraph meta tags.</p>
+<h3 id="how-it-could-work">How It Could Work</h3>
+<p>A new field in the Web App Manifest (or a separate <code>.well-known/webmcp.json</code> file) could declare available tools:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Wildebloom Clothing"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "short_name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Wildebloom"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "webmcp_tools"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#ABB2BF">    {</span></span>
+<span class="line"><span style="color:#E06C75">      "name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"searchProducts"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "description"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Search for clothing items by category, color, size, and style attributes"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "category"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"commerce"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "inputSchema"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">        "type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"object"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">        "properties"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">          "query"</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">"type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"string"</span><span style="color:#ABB2BF"> },</span></span>
+<span class="line"><span style="color:#E06C75">          "category"</span><span style="color:#ABB2BF">: {</span></span>
+<span class="line"><span style="color:#E06C75">            "type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"string"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">            "enum"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"dresses"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"tops"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"bottoms"</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#ABB2BF">          },</span></span>
+<span class="line"><span style="color:#E06C75">          "size"</span><span style="color:#ABB2BF">: { </span><span style="color:#E06C75">"type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"number"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"minimum"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">2</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">"maximum"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">14</span><span style="color:#ABB2BF"> }</span></span>
+<span class="line"><span style="color:#ABB2BF">        }</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    },</span></span>
+<span class="line"><span style="color:#ABB2BF">    {</span></span>
+<span class="line"><span style="color:#E06C75">      "name"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"addToCart"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "description"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Add a product to the shopping cart"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "category"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"commerce"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">      "requiresAuth"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  ]</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>Agents could fetch this manifest with a simple HTTP GET request—no JavaScript execution, no page load, just structured metadata. Crawlers could index these manifests, building searchable directories of WebMCP-enabled sites.</p>
+<h3 id="the-limitations">The Limitations</h3>
+<p>Static manifests solve discovery but create new problems:</p>
+<p><strong>1. State-Dependent Tools</strong></p>
+<p>Many tools should only be available in specific contexts. Consider a design tool that exposes:</p>
+<ul>
+<li><code>undo()</code> - only available if edits have been made</li>
+<li><code>exportDesign()</code> - only available if a design is loaded</li>
+<li><code>shareWithUser(userId)</code> - only available after authentication</li>
+</ul>
+<p>Static manifests can’t express “this tool exists only when the user has an active editing session.” You’d need dynamic manifest updates, which defeats the efficiency purpose.</p>
+<p><strong>2. Privacy Concerns</strong></p>
+<p>Should every site publicly advertise all its capabilities? Consider enterprise tools, personalized features, or capabilities that vary by user subscription tier. A static manifest exposes your entire API surface to competitors and scrapers.</p>
+<p><strong>3. Maintenance Burden</strong></p>
+<p>Developers now maintain tool definitions in two places: the manifest and the actual implementation. These inevitably drift out of sync, leading to agents attempting to invoke tools that don’t actually exist or have changed signatures.</p>
+<h3 id="the-hybrid-compromise">The Hybrid Compromise</h3>
+<p>The WebMCP proposal suggests a hybrid approach:</p>
+<blockquote>
+<p>“A future iteration of this feature could introduce declarative tools definitions that are placed in an app manifest so that agents would only need to fetch the manifest with a simple HTTP GET request. Agents will of course still need to navigate to the site to actually use its tools, but a manifest makes it far less costly to discover these tools and reason about their relevance to the user’s task.”</p>
+</blockquote>
+<p>This preserves efficiency for discovery while requiring navigation for invocation. Agents can pre-filter irrelevant sites, only navigating to those with useful tools.</p>
+<h2 id="solution-2-progressive-web-apps--service-workers">Solution 2: Progressive Web Apps + Service Workers</h2>
+<p>Service workers offer a more sophisticated approach by decoupling tools from visible browser windows.</p>
+<h3 id="the-architecture">The Architecture</h3>
+<p>When a user installs a PWA, its service worker could register WebMCP tools that persist even after the browser window closes:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="javascript"><code><span class="line"><span style="color:#7F848E;font-style:italic">// In service worker scope</span></span>
+<span class="line"><span style="color:#E5C07B">self</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">addEventListener</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">"activate"</span><span style="color:#ABB2BF">, () </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#E5C07B">  self</span><span style="color:#ABB2BF">.</span><span style="color:#E5C07B">agent</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">provideContext</span><span style="color:#ABB2BF">({</span></span>
+<span class="line"><span style="color:#E06C75">    tools</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#ABB2BF">      {</span></span>
+<span class="line"><span style="color:#E06C75">        name</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"addToCalendar"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">        description</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Add event to user's calendar"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#61AFEF">        execute</span><span style="color:#ABB2BF">: </span><span style="color:#C678DD">async</span><span style="color:#ABB2BF"> ({ </span><span style="color:#E06C75;font-style:italic">title</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">date</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75;font-style:italic">duration</span><span style="color:#ABB2BF"> }) </span><span style="color:#C678DD">=></span><span style="color:#ABB2BF"> {</span></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">          // Call backend API, update local storage, etc.</span></span>
+<span class="line"><span style="color:#C678DD">          await</span><span style="color:#61AFEF"> fetch</span><span style="color:#ABB2BF">(</span><span style="color:#98C379">"/api/calendar/add"</span><span style="color:#ABB2BF">, {</span></span>
+<span class="line"><span style="color:#E06C75">            method</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"POST"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">            body</span><span style="color:#ABB2BF">: </span><span style="color:#E5C07B">JSON</span><span style="color:#ABB2BF">.</span><span style="color:#61AFEF">stringify</span><span style="color:#ABB2BF">({ </span><span style="color:#E06C75">title</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">date</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">duration</span><span style="color:#ABB2BF"> }),</span></span>
+<span class="line"><span style="color:#ABB2BF">          });</span></span>
+<span class="line"><span style="color:#C678DD">          return</span><span style="color:#ABB2BF"> { </span><span style="color:#E06C75">content</span><span style="color:#ABB2BF">: [{ </span><span style="color:#E06C75">type</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"text"</span><span style="color:#ABB2BF">, </span><span style="color:#E06C75">text</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">`Added: </span><span style="color:#C678DD">${</span><span style="color:#E06C75">title</span><span style="color:#C678DD">}</span><span style="color:#98C379">`</span><span style="color:#ABB2BF"> }] };</span></span>
+<span class="line"><span style="color:#ABB2BF">        },</span></span>
+<span class="line"><span style="color:#ABB2BF">      },</span></span>
+<span class="line"><span style="color:#ABB2BF">    ],</span></span>
+<span class="line"><span style="color:#ABB2BF">  });</span></span>
+<span class="line"><span style="color:#ABB2BF">});</span></span></code></pre>
+<p>Now the tool is available system-wide, even when the calendar web app isn’t open. An agent can invoke it directly:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User: "Add lunch meeting with Sarah tomorrow at noon"</span></span>
+<span class="line"><span>Agent: [discovers calendar.example.com has addToCalendar tool via installed PWA]</span></span>
+<span class="line"><span>Agent: [invokes tool without opening browser window]</span></span>
+<span class="line"><span>Agent: "Done! Added to your calendar."</span></span></code></pre>
+<h3 id="the-user-experience">The User Experience</h3>
+<p>This model mirrors native app capabilities:</p>
+<ol>
+<li>User installs PWA (explicit trust signal)</li>
+<li>PWA registers tools in service worker</li>
+<li>Tools available to authorized agents system-wide</li>
+<li>Background execution without UI disruption</li>
+<li>Security prompts only on first use per agent</li>
+</ol>
+<p>Service workers can open windows when needed (e.g., for payment confirmation) while keeping simple operations headless.</p>
+<h3 id="the-discovery-challenge-remains">The Discovery Challenge Remains</h3>
+<p>This solves <em>persistence</em> but not <em>initial discovery</em>. How does an agent know <code>calendar.example.com</code> has a useful PWA to install in the first place? We’re back to needing some form of directory or search mechanism.</p>
+<h2 id="solution-3-directories-and-search-apis">Solution 3: Directories and Search APIs</h2>
+<p>If websites can’t efficiently advertise their tools individually, perhaps centralized (or federated) directories fill the gap.</p>
+<h3 id="the-centralized-model">The Centralized Model</h3>
+<p>Similar to browser extension marketplaces or app stores:</p>
+<p><strong>Google WebMCP Registry</strong></p>
+<ul>
+<li>Developers submit their sites for indexing</li>
+<li>Google crawls for <code>webmcp.json</code> manifests or <code>&#x3C;meta></code> tags</li>
+<li>Agents query: <code>GET https://webmcp.google.com/api/search?q=e-commerce+clothing+search</code></li>
+<li>Returns ranked list of sites with relevant tools</li>
+</ul>
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Single authoritative source</li>
+<li>Quality control and vetting</li>
+<li>Rich metadata and categorization</li>
+<li>Built on existing infrastructure (Google already crawls the web)</li>
+</ul>
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Centralization risk (one company controls agent-web interface)</li>
+<li>Pay-to-play concerns (featured listings, promoted tools)</li>
+<li>Slower updates than real-time web changes</li>
+<li>Doesn’t match the open web’s philosophy</li>
+</ul>
+<h3 id="the-decentralized-model">The Decentralized Model</h3>
+<p>Alternatively, a distributed protocol similar to RSS or ActivityPub:</p>
+<p><strong>WebMCP Discovery Protocol</strong></p>
+<ul>
+<li>Sites publish <code>/.well-known/webmcp.json</code> endpoints</li>
+<li>Discovery nodes crawl and aggregate (anyone can run one)</li>
+<li>Agents query multiple discovery nodes, deduplicate results</li>
+<li>Sites control their own metadata without gatekeepers</li>
+</ul>
+<p>This could work like the Fediverse: federated instances share knowledge while sites retain sovereignty over their data.</p>
+<h3 id="the-search-engine-pivot">The Search Engine Pivot</h3>
+<p>Search engines already index website capabilities through structured data (Schema.org, OpenGraph, JSON-LD). They could extend this to WebMCP:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">meta</span><span style="color:#D19A66"> property</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"webmcp:tool"</span><span style="color:#D19A66"> content</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"searchProducts"</span><span style="color:#ABB2BF"> /></span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">meta</span><span style="color:#D19A66"> property</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"webmcp:category"</span><span style="color:#D19A66"> content</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"e-commerce"</span><span style="color:#ABB2BF"> /></span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">script</span><span style="color:#D19A66"> type</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"application/ld+json"</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#ABB2BF">    "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "@type": "WebAPI",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "name": "Wildebloom Product Search",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "description": "Search for sustainable clothing",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "potentialAction": {</span></span>
+<span class="line"><span style="color:#ABB2BF">      "@type": "SearchAction",</span></span>
+<span class="line"><span style="color:#ABB2BF">      "target": "webmcp://wildebloom.example/searchProducts?query={query}"</span></span>
+<span class="line"><span style="color:#ABB2BF">    }</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;/</span><span style="color:#E06C75">script</span><span style="color:#ABB2BF">></span></span></code></pre>
+<p>Search engines already understand structured data. Extending it to describe agent-accessible tools is natural evolution.</p>
+<h2 id="solution-4-ai-native-discovery">Solution 4: AI-Native Discovery</h2>
+<p>Perhaps the solution isn’t technical but contextual. Modern LLMs are trained on vast web corpuses and could learn which sites offer which capabilities organically.</p>
+<h3 id="how-it-works">How It Works</h3>
+<p>When training foundation models, include WebMCP tool schemas as part of web content:</p>
+<ul>
+<li>Model learns “Wildebloom has clothing search tools”</li>
+<li>Model learns “Gerrit has code review automation tools”</li>
+<li>Model learns “Figma has design editing tools”</li>
+</ul>
+<p>At inference time, agents use this learned knowledge to navigate directly to relevant sites:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>User: "Find me a dress for a wedding"</span></span>
+<span class="line"><span>Agent reasoning: [I know Wildebloom and Nordstrom have WebMCP clothing search tools]</span></span>
+<span class="line"><span>Agent: [Navigates to Wildebloom]</span></span>
+<span class="line"><span>Agent: [Discovers and invokes searchProducts()]</span></span></code></pre>
+<h3 id="the-training-challenge">The Training Challenge</h3>
+<p>This requires:</p>
+<ol>
+<li>WebMCP adoption reaches critical mass</li>
+<li>Training data includes tool schemas (in manifests, documentation, or meta tags)</li>
+<li>Models are retrained to incorporate this knowledge</li>
+<li>Knowledge stays current as sites update tools</li>
+</ol>
+<p>It also inherits LLM knowledge cutoff issues—agents won’t know about newly launched sites or tools added after training.</p>
+<h2 id="what-developers-should-do-today">What Developers Should Do Today</h2>
+<p>While the WebMCP community debates discovery mechanisms, developers can position their sites for eventual discoverability:</p>
+<h3 id="1-add-semantic-metadata">1. Add Semantic Metadata</h3>
+<p>Even without standardized WebMCP manifests, you can signal capabilities:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="html"><code><span class="line"><span style="color:#7F848E;font-style:italic">&#x3C;!-- OpenGraph hints --></span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">meta</span><span style="color:#D19A66"> property</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"og:type"</span><span style="color:#D19A66"> content</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"website.ecommerce"</span><span style="color:#ABB2BF"> /></span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">meta</span><span style="color:#D19A66"> property</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"og:capabilities"</span><span style="color:#D19A66"> content</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"search,cart,checkout"</span><span style="color:#ABB2BF"> /></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic">&#x3C;!-- Schema.org structured data --></span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;</span><span style="color:#E06C75">script</span><span style="color:#D19A66"> type</span><span style="color:#ABB2BF">=</span><span style="color:#98C379">"application/ld+json"</span><span style="color:#ABB2BF">></span></span>
+<span class="line"><span style="color:#ABB2BF">  {</span></span>
+<span class="line"><span style="color:#ABB2BF">    "@context": "https://schema.org",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "@type": "Store",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "name": "Wildebloom",</span></span>
+<span class="line"><span style="color:#ABB2BF">    "potentialAction": [</span></span>
+<span class="line"><span style="color:#ABB2BF">      {</span></span>
+<span class="line"><span style="color:#ABB2BF">        "@type": "SearchAction",</span></span>
+<span class="line"><span style="color:#ABB2BF">        "target": "https://wildebloom.example/search?q={query}",</span></span>
+<span class="line"><span style="color:#ABB2BF">        "query-input": "required name=query"</span></span>
+<span class="line"><span style="color:#ABB2BF">      }</span></span>
+<span class="line"><span style="color:#ABB2BF">    ]</span></span>
+<span class="line"><span style="color:#ABB2BF">  }</span></span>
+<span class="line"><span style="color:#ABB2BF">&#x3C;/</span><span style="color:#E06C75">script</span><span style="color:#ABB2BF">></span></span></code></pre>
+<h3 id="2-document-your-tools-prominently">2. Document Your Tools Prominently</h3>
+<p>Create an <code>/agents</code> or <code>/api-docs</code> page describing your WebMCP tools in human-readable format. Agents trained on web content will learn from these descriptions:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E06C75">## Agent Integration</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#ABB2BF">Wildebloom supports WebMCP for AI agent access:</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D19A66">**searchProducts(query, category, size, color)**</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Search our catalog with natural language or structured filters</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Returns product listings with images, prices, and availability</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D19A66">**addToCart(productId, quantity)**</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Add items to shopping cart</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Requires user authentication</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#D19A66">**checkout()**</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Initiate secure checkout flow</span></span>
+<span class="line"><span style="color:#E5C07B">-</span><span style="color:#ABB2BF"> Opens payment window for user confirmation</span></span></code></pre>
+<h3 id="3-experiment-with-well-known-endpoints">3. Experiment with <code>.well-known</code> Endpoints</h3>
+<p>Even without standardization, you can create your own:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>https://yoursite.com/.well-known/webmcp.json</span></span></code></pre>
+<p>This follows web conventions and positions you well if a standard emerges using this pattern.</p>
+<h3 id="4-join-the-conversation">4. Join the Conversation</h3>
+<p>The WebMCP proposal has <a href="https://github.com/webmachinelearning/webmcp/issues">31 open issues on GitHub</a>. Discovery is discussed in multiple threads. Contributing to this discussion helps shape the eventual solution.</p>
+<h2 id="the-future-agent-seo">The Future: Agent SEO</h2>
+<p>Within the next 2-3 years, I predict a new professional category emerges: <strong>Agent SEO Specialist</strong>.</p>
+<p>Just as traditional SEO optimizes for search engine crawlers, Agent SEO will optimize for AI agent discovery:</p>
+<ul>
+<li>Crafting tool descriptions that LLMs understand</li>
+<li>Structuring metadata for agent consumption</li>
+<li>Monitoring agent traffic and tool invocation analytics</li>
+<li>A/B testing tool names and descriptions for agent comprehension</li>
+<li>Managing reputation in agent directories</li>
+</ul>
+<p>The first movers in this space will gain significant competitive advantages as agents become primary web interfaces for certain tasks.</p>
+<h2 id="conclusion-the-last-mile-problem">Conclusion: The Last Mile Problem</h2>
+<p>WebMCP has solved the efficiency problem—structured tools beat vision-based UI automation by orders of magnitude. But discovery remains the “last mile” challenge preventing adoption at scale.</p>
+<p>The solution will likely be <strong>hybrid</strong>:</p>
+<ul>
+<li>Static manifests for basic tool advertising</li>
+<li>Service workers for persistent, installed-app experiences</li>
+<li>Directory services (centralized or federated) for search</li>
+<li>LLM training incorporating tool knowledge for contextual awareness</li>
+</ul>
+<p>None of these solutions are mutually exclusive. The web thrives on layered approaches—think of how websites are discovered today through search engines, social media, direct links, bookmarks, and suggested sites.</p>
+<p>WebMCP discovery will evolve similarly: multiple overlapping mechanisms that agents choose based on context, user trust, and efficiency trade-offs.</p>
+<p>The race is on. Sites that implement WebMCP tools today will be indexed, learned about, and recommended by tomorrow’s agent ecosystems. The question isn’t whether to prepare for agent discovery—it’s how early you start.</p>
+<hr>
+<h2 id="further-reading">Further Reading</h2>
+<ul>
+<li><a href="https://github.com/webmachinelearning/webmcp">WebMCP Official Proposal</a> - The specification and explainers</li>
+<li><a href="https://modelcontextprotocol.io/">Model Context Protocol</a> - Backend MCP for comparison</li>
+<li><a href="https://www.w3.org/TR/appmanifest/">Web App Manifest Specification</a> - Existing capability declaration</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API">Service Workers API</a> - Background execution context</li>
+<li><a href="https://schema.org/Action">Schema.org Actions</a> - Structured data for web capabilities</li>
+</ul> </article> <ul class="my-8"> <li class="inline-block my-1 underline-offset-4"> <a href="/tags/webmcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-2"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>webmcp</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/discovery/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-3"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>discovery</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/agents/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-4"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>agents</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/web-standards/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-5"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>web-standards</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-6"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>ai</span> </a> </li> </ul> <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"> <button id="back-to-top" class="focus-outline whitespace-nowrap py-1 hover:opacity-75"> <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"> <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg> <span>Back to Top</span> </button> <div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg> <span class="sr-only">Tweet this post</span> </a><a href="https://t.me/share/url?url=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&#38;body=https://cmwen.github.io/posts/webmcp-discovery-problem/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> </div> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-skin-line" aria-hidden="true"> </div> <div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="social-icons flex flex-wrap gap-1 justify-center"> <a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg> <span class="sr-only"> Min Wen on Github</span> </a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg> <span class="sr-only">Min Wen on LinkedIn</span> </a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Send an email to Min Wen</span> </a> </div> <div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2025</span> <span class="separator hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  </body></html> <script data-mermaid-module="data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K">(function(){const MERMAID_MODULE_URL = "data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K";
+
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  // Use the injected variable from define:vars
+  const MERMAID_MODULE =
+    MERMAID_MODULE_URL ||
+    window.MERMAID_MODULE_URL ||
+    document.currentScript?.dataset.mermaidModule;
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!MERMAID_MODULE) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(MERMAID_MODULE);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run when navigating with View Transitions
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+})();</script>
