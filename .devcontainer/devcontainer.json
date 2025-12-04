@@ -9,13 +9,15 @@
         "astro-build.astro-vscode",
         "bradlc.vscode-tailwindcss",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "ms-python.python",
+        "ms-python.vscode-pylance"
       ]
     }
   },
   "forwardPorts": [
     4321
   ],
-  "postCreateCommand": "pnpm install",
+  "postCreateCommand": "pnpm install && uv sync",
   "remoteUser": "node"
 }
