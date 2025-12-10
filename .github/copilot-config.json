@@ -1,5 +1,0 @@
-{
-  "devcontainer": {
-    "path": ".devcontainer/devcontainer.json"
-  }
-}
