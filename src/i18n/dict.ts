@@ -56,6 +56,10 @@ type Dict = {
       ownBrowseDescription: string;
       quickLogTitle: string;
       quickLogDescription: string;
+      promptLoopTitle: string;
+      promptLoopDescription: string;
+      readForgeTitle: string;
+      readForgeDescription: string;
       gamifyTaxTitle: string;
       gamifyTaxDescription: string;
     };
@@ -137,9 +141,17 @@ export const messages: Record<Locale, Dict> = {
         ownBrowseTitle: "Own-Browse — Privacy-First Browser Extension",
         ownBrowseDescription:
           "A browser extension that enhances your browsing experience with privacy-focused features and customizable shortcuts. Built with modern web extension APIs for cross-browser compatibility.",
-        quickLogTitle: "Min Quick Log — Fast Mobile Logging",
+        quickLogTitle: "Quick Log — Tag-First Logging (Android)",
         quickLogDescription:
-          "A lightweight Android app for quick note-taking and time logging on the go. Designed for speed and simplicity with minimal UI and instant capture.",
+          "An Android-only, tag-first logging app for quick notes with optional location tracking. Built with Flutter and designed for fast capture and on-device storage.",
+        promptLoopTitle:
+          "Prompt Loop — AI-Powered Deliberate Practice (Android)",
+        promptLoopDescription:
+          "A Flutter-based Android app for deliberate practice loops: structured sessions, progress tracking, and BYOK workflows for using your preferred LLM for feedback.",
+        readForgeTitle:
+          "ReadForge — Local-First AI Book Creator + Reader (Android)",
+        readForgeDescription:
+          "A local-first app to create and read LLM-generated books. Supports multi-language UI, customizable writing preferences, and a rich reader experience with full data ownership.",
         gamifyTaxTitle: "Gamify Tax Deduction — Gamified Receipt Tracker",
         gamifyTaxDescription:
           "An Android app designed to encourage users to keep receipts for tax deductions through gamification. Makes tax documentation engaging with game mechanics and rewards.",
@@ -220,9 +232,15 @@ export const messages: Record<Locale, Dict> = {
         ownBrowseTitle: "Own-Browse — 注重隱私的瀏覽器擴充功能",
         ownBrowseDescription:
           "一個瀏覽器擴充功能，透過注重隱私的功能和可自訂快捷鍵來增強您的瀏覽體驗。使用現代 Web 擴充 API 建構，支援跨瀏覽器相容性。",
-        quickLogTitle: "Min Quick Log — 快速行動記錄",
+        quickLogTitle: "Quick Log — 標籤優先的快速記錄（Android）",
         quickLogDescription:
-          "一個輕量級 Android 應用程式，用於在行動中快速記錄筆記和時間。專為速度和簡潔而設計，具有最小化 UI 和即時捕捉功能。",
+          "一個僅支援 Android 的標籤優先快速記錄應用，可選擇啟用定位追蹤。使用 Flutter 建構，強調快速捕捉與裝置端資料儲存。",
+        promptLoopTitle: "Prompt Loop — AI 輔助刻意練習循環（Android）",
+        promptLoopDescription:
+          "以 Flutter 打造的 Android 刻意練習應用：結構化練習、進度追蹤，以及 BYOK（自帶金鑰）流程，搭配你偏好的 LLM 取得回饋。",
+        readForgeTitle: "ReadForge — 本地優先 AI 書籍生成與閱讀器（Android）",
+        readForgeDescription:
+          "一個本地優先的書籍生成與閱讀應用，支援多語系介面、可自訂寫作偏好，以及舒適的閱讀器體驗；資料完全由你掌控。",
         gamifyTaxTitle: "Gamify Tax Deduction — 遊戲化收據追蹤器",
         gamifyTaxDescription:
           "一個 Android 應用程式，透過遊戲化設計鼓勵使用者保留收據以進行稅務扣除。透過遊戲機制和獎勵系統，讓稅務文件記錄變得有趣。",
