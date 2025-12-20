@@ -199,15 +199,6 @@ def main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_di
     console.print("\n🎉 Podcast generation complete!")
 
 
-def main():
-    """Entry point when called as module"""
-    cli()
-
-
-if __name__ == "__main__":
-    main()
-
-
 def _collect_existing_episodes(blog_posts, output_path: Path):
     """Collect existing audio (*.mp3) in output_path and map to blog metadata.
 
@@ -243,3 +234,12 @@ def _collect_existing_episodes(blog_posts, output_path: Path):
         except OSError:
             continue
     return episodes
+
+
+def main():
+    """Entry point when called as module"""
+    cli()
+
+
+if __name__ == "__main__":
+    main()
