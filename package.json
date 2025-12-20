@@ -45,7 +45,7 @@
     "@playwright/test": "^1.56.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
-    "@types/node": "^24.10.1",
+    "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/rss": "^0.0.32",
     "@typescript-eslint/parser": "^8.48.0",
@@ -61,7 +61,7 @@
     "prettier-plugin-tailwindcss": "^0.7.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "tsx": "^4.20.6"
+    "tsx": "^4.21.0"
   },
   "config": {
     "commitizen": {
