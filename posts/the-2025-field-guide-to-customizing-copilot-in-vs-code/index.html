@@ -1,0 +1,733 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><meta name="generator" content="Astro v5.16.3"><!-- General Meta Tags --><title>The 2025 Field Guide to Customizing Copilot in VS Code | Min Wen</title><meta name="title" content="The 2025 Field Guide to Customizing Copilot in VS Code | Min Wen"><meta name="description" content="A practical decision framework for when to use instructions, prompt files, custom agents, agent skills, and MCP servers—so Copilot stays consistent, safe, and useful across your day job."><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="The 2025 Field Guide to Customizing Copilot in VS Code | Min Wen"><meta property="og:description" content="A practical decision framework for when to use instructions, prompt files, custom agents, agent skills, and MCP servers—so Copilot stays consistent, safe, and useful across your day job."><meta property="og:url" content="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><meta property="og:image" content="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2025-12-22T10:01:24.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/"><meta property="twitter:title" content="The 2025 Field Guide to Customizing Copilot in VS Code | Min Wen"><meta property="twitter:description" content="A practical decision framework for when to use instructions, prompt files, custom agents, agent skills, and MCP servers—so Copilot stays consistent, safe, and useful across your day job."><meta property="twitter:image" content="https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.QW52Ox2j.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/about.BfgwGmPY.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+:where([data-astro-image]){object-fit:var(--fit);object-position:var(--pos);height:auto}:where([data-astro-image=full-width]){width:100%}:where([data-astro-image=constrained]){max-width:100%}
+</style><style>[data-astro-transition-scope="astro-wi2w6ztr-1"] { view-transition-name: the-2025-field-guide-to-customizing-copilot-in-vs-code; }@layer astro { ::view-transition-old(the-2025-field-guide-to-customizing-copilot-in-vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(the-2025-field-guide-to-customizing-copilot-in-vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(the-2025-field-guide-to-customizing-copilot-in-vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(the-2025-field-guide-to-customizing-copilot-in-vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: github-copilot; }@layer astro { ::view-transition-old(github-copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(github-copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(github-copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(github-copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: vs-code; }@layer astro { ::view-transition-old(vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(vs-code) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: coding-agents; }@layer astro { ::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: mcp; }@layer astro { ::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-6"] { view-transition-name: developer-productivity; }@layer astro { ::view-transition-old(developer-productivity) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-productivity) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-productivity) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-productivity) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body>  <header class="astro-3ef6ksr2"> <a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-3ef6ksr2" href="#main-content"> Skip to content </a> <div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-3ef6ksr2"> <div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-3ef6ksr2"> <a href="/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-3ef6ksr2"> Min Wen </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-3ef6ksr2"> <button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-3ef6ksr2" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-3ef6ksr2"> <line x1="7" y1="12" x2="21" y2="12" class="line astro-3ef6ksr2"></line> <line x1="3" y1="6" x2="21" y2="6" class="line astro-3ef6ksr2"></line> <line x1="12" y1="18" x2="21" y2="18" class="line astro-3ef6ksr2"></line> <line x1="18" y1="6" x2="6" y2="18" class="close astro-3ef6ksr2"></line> <line x1="6" y1="6" x2="18" y2="18" class="close astro-3ef6ksr2"></line> </svg> </button> <ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-3ef6ksr2"> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Posts </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Tags </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/profolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Profolio </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> Toolbox </a> </li> <!-- Toolbox Subnav - shown when toolbox is active -->  <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> About </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex  astro-3ef6ksr2" aria-label="Search" title="Search"> <svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-3ef6ksr2"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-3ef6ksr2"></path> </svg> <span class="sr-only astro-3ef6ksr2">Search</span> </a> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-3ef6ksr2" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-3ef6ksr2"></path> </svg> <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-3ef6ksr2"></path> </svg> </button> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-3ef6ksr2"> 中文 </a> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-skin-line" aria-hidden="true"> </div> </header>  <script type="module">function n(){const e=document.querySelector(".hamburger-menu"),u=document.querySelector(".menu-icon"),a=document.querySelector("#menu-items");e?.addEventListener("click",()=>{const t=e.getAttribute("aria-expanded")==="true";u?.classList.toggle("is-active"),e.setAttribute("aria-expanded",t?"false":"true"),e.setAttribute("aria-label",t?"Open Menu":"Close Menu"),a?.classList.toggle("display-none")})}n();document.addEventListener("astro:after-swap",n);</script>  <div class="mx-auto flex w-full max-w-7xl justify-start px-2"> <button class="focus-outline mb-2 mt-8 flex hover:opacity-75" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"> <svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg><span>Go back</span> </button> </div> <main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"> <!-- Sidebar that moves to top on mobile --> <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"> <div class="sidebar-sticky lg:sticky lg:top-24"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="1yW0GM" component-url="/_astro/AudioPlayer.r6GaPCPr.js" component-export="default" renderer-url="/_astro/client.9unXo8s5.js" props="{&quot;slug&quot;:[0,&quot;the-2025-field-guide-to-customizing-copilot-in-vs-code&quot;],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> <astro-island uid="Z2odO6V" component-url="/_astro/ChatLink.D2PDnR9D.js" component-export="default" renderer-url="/_astro/client.9unXo8s5.js" props="{&quot;title&quot;:[0,&quot;The 2025 Field Guide to Customizing Copilot in VS Code&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;instructions vs prompts choice&quot;],[0,&quot;repo vs profile scope&quot;],[0,&quot;agent tool boundaries&quot;],[0,&quot;MCP trust checklist&quot;],[0,&quot;reduce configuration drift&quot;],[0,&quot;day job recipes&quot;]]],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </aside> <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"> <h1 class="post-title text-2xl font-semibold text-skin-accent" data-astro-transition-scope="astro-wi2w6ztr-1"> The 2025 Field Guide to Customizing Copilot in VS Code </h1> <div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2025-12-22T10:01:24.000Z">Dec 22, 2025</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">10:01 AM</span></span></div> <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"> <h1 id="the-2025-field-guide-to-customizing-copilot-in-vs-code">The 2025 Field Guide to Customizing Copilot in VS Code</h1>
+<p>If you’ve been using GitHub Copilot for a while, you’ve probably felt the <em>configuration explosion</em>.</p>
+<p>There’s more than one way to “teach Copilot” now:</p>
+<ul>
+<li>Repo instructions (project conventions)</li>
+<li>Path-scoped rules (different rules for different folders)</li>
+<li>Prompt files (reusable “commands” you run on demand)</li>
+<li>Custom agents (roles with boundaries and handoffs)</li>
+<li>Agent skills (capability packs for specialized work)</li>
+<li>MCP servers (tools that let the agent do things, not just say things)</li>
+</ul>
+<p>That’s great—until it isn’t.</p>
+<p>If your team doesn’t pick a mental model, you get:</p>
+<ul>
+<li>Agents that behave differently per repo</li>
+<li>Prompt sprawl (dozens of prompts, none discoverable)</li>
+<li>Conflicting guidance (“follow the style guide” vs “ignore style guides”)</li>
+<li>Tool sprawl (MCP servers everywhere, unclear trust boundary)</li>
+</ul>
+<p>This post is a pragmatic field guide: a decision framework, a few recipes, and anti-patterns to avoid.</p>
+<h2 id="the-one-sentence-mental-model">The one-sentence mental model</h2>
+<p>Use the <em>smallest</em> customization surface that matches the <strong>scope</strong> (me vs team), <strong>lifetime</strong> (one-off vs durable), and <strong>risk</strong> (read-only vs write/deploy).</p>
+<p>In practice:</p>
+<ul>
+<li><strong>Instructions</strong> set the <em>rules of the road</em>.</li>
+<li><strong>Prompt files</strong> are <em>repeatable moves</em> you trigger.</li>
+<li><strong>Custom agents</strong> are <em>roles with boundaries</em>.</li>
+<li><strong>Skills</strong> are <em>domain capability modules</em>.</li>
+<li><strong>MCP servers</strong> are <em>the hands</em>.</li>
+</ul>
+<h2 id="the-five-customization-surfaces-what-theyre-really-for">The five customization surfaces (what they’re really for)</h2>
+<h3 id="1-instructions-guardrails-and-shared-context">1) Instructions: guardrails and shared context</h3>
+<p><strong>Use when</strong> you want consistency across many interactions.</p>
+<p>Examples of what belongs here:</p>
+<ul>
+<li>How to build, test, and lint the repo</li>
+<li>Architecture constraints (e.g., “keep React components client-only unless necessary”)</li>
+<li>Style conventions (naming, file layout, preferred patterns)</li>
+<li>Safety rules (no secret printing, don’t change unrelated code)</li>
+</ul>
+<p>Most teams benefit from keeping instructions <em>boring and stable</em>.</p>
+<p>In a modern Copilot setup, you’ll usually see a combination of:</p>
+<ul>
+<li>A repo-wide instruction file (team-wide defaults)</li>
+<li>Path-scoped instruction files (folder-level rules)</li>
+<li>An agent-oriented instruction file (how agents should operate in this repo)</li>
+</ul>
+<p>Key principle: <strong>instructions should not be your workflow</strong>. They’re the constraints and context, not the playbook.</p>
+<h3 id="2-prompt-files-reusable-commands-for-your-day-job">2) Prompt files: reusable “commands” for your day job</h3>
+<p><strong>Use when</strong> you do the same thing repeatedly and you want a consistent output format.</p>
+<p>Prompt files are great for:</p>
+<ul>
+<li>Writing a PR description from a diff</li>
+<li>Generating a test plan from a feature spec</li>
+<li>Drafting a migration checklist</li>
+<li>Summarizing a bug investigation</li>
+</ul>
+<p>A good prompt file has:</p>
+<ul>
+<li>A crisp input contract (what you paste in)</li>
+<li>A crisp output contract (what the assistant must produce)</li>
+<li>Minimal reliance on hidden context</li>
+</ul>
+<p>Think of prompt files as the equivalent of a shell alias: fast, repeatable, and intentionally narrow.</p>
+<h3 id="3-custom-agents-roles-with-boundaries-tools-and-handoffs">3) Custom agents: roles with boundaries, tools, and handoffs</h3>
+<p><strong>Use when</strong> the task benefits from a <em>persona with constraints</em>.</p>
+<p>Examples:</p>
+<ul>
+<li>A <strong>researcher</strong> that only fetches and summarizes (no code edits)</li>
+<li>A <strong>reviewer</strong> that critiques diffs and looks for edge cases</li>
+<li>A <strong>test writer</strong> that focuses on coverage and failure modes</li>
+<li>A <strong>release helper</strong> that follows a repeatable checklist</li>
+</ul>
+<p>The biggest win from custom agents isn’t “better prompts”—it’s <strong>boundary-setting</strong>.</p>
+<p>If your agent can do everything, it will.</p>
+<p>If your agent can only do a few things, it becomes predictable.</p>
+<h3 id="4-agent-skills-portable-capability-packs">4) Agent skills: portable capability packs</h3>
+<p><strong>Use when</strong> you need specialized rules <em>sometimes</em>, and you don’t want them always loaded into every chat.</p>
+<p>Skills shine for:</p>
+<ul>
+<li>Translation rules (tone, glossary, frontmatter transformations)</li>
+<li>Podcast generation steps (transcript preference, CLI commands, output validation)</li>
+<li>Security reviews (threat modeling checklist)</li>
+</ul>
+<p>A good skill is:</p>
+<ul>
+<li>Domain-specific</li>
+<li>Reusable across repos</li>
+<li>Easy to invoke when needed</li>
+</ul>
+<p>If prompt files are “commands” and agents are “roles,” skills are closer to <strong>modules</strong>.</p>
+<h3 id="5-mcp-servers-tools-that-turn-words-into-actions">5) MCP servers: tools that turn words into actions</h3>
+<p><strong>Use when</strong> you want the assistant to <em>do things</em>:</p>
+<ul>
+<li>Query a service</li>
+<li>Search external systems</li>
+<li>Interact with a browser automation surface</li>
+<li>Read resources beyond the repo</li>
+</ul>
+<p>MCP (Model Context Protocol) is powerful because it makes tools composable.</p>
+<p>But that power comes with a simple trade-off:</p>
+<ul>
+<li>More tools = more leverage</li>
+<li>More tools = more risk</li>
+</ul>
+<p>So MCP isn’t where you start. It’s what you add when you already know your workflow.</p>
+<h2 id="a-quick-decision-matrix">A quick decision matrix</h2>
+<p>Use this table as a default choice. When in doubt, pick the smaller surface.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>You want to…</th><th>Best tool</th><th>Why</th></tr></thead><tbody><tr><td>Make Copilot follow repo conventions</td><td>Instructions</td><td>Durable guardrails that apply everywhere</td></tr><tr><td>Apply different rules to <code>/docs</code> vs <code>/src</code></td><td>Path-scoped instructions</td><td>Local rules, less conflict</td></tr><tr><td>Repeat a task weekly with the same format</td><td>Prompt file</td><td>Predictable input/output contract</td></tr><tr><td>Create a “research-only” helper</td><td>Custom agent</td><td>Role boundaries + tool restrictions</td></tr><tr><td>Create a multi-step workflow with checkpoints</td><td>Custom agent + handoffs</td><td>Explicit transitions, human gates</td></tr><tr><td>Load specialized domain rules sometimes</td><td>Skill</td><td>On-demand specialization</td></tr><tr><td>Let Copilot operate external tools</td><td>MCP server</td><td>Tool execution beyond text</td></tr></tbody></table>
+<h2 id="the-two-scopes-rule-repo-vs-profile">The “two scopes” rule: repo vs profile</h2>
+<p>One of the easiest ways to reduce chaos is to separate <strong>team-shared</strong> from <strong>personal</strong>.</p>
+<h3 id="put-team-rules-in-the-repo">Put team rules in the repo</h3>
+<p>If it should be true for <em>every</em> developer working on the repo, it belongs in the repository:</p>
+<ul>
+<li>How to run tests and build</li>
+<li>Design constraints</li>
+<li>Naming conventions</li>
+<li>What “done” means</li>
+</ul>
+<p>If your repo is open source or used by many contributors, repo-level instructions also act as <strong>documentation</strong>.</p>
+<h3 id="put-personal-accelerators-in-your-profile">Put personal accelerators in your profile</h3>
+<p>If it’s about <em>how you work</em> rather than how the repo works, keep it personal:</p>
+<ul>
+<li>Your preferred “debug checklist” prompt</li>
+<li>Your note-taking or summarization style</li>
+<li>Your personal agents (rubber duck, explainer)</li>
+</ul>
+<p>This keeps your team’s repo clean and makes it easier to collaborate.</p>
+<h2 id="day-job-recipes">Day-job recipes</h2>
+<p>These are common scenarios where people overbuild. Here’s a simple default approach.</p>
+<h3 id="recipe-1-copilot-keeps-forgetting-project-structure">Recipe 1: “Copilot keeps forgetting project structure”</h3>
+<ul>
+<li>Add (or refine) repo instructions to include:
+<ul>
+<li>Build/test commands</li>
+<li>Key folders and their intent</li>
+<li>Style conventions</li>
+</ul>
+</li>
+<li>Add path-scoped rules only if different folders <em>genuinely</em> require different behavior.</li>
+</ul>
+<p>Avoid: writing a massive prompt with every convention you can think of.</p>
+<h3 id="recipe-2-i-do-the-same-refactor-every-sprint">Recipe 2: “I do the same refactor every sprint”</h3>
+<ul>
+<li>Create a prompt file that:
+<ul>
+<li>asks for the exact input you provide (diff, file list, or function)</li>
+<li>outputs a checklist and a proposed patch plan</li>
+</ul>
+</li>
+</ul>
+<p>Avoid: creating a custom agent if the work is a single repeated move.</p>
+<h3 id="recipe-3-i-want-safer-reviews">Recipe 3: “I want safer reviews”</h3>
+<ul>
+<li>Create a reviewer agent that:
+<ul>
+<li>focuses on risk, tests, edge cases</li>
+<li>is constrained to read-only tools (or no tools)</li>
+<li>produces a consistent review format</li>
+</ul>
+</li>
+</ul>
+<p>Avoid: mixing reviewer and implementer in the same agent.</p>
+<h3 id="recipe-4-i-want-the-agent-to-touch-external-systems">Recipe 4: “I want the agent to touch external systems”</h3>
+<ul>
+<li>Add MCP only after you’ve defined:
+<ul>
+<li>which systems are in scope</li>
+<li>what read/write boundaries exist</li>
+<li>what actions require explicit approval</li>
+</ul>
+</li>
+</ul>
+<p>Avoid: enabling everything and hoping the approval prompts save you.</p>
+<h2 id="anti-patterns-things-that-look-helpful-but-create-pain">Anti-patterns (things that look helpful but create pain)</h2>
+<h3 id="1-treating-instructions-as-a-dumping-ground">1) Treating instructions as a dumping ground</h3>
+<p>If instructions contain <em>too much workflow</em>, they become unmaintainable.</p>
+<p>Instructions should be:</p>
+<ul>
+<li>Stable</li>
+<li>Consistent</li>
+<li>Low entropy</li>
+</ul>
+<p>Move repeatable procedures into prompt files or agent workflows.</p>
+<h3 id="2-creating-an-agent-for-every-task">2) Creating an agent for every task</h3>
+<p>If you create 15 agents, no one remembers which one to use.</p>
+<p>Start with:</p>
+<ul>
+<li>1–2 durable agents (e.g., reviewer, researcher)</li>
+<li>a small set of prompt files for the most repeated actions</li>
+</ul>
+<h3 id="3-conflicting-rules-across-layers">3) Conflicting rules across layers</h3>
+<p>If repo instructions say one thing and a personal profile says another, your output becomes unpredictable.</p>
+<p>Rule of thumb: <strong>one concern, one source of truth</strong>.</p>
+<h3 id="4-mcp-tool-sprawl-without-a-trust-model">4) MCP tool sprawl without a trust model</h3>
+<p>Tools are power.</p>
+<p>If you don’t define tool trust boundaries, you end up with:</p>
+<ul>
+<li>“approve fatigue” (clicking approve without reading)</li>
+<li>accidental writes to the wrong environment</li>
+<li>confusing failures and unclear ownership</li>
+</ul>
+<h2 id="a-lightweight-safety-checklist-for-mcp">A lightweight safety checklist for MCP</h2>
+<p>If you’re adding MCP servers, keep it simple:</p>
+<ul>
+<li><strong>Least privilege</strong>: prefer read-only tools by default</li>
+<li><strong>Separate by risk</strong>: research tools vs write/deploy tools</li>
+<li><strong>Human checkpoints</strong>: require explicit approval for destructive actions</li>
+<li><strong>Reviewable artifacts</strong>: prefer workflows that produce diffs, logs, or summaries</li>
+</ul>
+<p>You don’t need a heavyweight security program—just a few habits that scale.</p>
+<h2 id="a-quick-starting-kit-what-id-actually-set-up-first">A quick starting kit (what I’d actually set up first)</h2>
+<p>If you want a practical default:</p>
+<ol>
+<li><strong>Repo instructions</strong>: short, stable, focused on build/test and conventions.</li>
+<li><strong>One reviewer agent</strong>: consistent review format, minimal tools.</li>
+<li><strong>Three prompt files</strong>:
+<ul>
+<li>“summarize changes + risks + tests”</li>
+<li>“draft PR description”</li>
+<li>“write test plan”</li>
+</ul>
+</li>
+<li><strong>MCP last</strong>: add only when it unlocks a repeatable workflow.</li>
+</ol>
+<h2 id="closing-thought-configuration-is-part-of-engineering-now">Closing thought: configuration is part of engineering now</h2>
+<p>The biggest shift in 2025 isn’t that Copilot can write more code.</p>
+<p>It’s that <em>we</em> now shape how the assistant behaves—through layers of instructions, prompts, roles, and tools.</p>
+<p>If you treat those layers like production code (clear ownership, small scope, no conflicts), Copilot stops feeling random and starts feeling like a reliable teammate.</p> </article> <ul class="my-8"> <li class="inline-block my-1 underline-offset-4"> <a href="/tags/github-copilot/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-2"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>github-copilot</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/vs-code/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-3"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>vs-code</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/coding-agents/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-4"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>coding-agents</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/mcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-5"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>mcp</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/tags/developer-productivity/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-6"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>developer-productivity</span> </a> </li> </ul> <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"> <button id="back-to-top" class="focus-outline whitespace-nowrap py-1 hover:opacity-75"> <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"> <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg> <span>Back to Top</span> </button> <div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg> <span class="sr-only">Tweet this post</span> </a><a href="https://t.me/share/url?url=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&#38;body=https://cmwen.github.io/posts/the-2025-field-guide-to-customizing-copilot-in-vs-code/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> </div> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-skin-line" aria-hidden="true"> </div> <div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="social-icons flex flex-wrap gap-1 justify-center"> <a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg> <span class="sr-only"> Min Wen on Github</span> </a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg> <span class="sr-only">Min Wen on LinkedIn</span> </a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Send an email to Min Wen</span> </a> </div> <div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2025</span> <span class="separator hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  </body></html> <script data-mermaid-module="data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K">(function(){const MERMAID_MODULE_URL = "data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K";
+
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  // Use the injected variable from define:vars
+  const MERMAID_MODULE =
+    MERMAID_MODULE_URL ||
+    window.MERMAID_MODULE_URL ||
+    document.currentScript?.dataset.mermaidModule;
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!MERMAID_MODULE) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(MERMAID_MODULE);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run when navigating with View Transitions
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+})();</script>
