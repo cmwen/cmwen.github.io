@@ -5,7 +5,7 @@ description = "Generate podcasts from blog posts using Kokoro TTS"
 authors = [
     {name = "cmwen", email = "cmwen@example.com"}
 ]
-readme = "PODCAST_PYTHON.md"
+readme = "README.md"
 license = {text = "MIT"}
 requires-python = ">=3.8"
 dependencies = [
