@@ -1,8 +1,21 @@
-# Use a Node.js 18 base image
-FROM node:18-bullseye
+# Use a Node.js 20 base image with Python
+FROM node:20-bullseye
 
 # Set the working directory
 WORKDIR /app
+
+# Install Python, pip, and other system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install uv (Python package installer) globally for all users
+RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
+    mv /root/.local/bin/uv /usr/local/bin/uv && \
+    mv /root/.local/bin/uvx /usr/local/bin/uvx || true
 
 # Install pnpm
 RUN npm install -g pnpm
