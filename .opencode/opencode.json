@@ -1,0 +1,70 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "agent": {
+    "blog-writer": {
+      "description": "Write blog posts based on topics and instructions, generate podcast audio",
+      "mode": "subagent",
+      "temperature": 0.3,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "grep": true
+      },
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "uv run podcast-generate": "allow"
+        }
+      }
+    },
+    "translator": {
+      "description": "Translate English blog posts to Traditional Chinese (zh-hant) while maintaining technical accuracy",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "grep": true
+      }
+    },
+    "fact-checker": {
+      "description": "Verify factual accuracy and technical correctness of blog posts",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false
+      }
+    },
+    "researcher": {
+      "description": "Research and gather information on topics for blog posts",
+      "mode": "subagent",
+      "temperature": 0.3,
+      "tools": {
+        "bash": true,
+        "grep": true
+      }
+    },
+    "podcast-generator": {
+      "description": "Creates TTS-friendly transcripts and generates podcast audio files using Kokoro TTS",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "grep": true
+      },
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "uv run podcast-generate*": "allow",
+          "ls": "allow",
+          "ffprobe": "allow"
+        }
+      }
+    }
+  }
+}
