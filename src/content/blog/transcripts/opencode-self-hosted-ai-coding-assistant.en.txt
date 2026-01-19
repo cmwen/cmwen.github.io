@@ -1,0 +1,317 @@
+OpenCode: Code From Anywhere with Your Personal AI Development Server
+
+The Problem: Chained to Your Development Machine
+
+Here's a scenario that happens to me all the time. I'm deep in the middle of a complex refactoring. The AI is helping me methodically work through a dozen files, updating function signatures, fixing type errors, updating tests. It's going well, but it's taking time—maybe 20 to 30 minutes for the full job.
+
+My laptop battery is at 15 percent. I need to head to a meeting in 5 minutes. Do I stop the work and lose momentum? Keep my laptop open during the meeting hoping the battery holds? Frantically try to find a power outlet?
+
+Or worse—you start a comprehensive test suite rewrite before leaving work. You want to check if it's done while you're having dinner, but you can't because the AI assistant is tied to your work machine.
+
+This is the invisible friction of traditional AI coding tools. They're powerful, but they keep you tethered to a single device, a single location, a single moment in time. In an era where we can check our email from anywhere, review documents on our phones, and collaborate asynchronously across time zones, why should AI-assisted coding be any different?
+
+The Aha Moment: OpenCode's Server Mode
+
+I discovered OpenCode while looking for alternatives to heavy IDE integrations. With 77 thousand plus GitHub stars and growing, it's one of the most popular AI coding assistants available. But here's what caught my attention: OpenCode has a client slash server architecture with built-in remote access.
+
+The moment I read about server mode, everything clicked. What if I could:
+
+Run OpenCode on my desktop or home server. Access it from anywhere on my local network. Start a long-running refactoring task and close my laptop. Check progress from my phone during a coffee break. Pick up where I left off on my tablet in the evening.
+
+This isn't just a technical feature. It's a fundamentally different way of working. Instead of synchronous, session-bound coding where you need to stay connected, you get asynchronous, fire-and-forget task execution. The server keeps working even when you walk away.
+
+My New Workflow: Coding Without Boundaries
+
+Morning: Starting the Server
+
+I boot up my desktop machine—a beefy workstation that stays on most of the day—and start OpenCode in server mode.
+
+On my desktop, I run: opencode serve, dash-dash port 8080, dash-dash hostname 0 dot 0 dot 0 dot 0
+
+That "dash-dash hostname 0 dot 0 dot 0 dot 0" flag is crucial. It makes the server accessible from other devices on my local network, not just localhost. The server starts up, and I see:
+
+OpenCode server running on http colon slash slash 192 dot 168 dot 1 dot 100 colon 8080
+And http colon slash slash desktop dot local colon 8080
+
+Now OpenCode is running on my desktop, ready to accept connections from any device on my home network.
+
+From My Laptop: Remote Connection
+
+On my laptop, I attach to the remote server:
+
+opencode attach http colon slash slash 192 dot 168 dot 1 dot 100 colon 8080
+
+Or if I prefer a web interface—which is fantastic on tablets and phones:
+
+On the server, I run: opencode web, dash-dash port 8080, dash-dash mdns
+
+Then I open my browser to: http colon slash slash desktop dot local colon 8080
+
+The mDNS support is brilliant. No need to remember IP addresses. Your desktop announces itself on the network with a friendly hostname.
+
+The Magic: Fire and Forget
+
+Here's where the workflow transformation happens. I'm working on a large codebase migration, moving from JavaScript to TypeScript across 50 plus files. Through the OpenCode terminal user interface, I describe the task:
+
+"Convert all JavaScript files in src slash to TypeScript. Add proper type annotations, update imports, and ensure strict type checking passes."
+
+OpenCode starts working through the files. I can see progress in real-time. But here's the thing: I don't need to watch it.
+
+I close my laptop and head to a meeting. The OpenCode server keeps running on my desktop. The refactoring continues in the background. When I'm done with my meeting, I pull out my phone.
+
+Checking Progress from My Phone
+
+I open Safari on my iPhone and navigate to http colon slash slash desktop dot local colon 8080. The web interface loads, showing me:
+
+Current task progress—32 of 50 files converted. Recent changes made. Any errors or questions that need attention.
+
+I can even interact with it. Approve suggested changes, ask clarifying questions, or adjust the approach. All from my phone while walking back to my desk.
+
+Evening: Picking Up Where I Left Off
+
+Later that evening, I'm on my tablet on the couch. I open the same web interface and see the migration is complete. I review the changes, run the test suite—also through OpenCode—and merge the pull request.
+
+I never went back to my desktop. The work happened there, but I stayed mobile and flexible.
+
+How It Works: The Technical Foundation
+
+Client slash Server Architecture
+
+Unlike traditional IDE extensions that run as local processes, OpenCode separates concerns.
+
+The server runs on a desktop or server machine and handles: the OpenCode server process, file system access, project context, AI provider connections, and long-running tasks.
+
+Meanwhile, clients connect and disconnect freely. These include the terminal using "opencode attach", the web browser using "opencode web", IDE integrations via MCP, and mobile devices.
+
+The server maintains state, so you can disconnect and reconnect without losing context. Start a task on your laptop, check progress on your phone, finish up on your tablet. It all just works.
+
+mDNS: Zero-Configuration Discovery
+
+The "dash-dash mdns" flag enables multicast DNS, which means devices on your network can discover the server automatically. No manual IP configuration, no DNS servers. Just desktop dot local colon 8080 or whatever you named your machine.
+
+The server announces itself, and clients can discover it automatically. Or just use http colon slash slash [hostname] dot local colon 8080.
+
+This is especially elegant when you have multiple machines. Your laptop can discover your desktop's OpenCode server without any manual configuration.
+
+Security Considerations
+
+Important: The commands shown are for local network use only. The 0 dot 0 dot 0 dot 0 binding makes the server accessible from your LAN, not the internet. This is perfect for home networks, office networks, and VPN connections.
+
+If you need internet-wide access, you'll want to add proper authentication and use HTTPS, which OpenCode supports via reverse proxy configurations.
+
+Real Use Cases: How This Changed My Work
+
+Long-Running Refactoring During Meetings
+
+Scenario: I have a 2-hour block of meetings, but I also have a comprehensive refactoring task.
+
+Before OpenCode server mode: I'd wait until after meetings to start, or start it and hope my laptop battery survives, or come back to a paused or failed session.
+
+With OpenCode server mode: I start the refactoring before the first meeting. I close my laptop and attend meetings. I check progress between meetings on my phone. I review completed work after the last meeting.
+
+Time saved: 2 hours of productivity that would have been lost to context switching.
+
+Weekend Side Projects Without the Desk Setup
+
+Scenario: I want to work on my side project over the weekend, but I don't want to be stuck at my desk.
+
+Before: I'd sit at my desk with my development machine, or carry a heavy laptop everywhere, or skip the side project.
+
+With OpenCode server mode: The server runs on my desktop 24 slash 7. I work from my couch on a tablet. I quickly check from my phone during breaks. I switch between devices seamlessly.
+
+Freedom gained: Code from anywhere in my home, not just my desk.
+
+Testing and CI slash CD Integration
+
+Scenario: I've updated test fixtures and want to regenerate all test snapshots—a process that takes 10 plus minutes.
+
+Before: I'd start the process and wait, or start it and risk forgetting about it, or script it manually for extra work.
+
+With OpenCode server mode: I ask OpenCode to regenerate tests through the terminal user interface. I walk away and do something else. I check completion status from any device. I review changes when convenient.
+
+Mental overhead reduced: No need to context-switch or babysit long-running tasks.
+
+Code Reviews During Lunch
+
+Scenario: I want to do a thorough code review of a teammate's pull request, but I'm having lunch away from my desk.
+
+Before: I'd wait until back at my desk, do a superficial review on GitHub mobile, or cut lunch short.
+
+With OpenCode server mode: I access the OpenCode web interface on my phone or tablet. I ask for comprehensive analysis of the pull request. I review AI insights with full context. I leave detailed feedback.
+
+Flexibility gained: Productive code reviews on my own schedule, not tied to my desk.
+
+Step-by-Step Setup Guide
+
+Prerequisites
+
+You'll need:
+
+A desktop or server that stays running, or can stay running during work hours. Other devices on the same local network—laptop, phone, tablet. Basic command-line familiarity.
+
+Installation
+
+Option 1, direct installation—recommended:
+
+For macOS slash Linux, run: curl -f-s-s-L https colon slash slash opencode dot ai slash install dot sh pipe sh
+
+To verify installation, run: opencode dash-dash version
+
+Option 2, Docker:
+
+Pull the official image: docker run -it dash-dash rm ghcr dot io slash anomalyco slash opencode
+
+For a persistent server: docker run -d dash-dash name opencode-server -p 8080 colon 8080 -v dollar open paren pwd close paren colon slash workspace ghcr dot io slash anomalyco slash opencode colon latest serve dash-dash port 8080 dash-dash hostname 0 dot 0 dot 0 dot 0
+
+Option 3, Docker Compose:
+
+Create a docker-compose dot yml file. Then run: docker-compose up -d
+
+Setting Up Your Subscriptions
+
+This is the killer feature: OpenCode can integrate with your existing AI subscriptions. No need to buy separate licenses for each tool.
+
+In OpenCode's terminal user interface, run the /connect command and authenticate with your existing subscriptions.
+
+To use your GitHub Copilot Pro subscription: Run /connect, search "GitHub Copilot", then a browser opens to github dot com slash login slash device and you follow the prompts.
+
+To use your Claude Pro subscription: Run /connect, search "Anthropic", select "Claude Pro slash Max", then a browser opens for authentication.
+
+To use your ChatGPT Plus slash Pro subscription: Run /connect, search "OpenAI", select "ChatGPT Plus slash Pro", then a browser opens for authentication.
+
+Or use direct API keys if you prefer: Run /connect, select "Manually enter API Key", then paste your API key.
+
+Or try OpenCode Zen—pay as you go, no monthly fees: Run /connect, search "OpenCode Zen", sign up and get your API key.
+
+The beauty of this: You use the same terminal user interface slash CLI interface for all your subscriptions. No more context switching between different tools for different providers.
+
+You can also use environment variables or config files.
+
+Starting the Server
+
+For a basic server on your local network, run: opencode serve dash-dash port 8080 dash-dash hostname 0 dot 0 dot 0 dot 0
+
+With web interface and mDNS, run: opencode web dash-dash port 8080 dash-dash mdns
+
+With a specific provider, set the environment variable first. For example: ANTHROPIC_API_KEY equals sk-ant-... opencode serve dash-dash port 8080 dash-dash hostname 0 dot 0 dot 0 dot 0
+
+Finding Your Server's Address:
+
+To get your local IP on macOS slash Linux, run: ifconfig pipe grep "inet " pipe grep -v 127 dot 0 dot 0 dot 1
+
+You'll see something like: inet 192 dot 168 dot 1 dot 100 netmask 0xffffff00 broadcast 192 dot 168 dot 1 dot 255
+
+Your OpenCode server will be accessible at http colon slash slash 192 dot 168 dot 1 dot 100 colon 8080. Replace with your actual IP.
+
+Connecting from Other Devices
+
+From terminal on your laptop or desktop, run:
+opencode attach http colon slash slash 192 dot 168 dot 1 dot 100 colon 8080
+or
+opencode attach http colon slash slash desktop dot local colon 8080
+
+From a web browser on any device: Just open http colon slash slash 192 dot 168 dot 1 dot 100 colon 8080 or http colon slash slash desktop dot local colon 8080 in any web browser.
+
+Pro tip: Bookmark the URL on your phone or tablet for quick access.
+
+The Unification Layer: One Interface for All Your Subscriptions
+
+Here's something I didn't fully appreciate until I'd been using it for a while: OpenCode acts as a unified interface for all your AI subscriptions.
+
+Think about it. You have GitHub Copilot Pro for code completion. You have Claude Pro for complex reasoning tasks. You have ChatGPT Plus for general questions. You might have specialized models like DeepSeek or Groq.
+
+Normally, you'd switch between different tools. Copilot in your editor, Claude's website, ChatGPT in another tab. Context fragmented, workflows interrupted.
+
+With OpenCode, you authenticate all your subscriptions via /connect in the terminal user interface.
+
+You select GitHub Copilot and authenticate. You select Anthropic for Claude Pro and authenticate. You select OpenAI for ChatGPT Plus and authenticate.
+
+Now, from the same interface—whether you're on your desktop, phone, or tablet—you can ask the AI agent to use the best tool for the job.
+
+Need fast iteration on code structure? Use Copilot. Need deep architectural analysis? Switch to Claude. Need to brainstorm? Use ChatGPT.
+
+This is what reminds me of GitHub Copilot's remote agent capabilities. But it's open, flexible, and self-hostable. You're not locked into a specific provider. You're not paying for yet another subscription when you already have multiple AI services.
+
+It's closer to how you'd imagine having a remote coding partner who has access to multiple AI tools and knows which one to use for each situation.
+
+Beyond Remote Access: Other OpenCode Features
+
+While remote access is what changed my workflow, OpenCode has other compelling features worth mentioning.
+
+Model Context Protocol, or MCP, Support
+
+OpenCode has excellent support for MCP, Anthropic's standard for connecting AI to external tools and data sources. This means you can extend OpenCode with file system access for deep codebase understanding, database connections for query generation and analysis, GitHub integration for pull request reviews and issue management, and custom tools specific to your workflow.
+
+Agent System
+
+OpenCode uses an agent-based architecture internally. While you interact through the terminal user interface rather than specific CLI commands for each action, understanding the agent system helps you get better results.
+
+Agents provide context-aware reasoning that understands your project structure. They perform multi-step planning to break complex tasks into manageable steps. They use tools to edit files, run commands, and search codebases. And they include verification through built-in testing and validation of changes.
+
+Provider Flexibility
+
+OpenCode supports 75 plus LLM providers, including major providers like OpenAI, Anthropic, and Google Gemini. It supports open-source models via Ollama and LM Studio. It has specialized providers like Groq, Together AI, and Perplexity. And it supports local models for complete offline development.
+
+You can switch providers based on task requirements. Claude for complex reasoning. GPT-4 for broad knowledge. DeepSeek for code-specific tasks. Local Llama for privacy-sensitive work.
+
+GitHub Actions Integration
+
+You can run OpenCode in CI slash CD pipelines to give yourself automated code reviews, test generation, documentation updates, and more. All integrated into your existing workflow.
+
+What OpenCode Is and Isn't
+
+OpenCode IS:
+
+A flexible AI coding assistant with server slash client architecture. Provider-agnostic, supporting 75 plus LLM providers. It integrates with existing AI subscriptions like GitHub Copilot Pro, Claude Pro, and ChatGPT Plus slash Pro via OAuth. It's self-hostable with full control over your infrastructure. It's accessible from multiple devices on your network. It's excellent for asynchronous, long-running coding tasks. It's extensible via MCP and custom integrations. And it's open source with 77 thousand 700 plus GitHub stars.
+
+OpenCode IS NOT:
+
+An IDE. It's a coding assistant that integrates with any editor. It's not limited to CLI commands. Most interaction happens in the terminal user interface. It's not focused on real-time autocomplete, which isn't its strength. And it's not a replacement for understanding code. It's an augmentation tool.
+
+The Freedom to Code on Your Terms
+
+What I love most about OpenCode's server mode isn't just the technical capability. It's the mental shift it enables.
+
+Before, my development workflow was bound by physical location—my desk. Single device—my laptop. Continuous attention—stay connected or lose progress.
+
+Now, my workflow is location-independent. I work from anywhere on my network. It's device-flexible. I use my phone, tablet, laptop—whatever makes sense. And it's asynchronously productive. I start tasks and come back when ready.
+
+This is especially valuable for parents who need to step away frequently. Remote workers juggling multiple responsibilities. Side project enthusiasts who code in spare moments. Or anyone who values flexibility over rigidity.
+
+Getting Started Today
+
+If you're intrigued by this workflow, here's how to start:
+
+One: Install OpenCode on a machine that can stay running.
+
+Two: Start the server with opencode serve dash-dash port 8080 dash-dash hostname 0 dot 0 dot 0 dot 0
+
+Three: Connect from another device and try a simple task.
+
+Four: Experience the freedom of asynchronous coding.
+
+You don't have to commit fully. Run the server when you want this workflow, use local OpenCode when you don't. It's designed to fit into your existing process, not replace it entirely.
+
+Conclusion: The Future of Flexible Development
+
+AI coding assistants are powerful, but most are still designed around traditional assumptions. You're at your desk. On one machine. Fully attentive. OpenCode questions those assumptions.
+
+By embracing a server slash client architecture, OpenCode enables a more flexible, asynchronous, multi-device workflow. Start a refactoring on your laptop, check progress on your phone, finish on your tablet. The AI server keeps working while you live your life.
+
+This isn't just about remote access. It's about freeing yourself from the constraints of synchronous, session-bound development. It's about making AI assistance work for your schedule, your devices, your life.
+
+If you're tired of being chained to your development machine, if you want to code on your own terms, give OpenCode a try. The personal remote development workflow might just change how you think about coding.
+
+Resources:
+
+GitHub Repository: github dot com slash anomalyco slash opencode, with 77 thousand 700 plus stars.
+
+Official Documentation: opencode dot ai slash docs
+
+Installation Guide: opencode dot ai slash docs slash installation
+
+Server Mode Docs: opencode dot ai slash docs slash server
+
+MCP Integration: modelcontextprotocol dot io
+
+Thank you for listening. Have you tried remote AI coding workflows? What's holding you back from untethering from your desk? I'd love to hear your thoughts on flexible development setups.
