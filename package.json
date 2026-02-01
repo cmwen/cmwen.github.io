@@ -45,7 +45,7 @@
     "@playwright/test": "^1.57.0",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
-    "@types/node": "^25.0.7",
+    "@types/node": "^25.0.10",
     "@types/react": "^19.2.8",
     "@types/rss": "^0.0.32",
     "@typescript-eslint/parser": "^8.52.0",
