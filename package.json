@@ -48,7 +48,7 @@
     "@types/node": "^25.0.10",
     "@types/react": "^19.2.8",
     "@types/rss": "^0.0.32",
-    "@typescript-eslint/parser": "^8.52.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "astro-eslint-parser": "^1.2.2",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
