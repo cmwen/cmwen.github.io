@@ -46,7 +46,7 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "@types/node": "^25.0.10",
-    "@types/react": "^19.2.8",
+    "@types/react": "^19.2.10",
     "@types/rss": "^0.0.32",
     "@typescript-eslint/parser": "^8.52.0",
     "astro-eslint-parser": "^1.2.2",
@@ -59,8 +59,8 @@
     "prettier": "^3.7.4",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
     "tsx": "^4.21.0"
   },
   "config": {
