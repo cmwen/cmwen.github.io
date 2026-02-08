@@ -21,6 +21,7 @@ export default [
       ".husky",
       ".vscode",
       ".astro",
+      ".venv",
       "node_modules",
       "public",
       "dist",

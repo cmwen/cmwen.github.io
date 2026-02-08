@@ -1,5 +1,5 @@
-# Use a Node.js 20 base image with Python
-FROM node:20-bullseye
+# Use a Node.js 22 base image with Python
+FROM node:22-bookworm
 
 # Set the working directory
 WORKDIR /app
@@ -17,8 +17,8 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh && \
     mv /root/.local/bin/uv /usr/local/bin/uv && \
     mv /root/.local/bin/uvx /usr/local/bin/uvx || true
 
-# Install pnpm
-RUN npm install -g pnpm
+# Install pnpm v9 to match CI
+RUN npm install -g pnpm@9
 
 # Copy package.json and pnpm-lock.yaml
 COPY package.json pnpm-lock.yaml ./
