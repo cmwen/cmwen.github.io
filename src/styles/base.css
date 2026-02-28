@@ -32,7 +32,7 @@
     display: block;
   }
   body {
-    @apply flex min-h-[100svh] flex-col bg-skin-fill font-mono text-skin-base;
+    @apply bg-skin-fill text-skin-base flex min-h-[100svh] flex-col font-mono;
   }
   ::selection {
     background-color: rgba(var(--color-accent), 0.45);
@@ -50,13 +50,18 @@
     @apply outline-2 outline-offset-1 focus-visible:no-underline focus-visible:outline-dashed;
     outline-color: rgb(var(--color-fill));
   }
-  svg {
-    @apply inline-block h-6 w-6 fill-skin-base group-hover:fill-skin-accent;
+  svg:not(.mindmap-canvas) {
+    @apply fill-skin-base group-hover:fill-skin-accent inline-block h-6 w-6;
+  }
+  /* mindmap-canvas SVG must fill its container and not inherit icon fill */
+  svg.mindmap-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    fill: none;
   }
   svg.icon-tabler {
-    @apply inline-block h-6 w-6 scale-125 fill-transparent 
-    stroke-current stroke-2 opacity-90 group-hover:fill-transparent 
-    sm:scale-110;
+    @apply inline-block h-6 w-6 scale-125 fill-transparent stroke-current stroke-2 opacity-90 group-hover:fill-transparent sm:scale-110;
   }
   .prose {
     --tw-prose-body: rgb(var(--color-text-base));
