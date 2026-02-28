@@ -65,6 +65,24 @@
           "ffprobe": "allow"
         }
       }
+    },
+    "mindmap-generator": {
+      "description": "Generates mind map data entries for the toolbox mind maps collection",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "grep": true
+      },
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "pnpm build": "allow",
+          "pnpm dev": "allow"
+        }
+      }
     }
   }
 }

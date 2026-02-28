@@ -1,6 +1,27 @@
 import { SITE } from "@config";
 import { defineCollection, z } from "astro:content";
 
+// ---------------------------------------------------------------------------
+// Recursive MindMapNode schema (used by the mindmaps data collection)
+// ---------------------------------------------------------------------------
+type MindMapNodeInput = {
+  id: string;
+  label: string;
+  color?: string;
+  notes?: string;
+  children?: MindMapNodeInput[];
+};
+
+const mindMapNodeSchema: z.ZodType<MindMapNodeInput> = z.lazy(() =>
+  z.object({
+    id: z.string(),
+    label: z.string(),
+    color: z.string().optional(),
+    notes: z.string().optional(),
+    children: z.array(mindMapNodeSchema).optional(),
+  })
+);
+
 const blog = defineCollection({
   type: "content",
   schema: ({ image }) =>
@@ -39,4 +60,16 @@ const notebooks = defineCollection({
   }),
 });
 
-export const collections = { blog, notebooks };
+const mindmaps = defineCollection({
+  type: "data",
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    tags: z.array(z.string()).default([]),
+    createdAt: z.string(),
+    updatedAt: z.string(),
+    root: mindMapNodeSchema,
+  }),
+});
+
+export const collections = { blog, notebooks, mindmaps };

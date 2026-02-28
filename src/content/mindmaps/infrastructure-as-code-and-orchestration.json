@@ -1,0 +1,419 @@
+{
+  "title": "Infrastructure as Code & Orchestration",
+  "description": "A mind map covering Kubernetes, Helm, Terraform, and Ansible — the core tools for modern infrastructure automation and container orchestration.",
+  "tags": ["devops", "infrastructure", "kubernetes", "iac", "automation"],
+  "createdAt": "2026-02-28T00:00:00Z",
+  "updatedAt": "2026-02-28T00:00:00Z",
+  "root": {
+    "id": "root",
+    "label": "Infrastructure as Code & Orchestration",
+    "notes": "Modern infrastructure management revolves around declarative configuration, container orchestration, and automation tooling. These four tools form the backbone of most cloud-native platforms.",
+    "children": [
+      {
+        "id": "kubernetes",
+        "label": "Kubernetes (K8s)",
+        "color": "#326CE5",
+        "notes": "An open-source container orchestration platform originally designed by Google. It automates deploying, scaling, and managing containerized applications across clusters of hosts.",
+        "children": [
+          {
+            "id": "k8s-core-concepts",
+            "label": "Core Concepts",
+            "notes": "Fundamental building blocks that make up the Kubernetes API and runtime model.",
+            "children": [
+              {
+                "id": "k8s-pods",
+                "label": "Pods",
+                "notes": "The smallest deployable unit in K8s. A Pod encapsulates one or more containers that share networking and storage. Pods are ephemeral by design."
+              },
+              {
+                "id": "k8s-services",
+                "label": "Services",
+                "notes": "An abstraction that defines a logical set of Pods and a policy to access them. Types include ClusterIP, NodePort, LoadBalancer, and ExternalName."
+              },
+              {
+                "id": "k8s-deployments",
+                "label": "Deployments",
+                "notes": "Manages a ReplicaSet to ensure a desired number of Pod replicas are running. Supports rolling updates and rollbacks."
+              },
+              {
+                "id": "k8s-namespaces",
+                "label": "Namespaces",
+                "notes": "Virtual clusters within a physical cluster, used for multi-tenancy, resource isolation, and RBAC scoping."
+              },
+              {
+                "id": "k8s-configmaps-secrets",
+                "label": "ConfigMaps & Secrets",
+                "notes": "ConfigMaps store non-sensitive configuration as key-value pairs. Secrets store sensitive data (tokens, passwords) with base64 encoding (not encryption by default)."
+              }
+            ]
+          },
+          {
+            "id": "k8s-workloads",
+            "label": "Workload Types",
+            "children": [
+              {
+                "id": "k8s-statefulsets",
+                "label": "StatefulSets",
+                "notes": "Manages stateful applications with stable network identities and persistent storage. Used for databases, message queues, etc."
+              },
+              {
+                "id": "k8s-daemonsets",
+                "label": "DaemonSets",
+                "notes": "Ensures a copy of a Pod runs on every (or selected) node. Commonly used for log collectors, monitoring agents, and network plugins."
+              },
+              {
+                "id": "k8s-jobs-cronjobs",
+                "label": "Jobs & CronJobs",
+                "notes": "Jobs run one-off tasks to completion. CronJobs schedule Jobs on a recurring basis (cron syntax)."
+              }
+            ]
+          },
+          {
+            "id": "k8s-networking",
+            "label": "Networking",
+            "children": [
+              {
+                "id": "k8s-ingress",
+                "label": "Ingress",
+                "notes": "Manages external HTTP/HTTPS access to Services. Requires an Ingress Controller (e.g., NGINX, Traefik, Istio Gateway)."
+              },
+              {
+                "id": "k8s-network-policies",
+                "label": "Network Policies",
+                "notes": "Firewall rules for Pods. Control ingress/egress traffic at the IP and port level. Requires a CNI plugin that supports them (Calico, Cilium)."
+              },
+              {
+                "id": "k8s-service-mesh",
+                "label": "Service Mesh",
+                "notes": "Sidecar-based networking layer (Istio, Linkerd) providing mTLS, traffic management, observability, and resilience features."
+              }
+            ]
+          },
+          {
+            "id": "k8s-storage",
+            "label": "Storage",
+            "children": [
+              {
+                "id": "k8s-pv-pvc",
+                "label": "PV & PVC",
+                "notes": "PersistentVolumes (PV) represent cluster storage. PersistentVolumeClaims (PVC) are requests for storage by Pods. Decouples storage provisioning from consumption."
+              },
+              {
+                "id": "k8s-storage-classes",
+                "label": "StorageClasses",
+                "notes": "Defines different tiers/types of storage (e.g., SSD, HDD, networked). Enables dynamic provisioning of PVs."
+              }
+            ]
+          },
+          {
+            "id": "k8s-ecosystem",
+            "label": "Ecosystem & Tools",
+            "children": [
+              {
+                "id": "k8s-kubectl",
+                "label": "kubectl",
+                "notes": "The primary CLI for interacting with Kubernetes clusters. Supports imperative commands and declarative YAML applies."
+              },
+              {
+                "id": "k8s-kustomize",
+                "label": "Kustomize",
+                "notes": "Template-free configuration customization built into kubectl. Uses overlays and patches to adapt base manifests per environment."
+              },
+              {
+                "id": "k8s-operators",
+                "label": "Operators",
+                "notes": "Custom controllers that extend the Kubernetes API to manage complex stateful applications (e.g., database operators, cert-manager)."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "helm",
+        "label": "Helm",
+        "color": "#0F1689",
+        "notes": "The package manager for Kubernetes. Helm uses 'charts' — pre-configured packages of Kubernetes resources — to simplify deployment, versioning, and sharing of applications.",
+        "children": [
+          {
+            "id": "helm-core",
+            "label": "Core Concepts",
+            "children": [
+              {
+                "id": "helm-charts",
+                "label": "Charts",
+                "notes": "A chart is a collection of files that describe a related set of Kubernetes resources. Contains templates, values, and metadata (Chart.yaml)."
+              },
+              {
+                "id": "helm-releases",
+                "label": "Releases",
+                "notes": "An instance of a chart running in a cluster. Each `helm install` creates a new release with its own revision history for rollbacks."
+              },
+              {
+                "id": "helm-values",
+                "label": "Values",
+                "notes": "YAML configuration that overrides chart defaults. Can be supplied via values.yaml files or --set flags. Supports hierarchical merging."
+              },
+              {
+                "id": "helm-templates",
+                "label": "Templates",
+                "notes": "Go templates that generate Kubernetes manifests. Support conditionals, loops, built-in functions, and named sub-templates (_helpers.tpl)."
+              }
+            ]
+          },
+          {
+            "id": "helm-workflow",
+            "label": "Workflow",
+            "children": [
+              {
+                "id": "helm-install-upgrade",
+                "label": "Install & Upgrade",
+                "notes": "`helm install` deploys a chart. `helm upgrade` applies changes. `helm upgrade --install` is idempotent (upsert)."
+              },
+              {
+                "id": "helm-rollback",
+                "label": "Rollback",
+                "notes": "`helm rollback <release> <revision>` restores a previous release state. Revision history is stored as Kubernetes Secrets by default."
+              },
+              {
+                "id": "helm-repos",
+                "label": "Repositories",
+                "notes": "Chart repositories host packaged charts. Artifact Hub is the public registry. OCI registries are also supported since Helm 3.8+."
+              }
+            ]
+          },
+          {
+            "id": "helm-advanced",
+            "label": "Advanced",
+            "children": [
+              {
+                "id": "helm-hooks",
+                "label": "Hooks",
+                "notes": "Allow running Jobs at specific points in the release lifecycle (pre-install, post-upgrade, pre-delete, etc.)."
+              },
+              {
+                "id": "helm-dependencies",
+                "label": "Dependencies",
+                "notes": "Charts can depend on other charts (subcharts). Managed via Chart.yaml `dependencies` field and `helm dependency update`."
+              },
+              {
+                "id": "helm-testing",
+                "label": "Chart Testing",
+                "notes": "Helm supports `helm test` to run test Pods defined in the chart. Combined with ct (chart-testing) CLI for CI pipelines."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "terraform",
+        "label": "Terraform",
+        "color": "#7B42BC",
+        "notes": "An open-source Infrastructure as Code tool by HashiCorp. Uses HCL (HashiCorp Configuration Language) to declaratively provision and manage cloud infrastructure across multiple providers.",
+        "children": [
+          {
+            "id": "tf-core-concepts",
+            "label": "Core Concepts",
+            "children": [
+              {
+                "id": "tf-providers",
+                "label": "Providers",
+                "notes": "Plugins that interact with cloud APIs (AWS, GCP, Azure, etc.). Each provider exposes resources and data sources. Versioned independently."
+              },
+              {
+                "id": "tf-resources",
+                "label": "Resources",
+                "notes": "The fundamental building blocks. Each resource block declares an infrastructure object (e.g., aws_instance, google_compute_network). Terraform tracks them in state."
+              },
+              {
+                "id": "tf-state",
+                "label": "State",
+                "notes": "A JSON file (terraform.tfstate) mapping config to real-world resources. Remote backends (S3, GCS, Terraform Cloud) are recommended for team use. State locking prevents concurrent modifications."
+              },
+              {
+                "id": "tf-variables",
+                "label": "Variables & Outputs",
+                "notes": "Input variables parameterize configurations. Output values export data for other modules or external use. Local values compute intermediate expressions."
+              }
+            ]
+          },
+          {
+            "id": "tf-workflow",
+            "label": "Workflow",
+            "children": [
+              {
+                "id": "tf-init",
+                "label": "terraform init",
+                "notes": "Initializes a working directory. Downloads providers, configures backends, and installs modules."
+              },
+              {
+                "id": "tf-plan",
+                "label": "terraform plan",
+                "notes": "Creates an execution plan showing what changes Terraform will make. Crucial for review before applying. Can be saved to a file for exact apply."
+              },
+              {
+                "id": "tf-apply",
+                "label": "terraform apply",
+                "notes": "Executes the planned changes to reach the desired state. Can auto-approve or require manual confirmation."
+              },
+              {
+                "id": "tf-destroy",
+                "label": "terraform destroy",
+                "notes": "Removes all resources managed by the configuration. Useful for tearing down environments."
+              }
+            ]
+          },
+          {
+            "id": "tf-modules",
+            "label": "Modules",
+            "notes": "Reusable, encapsulated groups of Terraform resources. Modules can be local or sourced from registries (Terraform Registry, Git, S3).",
+            "children": [
+              {
+                "id": "tf-module-structure",
+                "label": "Module Structure",
+                "notes": "A module is a directory with .tf files. Typically contains main.tf, variables.tf, outputs.tf, and versions.tf."
+              },
+              {
+                "id": "tf-module-registry",
+                "label": "Module Registry",
+                "notes": "Terraform Registry hosts community and verified modules. Private registries are available via Terraform Cloud/Enterprise."
+              }
+            ]
+          },
+          {
+            "id": "tf-advanced",
+            "label": "Advanced",
+            "children": [
+              {
+                "id": "tf-workspaces",
+                "label": "Workspaces",
+                "notes": "Named instances of state within a single configuration. Useful for managing dev/staging/prod with the same code."
+              },
+              {
+                "id": "tf-data-sources",
+                "label": "Data Sources",
+                "notes": "Read-only queries to fetch information from providers (existing resources, AMI IDs, etc.) without managing them."
+              },
+              {
+                "id": "tf-provisioners",
+                "label": "Provisioners",
+                "notes": "Execute scripts on resources after creation (local-exec, remote-exec). Considered a last resort — prefer cloud-init or configuration management tools."
+              },
+              {
+                "id": "tf-import",
+                "label": "Import",
+                "notes": "Brings existing infrastructure under Terraform management. `terraform import` maps real resources to config. Terraform 1.5+ supports import blocks declaratively."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ansible",
+        "label": "Ansible",
+        "color": "#E00",
+        "notes": "An open-source automation platform by Red Hat for configuration management, application deployment, and orchestration. Agentless — connects via SSH/WinRM. Uses YAML playbooks.",
+        "children": [
+          {
+            "id": "ansible-core",
+            "label": "Core Concepts",
+            "children": [
+              {
+                "id": "ansible-playbooks",
+                "label": "Playbooks",
+                "notes": "YAML files defining automation workflows as ordered lists of plays. Each play maps a group of hosts to a set of tasks."
+              },
+              {
+                "id": "ansible-inventory",
+                "label": "Inventory",
+                "notes": "Lists of managed hosts organized into groups. Can be static (INI/YAML files) or dynamic (scripts/plugins querying cloud APIs)."
+              },
+              {
+                "id": "ansible-modules",
+                "label": "Modules",
+                "notes": "Units of code that Ansible executes on managed nodes (e.g., apt, yum, copy, template, service). 7,000+ modules available across collections."
+              },
+              {
+                "id": "ansible-tasks",
+                "label": "Tasks",
+                "notes": "Individual units of action in a playbook. Each task calls a module with arguments. Tasks are idempotent by design."
+              },
+              {
+                "id": "ansible-roles",
+                "label": "Roles",
+                "notes": "Reusable units of organization. A role bundles tasks, handlers, vars, defaults, files, and templates in a standardized directory structure."
+              }
+            ]
+          },
+          {
+            "id": "ansible-features",
+            "label": "Key Features",
+            "children": [
+              {
+                "id": "ansible-agentless",
+                "label": "Agentless",
+                "notes": "No software needed on managed nodes beyond Python and SSH. Reduces overhead and security surface compared to agent-based tools."
+              },
+              {
+                "id": "ansible-idempotency",
+                "label": "Idempotency",
+                "notes": "Running the same playbook multiple times produces the same result. Modules check current state before making changes."
+              },
+              {
+                "id": "ansible-jinja2",
+                "label": "Jinja2 Templating",
+                "notes": "Ansible uses Jinja2 for variable substitution, conditionals, and loops in playbooks and templates."
+              },
+              {
+                "id": "ansible-vault",
+                "label": "Ansible Vault",
+                "notes": "Encrypts sensitive data (passwords, keys) at rest. Integrated into playbook execution with --ask-vault-pass or vault password files."
+              }
+            ]
+          },
+          {
+            "id": "ansible-ecosystem",
+            "label": "Ecosystem",
+            "children": [
+              {
+                "id": "ansible-galaxy",
+                "label": "Ansible Galaxy",
+                "notes": "Community hub for sharing roles and collections. `ansible-galaxy install` fetches reusable content."
+              },
+              {
+                "id": "ansible-collections",
+                "label": "Collections",
+                "notes": "Packaging format for distributing modules, roles, plugins, and documentation together. The primary distribution method since Ansible 2.10+."
+              },
+              {
+                "id": "ansible-tower-aap",
+                "label": "AWX / AAP",
+                "notes": "AWX is the open-source upstream of Ansible Automation Platform (AAP). Provides a web UI, REST API, RBAC, job scheduling, and credential management."
+              }
+            ]
+          },
+          {
+            "id": "ansible-workflow",
+            "label": "Workflow Patterns",
+            "children": [
+              {
+                "id": "ansible-ad-hoc",
+                "label": "Ad-Hoc Commands",
+                "notes": "Quick one-liner tasks via `ansible <host-pattern> -m <module> -a <args>`. Good for troubleshooting and one-off actions."
+              },
+              {
+                "id": "ansible-handlers",
+                "label": "Handlers",
+                "notes": "Tasks triggered by 'notify' from other tasks. Run once at end of play regardless of how many tasks notify them. Commonly used to restart services."
+              },
+              {
+                "id": "ansible-tags",
+                "label": "Tags",
+                "notes": "Label tasks and plays to selectively run subsets of a playbook. `--tags` and `--skip-tags` control execution scope."
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

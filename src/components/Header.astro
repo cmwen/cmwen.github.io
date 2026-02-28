@@ -9,7 +9,7 @@ import LinkButton from "./LinkButton.astro";
 
 export interface Props {
   activeNav?: "posts" | "tags" | "about" | "search" | "toolbox" | "profolio";
-  activeSubNav?: "tools" | "agents" | "notebooks";
+  activeSubNav?: "tools" | "agents" | "notebooks" | "mindmaps";
   lang?: Locale;
 }
 
@@ -179,6 +179,14 @@ function otherLocalePath(): string {
                       class={`${subNavLinkBase} ${activeSubNav === "notebooks" ? subNavLinkActive : ""}`}
                     >
                       Notebooks
+                    </a>
+                  </li>
+                  <li class="w-full sm:w-auto">
+                    <a
+                      href={`${base}/toolbox/mindmaps/`}
+                      class={`${subNavLinkBase} ${activeSubNav === "mindmaps" ? subNavLinkActive : ""}`}
+                    >
+                      Mind Maps
                     </a>
                   </li>
                 </ul>

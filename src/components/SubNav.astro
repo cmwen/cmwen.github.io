@@ -2,7 +2,7 @@
 import { defaultLocale, type Locale } from "@i18n/config";
 
 export interface Props {
-  activeSubNav?: "agents" | "notebooks" | "toolbox-home";
+  activeSubNav?: "agents" | "notebooks" | "toolbox-home" | "mindmaps";
   lang?: Locale;
 }
 
@@ -49,6 +49,16 @@ const inactiveClasses = "text-skin-base/80";
           }`}
         >
           Notebooks
+        </a>
+      </li>
+      <li class="flex-shrink-0">
+        <a
+          href={`${base}/toolbox/mindmaps/`}
+          class={`${linkBase} ${
+            activeSubNav === "mindmaps" ? activeClasses : inactiveClasses
+          }`}
+        >
+          Mind Maps
         </a>
       </li>
     </ul>

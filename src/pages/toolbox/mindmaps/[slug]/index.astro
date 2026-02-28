@@ -1,0 +1,72 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import { MindMapViewer } from "@components/mindmaps/MindMapViewer";
+import { SITE } from "@config";
+
+export interface Props {
+  entry: CollectionEntry<"mindmaps">;
+}
+
+export async function getStaticPaths() {
+  const entries = await getCollection("mindmaps");
+  return entries.map(entry => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { title, description, tags, root, updatedAt, createdAt } = entry.data;
+const mindmap = {
+  slug: entry.id,
+  title,
+  description,
+  tags,
+  root,
+  updatedAt,
+  createdAt,
+};
+
+const lang = "en" as const;
+---
+
+<Layout
+  title={`${title} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: new URL(`/toolbox/mindmaps/${entry.id}/`, Astro.site).href,
+    "zh-hant": new URL(`/zh-hant/toolbox/mindmaps/${entry.id}/`, Astro.site)
+      .href,
+  }}
+>
+  <Header activeNav="toolbox" activeSubNav="mindmaps" lang={lang} />
+  <Main pageTitle={title} pageDesc={description}>
+    <div class="mt-2">
+      <a
+        href="/toolbox/mindmaps/"
+        class="border-skin-line text-skin-base hover:border-skin-accent hover:text-skin-accent mb-6 inline-flex items-center gap-1 rounded border px-3 py-1.5 text-sm transition-colors"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M19 12H5M12 19l-7-7 7-7"></path>
+        </svg>
+        Back to Mind Maps
+      </a>
+    </div>
+    <MindMapViewer mindmap={mindmap} client:only="react" />
+  </Main>
+  <Footer />
+</Layout>

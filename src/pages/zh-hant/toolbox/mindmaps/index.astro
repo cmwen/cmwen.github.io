@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import MindMapsApp from "@components/mindmaps/MindMapsApp";
+import { SITE } from "@config";
+
+const lang = "zh-hant" as const;
+const title = "心智圖集";
+const description =
+  "以互動式心智圖整理與探索技術主題，支援展開收合與筆記功能。";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const entries = await getCollection("mindmaps");
+const mindmaps = entries.map(entry => ({
+  slug: entry.id,
+  title: entry.data.title,
+  description: entry.data.description,
+  tags: entry.data.tags,
+  updatedAt: entry.data.updatedAt,
+}));
+---
+
+<Layout
+  title={`${title} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: new URL("/toolbox/mindmaps/", Astro.site).href,
+    "zh-hant": canonical,
+  }}
+>
+  <Header activeNav="toolbox" activeSubNav="mindmaps" lang={lang} />
+  <Main pageTitle={title} pageDesc={description}>
+    <MindMapsApp
+      mindmaps={mindmaps}
+      basePath="/zh-hant/toolbox/mindmaps"
+      client:load
+    />
+  </Main>
+  <Footer />
+</Layout>
