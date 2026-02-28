@@ -4,13 +4,25 @@ import { defineCollection, z } from "astro:content";
 // ---------------------------------------------------------------------------
 // Recursive MindMapNode schema (used by the mindmaps data collection)
 // ---------------------------------------------------------------------------
+type MindMapRefInput = {
+  targetId: string;
+  label?: string;
+};
+
 type MindMapNodeInput = {
   id: string;
   label: string;
   color?: string;
   notes?: string;
+  annotation?: string;
+  refs?: MindMapRefInput[];
   children?: MindMapNodeInput[];
 };
+
+const mindMapRefSchema = z.object({
+  targetId: z.string(),
+  label: z.string().optional(),
+});
 
 const mindMapNodeSchema: z.ZodType<MindMapNodeInput> = z.lazy(() =>
   z.object({
@@ -18,6 +30,8 @@ const mindMapNodeSchema: z.ZodType<MindMapNodeInput> = z.lazy(() =>
     label: z.string(),
     color: z.string().optional(),
     notes: z.string().optional(),
+    annotation: z.string().optional(),
+    refs: z.array(mindMapRefSchema).optional(),
     children: z.array(mindMapNodeSchema).optional(),
   })
 );

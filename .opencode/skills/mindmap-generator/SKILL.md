@@ -43,6 +43,17 @@ The Astro content collection (`type: "data"`) picks up all files automatically �
 
 ## Data Model Reference
 
+### MindMapRef
+
+```typescript
+interface MindMapRef {
+  /** Target node ID this node references. */
+  targetId: string;
+  /** Optional label describing the relationship (e.g. "deploys via", "depends on"). */
+  label?: string;
+}
+```
+
 ### MindMapNode
 
 ```typescript
@@ -55,6 +66,10 @@ interface MindMapNode {
   color?: string;
   /** Optional detailed notes (plain text, Markdown-friendly). */
   notes?: string;
+  /** Optional annotation — a short tag/badge shown on the node (e.g. "key concept", "gotcha", "critical"). */
+  annotation?: string;
+  /** Cross-branch references to other nodes. Rendered as dashed connector lines. */
+  refs?: MindMapRef[];
   /** Child nodes. Leaf nodes omit or use []. */
   children?: MindMapNode[];
 }
@@ -73,6 +88,10 @@ interface MindMapNode {
     "id": "root",
     "label": "Root Label",
     "notes": "Optional notes on the root.",
+    "annotation": "Optional short badge text",
+    "refs": [
+      { "targetId": "another-node-id", "label": "relationship label" }
+    ],
     "children": []
   }
 }
@@ -109,6 +128,17 @@ Note: The `slug` field is **not** included in the JSON — it is derived from th
 - Assign a `color` (hex string) to **first-level children** of the root for branch distinction.
 - Use the tool/brand colour when available (e.g. `"#326CE5"` for Kubernetes blue).
 - Deeper nodes inherit colour from their branch; no need to set `color` on every node.
+
+### Annotations
+- Short badge labels shown directly on the node (e.g. "key concept", "gotcha", "critical", "best practice").
+- Use annotations to highlight the nature/purpose of a node at a glance.
+- Keep to 1-2 words. Detail goes in `notes`.
+
+### Cross-Branch References (refs)
+- Use `refs` to connect a node to nodes in other branches (rendered as dashed lines).
+- Each ref needs a `targetId` (must be a valid node ID in the same mind map) and an optional `label`.
+- Labels describe the relationship: "deploys via", "depends on", "alternative to", "complements".
+- Use sparingly — too many refs create visual clutter. Focus on the most insightful relationships.
 
 ### Tree Structure
 - **Root node**: The overarching topic. Always `id: "root"`.

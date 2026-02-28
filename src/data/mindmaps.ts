@@ -1,6 +1,14 @@
 // Mind Map data model — AI-friendly, hierarchical tree structure
 // Each mind map is a tree of MindMapNode objects with optional notes.
 
+/** A cross-branch reference from one node to another. */
+export interface MindMapRef {
+  /** Target node ID this node references. */
+  targetId: string;
+  /** Optional label describing the relationship (e.g. "deploys via", "depends on"). */
+  label?: string;
+}
+
 /** A single node in the mind map tree. */
 export interface MindMapNode {
   /** Unique identifier for the node (kebab-case, e.g. "k8s-pods"). */
@@ -11,6 +19,10 @@ export interface MindMapNode {
   color?: string;
   /** Optional detailed notes (Markdown-friendly plain text). */
   notes?: string;
+  /** Optional annotation — a short tag/badge shown directly on the node (e.g. "key concept", "gotcha"). */
+  annotation?: string;
+  /** Cross-branch references to other nodes. Rendered as dashed connector lines. */
+  refs?: MindMapRef[];
   /** Child nodes. Leaf nodes have an empty array or omit this field. */
   children?: MindMapNode[];
 }

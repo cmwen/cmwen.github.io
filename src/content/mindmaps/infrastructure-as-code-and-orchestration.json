@@ -1,128 +1,164 @@
 {
   "title": "Infrastructure as Code & Orchestration",
-  "description": "A mind map covering Kubernetes, Helm, Terraform, and Ansible — the core tools for modern infrastructure automation and container orchestration.",
+  "description": "Key insights, relationships, and decision points for Kubernetes, Helm, Terraform, and Ansible — the pillars of cloud-native infrastructure.",
   "tags": ["devops", "infrastructure", "kubernetes", "iac", "automation"],
   "createdAt": "2026-02-28T00:00:00Z",
   "updatedAt": "2026-02-28T00:00:00Z",
   "root": {
     "id": "root",
-    "label": "Infrastructure as Code & Orchestration",
-    "notes": "Modern infrastructure management revolves around declarative configuration, container orchestration, and automation tooling. These four tools form the backbone of most cloud-native platforms.",
+    "label": "IaC & Orchestration",
+    "notes": "Four tools, two paradigms: declarative desired-state (K8s, Terraform, Helm) vs. imperative procedural automation (Ansible). Understanding where they overlap and where they complement each other is the real insight.",
+    "annotation": "overview",
     "children": [
       {
         "id": "kubernetes",
-        "label": "Kubernetes (K8s)",
+        "label": "Kubernetes",
         "color": "#326CE5",
-        "notes": "An open-source container orchestration platform originally designed by Google. It automates deploying, scaling, and managing containerized applications across clusters of hosts.",
+        "notes": "The de facto container orchestrator. K8s is NOT just deployment — it is a platform for building platforms. The API server + controller pattern makes it infinitely extensible via CRDs and operators.",
+        "annotation": "orchestrator",
+        "refs": [
+          { "targetId": "helm", "label": "packaged by" },
+          { "targetId": "tf-k8s-provider", "label": "provisioned by" },
+          { "targetId": "ansible-k8s-module", "label": "configured by" }
+        ],
         "children": [
           {
-            "id": "k8s-core-concepts",
-            "label": "Core Concepts",
-            "notes": "Fundamental building blocks that make up the Kubernetes API and runtime model.",
-            "children": [
-              {
-                "id": "k8s-pods",
-                "label": "Pods",
-                "notes": "The smallest deployable unit in K8s. A Pod encapsulates one or more containers that share networking and storage. Pods are ephemeral by design."
-              },
-              {
-                "id": "k8s-services",
-                "label": "Services",
-                "notes": "An abstraction that defines a logical set of Pods and a policy to access them. Types include ClusterIP, NodePort, LoadBalancer, and ExternalName."
-              },
-              {
-                "id": "k8s-deployments",
-                "label": "Deployments",
-                "notes": "Manages a ReplicaSet to ensure a desired number of Pod replicas are running. Supports rolling updates and rollbacks."
-              },
-              {
-                "id": "k8s-namespaces",
-                "label": "Namespaces",
-                "notes": "Virtual clusters within a physical cluster, used for multi-tenancy, resource isolation, and RBAC scoping."
-              },
-              {
-                "id": "k8s-configmaps-secrets",
-                "label": "ConfigMaps & Secrets",
-                "notes": "ConfigMaps store non-sensitive configuration as key-value pairs. Secrets store sensitive data (tokens, passwords) with base64 encoding (not encryption by default)."
-              }
-            ]
+            "id": "k8s-key-insight",
+            "label": "Key Insight: Reconciliation Loop",
+            "color": "#326CE5",
+            "notes": "Everything in K8s is a reconciliation loop: you declare desired state, controllers continuously work to make actual state match. This is the fundamental mental model — not 'run this command' but 'make it look like this'.",
+            "annotation": "core concept",
+            "refs": [{ "targetId": "tf-declarative", "label": "same paradigm" }]
           },
           {
-            "id": "k8s-workloads",
-            "label": "Workload Types",
+            "id": "k8s-pod-lifecycle",
+            "label": "Pod Lifecycle",
+            "color": "#326CE5",
+            "notes": "Pods are ephemeral by design. Never depend on a specific Pod surviving. This forces good architecture: stateless services, external state stores, health checks, graceful shutdown.",
+            "annotation": "gotcha",
             "children": [
               {
-                "id": "k8s-statefulsets",
-                "label": "StatefulSets",
-                "notes": "Manages stateful applications with stable network identities and persistent storage. Used for databases, message queues, etc."
+                "id": "k8s-init-containers",
+                "label": "Init Containers",
+                "notes": "Run before app containers start. Perfect for migrations, config fetching, or waiting for dependencies. They run sequentially and must all succeed."
               },
               {
-                "id": "k8s-daemonsets",
-                "label": "DaemonSets",
-                "notes": "Ensures a copy of a Pod runs on every (or selected) node. Commonly used for log collectors, monitoring agents, and network plugins."
+                "id": "k8s-probes",
+                "label": "Liveness vs. Readiness",
+                "notes": "Liveness probes restart unhealthy containers. Readiness probes remove Pods from Service endpoints. Getting these wrong causes cascading failures — a liveness probe that checks a database will kill your app when the DB is slow.",
+                "annotation": "critical"
               },
               {
-                "id": "k8s-jobs-cronjobs",
-                "label": "Jobs & CronJobs",
-                "notes": "Jobs run one-off tasks to completion. CronJobs schedule Jobs on a recurring basis (cron syntax)."
+                "id": "k8s-resource-limits",
+                "label": "Resource Requests & Limits",
+                "notes": "Requests guarantee minimum resources for scheduling. Limits cap usage. Over-committing limits causes OOMKill; under-setting requests wastes cluster capacity. The ratio between them is your burst tolerance.",
+                "annotation": "tuning"
               }
             ]
           },
           {
             "id": "k8s-networking",
-            "label": "Networking",
+            "label": "Networking Model",
+            "color": "#326CE5",
+            "notes": "K8s networking has one key rule: every Pod gets a routable IP, and every Pod can reach every other Pod without NAT. Everything else (Services, Ingress, NetworkPolicies) builds on this flat network.",
             "children": [
               {
-                "id": "k8s-ingress",
-                "label": "Ingress",
-                "notes": "Manages external HTTP/HTTPS access to Services. Requires an Ingress Controller (e.g., NGINX, Traefik, Istio Gateway)."
+                "id": "k8s-service-types",
+                "label": "Service Discovery",
+                "notes": "ClusterIP for internal traffic, NodePort for debugging, LoadBalancer for cloud integration. The DNS-based discovery (my-svc.my-namespace.svc.cluster.local) is how services find each other.",
+                "refs": [
+                  { "targetId": "k8s-service-mesh", "label": "enhanced by" }
+                ]
+              },
+              {
+                "id": "k8s-ingress-gateway",
+                "label": "Ingress / Gateway API",
+                "notes": "Ingress is being superseded by Gateway API — more expressive, role-oriented (infra admin vs. app developer), and supports TCP/UDP natively. Migrate to Gateway API for new clusters.",
+                "annotation": "evolving"
               },
               {
                 "id": "k8s-network-policies",
                 "label": "Network Policies",
-                "notes": "Firewall rules for Pods. Control ingress/egress traffic at the IP and port level. Requires a CNI plugin that supports them (Calico, Cilium)."
+                "notes": "Default-deny is best practice. Without NetworkPolicies, any Pod can talk to any Pod — a lateral movement risk. Requires a CNI that supports them (Calico, Cilium).",
+                "annotation": "security"
               },
               {
                 "id": "k8s-service-mesh",
                 "label": "Service Mesh",
-                "notes": "Sidecar-based networking layer (Istio, Linkerd) providing mTLS, traffic management, observability, and resilience features."
+                "notes": "Istio/Linkerd add mTLS, traffic splitting, observability. But they add complexity and resource overhead. Only adopt if you need fine-grained traffic control or zero-trust networking between services.",
+                "annotation": "advanced"
               }
             ]
           },
           {
             "id": "k8s-storage",
-            "label": "Storage",
+            "label": "Stateful Workloads",
+            "color": "#326CE5",
+            "notes": "K8s was designed for stateless. Running stateful workloads (databases, queues) requires understanding PV/PVC lifecycle, StatefulSets ordering guarantees, and backup strategies. Often, managed services are simpler.",
+            "annotation": "trade-off",
             "children": [
               {
-                "id": "k8s-pv-pvc",
-                "label": "PV & PVC",
-                "notes": "PersistentVolumes (PV) represent cluster storage. PersistentVolumeClaims (PVC) are requests for storage by Pods. Decouples storage provisioning from consumption."
+                "id": "k8s-statefulsets",
+                "label": "StatefulSets",
+                "notes": "Ordered deployment, stable network IDs (pod-0, pod-1), persistent volumes per replica. Deletion does NOT delete PVCs — this is a safety feature, not a bug.",
+                "refs": [{ "targetId": "k8s-operators", "label": "managed by" }]
               },
               {
                 "id": "k8s-storage-classes",
                 "label": "StorageClasses",
-                "notes": "Defines different tiers/types of storage (e.g., SSD, HDD, networked). Enables dynamic provisioning of PVs."
+                "notes": "Abstract away storage backends. Dynamic provisioning means no pre-creating volumes. Key parameters: reclaimPolicy (Delete vs. Retain), volumeBindingMode (WaitForFirstConsumer avoids zone issues)."
               }
             ]
           },
           {
-            "id": "k8s-ecosystem",
-            "label": "Ecosystem & Tools",
+            "id": "k8s-security",
+            "label": "Security Posture",
+            "color": "#326CE5",
+            "notes": "K8s is insecure by default. RBAC, Pod Security Standards, NetworkPolicies, and Secrets encryption at rest must all be explicitly configured.",
+            "annotation": "critical",
             "children": [
               {
-                "id": "k8s-kubectl",
-                "label": "kubectl",
-                "notes": "The primary CLI for interacting with Kubernetes clusters. Supports imperative commands and declarative YAML applies."
+                "id": "k8s-rbac",
+                "label": "RBAC",
+                "notes": "Role + RoleBinding (namespace-scoped) or ClusterRole + ClusterRoleBinding (cluster-wide). Principle of least privilege. Audit who has 'cluster-admin' — it should be almost nobody.",
+                "refs": [
+                  { "targetId": "ansible-vault", "label": "secrets via" }
+                ]
               },
               {
-                "id": "k8s-kustomize",
-                "label": "Kustomize",
-                "notes": "Template-free configuration customization built into kubectl. Uses overlays and patches to adapt base manifests per environment."
+                "id": "k8s-pod-security",
+                "label": "Pod Security Standards",
+                "notes": "Three levels: Privileged (unrestricted), Baseline (prevents known escalations), Restricted (hardened). Enforce via namespace labels. Replaces the deprecated PodSecurityPolicy.",
+                "annotation": "v1.25+"
               },
+              {
+                "id": "k8s-secrets-mgmt",
+                "label": "Secrets Management",
+                "notes": "K8s Secrets are base64-encoded, NOT encrypted by default. For real security: enable encryption at rest, use external secret stores (Vault, AWS Secrets Manager) via CSI driver or external-secrets operator.",
+                "annotation": "gotcha",
+                "refs": [
+                  { "targetId": "ansible-vault", "label": "alternative" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "k8s-extensibility",
+            "label": "Extensibility",
+            "color": "#326CE5",
+            "notes": "The real power of K8s: CRDs + Operators turn it into a platform for anything. Databases, certificates, CI/CD, ML workloads — all managed through the same kubectl interface.",
+            "children": [
               {
                 "id": "k8s-operators",
                 "label": "Operators",
-                "notes": "Custom controllers that extend the Kubernetes API to manage complex stateful applications (e.g., database operators, cert-manager)."
+                "notes": "Encode operational knowledge as code. Instead of runbooks, the operator watches custom resources and takes action. Examples: Prometheus Operator, cert-manager, CloudNativePG.",
+                "annotation": "pattern",
+                "refs": [{ "targetId": "helm-hooks", "label": "lifecycle via" }]
+              },
+              {
+                "id": "k8s-crds",
+                "label": "Custom Resources",
+                "notes": "Extend the K8s API with your own resource types. CRDs define the schema; operators implement the controller logic. This is how the ecosystem grows without forking K8s."
               }
             ]
           }
@@ -132,75 +168,63 @@
         "id": "helm",
         "label": "Helm",
         "color": "#0F1689",
-        "notes": "The package manager for Kubernetes. Helm uses 'charts' — pre-configured packages of Kubernetes resources — to simplify deployment, versioning, and sharing of applications.",
+        "notes": "The package manager for K8s. Helm solves the 'YAML sprawl' problem by templatizing manifests and managing release lifecycle. The key insight: Helm is not just templating — it is versioned release management.",
+        "annotation": "packaging",
+        "refs": [{ "targetId": "kubernetes", "label": "deploys to" }],
         "children": [
           {
-            "id": "helm-core",
-            "label": "Core Concepts",
+            "id": "helm-key-insight",
+            "label": "Key Insight: Releases != Templates",
+            "color": "#0F1689",
+            "notes": "Helm's value is not in Go templates (Kustomize does overlays better). It is in release management: install, upgrade, rollback, history. Every `helm upgrade` creates a revision you can roll back to.",
+            "annotation": "insight",
+            "refs": [{ "targetId": "k8s-kustomize", "label": "vs." }]
+          },
+          {
+            "id": "helm-charts",
+            "label": "Chart Anatomy",
+            "color": "#0F1689",
+            "notes": "Chart.yaml (metadata), values.yaml (defaults), templates/ (Go templates), charts/ (dependencies). Understanding the render pipeline: values merge -> template execution -> manifest output.",
             "children": [
               {
-                "id": "helm-charts",
-                "label": "Charts",
-                "notes": "A chart is a collection of files that describe a related set of Kubernetes resources. Contains templates, values, and metadata (Chart.yaml)."
+                "id": "helm-values-strategy",
+                "label": "Values Strategy",
+                "notes": "Layer values: chart defaults < environment values < CI overrides < --set flags. Keep secrets out of values files — use external-secrets or sealed-secrets instead.",
+                "annotation": "best practice"
               },
               {
-                "id": "helm-releases",
-                "label": "Releases",
-                "notes": "An instance of a chart running in a cluster. Each `helm install` creates a new release with its own revision history for rollbacks."
-              },
-              {
-                "id": "helm-values",
-                "label": "Values",
-                "notes": "YAML configuration that overrides chart defaults. Can be supplied via values.yaml files or --set flags. Supports hierarchical merging."
-              },
-              {
-                "id": "helm-templates",
-                "label": "Templates",
-                "notes": "Go templates that generate Kubernetes manifests. Support conditionals, loops, built-in functions, and named sub-templates (_helpers.tpl)."
+                "id": "helm-dependencies",
+                "label": "Chart Dependencies",
+                "notes": "Subcharts for composing complex deployments (app + database + cache). Use 'condition' and 'tags' in Chart.yaml to make dependencies optional. Watch for version conflicts."
               }
             ]
           },
           {
-            "id": "helm-workflow",
-            "label": "Workflow",
-            "children": [
-              {
-                "id": "helm-install-upgrade",
-                "label": "Install & Upgrade",
-                "notes": "`helm install` deploys a chart. `helm upgrade` applies changes. `helm upgrade --install` is idempotent (upsert)."
-              },
-              {
-                "id": "helm-rollback",
-                "label": "Rollback",
-                "notes": "`helm rollback <release> <revision>` restores a previous release state. Revision history is stored as Kubernetes Secrets by default."
-              },
-              {
-                "id": "helm-repos",
-                "label": "Repositories",
-                "notes": "Chart repositories host packaged charts. Artifact Hub is the public registry. OCI registries are also supported since Helm 3.8+."
-              }
-            ]
-          },
-          {
-            "id": "helm-advanced",
-            "label": "Advanced",
+            "id": "helm-lifecycle",
+            "label": "Release Lifecycle",
+            "color": "#0F1689",
+            "notes": "install -> upgrade -> rollback -> uninstall. Each operation is tracked. `helm diff` plugin shows what will change before applying.",
             "children": [
               {
                 "id": "helm-hooks",
                 "label": "Hooks",
-                "notes": "Allow running Jobs at specific points in the release lifecycle (pre-install, post-upgrade, pre-delete, etc.)."
+                "notes": "Run Jobs at lifecycle points (pre-install, post-upgrade, pre-delete). Use for DB migrations, smoke tests, cleanup. Weight controls ordering when multiple hooks exist.",
+                "annotation": "advanced"
               },
               {
-                "id": "helm-dependencies",
-                "label": "Dependencies",
-                "notes": "Charts can depend on other charts (subcharts). Managed via Chart.yaml `dependencies` field and `helm dependency update`."
-              },
-              {
-                "id": "helm-testing",
-                "label": "Chart Testing",
-                "notes": "Helm supports `helm test` to run test Pods defined in the chart. Combined with ct (chart-testing) CLI for CI pipelines."
+                "id": "helm-rollback",
+                "label": "Rollback Strategy",
+                "notes": "Revisions are stored as K8s Secrets. `helm rollback release 3` restores revision 3. But rollback only reverts K8s resources — if a DB migration ran, you need a separate rollback plan.",
+                "annotation": "gotcha"
               }
             ]
+          },
+          {
+            "id": "k8s-kustomize",
+            "label": "Helm vs. Kustomize",
+            "color": "#0F1689",
+            "notes": "Kustomize: template-free, patch-based, built into kubectl. Better for teams that own all their manifests. Helm: better for distributing reusable packages and third-party charts. Many teams use both.",
+            "annotation": "decision"
           }
         ]
       },
@@ -208,100 +232,98 @@
         "id": "terraform",
         "label": "Terraform",
         "color": "#7B42BC",
-        "notes": "An open-source Infrastructure as Code tool by HashiCorp. Uses HCL (HashiCorp Configuration Language) to declaratively provision and manage cloud infrastructure across multiple providers.",
+        "notes": "Infrastructure as Code for cloud resources. Terraform's strength is its multi-cloud provider ecosystem and the plan/apply workflow that shows changes before making them. OpenTofu is the open-source fork.",
+        "annotation": "provisioner",
+        "refs": [
+          { "targetId": "ansible", "label": "hands off to" },
+          { "targetId": "kubernetes", "label": "creates clusters for" }
+        ],
         "children": [
           {
-            "id": "tf-core-concepts",
-            "label": "Core Concepts",
-            "children": [
-              {
-                "id": "tf-providers",
-                "label": "Providers",
-                "notes": "Plugins that interact with cloud APIs (AWS, GCP, Azure, etc.). Each provider exposes resources and data sources. Versioned independently."
-              },
-              {
-                "id": "tf-resources",
-                "label": "Resources",
-                "notes": "The fundamental building blocks. Each resource block declares an infrastructure object (e.g., aws_instance, google_compute_network). Terraform tracks them in state."
-              },
-              {
-                "id": "tf-state",
-                "label": "State",
-                "notes": "A JSON file (terraform.tfstate) mapping config to real-world resources. Remote backends (S3, GCS, Terraform Cloud) are recommended for team use. State locking prevents concurrent modifications."
-              },
-              {
-                "id": "tf-variables",
-                "label": "Variables & Outputs",
-                "notes": "Input variables parameterize configurations. Output values export data for other modules or external use. Local values compute intermediate expressions."
-              }
+            "id": "tf-declarative",
+            "label": "Key Insight: State is Everything",
+            "color": "#7B42BC",
+            "notes": "Terraform's state file is the single source of truth mapping config to real resources. If state is lost, Terraform loses track of what it manages. Remote state backends with locking are non-negotiable for teams.",
+            "annotation": "critical",
+            "refs": [
+              { "targetId": "k8s-key-insight", "label": "same paradigm" }
             ]
           },
           {
             "id": "tf-workflow",
-            "label": "Workflow",
+            "label": "Plan-Apply Workflow",
+            "color": "#7B42BC",
+            "notes": "init -> plan -> apply -> destroy. The 'plan' step is what makes Terraform safe: you see exactly what will be created, modified, or destroyed before it happens.",
             "children": [
               {
-                "id": "tf-init",
-                "label": "terraform init",
-                "notes": "Initializes a working directory. Downloads providers, configures backends, and installs modules."
+                "id": "tf-plan-safety",
+                "label": "Plan is Your Safety Net",
+                "notes": "Always review plans in CI. Use saved plan files (`terraform plan -out=tfplan`) to ensure what you reviewed is what gets applied. Never skip plan review for production.",
+                "annotation": "best practice"
               },
               {
-                "id": "tf-plan",
-                "label": "terraform plan",
-                "notes": "Creates an execution plan showing what changes Terraform will make. Crucial for review before applying. Can be saved to a file for exact apply."
-              },
-              {
-                "id": "tf-apply",
-                "label": "terraform apply",
-                "notes": "Executes the planned changes to reach the desired state. Can auto-approve or require manual confirmation."
-              },
-              {
-                "id": "tf-destroy",
-                "label": "terraform destroy",
-                "notes": "Removes all resources managed by the configuration. Useful for tearing down environments."
+                "id": "tf-drift",
+                "label": "State Drift",
+                "notes": "If someone manually changes infrastructure, Terraform state drifts from reality. `terraform plan` detects drift. `terraform refresh` updates state (now implicit in plan). Regular drift detection catches manual changes.",
+                "annotation": "gotcha",
+                "refs": [
+                  {
+                    "targetId": "ansible-idempotency",
+                    "label": "related concept"
+                  }
+                ]
               }
             ]
           },
           {
             "id": "tf-modules",
-            "label": "Modules",
-            "notes": "Reusable, encapsulated groups of Terraform resources. Modules can be local or sourced from registries (Terraform Registry, Git, S3).",
+            "label": "Module Architecture",
+            "color": "#7B42BC",
+            "notes": "Modules are the unit of reuse. A well-designed module encapsulates a logical infrastructure unit (VPC, EKS cluster, RDS instance) with clean inputs/outputs.",
             "children": [
               {
-                "id": "tf-module-structure",
-                "label": "Module Structure",
-                "notes": "A module is a directory with .tf files. Typically contains main.tf, variables.tf, outputs.tf, and versions.tf."
+                "id": "tf-module-patterns",
+                "label": "Module Patterns",
+                "notes": "Root module = your environment config. Child modules = reusable components. Pin module versions. Use terraform-docs to auto-generate documentation. Keep modules focused — one concern per module.",
+                "annotation": "pattern"
               },
               {
-                "id": "tf-module-registry",
-                "label": "Module Registry",
-                "notes": "Terraform Registry hosts community and verified modules. Private registries are available via Terraform Cloud/Enterprise."
+                "id": "tf-module-composition",
+                "label": "Module Composition",
+                "notes": "Pass outputs of one module as inputs to another. This creates an explicit dependency graph. Terraform resolves the ordering automatically. Avoid circular dependencies.",
+                "refs": [
+                  { "targetId": "helm-dependencies", "label": "similar to" }
+                ]
               }
             ]
           },
           {
+            "id": "tf-k8s-provider",
+            "label": "Terraform + K8s",
+            "color": "#7B42BC",
+            "notes": "Use Terraform to provision the cluster (EKS, GKE, AKS) and core infrastructure. Use Helm/kubectl for application deployments. Don't try to manage every K8s resource via Terraform — it fights the K8s reconciliation model.",
+            "annotation": "boundary",
+            "refs": [
+              { "targetId": "kubernetes", "label": "provisions" },
+              { "targetId": "helm", "label": "complements" }
+            ]
+          },
+          {
             "id": "tf-advanced",
-            "label": "Advanced",
+            "label": "Advanced Patterns",
+            "color": "#7B42BC",
             "children": [
               {
                 "id": "tf-workspaces",
-                "label": "Workspaces",
-                "notes": "Named instances of state within a single configuration. Useful for managing dev/staging/prod with the same code."
-              },
-              {
-                "id": "tf-data-sources",
-                "label": "Data Sources",
-                "notes": "Read-only queries to fetch information from providers (existing resources, AMI IDs, etc.) without managing them."
-              },
-              {
-                "id": "tf-provisioners",
-                "label": "Provisioners",
-                "notes": "Execute scripts on resources after creation (local-exec, remote-exec). Considered a last resort — prefer cloud-init or configuration management tools."
+                "label": "Workspaces vs. Directories",
+                "notes": "Workspaces share code but have separate state. Works for simple env differences. For significantly different environments, separate directories (with shared modules) give more control and less risk.",
+                "annotation": "decision"
               },
               {
                 "id": "tf-import",
-                "label": "Import",
-                "notes": "Brings existing infrastructure under Terraform management. `terraform import` maps real resources to config. Terraform 1.5+ supports import blocks declaratively."
+                "label": "Import Existing Infra",
+                "notes": "terraform import brings existing resources under management. Terraform 1.5+ supports declarative import blocks. Always plan after import to ensure config matches reality.",
+                "annotation": "migration"
               }
             ]
           }
@@ -310,107 +332,130 @@
       {
         "id": "ansible",
         "label": "Ansible",
-        "color": "#E00",
-        "notes": "An open-source automation platform by Red Hat for configuration management, application deployment, and orchestration. Agentless — connects via SSH/WinRM. Uses YAML playbooks.",
+        "color": "#EE0000",
+        "notes": "Configuration management and orchestration. Ansible fills the gap between 'infrastructure exists' (Terraform) and 'application is deployed' (K8s/Helm). Agentless, SSH-based, YAML-driven. Best for mutable infrastructure and day-2 operations.",
+        "annotation": "configurator",
+        "refs": [
+          { "targetId": "terraform", "label": "receives from" },
+          { "targetId": "kubernetes", "label": "bootstraps" }
+        ],
         "children": [
           {
-            "id": "ansible-core",
-            "label": "Core Concepts",
+            "id": "ansible-key-insight",
+            "label": "Key Insight: Procedural + Idempotent",
+            "color": "#EE0000",
+            "notes": "Unlike Terraform/K8s (declarative), Ansible playbooks are procedural — order matters. But individual modules are idempotent. This hybrid gives flexibility for complex multi-step provisioning that pure declarative tools struggle with.",
+            "annotation": "paradigm",
+            "refs": [
+              { "targetId": "tf-declarative", "label": "vs. declarative" },
+              { "targetId": "k8s-key-insight", "label": "vs. reconciliation" }
+            ]
+          },
+          {
+            "id": "ansible-when-to-use",
+            "label": "When to Use Ansible",
+            "color": "#EE0000",
+            "notes": "Use Ansible when: configuring VMs/bare metal, running ad-hoc operational tasks, multi-step orchestration that needs ordering, bootstrapping systems before K8s/Terraform can take over. Don't use it for what K8s/Terraform do better.",
+            "annotation": "decision",
             "children": [
               {
-                "id": "ansible-playbooks",
-                "label": "Playbooks",
-                "notes": "YAML files defining automation workflows as ordered lists of plays. Each play maps a group of hosts to a set of tasks."
+                "id": "ansible-k8s-module",
+                "label": "Ansible + K8s",
+                "notes": "Ansible has k8s modules (community.kubernetes) for managing K8s resources. Useful for bootstrapping clusters or environments where Helm is not available. But for ongoing app management, Helm/ArgoCD is usually better.",
+                "refs": [
+                  { "targetId": "kubernetes", "label": "manages" },
+                  { "targetId": "helm", "label": "alternative to" }
+                ]
               },
               {
-                "id": "ansible-inventory",
-                "label": "Inventory",
-                "notes": "Lists of managed hosts organized into groups. Can be static (INI/YAML files) or dynamic (scripts/plugins querying cloud APIs)."
-              },
+                "id": "ansible-tf-handoff",
+                "label": "Terraform -> Ansible",
+                "notes": "Common pattern: Terraform provisions infrastructure, outputs inventory (IPs, hostnames), Ansible takes over for configuration. Dynamic inventory plugins read directly from cloud APIs or Terraform state.",
+                "annotation": "pattern",
+                "refs": [{ "targetId": "terraform", "label": "receives from" }]
+              }
+            ]
+          },
+          {
+            "id": "ansible-playbooks",
+            "label": "Playbook Architecture",
+            "color": "#EE0000",
+            "notes": "Playbooks are ordered lists of plays. Roles are the unit of reuse. A well-structured project: inventory per environment, group_vars for configuration, site.yml as the entry point, roles for each concern.",
+            "children": [
               {
-                "id": "ansible-modules",
-                "label": "Modules",
-                "notes": "Units of code that Ansible executes on managed nodes (e.g., apt, yum, copy, template, service). 7,000+ modules available across collections."
-              },
-              {
-                "id": "ansible-tasks",
-                "label": "Tasks",
-                "notes": "Individual units of action in a playbook. Each task calls a module with arguments. Tasks are idempotent by design."
+                "id": "ansible-idempotency",
+                "label": "Idempotency Gotchas",
+                "notes": "Most modules are idempotent, but shell/command modules are NOT unless you add 'creates' or 'when' guards. Always test playbooks by running them twice — the second run should report 0 changes.",
+                "annotation": "gotcha",
+                "refs": [{ "targetId": "tf-drift", "label": "related concept" }]
               },
               {
                 "id": "ansible-roles",
-                "label": "Roles",
-                "notes": "Reusable units of organization. A role bundles tasks, handlers, vars, defaults, files, and templates in a standardized directory structure."
+                "label": "Roles & Galaxy",
+                "notes": "Roles standardize structure: tasks/, handlers/, defaults/, vars/, templates/, files/. Galaxy is the package manager. Pin role versions in requirements.yml. Prefer collections (ansible-galaxy collection install) over standalone roles."
               }
             ]
           },
           {
-            "id": "ansible-features",
-            "label": "Key Features",
+            "id": "ansible-vault",
+            "label": "Secrets & Vault",
+            "color": "#EE0000",
+            "notes": "Ansible Vault encrypts sensitive data at rest within YAML files. For production, integrate with external secret stores (HashiCorp Vault, AWS Secrets Manager) rather than storing encrypted secrets in git.",
+            "annotation": "security",
+            "refs": [{ "targetId": "k8s-secrets-mgmt", "label": "complements" }]
+          }
+        ]
+      },
+      {
+        "id": "cross-cutting",
+        "label": "Cross-Cutting Concerns",
+        "color": "#10B981",
+        "notes": "Patterns and concerns that span all four tools. The best infrastructure is built by combining tools at their strengths, not by forcing one tool to do everything.",
+        "annotation": "synthesis",
+        "children": [
+          {
+            "id": "gitops",
+            "label": "GitOps",
+            "color": "#10B981",
+            "notes": "Git as the single source of truth for both infrastructure (Terraform) and application state (K8s manifests/Helm charts). ArgoCD or Flux for K8s, Atlantis for Terraform. Pull-based reconciliation, not push-based CI/CD.",
+            "annotation": "methodology",
+            "refs": [
+              { "targetId": "k8s-key-insight", "label": "enables" },
+              { "targetId": "tf-declarative", "label": "enables" },
+              { "targetId": "helm-lifecycle", "label": "automates" }
+            ]
+          },
+          {
+            "id": "tool-boundaries",
+            "label": "Where Each Tool Fits",
+            "color": "#10B981",
+            "notes": "Terraform: provision cloud resources (VPCs, clusters, databases). Ansible: configure VMs, bootstrap systems. Helm: package and deploy K8s applications. K8s: run and scale containerized workloads. Overlap exists — draw clear boundaries in your team.",
+            "annotation": "key decision"
+          },
+          {
+            "id": "testing-strategy",
+            "label": "Testing Infrastructure",
+            "color": "#10B981",
+            "notes": "Terraform: `terraform validate`, tfsec, Checkov, Terratest. Helm: `helm lint`, `helm test`, chart-testing (ct). Ansible: ansible-lint, Molecule, TestInfra. K8s: conftest (OPA), kube-score, Polaris.",
             "children": [
               {
-                "id": "ansible-agentless",
-                "label": "Agentless",
-                "notes": "No software needed on managed nodes beyond Python and SSH. Reduces overhead and security surface compared to agent-based tools."
-              },
-              {
-                "id": "ansible-idempotency",
-                "label": "Idempotency",
-                "notes": "Running the same playbook multiple times produces the same result. Modules check current state before making changes."
-              },
-              {
-                "id": "ansible-jinja2",
-                "label": "Jinja2 Templating",
-                "notes": "Ansible uses Jinja2 for variable substitution, conditionals, and loops in playbooks and templates."
-              },
-              {
-                "id": "ansible-vault",
-                "label": "Ansible Vault",
-                "notes": "Encrypts sensitive data (passwords, keys) at rest. Integrated into playbook execution with --ask-vault-pass or vault password files."
+                "id": "policy-as-code",
+                "label": "Policy as Code",
+                "notes": "OPA/Gatekeeper for K8s admission control, Sentinel for Terraform Cloud, conftest for CI. Enforce security and compliance before resources are created, not after.",
+                "annotation": "shift-left",
+                "refs": [
+                  { "targetId": "k8s-pod-security", "label": "enforced by" },
+                  { "targetId": "k8s-network-policies", "label": "complements" }
+                ]
               }
             ]
           },
           {
-            "id": "ansible-ecosystem",
-            "label": "Ecosystem",
-            "children": [
-              {
-                "id": "ansible-galaxy",
-                "label": "Ansible Galaxy",
-                "notes": "Community hub for sharing roles and collections. `ansible-galaxy install` fetches reusable content."
-              },
-              {
-                "id": "ansible-collections",
-                "label": "Collections",
-                "notes": "Packaging format for distributing modules, roles, plugins, and documentation together. The primary distribution method since Ansible 2.10+."
-              },
-              {
-                "id": "ansible-tower-aap",
-                "label": "AWX / AAP",
-                "notes": "AWX is the open-source upstream of Ansible Automation Platform (AAP). Provides a web UI, REST API, RBAC, job scheduling, and credential management."
-              }
-            ]
-          },
-          {
-            "id": "ansible-workflow",
-            "label": "Workflow Patterns",
-            "children": [
-              {
-                "id": "ansible-ad-hoc",
-                "label": "Ad-Hoc Commands",
-                "notes": "Quick one-liner tasks via `ansible <host-pattern> -m <module> -a <args>`. Good for troubleshooting and one-off actions."
-              },
-              {
-                "id": "ansible-handlers",
-                "label": "Handlers",
-                "notes": "Tasks triggered by 'notify' from other tasks. Run once at end of play regardless of how many tasks notify them. Commonly used to restart services."
-              },
-              {
-                "id": "ansible-tags",
-                "label": "Tags",
-                "notes": "Label tasks and plays to selectively run subsets of a playbook. `--tags` and `--skip-tags` control execution scope."
-              }
-            ]
+            "id": "observability",
+            "label": "Observability",
+            "color": "#10B981",
+            "notes": "Logs, metrics, traces across all layers. Prometheus + Grafana for K8s metrics. Cloud provider tools for Terraform-managed resources. Centralized logging (ELK, Loki) for Ansible runs and K8s workloads.",
+            "refs": [{ "targetId": "k8s-service-mesh", "label": "enhanced by" }]
           }
         ]
       }
