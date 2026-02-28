@@ -29,13 +29,61 @@ interface LayoutEdge {
 }
 
 // ---------------------------------------------------------------------------
-// Branch color palette
+// Theme-aware color palette
+//
+// Maps the raw data colors (used in the JSON) to theme-safe alternatives.
+// The key is the normalized lowercase hex from the data file.
+// ---------------------------------------------------------------------------
+
+const COLOR_MAP: Record<string, { light: string; dark: string }> = {
+  // Kubernetes blue — slightly brighter on light, lighter on dark
+  "#326ce5": { light: "#2563EB", dark: "#60A5FA" },
+  // Near-black navy — unreadable on dark; shift to proper blue
+  "#0f1689": { light: "#3B5FD4", dark: "#7B9EFF" },
+  // Purple — fine on both, minor tweak for dark
+  "#7b42bc": { light: "#7B42BC", dark: "#A78BFA" },
+  // Red variants — keep vibrant but accessible
+  "#ee0000": { light: "#DC2626", dark: "#F87171" },
+  "#e00": { light: "#DC2626", dark: "#F87171" },
+  "#ff0000": { light: "#DC2626", dark: "#F87171" },
+  // Sky blue — deepen on light for contrast
+  "#0ea5e9": { light: "#0284C7", dark: "#38BDF8" },
+  // Amber — fine on light, slightly lighter on dark
+  "#f59e0b": { light: "#D97706", dark: "#FCD34D" },
+  // Emerald (root) — good on both
+  "#10b981": { light: "#059669", dark: "#34D399" },
+  // Pink — fine on both
+  "#ec4899": { light: "#DB2777", dark: "#F472B6" },
+};
+
+/** Normalise a color string for lookup (lowercase, expand #rgb → #rrggbb). */
+function normaliseColor(c: string): string {
+  const lower = c.trim().toLowerCase();
+  // Expand shorthand #rgb → #rrggbb
+  if (/^#[0-9a-f]{3}$/.test(lower)) {
+    return (
+      "#" + lower[1] + lower[1] + lower[2] + lower[2] + lower[3] + lower[3]
+    );
+  }
+  return lower;
+}
+
+/** Return a theme-safe version of a raw data color. Falls back to the original. */
+function themeColor(raw: string, isDark: boolean): string {
+  const key = normaliseColor(raw);
+  const entry = COLOR_MAP[key];
+  if (entry) return isDark ? entry.dark : entry.light;
+  return raw;
+}
+
+// ---------------------------------------------------------------------------
+// Branch color palette (raw data colors — remapped at render time)
 // ---------------------------------------------------------------------------
 const BRANCH_COLORS = [
   "#326CE5", // blue
   "#0F1689", // navy
   "#7B42BC", // purple
-  "#E00", // red
+  "#EE0000", // red
   "#0EA5E9", // sky
   "#F59E0B", // amber
   "#10B981", // emerald
@@ -80,7 +128,7 @@ function computeLayout(root: MindMapNode): {
     label: root.label,
     x: 0,
     y: 0,
-    color: "#10B981", // accent color — readable on both themes
+    color: "#10B981", // accent color — remapped per theme at render time
     node: root,
     depth: 0,
     parentId: null,
@@ -210,6 +258,12 @@ const NODE_HEIGHT = 32;
 const ROOT_HEIGHT = 40;
 
 // ---------------------------------------------------------------------------
+// Drag threshold — movement (px in screen space) below which a pointer
+// interaction is classified as a click rather than a drag.
+// ---------------------------------------------------------------------------
+const DRAG_THRESHOLD = 5;
+
+// ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
 
@@ -236,6 +290,39 @@ export function MindMapViewer({ mindmap }: Props) {
   const panStart = useRef({ x: 0, y: 0 });
   const panOffset = useRef({ x: 0, y: 0 });
 
+  // ---------------------------------------------------------------------------
+  // Theme detection
+  // ---------------------------------------------------------------------------
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const check = () =>
+      setIsDark(
+        document.documentElement.dataset.theme === "dark" ||
+          document.documentElement.classList.contains("dark")
+      );
+    check();
+    const obs = new MutationObserver(check);
+    obs.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-theme", "class"],
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  // ---------------------------------------------------------------------------
+  // Per-node drag offsets  { id → { dx, dy } }
+  // ---------------------------------------------------------------------------
+  const [nodeOffsets, setNodeOffsets] = useState<
+    Map<string, { dx: number; dy: number }>
+  >(new Map());
+
+  // Dragging a node — refs for the active drag gesture
+  const draggingNodeId = useRef<string | null>(null);
+  const nodeDragStart = useRef({ px: 0, py: 0 }); // pointer start (screen)
+  const nodeDragOrigin = useRef({ dx: 0, dy: 0 }); // offset at drag start
+  const nodeDragMoved = useRef(false); // did we exceed threshold?
+
   // Build the pruned tree based on expanded nodes
   const prunedRoot = useMemo(() => {
     function prune(node: MindMapNode): MindMapNode {
@@ -259,6 +346,20 @@ export function MindMapViewer({ mindmap }: Props) {
     for (const n of nodes) m.set(n.id, n);
     return m;
   }, [nodes]);
+
+  // Helper: get effective (layout + drag offset) position for a node
+  const nodePos = useCallback(
+    (id: string): { x: number; y: number } | null => {
+      const ln = nodeMap.get(id);
+      if (!ln) return null;
+      const off = nodeOffsets.get(id);
+      return {
+        x: ln.x + (off?.dx ?? 0),
+        y: ln.y + (off?.dy ?? 0),
+      };
+    },
+    [nodeMap, nodeOffsets]
+  );
 
   // Toggle expand/collapse
   const toggleExpand = useCallback(
@@ -314,6 +415,10 @@ export function MindMapViewer({ mindmap }: Props) {
     setExpandedIds(new Set([mindmap.root.id]));
   }, [mindmap]);
 
+  const resetLayout = useCallback(() => {
+    setNodeOffsets(new Map());
+  }, []);
+
   // Center the view — used on mount and when toggling fullscreen
   const centerView = useCallback((zoom: number) => {
     if (containerRef.current) {
@@ -342,9 +447,14 @@ export function MindMapViewer({ mindmap }: Props) {
     return m;
   }, [mindmap.root]);
 
-  // Pan handlers
-  const onPointerDown = useCallback(
+  // ---------------------------------------------------------------------------
+  // Canvas-level pointer handlers — used for panning.
+  // Node drag gestures intercept the pointer before it reaches these.
+  // ---------------------------------------------------------------------------
+  const onCanvasPointerDown = useCallback(
     (e: React.PointerEvent) => {
+      // Only start canvas pan if no node drag is in progress
+      if (draggingNodeId.current !== null) return;
       if (e.button !== 0) return;
       isPanning.current = true;
       panStart.current = { x: e.clientX, y: e.clientY };
@@ -354,18 +464,55 @@ export function MindMapViewer({ mindmap }: Props) {
     [pan]
   );
 
-  const onPointerMove = useCallback((e: React.PointerEvent) => {
-    if (!isPanning.current) return;
-    const dx = e.clientX - panStart.current.x;
-    const dy = e.clientY - panStart.current.y;
-    setPan({
-      x: panOffset.current.x + dx,
-      y: panOffset.current.y + dy,
-    });
-  }, []);
+  const onCanvasPointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      // Node drag in progress — update node offset
+      if (draggingNodeId.current !== null) {
+        const dx =
+          (e.clientX - nodeDragStart.current.px) / zoom +
+          nodeDragOrigin.current.dx;
+        const dy =
+          (e.clientY - nodeDragStart.current.py) / zoom +
+          nodeDragOrigin.current.dy;
 
-  const onPointerUp = useCallback(() => {
+        // Check if we exceeded the threshold (in screen px)
+        if (!nodeDragMoved.current) {
+          const screenDx = e.clientX - nodeDragStart.current.px;
+          const screenDy = e.clientY - nodeDragStart.current.py;
+          if (
+            Math.sqrt(screenDx * screenDx + screenDy * screenDy) >
+            DRAG_THRESHOLD
+          ) {
+            nodeDragMoved.current = true;
+          }
+        }
+
+        if (nodeDragMoved.current) {
+          const id = draggingNodeId.current;
+          setNodeOffsets(prev => {
+            const next = new Map(prev);
+            next.set(id, { dx, dy });
+            return next;
+          });
+        }
+        return;
+      }
+
+      // Canvas pan
+      if (!isPanning.current) return;
+      const dx = e.clientX - panStart.current.x;
+      const dy = e.clientY - panStart.current.y;
+      setPan({
+        x: panOffset.current.x + dx,
+        y: panOffset.current.y + dy,
+      });
+    },
+    [zoom]
+  );
+
+  const onCanvasPointerUp = useCallback(() => {
     isPanning.current = false;
+    draggingNodeId.current = null;
   }, []);
 
   // Zoom via scroll wheel — must be a non-passive native listener so
@@ -414,6 +561,8 @@ export function MindMapViewer({ mindmap }: Props) {
   // ---------------------------------------------------------------------------
   // Toolbar (shared between normal and fullscreen)
   // ---------------------------------------------------------------------------
+  const hasOffsets = nodeOffsets.size > 0;
+
   const toolbar = (
     <div className="flex flex-wrap items-center gap-2">
       <button
@@ -434,6 +583,14 @@ export function MindMapViewer({ mindmap }: Props) {
       >
         Reset View
       </button>
+      {hasOffsets && (
+        <button
+          onClick={resetLayout}
+          className="border-skin-line text-skin-base hover:border-skin-accent hover:text-skin-accent rounded border px-2.5 py-1 text-xs transition-colors"
+        >
+          Reset Layout
+        </button>
+      )}
       <button
         onClick={toggleFullscreen}
         className="border-skin-line text-skin-base hover:border-skin-accent hover:text-skin-accent rounded border px-2.5 py-1 text-xs transition-colors"
@@ -493,8 +650,8 @@ export function MindMapViewer({ mindmap }: Props) {
         <span className="ml-1">{isFullscreen ? "Exit" : "Expand"}</span>
       </button>
       <span className="text-skin-base/50 ml-auto text-xs">
-        Scroll to zoom &middot; Drag to pan &middot; Click nodes to expand
-        &middot; Right-click for notes
+        Scroll to zoom &middot; Drag canvas to pan &middot; Drag nodes to
+        reposition &middot; Click to expand &middot; Right-click for notes
         {isFullscreen && " \u00b7 Esc to exit"}
       </span>
     </div>
@@ -511,9 +668,9 @@ export function MindMapViewer({ mindmap }: Props) {
         height: isFullscreen ? "calc(100vh - 120px)" : "600px",
         touchAction: "none",
       }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
+      onPointerDown={onCanvasPointerDown}
+      onPointerMove={onCanvasPointerMove}
+      onPointerUp={onCanvasPointerUp}
     >
       {/* mindmap-canvas resets the global `svg { h-6 w-6 fill-skin-base }` rule */}
       <svg
@@ -546,17 +703,19 @@ export function MindMapViewer({ mindmap }: Props) {
           {edges
             .filter(e => !e.isRef)
             .map(edge => {
-              const from = nodeMap.get(edge.from);
+              const fromPos = nodePos(edge.from);
+              const toPos = nodePos(edge.to);
               const to = nodeMap.get(edge.to);
-              if (!from || !to) return null;
+              if (!fromPos || !toPos || !to) return null;
               const isHighlighted =
                 hoveredId === edge.from || hoveredId === edge.to;
+              const color = themeColor(to.color, isDark);
               return (
                 <path
                   key={`${edge.from}-${edge.to}`}
-                  d={parentChildPath(from.x, from.y, to.x, to.y)}
+                  d={parentChildPath(fromPos.x, fromPos.y, toPos.x, toPos.y)}
                   fill="none"
-                  stroke={to.color}
+                  stroke={color}
                   strokeWidth={isHighlighted ? 2.5 : 1.5}
                   opacity={hoveredId ? (isHighlighted ? 0.9 : 0.15) : 0.5}
                   style={{ transition: "opacity 0.2s, stroke-width 0.2s" }}
@@ -568,17 +727,18 @@ export function MindMapViewer({ mindmap }: Props) {
           {edges
             .filter(e => e.isRef)
             .map(edge => {
-              const from = nodeMap.get(edge.from);
-              const to = nodeMap.get(edge.to);
-              if (!from || !to) return null;
+              const fromPos = nodePos(edge.from);
+              const toPos = nodePos(edge.to);
+              if (!fromPos || !toPos) return null;
               const isHighlighted =
                 hoveredId === edge.from || hoveredId === edge.to;
+              const refColor = isDark ? "#FCD34D" : "#D97706";
               return (
                 <g key={`ref-${edge.from}-${edge.to}`}>
                   <path
-                    d={refPath(from.x, from.y, to.x, to.y)}
+                    d={refPath(fromPos.x, fromPos.y, toPos.x, toPos.y)}
                     fill="none"
-                    stroke="#F59E0B"
+                    stroke={refColor}
                     strokeWidth={isHighlighted ? 2 : 1.2}
                     strokeDasharray="6 4"
                     opacity={hoveredId ? (isHighlighted ? 0.9 : 0.12) : 0.4}
@@ -587,11 +747,11 @@ export function MindMapViewer({ mindmap }: Props) {
                   />
                   {edge.label && (
                     <text
-                      x={(from.x + to.x) / 2}
-                      y={(from.y + to.y) / 2 - 8}
+                      x={(fromPos.x + toPos.x) / 2}
+                      y={(fromPos.y + toPos.y) / 2 - 8}
                       textAnchor="middle"
                       fontSize="9"
-                      fill="#F59E0B"
+                      fill={refColor}
                       opacity={hoveredId ? (isHighlighted ? 0.9 : 0.1) : 0.55}
                       style={{ pointerEvents: "none" }}
                     >
@@ -617,15 +777,45 @@ export function MindMapViewer({ mindmap }: Props) {
             const collapsedChildren =
               hasChildren && !isExpanded ? childCount : 0;
 
+            // Theme-remapped color for this node
+            const color = themeColor(ln.color, isDark);
+
+            // Effective position including drag offset
+            const off = nodeOffsets.get(ln.id);
+            const nx = ln.x + (off?.dx ?? 0);
+            const ny = ln.y + (off?.dy ?? 0);
+
             return (
               <g
                 key={ln.id}
-                transform={`translate(${ln.x}, ${ln.y})`}
+                transform={`translate(${nx}, ${ny})`}
                 onMouseEnter={() => setHoveredId(ln.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                onClick={e => {
+                onPointerDown={e => {
+                  e.stopPropagation(); // prevent canvas pan from starting
+                  if (e.button !== 0) return;
+                  draggingNodeId.current = ln.id;
+                  nodeDragStart.current = { px: e.clientX, py: e.clientY };
+                  const existing = nodeOffsets.get(ln.id);
+                  nodeDragOrigin.current = {
+                    dx: existing?.dx ?? 0,
+                    dy: existing?.dy ?? 0,
+                  };
+                  nodeDragMoved.current = false;
+                  (e.target as Element).setPointerCapture?.(e.pointerId);
+                }}
+                onPointerUp={e => {
                   e.stopPropagation();
-                  if (hasChildren) toggleExpand(ln.id);
+                  const wasDrag = nodeDragMoved.current;
+                  draggingNodeId.current = null;
+                  nodeDragMoved.current = false;
+
+                  // If it was just a tap/click (no significant movement), toggle expand
+                  if (!wasDrag) {
+                    if (e.button === 0 && hasChildren) {
+                      toggleExpand(ln.id);
+                    }
+                  }
                 }}
                 onContextMenu={e => {
                   e.preventDefault();
@@ -636,7 +826,9 @@ export function MindMapViewer({ mindmap }: Props) {
                     );
                   }
                 }}
-                style={{ cursor: hasChildren ? "pointer" : "default" }}
+                style={{
+                  cursor: hasChildren ? "grab" : "default",
+                }}
               >
                 {/* Node background */}
                 <rect
@@ -647,14 +839,14 @@ export function MindMapViewer({ mindmap }: Props) {
                   rx={isRoot ? 12 : 8}
                   fill={
                     isRoot
-                      ? ln.color // solid accent fill for root
+                      ? color // solid accent fill for root
                       : isSelected
-                        ? ln.color + "30"
+                        ? color + "30"
                         : isHovered
-                          ? ln.color + "20"
-                          : ln.color + "12"
+                          ? color + "20"
+                          : color + "12"
                   }
-                  stroke={ln.color}
+                  stroke={color}
                   strokeWidth={
                     isRoot ? 2.5 : isSelected ? 2 : isHovered ? 1.5 : 1
                   }
@@ -682,7 +874,7 @@ export function MindMapViewer({ mindmap }: Props) {
                   fontSize={isRoot ? 15 : ln.depth === 1 ? 12 : 10.5}
                   fontWeight={isRoot || ln.depth === 1 ? "bold" : "500"}
                   // Root: white text on solid accent bg; others: branch color
-                  fill={isRoot ? "#ffffff" : ln.color}
+                  fill={isRoot ? "#ffffff" : color}
                   style={{ pointerEvents: "none", userSelect: "none" }}
                 >
                   {ln.label}
@@ -697,7 +889,7 @@ export function MindMapViewer({ mindmap }: Props) {
                       width={(ln.node.annotation?.length ?? 0) * 5.5 + 10}
                       height={14}
                       rx={4}
-                      fill={ln.color}
+                      fill={color}
                       opacity={0.85}
                     />
                     <text
@@ -718,7 +910,7 @@ export function MindMapViewer({ mindmap }: Props) {
                 {/* Collapsed children count badge */}
                 {collapsedChildren > 0 && (
                   <g transform={`translate(${w / 2 + 4}, 0)`}>
-                    <circle r={9} fill={ln.color} opacity={0.7} />
+                    <circle r={9} fill={color} opacity={0.7} />
                     <text
                       textAnchor="middle"
                       dominantBaseline="central"
@@ -741,7 +933,7 @@ export function MindMapViewer({ mindmap }: Props) {
                     cx={w / 2 + (collapsedChildren > 0 ? 20 : 4)}
                     cy={-h / 2 + 4}
                     r={3.5}
-                    fill={isSelected ? ln.color : "#F59E0B"}
+                    fill={isSelected ? color : isDark ? "#FCD34D" : "#D97706"}
                     opacity={isHovered || isSelected ? 1 : 0.5}
                     style={{ transition: "opacity 0.15s" }}
                   />
