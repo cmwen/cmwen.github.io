@@ -355,10 +355,10 @@
 <p>每個 Codex 執行緒都有自己的終端會話。這意味著：</p>
 <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>執行緒 1：功能開發</span></span>
 <span class="line"><span>  終端 1：npm run dev</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>執行緒 2：測試重構</span></span>
 <span class="line"><span>  終端 2：npm test -- --watch</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>執行緒 3：資料庫遷移</span></span>
 <span class="line"><span>  終端 3：docker-compose up</span></span></code></pre>
 <p>你不需要不斷切換終端標籤或管理複雜的 tmux 會話。終端的範圍限定在執行緒內，因此當你切換執行緒時，你完全切換上下文——程式碼、AI 對話和執行中的程序。</p>
@@ -463,17 +463,17 @@
 <span class="line"><span>  - 打開 Codex App</span></span>
 <span class="line"><span>  - 開始長時間執行的重構任務（執行緒 1）</span></span>
 <span class="line"><span>  - 開始測試生成任務（執行緒 2）</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>工作時：</span></span>
 <span class="line"><span>  - 使用 IDE 擴充功能進行自動完成</span></span>
 <span class="line"><span>  - 使用 IDE 擴充功能進行行內建議</span></span>
 <span class="line"><span>  - 定期檢查 Codex App 進度</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>下午：</span></span>
 <span class="line"><span>  - 審查完成的 Codex 任務</span></span>
 <span class="line"><span>  - 使用 IDE 擴充功能微調變更</span></span>
 <span class="line"><span>  - 透過 Codex App 的 Git UI 提交工作</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>背景：</span></span>
 <span class="line"><span>  - Codex 自動化監控程式碼品質</span></span>
 <span class="line"><span>  - 安全稽核在提交時執行</span></span>

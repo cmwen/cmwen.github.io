@@ -429,10 +429,10 @@
 <p>Each Codex thread gets its own terminal session. This means:</p>
 <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="plaintext"><code><span class="line"><span>Thread 1: Feature Development</span></span>
 <span class="line"><span>  Terminal 1: npm run dev</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>Thread 2: Testing Refactor</span></span>
 <span class="line"><span>  Terminal 2: npm test -- --watch</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>Thread 3: Database Migration</span></span>
 <span class="line"><span>  Terminal 3: docker-compose up</span></span></code></pre>
 <p>You’re not constantly switching terminal tabs or managing complex tmux sessions. The terminal is scoped to the thread, so when you switch threads, you switch contexts completely—code, AI conversation, and running processes.</p>
@@ -537,17 +537,17 @@
 <span class="line"><span>  - Open Codex App</span></span>
 <span class="line"><span>  - Start long-running refactoring task (Thread 1)</span></span>
 <span class="line"><span>  - Start test generation task (Thread 2)</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>While working:</span></span>
 <span class="line"><span>  - Use IDE extension for autocomplete</span></span>
 <span class="line"><span>  - Use IDE extension for inline suggestions</span></span>
 <span class="line"><span>  - Check Codex App progress periodically</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>Afternoon:</span></span>
 <span class="line"><span>  - Review completed Codex tasks</span></span>
 <span class="line"><span>  - Use IDE extension to fine-tune changes</span></span>
 <span class="line"><span>  - Commit work through Codex App's Git UI</span></span>
-<span class="line"><span>  </span></span>
+<span class="line"><span></span></span>
 <span class="line"><span>Background:</span></span>
 <span class="line"><span>  - Codex automations monitor code quality</span></span>
 <span class="line"><span>  - Security audits run on commits</span></span>

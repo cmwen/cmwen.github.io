@@ -408,7 +408,7 @@
 <span class="line"><span style="color:#98C379">  serve</span><span style="color:#D19A66"> --port</span><span style="color:#D19A66"> 8080</span><span style="color:#D19A66"> --hostname</span><span style="color:#D19A66"> 0.0.0.0</span></span></code></pre>
 <p><strong>選項 3：Docker Compose</strong></p>
 <pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#7F848E;font-style:italic"># docker-compose.yml</span></span>
-<span class="line"><span style="color:#E06C75">version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">'3.8'</span></span>
+<span class="line"><span style="color:#E06C75">version</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"3.8"</span></span>
 <span class="line"><span style="color:#E06C75">services</span><span style="color:#ABB2BF">:</span></span>
 <span class="line"><span style="color:#E06C75">  opencode</span><span style="color:#ABB2BF">:</span></span>
 <span class="line"><span style="color:#E06C75">    image</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ghcr.io/anomalyco/opencode:latest</span></span>
@@ -503,7 +503,11 @@
 <span class="line"><span style="color:#E06C75">  "mcpServers"</span><span style="color:#ABB2BF">: {</span></span>
 <span class="line"><span style="color:#E06C75">    "filesystem"</span><span style="color:#ABB2BF">: {</span></span>
 <span class="line"><span style="color:#E06C75">      "command"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"npx"</span><span style="color:#ABB2BF">,</span></span>
-<span class="line"><span style="color:#E06C75">      "args"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"-y"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"@modelcontextprotocol/server-filesystem"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"/path/to/project"</span><span style="color:#ABB2BF">]</span></span>
+<span class="line"><span style="color:#E06C75">      "args"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">        "-y"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">        "@modelcontextprotocol/server-filesystem"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">        "/path/to/project"</span></span>
+<span class="line"><span style="color:#ABB2BF">      ]</span></span>
 <span class="line"><span style="color:#ABB2BF">    },</span></span>
 <span class="line"><span style="color:#E06C75">    "github"</span><span style="color:#ABB2BF">: {</span></span>
 <span class="line"><span style="color:#E06C75">      "command"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"npx"</span><span style="color:#ABB2BF">,</span></span>
@@ -547,7 +551,7 @@
 <span class="line"><span style="color:#E06C75">    runs-on</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ubuntu-latest</span></span>
 <span class="line"><span style="color:#E06C75">    steps</span><span style="color:#ABB2BF">:</span></span>
 <span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">actions/checkout@v4</span></span>
-<span class="line"><span style="color:#ABB2BF">      </span></span>
+<span class="line"></span>
 <span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#E06C75">uses</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">anomalyco/opencode/github@latest</span></span>
 <span class="line"><span style="color:#E06C75">        env</span><span style="color:#ABB2BF">:</span></span>
 <span class="line"><span style="color:#E06C75">          ANTHROPIC_API_KEY</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">${{ secrets.ANTHROPIC_API_KEY }}</span></span></code></pre>
