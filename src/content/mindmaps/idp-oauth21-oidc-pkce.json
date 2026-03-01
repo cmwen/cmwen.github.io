@@ -1,0 +1,247 @@
+{
+  "title": "IdP, OAuth 2.1, OIDC & PKCE",
+  "description": "How Identity Providers, OAuth 2.1, OpenID Connect, and PKCE fit together: roles, tokens, flows, and security trade-offs.",
+  "tags": ["identity", "security", "oauth", "oidc", "pkce", "sso"],
+  "createdAt": "2026-03-01T00:00:00Z",
+  "updatedAt": "2026-03-01T00:00:00Z",
+  "root": {
+    "id": "root",
+    "label": "Identity + OAuth/OIDC",
+    "notes": "OAuth is for authorization (API access). OIDC layers authentication (login) on top of OAuth. PKCE hardens the Authorization Code flow for public clients.",
+    "annotation": "overview",
+    "children": [
+      {
+        "id": "idp",
+        "label": "Identity Provider (IdP)",
+        "color": "#0EA5E9",
+        "notes": "The system that authenticates users and issues tokens. In OIDC terms, an IdP is typically the OpenID Provider (OP) and often also acts as the OAuth Authorization Server.",
+        "children": [
+          {
+            "id": "idp-concepts",
+            "label": "Core Concepts",
+            "notes": "Identity store + authentication methods + session management + token issuance. Many IdPs also provide federation, MFA, and user lifecycle automation.",
+            "children": [
+              {
+                "id": "idp-auth-methods",
+                "label": "Auth Methods",
+                "notes": "Passwords, passkeys (WebAuthn), TOTP, SMS (avoid for high assurance), hardware keys, and enterprise IdPs. Strong auth reduces downstream token risk.",
+                "annotation": "security"
+              },
+              {
+                "id": "idp-sessions",
+                "label": "Sessions",
+                "notes": "Browser sessions (cookies) enable SSO and silent re-auth. Sessions are distinct from OAuth access tokens; confusing them leads to broken logout and refresh logic.",
+                "annotation": "gotcha"
+              },
+              {
+                "id": "idp-tenanting",
+                "label": "Tenants",
+                "notes": "Multi-tenant IdPs separate policies, apps, and user directories. Tenant boundaries influence issuer URLs, keys, and audience validation.",
+                "annotation": "design"
+              }
+            ]
+          },
+          {
+            "id": "idp-federation",
+            "label": "Federation",
+            "notes": "Trust relationships between IdPs (SAML or OIDC federation) enable enterprise SSO. Federation shifts auth responsibility while keeping app integration stable.",
+            "children": [
+              {
+                "id": "idp-saml",
+                "label": "SAML",
+                "notes": "Common in enterprises for browser SSO. Often used for workforce identity, with OIDC/OAuth used for modern apps and APIs.",
+                "annotation": "enterprise"
+              },
+              {
+                "id": "idp-oidc-federation",
+                "label": "OIDC Federation",
+                "notes": "Apps rely on OIDC while the IdP may authenticate users via upstream identity sources. Standard OIDC discovery makes integration simpler than bespoke SAML setups.",
+                "refs": [{ "targetId": "oidc-discovery", "label": "uses" }]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "oauth21",
+        "label": "OAuth 2.1",
+        "color": "#22C55E",
+        "notes": "Authorization framework for delegated access to APIs. OAuth 2.1 consolidates best practices: it drops the Implicit flow, requires PKCE for public clients, and emphasizes secure redirects.",
+        "children": [
+          {
+            "id": "oauth-roles",
+            "label": "Roles",
+            "notes": "Resource Owner (user), Client (app), Authorization Server (issues tokens), Resource Server (API). Keeping these roles clear avoids incorrect token validation.",
+            "children": [
+              {
+                "id": "oauth-client-types",
+                "label": "Client Types",
+                "notes": "Confidential clients can keep secrets (server apps). Public clients cannot (SPAs, mobile, desktop). Client type drives which flows and protections are safe.",
+                "refs": [{ "targetId": "pkce", "label": "hardened by" }]
+              },
+              {
+                "id": "oauth-redirect-uris",
+                "label": "Redirect URIs",
+                "notes": "Strictly register exact redirect URIs. Open redirects and wildcard matching are a top cause of code/token leakage.",
+                "annotation": "critical"
+              }
+            ]
+          },
+          {
+            "id": "oauth-flows",
+            "label": "Flows",
+            "notes": "OAuth defines multiple flows; OAuth 2.1 pushes the industry toward Authorization Code with PKCE for interactive user agents.",
+            "children": [
+              {
+                "id": "oauth-auth-code",
+                "label": "Authorization Code",
+                "notes": "Browser redirects yield an authorization code, which is exchanged for tokens. Use PKCE for public clients to prevent intercepted code reuse.",
+                "refs": [{ "targetId": "pkce", "label": "requires" }]
+              },
+              {
+                "id": "oauth-client-credentials",
+                "label": "Client Credentials",
+                "notes": "Machine-to-machine flow for service accounts. No user involved, so no ID token; scopes represent app permissions.",
+                "annotation": "m2m"
+              },
+              {
+                "id": "oauth-device-code",
+                "label": "Device Code",
+                "notes": "For TVs/CLI tools without a browser. User completes auth on a separate device; the device polls to obtain tokens.",
+                "annotation": "ux"
+              }
+            ]
+          },
+          {
+            "id": "oauth-tokens",
+            "label": "Tokens",
+            "notes": "Access tokens authorize API calls; refresh tokens renew access. Tokens can be opaque (introspected) or JWTs (self-validated) depending on architecture.",
+            "children": [
+              {
+                "id": "oauth-access-token",
+                "label": "Access Token",
+                "notes": "Send to APIs (resource servers). Keep lifetimes short; scope and audience must match what the API expects.",
+                "refs": [
+                  { "targetId": "token-validation", "label": "validated by" }
+                ]
+              },
+              {
+                "id": "oauth-refresh-token",
+                "label": "Refresh Token",
+                "notes": "High-value credential used to mint new access tokens. Store with extra protections; rotate and revoke aggressively.",
+                "annotation": "sensitive"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "oidc",
+        "label": "OpenID Connect (OIDC)",
+        "color": "#F97316",
+        "notes": "Authentication layer on top of OAuth. OIDC adds the ID token, standard claims, discovery, and a userinfo endpoint so apps can verify who the user is.",
+        "refs": [{ "targetId": "oauth21", "label": "built on" }],
+        "children": [
+          {
+            "id": "oidc-id-token",
+            "label": "ID Token",
+            "notes": "A JWT that represents an authentication event for the client. It is for the client app, not for APIs; do not send ID tokens to your resource servers.",
+            "annotation": "gotcha"
+          },
+          {
+            "id": "oidc-claims",
+            "label": "Claims",
+            "notes": "Standard fields like issuer (iss), audience (aud), subject (sub), expiry (exp), plus profile/email groups if configured. Claims drive authorization decisions only if your policy explicitly trusts them.",
+            "refs": [{ "targetId": "token-validation", "label": "checked in" }]
+          },
+          {
+            "id": "oidc-discovery",
+            "label": "Discovery",
+            "notes": "The .well-known OpenID configuration publishes endpoints, supported features, and the JWKS URL. This enables clients and APIs to configure themselves safely.",
+            "annotation": "standard"
+          },
+          {
+            "id": "oidc-jwks",
+            "label": "JWKS",
+            "notes": "JSON Web Key Set endpoint used to verify JWT signatures. Key rotation is normal; clients should cache and refresh keys based on cache headers.",
+            "refs": [{ "targetId": "token-validation", "label": "used by" }]
+          },
+          {
+            "id": "oidc-userinfo",
+            "label": "UserInfo",
+            "notes": "An endpoint to fetch user claims using an access token. Useful when you want minimal ID tokens and fetch additional profile data on demand.",
+            "annotation": "optional"
+          }
+        ]
+      },
+      {
+        "id": "pkce",
+        "label": "PKCE",
+        "color": "#A855F7",
+        "notes": "Proof Key for Code Exchange binds the authorization code to the original client by using a code verifier/challenge. It prevents intercepted authorization codes from being redeemed by an attacker.",
+        "children": [
+          {
+            "id": "pkce-why",
+            "label": "Why It Exists",
+            "notes": "Public clients cannot keep a client secret. PKCE provides a per-authentication secret (verifier) so the token endpoint can verify the same party that initiated the request completes the exchange.",
+            "annotation": "public clients"
+          },
+          {
+            "id": "pkce-steps",
+            "label": "How It Works",
+            "notes": "Client generates a high-entropy code_verifier, derives code_challenge (S256), sends code_challenge in the auth request, then sends code_verifier to the token endpoint to redeem the code.",
+            "children": [
+              {
+                "id": "pkce-s256",
+                "label": "S256",
+                "notes": "Use S256 (SHA-256) as the challenge method. Plain is legacy and weak; most providers require S256.",
+                "annotation": "best practice"
+              }
+            ]
+          },
+          {
+            "id": "pkce-common-mistakes",
+            "label": "Common Mistakes",
+            "notes": "Not persisting the verifier across redirects, reusing verifiers, or mixing up code vs. token exchange parameters. Treat verifier like a one-time secret.",
+            "annotation": "gotcha"
+          }
+        ]
+      },
+      {
+        "id": "token-validation",
+        "label": "Validation and Security",
+        "color": "#64748B",
+        "notes": "Security comes from correct validation, least privilege, and safe client storage. Most real incidents are validation or redirect mistakes, not broken crypto.",
+        "children": [
+          {
+            "id": "jwt-validation",
+            "label": "JWT Validation",
+            "notes": "Verify signature with JWKS, then validate iss/aud/exp/nbf, and often azp/client_id. Never accept alg=none; pin accepted algorithms.",
+            "refs": [
+              { "targetId": "oidc-jwks", "label": "keys from" },
+              { "targetId": "oidc-claims", "label": "checks" }
+            ]
+          },
+          {
+            "id": "scopes-audience",
+            "label": "Scopes and Audience",
+            "notes": "Scopes describe permissions; audience identifies the intended API. Your resource server should enforce both and reject tokens minted for other APIs.",
+            "annotation": "api authz"
+          },
+          {
+            "id": "token-storage",
+            "label": "Token Storage",
+            "notes": "For browsers, avoid long-lived tokens and prefer BFF patterns or secure cookies. For mobile/desktop, use platform keychains. Storage choices determine your exposure to XSS and device compromise.",
+            "annotation": "design"
+          },
+          {
+            "id": "logout-revocation",
+            "label": "Logout and Revocation",
+            "notes": "Logout ends sessions; revocation invalidates refresh tokens (and sometimes access tokens). Design for short access token TTLs and refresh token rotation for practical control.",
+            "annotation": "operations"
+          }
+        ]
+      }
+    ]
+  }
+}

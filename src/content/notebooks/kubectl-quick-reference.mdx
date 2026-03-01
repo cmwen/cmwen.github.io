@@ -1,0 +1,193 @@
+---
+title: "kubectl Quick Reference"
+description: "Common kubectl commands for day-to-day Kubernetes work: context, inspect, debug, apply, and rollouts."
+pubDatetime: 2026-03-01T00:00:00Z
+tags: ["kubernetes", "kubectl", "cheatsheet", "devops"]
+---
+
+# kubectl Quick Reference
+
+Fast commands for inspecting and operating Kubernetes resources.
+
+## Contexts and Namespaces
+
+```bash
+# Current context
+kubectl config current-context
+
+# List contexts
+kubectl config get-contexts
+
+# Switch context
+kubectl config use-context <context>
+
+# Set default namespace for current context
+kubectl config set-context --current --namespace <ns>
+
+# One-off namespace
+kubectl -n <ns> get pods
+```
+
+## Get and Inspect
+
+```bash
+# Get resources
+kubectl get nodes
+kubectl get ns
+kubectl get pods
+kubectl get deploy,sts,ds
+kubectl get svc,ing
+kubectl get events --sort-by=.metadata.creationTimestamp
+
+# Wide output / labels
+kubectl get pods -o wide
+kubectl get pods --show-labels
+
+# Describe (good for debugging)
+kubectl describe pod <pod>
+kubectl describe deploy <deploy>
+
+# YAML/JSON
+kubectl get deploy <deploy> -o yaml
+kubectl get pod <pod> -o json
+```
+
+## Logs and Exec
+
+```bash
+# Logs
+kubectl logs <pod>
+kubectl logs -f <pod>
+kubectl logs <pod> -c <container>
+kubectl logs --since=10m <pod>
+
+# For Deployments/ReplicaSets (pick a pod automatically)
+kubectl logs -f deploy/<deploy>
+
+# Exec
+kubectl exec -it <pod> -- sh
+kubectl exec -it <pod> -c <container> -- sh
+```
+
+## Create / Apply / Delete
+
+```bash
+# Apply manifests
+kubectl apply -f k8s/
+kubectl apply -f app.yaml
+
+# Server-side apply (useful for GitOps-style ownership)
+kubectl apply --server-side -f app.yaml
+
+# Diff before applying
+kubectl diff -f app.yaml
+
+# Delete
+kubectl delete -f app.yaml
+kubectl delete pod <pod>
+
+# Force delete a stuck pod (use carefully)
+kubectl delete pod <pod> --grace-period=0 --force
+```
+
+## Rollouts (Deployments)
+
+```bash
+# Watch rollout
+kubectl rollout status deploy/<deploy>
+
+# History and rollback
+kubectl rollout history deploy/<deploy>
+kubectl rollout undo deploy/<deploy>
+kubectl rollout undo deploy/<deploy> --to-revision=<n>
+
+# Restart (triggers a new ReplicaSet)
+kubectl rollout restart deploy/<deploy>
+```
+
+## Port Forward and Proxy
+
+```bash
+# Port-forward to a pod
+kubectl port-forward pod/<pod> 8080:80
+
+# Port-forward to a service
+kubectl port-forward svc/<svc> 8080:80
+
+# kubectl proxy (API server local endpoint)
+kubectl proxy
+```
+
+## Patch, Scale, and Edit
+
+```bash
+# Scale
+kubectl scale deploy/<deploy> --replicas=3
+
+# Edit live resource (writes back to the cluster)
+kubectl edit deploy/<deploy>
+
+# Patch (strategic merge)
+kubectl patch deploy/<deploy> -p '{"spec":{"replicas":3}}'
+
+# Set image
+kubectl set image deploy/<deploy> <container>=<image>:<tag>
+```
+
+## Labels and Annotations
+
+```bash
+kubectl label ns <ns> owner=team-a
+kubectl label pod <pod> app=web --overwrite
+
+kubectl annotate deploy/<deploy> kubernetes.io/change-cause="bump image"
+```
+
+## Troubleshooting Recipes
+
+```bash
+# What's broken right now?
+kubectl get pods -A
+kubectl get events -A --sort-by=.metadata.creationTimestamp
+
+# Find pods for a deployment
+kubectl get pods -l app=<label>
+
+# Show pod IP and node
+kubectl get pod <pod> -o wide
+
+# See why a pod is pending (look for events)
+kubectl describe pod <pod>
+
+# Debug DNS from an ephemeral pod
+kubectl run -it --rm dns --image=busybox:1.36 --restart=Never -- sh
+nslookup kubernetes.default
+```
+
+## Output Filtering
+
+```bash
+# JSONPath examples
+kubectl get pod <pod> -o jsonpath='{.status.podIP}{"\n"}'
+kubectl get pods -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.phase}{"\n"}{end}'
+
+# Custom columns
+kubectl get pods -o custom-columns=NAME:.metadata.name,NODE:.spec.nodeName,PHASE:.status.phase
+```
+
+## Auth and RBAC
+
+```bash
+# Can I do X?
+kubectl auth can-i get pods
+kubectl auth can-i create deploy -n <ns>
+kubectl auth can-i '*' '*' -n <ns>
+```
+
+## Kustomize
+
+```bash
+# Built-in kustomize support
+kubectl apply -k ./overlays/dev
+kubectl diff -k ./overlays/dev
+```

@@ -1,0 +1,128 @@
+---
+title: "Helm Quick Reference"
+description: "Helm chart workflows: repos, install/upgrade/rollback, values layering, templating, linting, and debugging releases."
+pubDatetime: 2026-03-01T00:00:00Z
+tags: ["kubernetes", "helm", "charts", "cheatsheet", "devops"]
+---
+
+# Helm Quick Reference
+
+Helm is package + release management for Kubernetes.
+
+## Repos and Search
+
+```bash
+# Add and update repos
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+
+# List repos and charts
+helm repo list
+helm search repo nginx
+
+# Chart info
+helm show chart bitnami/nginx
+helm show values bitnami/nginx
+helm show all bitnami/nginx
+```
+
+## Install / Upgrade / Uninstall
+
+```bash
+# Install (creates a release)
+helm install <release> bitnami/nginx -n <ns> --create-namespace
+
+# Upgrade (or install if missing)
+helm upgrade --install <release> bitnami/nginx -n <ns>
+
+# Pin a chart version
+helm install <release> bitnami/nginx --version 15.10.0 -n <ns>
+
+# Uninstall
+helm uninstall <release> -n <ns>
+```
+
+## Values and Overrides
+
+```bash
+# Layer values files (later wins)
+helm upgrade --install <release> ./chart -n <ns> \
+  -f values.yaml \
+  -f values.prod.yaml
+
+# One-off overrides
+helm upgrade --install <release> ./chart -n <ns> \
+  --set image.tag=1.2.3 \
+  --set-string env.LOG_LEVEL=debug
+
+# See computed values for an installed release
+helm get values <release> -n <ns>
+helm get values <release> -n <ns> --all
+```
+
+## Render and Debug
+
+```bash
+# Render templates locally
+helm template <release> ./chart -n <ns>
+
+# Validate chart structure
+helm lint ./chart
+
+# Dry-run an install/upgrade (talks to cluster if --dry-run=server)
+helm upgrade --install <release> ./chart -n <ns> --dry-run --debug
+
+# Show the manifest Helm applied
+helm get manifest <release> -n <ns>
+
+# Release status
+helm status <release> -n <ns>
+```
+
+## History and Rollback
+
+```bash
+# See revisions
+helm history <release> -n <ns>
+
+# Roll back to a prior revision
+helm rollback <release> <revision> -n <ns>
+```
+
+## Tests and Hooks
+
+```bash
+# Run chart tests (if defined)
+helm test <release> -n <ns>
+```
+
+Notes:
+
+- Hooks are Kubernetes Jobs/Pods annotated with `helm.sh/hook` (pre-install, post-upgrade, etc.).
+- A rollback re-applies Kubernetes resources; it does not automatically undo side effects like database migrations.
+
+## Dependencies
+
+```bash
+# Update / vendor dependencies
+helm dependency update ./chart
+helm dependency build ./chart
+```
+
+## OCI Registries
+
+```bash
+# Login and pull charts from OCI
+helm registry login <registry>
+helm pull oci://<registry>/<org>/<chart> --version 1.2.3
+
+# Install directly from OCI
+helm install <release> oci://<registry>/<org>/<chart> --version 1.2.3 -n <ns>
+```
+
+## Common Gotchas
+
+- Namespaces: Helm releases are namespace-scoped; always pass `-n <ns>` consistently.
+- Values typing: `--set` guesses types; use `--set-string` when you need literal strings.
+- Secrets in values: avoid committing credentials in `values*.yaml`; prefer External Secrets / SOPS / Sealed Secrets.
+- Diffs: the `helm-diff` plugin is the usual workflow (`helm plugin install https://github.com/databus23/helm-diff`).
