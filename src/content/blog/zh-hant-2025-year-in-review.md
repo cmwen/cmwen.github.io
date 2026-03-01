@@ -33,11 +33,11 @@ llmKeyIdeas:
 
 ## 第一部分：基礎——理解 LLM 的真正運作方式（五月）
 
-這一年從深入基礎開始。我需要理解的不僅是 LLM _能做什麼_，更是它們_如何做到_。五月的三篇文章奠定了基礎：
+這一年從深入基礎開始。我需要理解的不僅是 LLM _能做什麼_，更是它們*如何做到*。五月的三篇文章奠定了基礎：
 
 ### **工具調用與 RAG 革命**
 
-在 ["Understanding LLM Tool Calling in LangChain"](https://cmwen.com/posts/llm-tool-calling-langchain/)（5 月 3 日）中，我拆解了 LLM 如何從生成文字轉變為實際_做事_的機制。工具調用並非魔法——它是一種結構化的方式，讓 LLM 能夠調用函式、獲取資料並與系統互動。這個看似技術性的主題成為之後一切的基礎。
+在 ["Understanding LLM Tool Calling in LangChain"](https://cmwen.com/posts/llm-tool-calling-langchain/)（5 月 3 日）中，我拆解了 LLM 如何從生成文字轉變為實際*做事*的機制。工具調用並非魔法——它是一種結構化的方式，讓 LLM 能夠調用函式、獲取資料並與系統互動。這個看似技術性的主題成為之後一切的基礎。
 
 僅僅幾天後，["Unlocking the Power of VS Code Copilot: Using #fetch for RAG"](https://cmwen.com/posts/using-vscode-copilot-fetch-for-rag/)（5 月 14 日）展示了這些概念如何應用於我的日常工作。VS Code Copilot 中的 `#fetch` 工具讓我能夠引入外部上下文——文件、API 規格、程式碼範例——將 Copilot 從程式碼補全器轉變為研究助理。這是我第一次實際體驗**檢索增強生成（Retrieval-Augmented Generation, RAG）**，它改變了我處理複雜編碼任務的方式。
 
@@ -49,7 +49,7 @@ llmKeyIdeas:
 
 ### **學習的新方式**
 
-["Idea: Learn a Book Before Reading It"](https://cmwen.com/posts/idea-learn-a-book-before-reading-it/)（5 月 11 日）記錄了一個主動學習的實驗。我不再被動地從頭到尾閱讀書籍，而是使用 LLM 在深入閱讀_之前_生成摘要、提取關鍵概念並制定問題。這顛覆了傳統的學習模式——從被動吸收轉向主動探索。
+["Idea: Learn a Book Before Reading It"](https://cmwen.com/posts/idea-learn-a-book-before-reading-it/)（5 月 11 日）記錄了一個主動學習的實驗。我不再被動地從頭到尾閱讀書籍，而是使用 LLM 在深入閱讀*之前*生成摘要、提取關鍵概念並制定問題。這顛覆了傳統的學習模式——從被動吸收轉向主動探索。
 
 回顧這些五月的文章，它們都是關於**建立心智模型**。我正在學習 AI 輔助開發的語法：工具調用、RAG、向量搜尋和主動工作流。這些不僅僅是技術——它們是新工作方式的基石。
 
@@ -135,7 +135,7 @@ Copilot 系列文章不僅僅是產品評論——它們是對**如何思考 AI 
 
 ### **AI 增強學習**
 
-["AI-Enhanced Reading: Generating Custom Book Chapters with LLMs"](https://cmwen.com/posts/ai-enhanced-reading-custom-chapters/)（12 月 20 日）重新審視了五月的主動學習主題。我不僅是總結書籍，而是使用 LLM 來_延伸_它們——生成客製化章節，透過經典想法的鏡頭探索當代主題。例如，我要求 LLM 為 David Epstein 的《Range》撰寫一章「AI 時代的範圍」。結果是研究基礎洞察與現代情境的發人深省融合。
+["AI-Enhanced Reading: Generating Custom Book Chapters with LLMs"](https://cmwen.com/posts/ai-enhanced-reading-custom-chapters/)（12 月 20 日）重新審視了五月的主動學習主題。我不僅是總結書籍，而是使用 LLM 來*延伸*它們——生成客製化章節，透過經典想法的鏡頭探索當代主題。例如，我要求 LLM 為 David Epstein 的《Range》撰寫一章「AI 時代的範圍」。結果是研究基礎洞察與現代情境的發人深省融合。
 
 這個實驗突顯了一個更廣泛的真理：**LLM 可以以傳統媒體無法做到的方式個人化學習**。它們不取代作者——它們將作者的想法延伸到作者可能未涵蓋的領域。
 
@@ -169,7 +169,7 @@ Copilot 系列文章不僅僅是產品評論——它們是對**如何思考 AI 
 
 ### **1. AI 編碼代理是真實的——但情境很重要**
 
-代理不是靈丹妙藥。它們在定義明確、限制清晰的任務（codemod、程式碼審查、例行實作）中表現出色。它們在開放式創造性和模糊需求中遇到困難。關鍵是知道_何時_使用它們。
+代理不是靈丹妙藥。它們在定義明確、限制清晰的任務（codemod、程式碼審查、例行實作）中表現出色。它們在開放式創造性和模糊需求中遇到困難。關鍵是知道*何時*使用它們。
 
 ### **2. 心智模型比工具更重要**
 
@@ -217,7 +217,7 @@ AI 代理使分支和客製化開源專案供個人使用在經濟上變得可�
 
 2025 年是快速學習、頻繁實驗和偶爾驚喜的一年。我寫了 27 篇部落格文章，每一篇都是從懷疑的觀察者到熱情的 AI 輔助開發實踐者旅程的標記。
 
-但更重要的是，2025 年教會我**擁抱混合工作流程**——與 AI _共同_工作，而不是被它取代或完全忽視它。最好的結果來自我將人類創造力與代理執行、個人判斷與自動化工作流程，以及策略思考與戰術效率相結合的時候。
+但更重要的是，2025 年教會我**擁抱混合工作流程**——與 AI *共同*工作，而不是被它取代或完全忽視它。最好的結果來自我將人類創造力與代理執行、個人判斷與自動化工作流程，以及策略思考與戰術效率相結合的時候。
 
 當我展望 2026 年時，我對各種可能性感到興奮。工具正在變得更好，心智模型正在變得更清晰，社群正在變得更加成熟。我們還沒有走到這段旅程的終點——我們才剛剛開始。
 

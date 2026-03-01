@@ -180,7 +180,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            An interactive educational tool for learning about and simulating residential electrical systems. Includes system design, load calculations, scenarios, educational protocols, and energy efficiency strategies with shareable configurations.
+            An interactive educational tool for learning about and simulating
+            residential electrical systems. Includes system design, load
+            calculations, scenarios, educational protocols, and energy
+            efficiency strategies with shareable configurations.
           </p>
           <div class="mt-2 text-sm">
             <span class="font-medium">{t.toolbox.common.techStack}</span>
@@ -196,7 +199,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/home-energy-simulator"
               target="_blank"
-              rel="noopener noreferrer">github.com/cmwen/home-energy-simulator</a
+              rel="noopener noreferrer"
+              >github.com/cmwen/home-energy-simulator</a
             >
           </p>
         </div>
@@ -213,7 +217,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A comprehensive Progressive Web App for learning about and calculating novated leases in Australia. Features interactive calculations, tax savings estimates, official resource links, and strong educational disclaimers with dark/light theme support.
+            A comprehensive Progressive Web App for learning about and
+            calculating novated leases in Australia. Features interactive
+            calculations, tax savings estimates, official resource links, and
+            strong educational disclaimers with dark/light theme support.
           </p>
           <div class="mt-2 text-sm">
             <span class="font-medium">{t.toolbox.common.techStack}</span>
@@ -229,7 +236,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               class="text-skin-accent hover:underline"
               href="https://github.com/cmwen/novated-lease-calculator"
               target="_blank"
-              rel="noopener noreferrer">github.com/cmwen/novated-lease-calculator</a
+              rel="noopener noreferrer"
+              >github.com/cmwen/novated-lease-calculator</a
             >
           </p>
         </div>
@@ -421,6 +429,47 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               href="https://github.com/cmwen/own-browse"
               target="_blank"
               rel="noopener noreferrer">github.com/cmwen/own-browse</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.profolio.sections.desktop}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub-tauri"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.profolio.projects.privateChatHubDesktopTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.profolio.projects.privateChatHubDesktopDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Tauri v2 (Rust) + React 19 + TypeScript</li>
+              <li>Zustand, Vite, Lucide React</li>
+              <li>Local-first architecture + Ollama integration</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub-tauri"
+              target="_blank"
+              rel="noopener noreferrer"
+              >github.com/cmwen/private-chat-hub-tauri</a
             >
           </p>
         </div>
@@ -646,14 +695,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
             </a>
           </h3>
           <p class="mt-1 text-sm text-skin-muted">
-            A universal Android chat application supporting the full spectrum of AI models: on-device models for privacy (LiteRT), self-hosted Ollama for control, and cloud APIs (OpenAI, Anthropic, Google AI) for convenience. Features offline capability, web search with source references, conversation management, project workspaces, vision support, and smart fallbacks.
+            A universal Android chat application supporting the full spectrum of
+            AI models: on-device models for privacy (LiteRT), self-hosted Ollama
+            for control, and cloud APIs (OpenAI, Anthropic, Google AI) for
+            convenience. Features offline capability, web search with source
+            references, conversation management, project workspaces, vision
+            support, and smart fallbacks.
           </p>
           <div class="mt-2 text-sm">
             <span class="font-medium">{t.toolbox.common.techStack}</span>
             <ul class="mt-1 list-disc pl-5">
               <li>Flutter (Android native), Dart</li>
               <li>LiteRT local models + Ollama integration + cloud APIs</li>
-              <li>192+ passing tests, Web search, Vision models, Material Design 3</li>
+              <li>
+                192+ passing tests, Web search, Vision models, Material Design 3
+              </li>
               <li>Offline-first architecture with model comparison</li>
             </ul>
           </div>
@@ -697,6 +753,39 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               href="https://github.com/cmwen/gamify-tax-deduction"
               target="_blank"
               rel="noopener noreferrer">github.com/cmwen/gamify-tax-deduction</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/every-pay-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.profolio.projects.everyPayAppTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.profolio.projects.everyPayAppDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android native)</li>
+              <li>Dart</li>
+              <li>Payment management architecture</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/every-pay-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/every-pay-app</a
             >
           </p>
         </div>

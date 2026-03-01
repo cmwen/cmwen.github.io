@@ -8,7 +8,14 @@ tags: ["ai", "coding", "tools", "developer-experience", "remote-development"]
 featured: true
 draft: false
 slug: "opencode-self-hosted-ai-coding-assistant"
-llmKeyIdeas: ["remote AI coding", "server-client architecture", "fire-and-forget tasks", "personal development server", "flexible workflow"]
+llmKeyIdeas:
+  [
+    "remote AI coding",
+    "server-client architecture",
+    "fire-and-forget tasks",
+    "personal development server",
+    "flexible workflow",
+  ]
 ---
 
 ## Table of Contents
@@ -18,6 +25,7 @@ llmKeyIdeas: ["remote AI coding", "server-client architecture", "fire-and-forget
 Here's a scenario that happens to me all the time: I'm deep in the middle of a complex refactoring. The AI is helping me methodically work through a dozen files, updating function signatures, fixing type errors, updating tests. It's going well, but it's taking time—maybe 20-30 minutes for the full job.
 
 My laptop battery is at 15%. I need to head to a meeting in 5 minutes. Do I:
+
 - Stop the work and lose momentum?
 - Keep my laptop open during the meeting, hoping the battery holds?
 - Frantically try to find a power outlet?
@@ -31,6 +39,7 @@ Or worse—you start a comprehensive test suite rewrite before leaving work. You
 I discovered [OpenCode](https://github.com/anomalyco/opencode) while looking for alternatives to heavy IDE integrations. With **77,700+ GitHub stars** and growing, it's one of the most popular AI coding assistants available. But here's what caught my attention: **OpenCode has a client/server architecture with built-in remote access**.
 
 The moment I read about server mode, everything clicked. What if I could:
+
 - Run OpenCode on my desktop or home server
 - Access it from anywhere on my local network
 - Start a long-running refactoring task and close my laptop
@@ -98,6 +107,7 @@ OpenCode starts working through the files. I can see progress in real-time. But 
 ### Checking Progress from My Phone
 
 I open Safari on my iPhone and navigate to `http://desktop.local:8080`. The web interface loads, showing me:
+
 - Current task progress (32 of 50 files converted)
 - Recent changes made
 - Any errors or questions that need attention
@@ -150,6 +160,7 @@ This is especially elegant when you have multiple machines. Your laptop can disc
 ### Security Considerations
 
 **Important:** The commands I've shown are for **local network use only**. The `0.0.0.0` binding makes the server accessible from your LAN, not the internet. This is perfect for:
+
 - Home networks
 - Office networks
 - VPN connections
@@ -163,11 +174,13 @@ If you need internet-wide access, you'll want to add proper authentication and u
 **Scenario:** I have a 2-hour block of meetings, but I also have a comprehensive refactoring task.
 
 **Before OpenCode Server Mode:**
+
 - Wait until after meetings to start
 - Or start it and hope my laptop battery survives
 - Or come back to a paused/failed session
 
 **With OpenCode Server Mode:**
+
 - Start the refactoring before the first meeting
 - Close my laptop, attend meetings
 - Check progress between meetings on my phone
@@ -180,11 +193,13 @@ If you need internet-wide access, you'll want to add proper authentication and u
 **Scenario:** I want to work on my side project over the weekend, but I don't want to be stuck at my desk.
 
 **Before:**
+
 - Sit at desk with my development machine
 - Or carry heavy laptop everywhere
 - Or skip the side project
 
 **With OpenCode Server Mode:**
+
 - Server running on desktop 24/7
 - Work from couch on tablet
 - Quickly check from phone during breaks
@@ -197,11 +212,13 @@ If you need internet-wide access, you'll want to add proper authentication and u
 **Scenario:** I've updated test fixtures and want to regenerate all test snapshots—a process that takes 10+ minutes.
 
 **Before:**
+
 - Start the process and wait
 - Or start it and risk forgetting about it
 - Or script it manually (extra work)
 
 **With OpenCode Server Mode:**
+
 - Ask OpenCode to regenerate tests through the TUI
 - Walk away, do something else
 - Check completion status from any device
@@ -214,11 +231,13 @@ If you need internet-wide access, you'll want to add proper authentication and u
 **Scenario:** I want to do a thorough code review of a teammate's PR, but I'm having lunch away from my desk.
 
 **Before:**
+
 - Wait until back at desk
 - Or do a superficial review on GitHub mobile
 - Or cut lunch short
 
 **With OpenCode Server Mode:**
+
 - Access OpenCode web interface on phone/tablet
 - Ask for comprehensive analysis of the PR
 - Review AI insights with full context
@@ -231,6 +250,7 @@ If you need internet-wide access, you'll want to add proper authentication and u
 ### Prerequisites
 
 You'll need:
+
 - A desktop or server that stays running (or can stay running during work hours)
 - Other devices on the same local network (laptop, phone, tablet)
 - Basic command-line familiarity
@@ -238,6 +258,7 @@ You'll need:
 ### Installation
 
 **Option 1: Direct Installation (Recommended)**
+
 ```bash
 # macOS/Linux
 curl -fsSL https://opencode.ai/install.sh | sh
@@ -247,6 +268,7 @@ opencode --version
 ```
 
 **Option 2: Docker**
+
 ```bash
 # Pull the official image
 docker run -it --rm ghcr.io/anomalyco/opencode
@@ -261,9 +283,10 @@ docker run -d \
 ```
 
 **Option 3: Docker Compose**
+
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 services:
   opencode:
     image: ghcr.io/anomalyco/opencode:latest
@@ -344,6 +367,7 @@ Your OpenCode server will be accessible at `http://192.168.1.100:8080` (replace 
 ### Connecting from Other Devices
 
 **From Terminal (laptop/desktop):**
+
 ```bash
 opencode attach http://192.168.1.100:8080
 # or
@@ -360,6 +384,7 @@ Just open `http://192.168.1.100:8080` or `http://desktop.local:8080` in any web 
 Here's something I didn't fully appreciate until I'd been using it for a while: **OpenCode acts as a unified interface for all your AI subscriptions**.
 
 Think about it:
+
 - You have GitHub Copilot Pro for code completion
 - You have Claude Pro for complex reasoning tasks
 - You have ChatGPT Plus for general questions
@@ -402,7 +427,11 @@ Example configuration:
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/project"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/project"
+      ]
     },
     "github": {
       "command": "npx",
@@ -427,12 +456,14 @@ OpenCode uses an agent-based architecture internally. While you interact through
 ### Provider Flexibility
 
 OpenCode supports 75+ LLM providers, including:
+
 - **Major providers:** OpenAI, Anthropic, Google Gemini
 - **Open-source models:** via Ollama, LM Studio
 - **Specialized providers:** Groq, Together AI, Perplexity
 - **Local models:** Complete offline development
 
 Switch providers based on task requirements:
+
 - Claude for complex reasoning
 - GPT-4 for broad knowledge
 - DeepSeek for code-specific tasks
@@ -451,7 +482,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -462,6 +493,7 @@ This gives you automated code reviews, test generation, documentation updates, a
 ## What OpenCode Is (and Isn't)
 
 ### OpenCode IS:
+
 - ✅ A flexible AI coding assistant with server/client architecture
 - ✅ Provider-agnostic (supports 75+ LLM providers)
 - ✅ **Integrates with existing AI subscriptions** (GitHub Copilot Pro, Claude Pro, ChatGPT Plus/Pro via OAuth)
@@ -472,6 +504,7 @@ This gives you automated code reviews, test generation, documentation updates, a
 - ✅ Open source with 77,700+ GitHub stars
 
 ### OpenCode IS NOT:
+
 - ❌ An IDE (it's a coding assistant that integrates with any editor)
 - ❌ Limited to CLI commands—most interaction happens in the TUI
 - ❌ Focused on real-time autocomplete (that's not its strength)
@@ -482,16 +515,19 @@ This gives you automated code reviews, test generation, documentation updates, a
 What I love most about OpenCode's server mode isn't just the technical capability—it's the **mental shift** it enables.
 
 Before, my development workflow was bound by:
+
 - Physical location (my desk)
 - Single device (my laptop)
 - Continuous attention (stay connected or lose progress)
 
 Now, my workflow is:
+
 - **Location-independent** - Work from anywhere on my network
 - **Device-flexible** - Phone, tablet, laptop—whatever makes sense
 - **Asynchronously productive** - Start tasks and come back when ready
 
 This is especially valuable for:
+
 - **Parents** who need to step away frequently
 - **Remote workers** juggling multiple responsibilities
 - **Side project enthusiasts** who code in spare moments
@@ -528,4 +564,4 @@ If you're tired of being chained to your development machine, if you want to cod
 
 ---
 
-*Have you tried remote AI coding workflows? What's holding you back from untethering from your desk? I'd love to hear your thoughts on flexible development setups.*
+_Have you tried remote AI coding workflows? What's holding you back from untethering from your desk? I'd love to hear your thoughts on flexible development setups._

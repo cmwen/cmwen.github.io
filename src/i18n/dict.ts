@@ -36,6 +36,7 @@ type Dict = {
       cli: string;
       mcp: string;
       extensions: string;
+      desktop: string;
       android: string;
       webapps: string;
     };
@@ -62,6 +63,10 @@ type Dict = {
       readForgeDescription: string;
       gamifyTaxTitle: string;
       gamifyTaxDescription: string;
+      privateChatHubDesktopTitle: string;
+      privateChatHubDesktopDescription: string;
+      everyPayAppTitle: string;
+      everyPayAppDescription: string;
     };
     tech: {
       pwaPwa: string;
@@ -116,6 +121,7 @@ export const messages: Record<Locale, Dict> = {
         cli: "CLI Applications",
         mcp: "MCP Servers",
         extensions: "Browser Extensions",
+        desktop: "Desktop Apps",
         android: "Android Apps",
         webapps: "Web Applications",
       },
@@ -155,6 +161,12 @@ export const messages: Record<Locale, Dict> = {
         gamifyTaxTitle: "Gamify Tax Deduction — Gamified Receipt Tracker",
         gamifyTaxDescription:
           "An Android app designed to encourage users to keep receipts for tax deductions through gamification. Makes tax documentation engaging with game mechanics and rewards.",
+        privateChatHubDesktopTitle: "Private Chat Hub Desktop",
+        privateChatHubDesktopDescription:
+          "Universal AI Chat Platform for Desktop — Privacy-first chat with local, self-hosted, and cloud AI models. Features Ollama integration, project workspaces, and model comparison.",
+        everyPayAppTitle: "Every-Pay App",
+        everyPayAppDescription:
+          "A Flutter application for payment management. Designed for efficient handling of transactions and payments on Android devices.",
       },
       tech: {
         pwaPwa: "PWA/offline-first; GitHub Pages deployment",
@@ -207,6 +219,7 @@ export const messages: Record<Locale, Dict> = {
         cli: "CLI 應用程式",
         mcp: "MCP 伺服器",
         extensions: "瀏覽器擴充功能",
+        desktop: "桌面應用程式",
         android: "Android 應用程式",
         webapps: "網頁應用程式",
       },
@@ -244,6 +257,12 @@ export const messages: Record<Locale, Dict> = {
         gamifyTaxTitle: "Gamify Tax Deduction — 遊戲化收據追蹤器",
         gamifyTaxDescription:
           "一個 Android 應用程式，透過遊戲化設計鼓勵使用者保留收據以進行稅務扣除。透過遊戲機制和獎勵系統，讓稅務文件記錄變得有趣。",
+        privateChatHubDesktopTitle: "Private Chat Hub 桌面版",
+        privateChatHubDesktopDescription:
+          "通用的桌面 AI 聊天平台 — 注重隱私的聊天體驗，支援本地、自託管和雲端 AI 模型。具備 Ollama 整合、專案工作區和模型比較功能。",
+        everyPayAppTitle: "Every-Pay 應用程式",
+        everyPayAppDescription:
+          "一個用於支付管理的 Flutter 應用程式，專為 Android 裝置上的高效交易和付款處理而設計。",
       },
       tech: {
         pwaPwa: "PWA/離線優先；GitHub Pages 部署",

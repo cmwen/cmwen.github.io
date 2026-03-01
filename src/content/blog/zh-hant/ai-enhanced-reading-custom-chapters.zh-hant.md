@@ -8,13 +8,7 @@ author: Min Wen
 description: 探索大型語言模型如何擴展你喜愛的書籍，透過經典思想的視角生成探索當代議題的新章節。學習如何在永恆智慧與現代挑戰之間搭建橋樑。
 featured: true
 tags: ["AI", "learning", "reading", "LLM", "books"]
-llmKeyIdeas:
-  [
-    "自訂書籍章節",
-    "AI 生成內容",
-    "知識擴展",
-    "個人化學習",
-  ]
+llmKeyIdeas: ["自訂書籍章節", "AI 生成內容", "知識擴展", "個人化學習"]
 ---
 
 ## AI 增強閱讀：用大型語言模型生成自訂書籍章節

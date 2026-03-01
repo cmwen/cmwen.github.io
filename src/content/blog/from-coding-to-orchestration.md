@@ -8,7 +8,13 @@ tags: ["ai", "development-tools", "future-of-coding", "agent-orchestration"]
 featured: true
 draft: false
 baseSlug: "from-coding-to-orchestration"
-llmKeyIdeas: ["AI coding tool evolution", "agent orchestration platforms", "developer role transformation", "multi-agent workflows"]
+llmKeyIdeas:
+  [
+    "AI coding tool evolution",
+    "agent orchestration platforms",
+    "developer role transformation",
+    "multi-agent workflows",
+  ]
 ---
 
 Something fundamental is shifting in how we write software. It's not just that AI can now generate code—we've had that for a few years. What's changing is our relationship with the code itself.
@@ -89,11 +95,13 @@ OpenAI's Codex builds this directly into its interface. When you create a new th
 Here's what a day of orchestration-first development actually looks like:
 
 **Morning**: You open your orchestration platform (Codex, Cursor, OpenCode, or similar) and see three projects:
+
 - Your main web app
 - The API service
 - The mobile app
 
 You create threads for today's priorities:
+
 - Thread 1 (API): "Add rate limiting to authentication endpoints"
 - Thread 2 (Web): "Implement dark mode with user preference persistence"
 - Thread 3 (API): "Refactor database queries to use connection pooling"
@@ -102,6 +110,7 @@ You create threads for today's priorities:
 You assign an agent to each thread. Threads 1 and 3 use worktree mode since they're both touching the API. All agents start working simultaneously.
 
 **Mid-morning**: You switch between threads, reviewing progress:
+
 - Thread 1: Agent pushed a PR, you add inline comments requesting changes
 - Thread 2: Still in progress, looks good so far
 - Thread 3: Hit a snag, you refine the prompt with additional context
@@ -118,10 +127,11 @@ You assign an agent to each thread. Threads 1 and 3 use worktree mode since they
 The orchestration space is still early, but clear leaders are emerging:
 
 ### OpenAI Codex
+
 Launched May 16, 2025, available with ChatGPT Plus/Pro/Enterprise plans. It's OpenAI's bet on what development environments should look like:
 
 - **Desktop app** (macOS, with Windows/Linux in development) for visual thread management
-- **IDE extension** for VS Code integration  
+- **IDE extension** for VS Code integration
 - **CLI** for automation and scripting (also available as standalone open-source tool)
 - **Built-in worktrees** and git tooling
 - **Automations** for recurring tasks
@@ -132,6 +142,7 @@ The pitch: You don't need a code editor anymore, you need a command center.
 **Key distinction**: OpenAI offers both Codex (the full cloud-based orchestration platform) and Codex CLI (a lightweight terminal tool), serving different use cases.
 
 ### Cursor
+
 Started as an AI-enhanced VS Code fork, evolved into a full platform:
 
 - **Composer** interface for agent-driven development
@@ -142,6 +153,7 @@ Started as an AI-enhanced VS Code fork, evolved into a full platform:
 The pitch: IDE power with agent orchestration built in.
 
 ### CLI-First Tools (Aider, Claude Code)
+
 Still relevant for developers who prefer terminal workflows:
 
 - Lightweight, fast startup
@@ -152,6 +164,7 @@ Still relevant for developers who prefer terminal workflows:
 The pitch: Not everyone needs orchestration. Sometimes you just want to fix a bug quickly.
 
 ### The "Middle Layer" Tools
+
 Between heavyweight IDEs and bare CLIs, a new category of tools is emerging:
 
 **OpenCode**: A hybrid TUI (Text User Interface) and native app that's gaining popularity for its lightweight approach to managing multiple AI sessions without the overhead of a full IDE fork. It bridges the gap between CLI efficiency and visual session management.
@@ -163,6 +176,7 @@ Between heavyweight IDEs and bare CLIs, a new category of tools is emerging:
 ### Skill Shifts
 
 **Skills becoming more important**:
+
 - **Specification writing**: Clear, unambiguous requirement definition
 - **Context switching**: Rapidly moving between parallel workstreams
 - **High-level code review**: Architectural soundness over syntax details
@@ -170,6 +184,7 @@ Between heavyweight IDEs and bare CLIs, a new category of tools is emerging:
 - **System thinking**: Understanding how changes across repos interact
 
 **Skills becoming less important** (not obsolete, just less central):
+
 - **Syntax memorization**: Agents handle the details
 - **Boilerplate coding**: Let agents generate it
 - **Documentation reading**: Ask agents to explain instead
@@ -180,6 +195,7 @@ Between heavyweight IDEs and bare CLIs, a new category of tools is emerging:
 This isn't about AI replacing developers. It's about AI changing what "developer" means.
 
 The developers thriving in this new world are those who:
+
 - Think in terms of outcomes, not implementations
 - Can coordinate multiple workstreams simultaneously
 - Understand systems deeply enough to spot architectural issues
@@ -192,6 +208,7 @@ Senior developers are shifting from "hands-on builders" to "architect-reviewers.
 ### The Economics Shift
 
 A rough calculation:
+
 - **Traditional development**: Developer ($150K/year) produces 10-20 PRs/month = ~$750/PR
 - **AI-assisted development**: Developer + AI tools ($150K + $1-5K/year) produces 30-60 PRs/month = ~$300/PR
 
@@ -204,6 +221,7 @@ This changes what's economically viable. Micro-SaaS businesses, niche tools, per
 The next frontier is already emerging in research labs and early-stage products: **specialized agent teams**.
 
 Instead of generic "coding agents," imagine orchestrating:
+
 - **Frontend Agent**: Expert in React, accessibility, responsive design
 - **Backend Agent**: API design, database optimization, caching strategies
 - **Security Agent**: Vulnerability scanning, secure coding patterns, penetration testing
@@ -214,6 +232,7 @@ Instead of generic "coding agents," imagine orchestrating:
 Your role: Coordinate these specialists. Define the project goals, let agents figure out implementation details in their domains, review where their work intersects.
 
 The technical challenges are fascinating:
+
 - **Agent communication**: How do agents share context and coordinate changes?
 - **Conflict resolution**: What if the security agent and performance agent propose contradictory approaches?
 - **Responsibility boundaries**: Which agent "owns" which parts of the codebase?

@@ -9,7 +9,14 @@ pubDatetime: 2026-01-18T00:00:00Z
 tags: ["ai", "coding", "tools", "developer-experience", "remote-development"]
 featured: true
 draft: false
-llmKeyIdeas: ["遠程 AI 編程", "伺服器-客戶端架構", "後台運行任務", "個人開發伺服器", "靈活工作流程"]
+llmKeyIdeas:
+  [
+    "遠程 AI 編程",
+    "伺服器-客戶端架構",
+    "後台運行任務",
+    "個人開發伺服器",
+    "靈活工作流程",
+  ]
 ---
 
 ## 目錄
@@ -19,6 +26,7 @@ llmKeyIdeas: ["遠程 AI 編程", "伺服器-客戶端架構", "後台運行任�
 以下是我經常遇到的一個場景：我正在進行一項複雜的代碼重構。AI 正在幫助我逐個文件地工作，更新函數簽名、修復類型錯誤、更新測試。進展順利，但需要時間 — 可能需要 20-30 分鐘才能完成。
 
 我的筆記本電池只有 15%。我需要在 5 分鐘內參加一個會議。我應該：
+
 - 停止工作並失去動力？
 - 在會議期間保持筆記本打開，希望電池能堅持？
 - 急著尋找電源插座？
@@ -32,6 +40,7 @@ llmKeyIdeas: ["遠程 AI 編程", "伺服器-客戶端架構", "後台運行任�
 我在尋找重型 IDE 集成的替代品時發現了 [OpenCode](https://github.com/anomalyco/opencode)。它擁有 **77,700+ GitHub 星標** 並持續增長，是最受歡迎的 AI 編程助手之一。但吸引我注意力的是：**OpenCode 具有內置遠程訪問的客戶端/伺服器架構**。
 
 我讀到伺服器模式的那一刻，一切都豁然開朗。如果我可以：
+
 - 在我的桌面或家庭伺服器上運行 OpenCode
 - 從本地網絡上的任何位置訪問它
 - 啟動一項長期的重構任務並關閉我的筆記本
@@ -99,6 +108,7 @@ OpenCode 開始逐個文件地工作。我可以實時看到進度。但這就�
 ### 從我的手機檢查進度
 
 我在 iPhone 上打開 Safari，導航到 `http://desktop.local:8080`。網絡界面加載，顯示我：
+
 - 當前任務進度（50 個文件中的 32 個已轉換）
 - 最近做出的更改
 - 需要注意的任何錯誤或問題
@@ -151,6 +161,7 @@ opencode web --port 8080 --mdns
 ### 安全考慮
 
 **重要提示：** 我展示的命令是 **僅限本地網絡使用**。`0.0.0.0` 綁定使伺服器可以從你的局域網訪問，而不是互聯網。這完美適用於：
+
 - 家庭網絡
 - 辦公室網絡
 - VPN 連接
@@ -164,11 +175,13 @@ opencode web --port 8080 --mdns
 **場景：** 我有 2 小時的會議，但我也有一項全面的重構任務。
 
 **使用 OpenCode 伺服器模式之前：**
+
 - 等到會議後再開始
 - 或啟動它並希望我的筆記本電池能堅持
 - 或回到暫停/失敗的會話
 
 **使用 OpenCode 伺服器模式：**
+
 - 在第一個會議前開始重構
 - 關閉我的筆記本，參加會議
 - 在會議之間從手機檢查進度
@@ -181,11 +194,13 @@ opencode web --port 8080 --mdns
 **場景：** 我想在週末進行我的附帶項目，但我不想被困在辦公桌前。
 
 **之前：**
+
 - 坐在我的開發機器的辦公桌前
 - 或隨身攜帶重型筆記本
 - 或跳過附帶項目
 
 **使用 OpenCode 伺服器模式：**
+
 - 伺服器 24/7 運行在桌面上
 - 在沙發上用平板電腦工作
 - 在休息期間快速從手機檢查
@@ -198,11 +213,13 @@ opencode web --port 8080 --mdns
 **場景：** 我更新了測試 fixture，想要重新生成所有測試快照 — 一個需要 10+ 分鐘的過程。
 
 **之前：**
+
 - 啟動進程並等待
 - 或啟動它並冒著忘記它的風險
 - 或手動編寫腳本（額外的工作）
 
 **使用 OpenCode 伺服器模式：**
+
 - 通過 TUI 要求 OpenCode 重新生成測試
 - 走開，做其他事情
 - 從任何設備檢查完成狀態
@@ -215,11 +232,13 @@ opencode web --port 8080 --mdns
 **場景：** 我想進行同事 PR 的徹底代碼審查，但我在遠離辦公桌吃午餐。
 
 **之前：**
+
 - 等到回到辦公桌
 - 或在 GitHub 移動上進行膚淺的審查
 - 或縮短午餐
 
 **使用 OpenCode 伺服器模式：**
+
 - 在手機/平板電腦上訪問 OpenCode 網絡界面
 - 要求對 PR 進行全面分析
 - 帶著完整上下文查看 AI 見解
@@ -232,6 +251,7 @@ opencode web --port 8080 --mdns
 ### 先決條件
 
 你需要：
+
 - 一台可以保持運行的桌面或伺服器（或在工作時間可以保持運行）
 - 同一本地網絡上的其他設備（筆記本、手機、平板電腦）
 - 基本的命令行熟悉度
@@ -239,6 +259,7 @@ opencode web --port 8080 --mdns
 ### 安裝
 
 **選項 1：直接安裝（推薦）**
+
 ```bash
 # macOS/Linux
 curl -fsSL https://opencode.ai/install.sh | sh
@@ -248,6 +269,7 @@ opencode --version
 ```
 
 **選項 2：Docker**
+
 ```bash
 # 拉取官方映像
 docker run -it --rm ghcr.io/anomalyco/opencode
@@ -262,9 +284,10 @@ docker run -d \
 ```
 
 **選項 3：Docker Compose**
+
 ```yaml
 # docker-compose.yml
-version: '3.8'
+version: "3.8"
 services:
   opencode:
     image: ghcr.io/anomalyco/opencode:latest
@@ -345,6 +368,7 @@ ifconfig | grep "inet " | grep -v 127.0.0.1
 ### 從其他設備連接
 
 **從終端（筆記本/桌面）：**
+
 ```bash
 opencode attach http://192.168.1.100:8080
 # 或
@@ -361,6 +385,7 @@ opencode attach http://desktop.local:8080
 這是我使用它一段時間後沒有完全欣賞的東西：**OpenCode 充當所有 AI 訂閱的統一界面**。
 
 想想看：
+
 - 你有 GitHub Copilot Pro 用於代碼完成
 - 你有 Claude Pro 用於複雜推理任務
 - 你有 ChatGPT Plus 用於常見問題
@@ -403,7 +428,11 @@ OpenCode 對 MCP（Anthropic 連接 AI 到外部工具和數據源的標準）�
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/project"]
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/project"
+      ]
     },
     "github": {
       "command": "npx",
@@ -428,12 +457,14 @@ OpenCode 在內部使用基於代理的架構。雖然你通過 TUI 進行交互
 ### 提供者靈活性
 
 OpenCode 支持 75+ 個 LLM 提供者，包括：
+
 - **主要提供者：** OpenAI、Anthropic、Google Gemini
 - **開源模型：** 通過 Ollama、LM Studio
 - **專門提供者：** Groq、Together AI、Perplexity
 - **本地模型：** 完全離線開發
 
 根據任務要求切換提供者：
+
 - Claude 用於複雜推理
 - GPT-4 用於廣泛知識
 - DeepSeek 用於代碼特定任務
@@ -452,7 +483,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
       - uses: anomalyco/opencode/github@latest
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -463,6 +494,7 @@ jobs:
 ## OpenCode 是什麼（以及不是什麼）
 
 ### OpenCode 是：
+
 - ✅ 一個具有伺服器/客戶端架構的靈活 AI 編程助手
 - ✅ 提供者不可知（支持 75+ 個 LLM 提供者）
 - ✅ **與現有 AI 訂閱集成**（GitHub Copilot Pro、Claude Pro、ChatGPT Plus/Pro 通過 OAuth）
@@ -473,6 +505,7 @@ jobs:
 - ✅ 開源，擁有 77,700+ GitHub 星標
 
 ### OpenCode 不是：
+
 - ❌ 一個 IDE（它是一個與任何編輯器集成的編程助手）
 - ❌ 限於 CLI 命令 — 大多數交互發生在 TUI 中
 - ❌ 專注於實時自動完成（這不是它的優勢）
@@ -483,16 +516,19 @@ jobs:
 我最喜歡 OpenCode 伺服器模式的不僅僅是技術能力 — 它是 **它能夠實現的心態轉變**。
 
 以前，我的開發工作流程受以下因素限制：
+
 - 物理位置（我的辦公桌）
 - 單一設備（我的筆記本）
 - 持續注意力（保持連接或失去進度）
 
 現在，我的工作流程是：
+
 - **不受位置限制** - 從我網絡上的任何地方工作
 - **設備靈活** - 手機、平板電腦、筆記本 — 無論什麼都有意義
 - **異步生產力** - 啟動任務並在準備好時返回
 
 這對以下人群特別有價值：
+
 - **父母**需要經常步開
 - **遠程工作者**要處理多項責任
 - **附帶項目愛好者**在零散時刻編程
@@ -529,4 +565,4 @@ AI 編程助手很強大，但大多數仍然是圍繞傳統假設設計的：�
 
 ---
 
-*你試過遠程 AI 編程工作流程嗎？什麼阻止你脫離開發機器？我很想聽聽你對靈活開發設置的看法。*
+_你試過遠程 AI 編程工作流程嗎？什麼阻止你脫離開發機器？我很想聽聽你對靈活開發設置的看法。_
