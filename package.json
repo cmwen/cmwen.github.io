@@ -30,11 +30,11 @@
     "dotenv": "^17.3.1",
     "fuse.js": "^7.1.0",
     "github-slugger": "^2.0.0",
-    "mermaid": "^11.12.3",
+    "mermaid": "^11.13.0",
     "remark-collapse": "^0.1.2",
     "remark-toc": "^9.0.0",
     "rss": "^1.2.2",
-    "satori": "^0.19.2",
+    "satori": "^0.25.0",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3"
   },
