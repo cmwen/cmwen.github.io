@@ -1,7 +1,7 @@
 ---
 title: "The AI Adoption Paradox: Why Enterprises Say 'All-In' But Do Almost Nothing"
 description: "An insider's take on enterprise AI adoption from the bottom of the org chart. Why documentation is feared, meetings replace action, and middle management might be the real blocker."
-pubDatetime: 2026-03-14T10:30:00Z
+pubDatetime: 2026-03-14T04:00:00Z
 author: Min Wen
 tags: ["AI", "enterprise", "organizational", "culture", "productivity"]
 featured: false

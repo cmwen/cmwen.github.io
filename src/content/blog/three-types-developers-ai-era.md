@@ -1,7 +1,7 @@
 ---
 title: "The Three Types of Developers Who Will Be Replaced by AI (And Why It's Already Happening)"
 description: "Not all developers are equal in the AI era. Some will thrive. Others will be commoditized. Here's who falls behind and why proactivity and accountability matter more than code."
-pubDatetime: 2026-03-14T14:45:00Z
+pubDatetime: 2026-03-14T03:50:00Z
 author: Min Wen
 tags: ["AI", "developers", "careers", "productivity", "accountability"]
 featured: true
