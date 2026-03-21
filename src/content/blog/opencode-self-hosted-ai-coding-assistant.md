@@ -36,7 +36,7 @@ Or worse—you start a comprehensive test suite rewrite before leaving work. You
 
 ## The "Aha Moment": OpenCode's Server Mode
 
-I discovered [OpenCode](https://github.com/anomalyco/opencode) while looking for alternatives to heavy IDE integrations. With **77,700+ GitHub stars** and growing, it's one of the most popular AI coding assistants available. But here's what caught my attention: **OpenCode has a client/server architecture with built-in remote access**.
+I discovered [OpenCode](https://github.com/anomalyco/opencode) while looking for alternatives to heavy IDE integrations. With **126,600+ GitHub stars**, it's an actively maintained AI coding assistant with a client/server architecture and built-in remote access. But here's what caught my attention: **OpenCode has a client/server architecture with built-in remote access**.
 
 The moment I read about server mode, everything clicked. What if I could:
 
@@ -501,7 +501,7 @@ This gives you automated code reviews, test generation, documentation updates, a
 - ✅ Accessible from multiple devices on your network
 - ✅ Excellent for asynchronous, long-running coding tasks
 - ✅ Extensible via MCP and custom integrations
-- ✅ Open source with 77,700+ GitHub stars
+- ✅ Open source and actively maintained with 126,600+ GitHub stars
 
 ### OpenCode IS NOT:
 
@@ -556,7 +556,7 @@ If you're tired of being chained to your development machine, if you want to cod
 
 ## Resources
 
-- **GitHub Repository**: [github.com/anomalyco/opencode](https://github.com/anomalyco/opencode) (77,700+ stars)
+- **GitHub Repository**: [github.com/anomalyco/opencode](https://github.com/anomalyco/opencode) (126,600+ stars, actively maintained)
 - **Official Documentation**: [opencode.ai/docs](https://opencode.ai/docs)
 - **Installation Guide**: [opencode.ai/docs/installation](https://opencode.ai/docs/installation)
 - **Server Mode Docs**: [opencode.ai/docs/server](https://opencode.ai/docs/server)
