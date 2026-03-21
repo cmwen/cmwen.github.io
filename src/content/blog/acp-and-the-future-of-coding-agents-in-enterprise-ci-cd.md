@@ -121,7 +121,7 @@ You absolutely can.
 
 In fact, many teams probably will. But building a coding agent is not just about calling an LLM. It is about tuning the tool loop, the guardrails, the context strategy, the output format, and the cost model. That is a lot of product work.
 
-General-purpose terminal agents can be a useful proof of concept, but they also show the trade-offs. OpenCode is a good example of the terminal-first shape of the category, although its repository is now archived. That does not make the idea obsolete; it makes the lesson clearer. The agent implementation may change, but the need for a stable interface remains.
+General-purpose terminal agents can be a useful proof of concept, but they also show the trade-offs. OpenCode is a good example of the terminal-first shape of the category, and it is still actively developed under `anomalyco/opencode`. That does not make the idea obsolete; it makes the lesson clearer. The agent implementation may change, but the need for a stable interface remains.
 
 That is also where my one caution comes in. If you depend on a vendor-backed coding agent, you should pay close attention to billing behavior and model policy changes. Enterprise automation magnifies cost. A workflow that feels cheap in an interactive chat can become expensive if it runs on every build, every retry, and every pull request.
 
@@ -141,4 +141,5 @@ That is why I think ACP has a real shot at becoming the standard way we talk to 
 
 - [Agent Client Protocol overview](https://agentclientprotocol.com/protocol/overview)
 - [Agent Client Protocol introduction](https://agentclientprotocol.com/protocol/introduction)
-- [OpenCode repository](https://github.com/opencode-ai/opencode)
+- [OpenCode repository](https://github.com/anomalyco/opencode)
+- [OpenCode docs](https://opencode.ai/docs/)
