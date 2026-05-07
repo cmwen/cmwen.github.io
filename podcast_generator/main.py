@@ -186,9 +186,9 @@ def main_generate(posts, all, provider, force, dry_run, refresh_feeds, output_di
     console.print("\n🔎 Aggregating existing audio for feed completeness...")
     all_posts = blog_parser.load_all_posts()
     existing_all = _collect_existing_episodes(all_posts, output_path)
-    existing_map = {e['slug']: e for e in existing_all}
+    existing_map = {(e['slug'], e['lang']): e for e in existing_all}
     for e in episodes:
-        existing_map[e['slug']] = e
+        existing_map[(e['slug'], e['lang'])] = e
     merged = list(existing_map.values())
     console.print(f"Total episodes for feeds: {len(merged)} (new: {len(episodes)})")
 
@@ -205,28 +205,45 @@ def _collect_existing_episodes(blog_posts, output_path: Path):
     Skips orphaned audio files that no longer have a corresponding blog post.
     Returns list of episode dicts compatible with feed generator.
     """
-    index = {p.slug: p for p in blog_posts}
+    posts_by_key = {(p.slug, p.lang): p for p in blog_posts}
+    posts_by_slug = {}
+    for post in blog_posts:
+        posts_by_slug.setdefault(post.slug, []).append(post)
+
     episodes = []
     for audio_file in output_path.glob('*.mp3'):
-        slug = audio_file.stem
-        post = index.get(slug)
+        stem = audio_file.stem
+        slug = stem
+        lang = "en"
+        post = None
 
-        # Support language-suffixed audio files like `slug.zh-hant.mp3` or `slug.en.mp3`.
-        # If not found, try splitting the stem on the last '.' and match base slug.
-        lang_override = None
-        if not post and '.' in slug:
-            base_slug, possible_lang = slug.rsplit('.', 1)
-            post = index.get(base_slug)
+        # Support language-suffixed audio files like `slug.zh-hant.mp3`.
+        if "." in stem:
+            base_slug, possible_lang = stem.rsplit(".", 1)
+            post = posts_by_key.get((base_slug, possible_lang))
             if post:
-                lang_override = possible_lang
+                slug = base_slug
+                lang = possible_lang
+
+        if not post:
+            post = posts_by_key.get((stem, "en"))
+            if post:
+                lang = "en"
+
+        if not post:
+            matches = posts_by_slug.get(stem, [])
+            if len(matches) == 1:
+                post = matches[0]
+                lang = post.lang
+
         if not post:
             continue
         try:
             episodes.append({
-                'slug': base_slug if lang_override else slug,
+                'slug': slug,
                 'title': post.title,
                 'description': post.description,
-                'lang': lang_override or post.lang,
+                'lang': lang,
                 'pub_date': post.pub_date,
                 'audio_file': audio_file,
                 'file_size': audio_file.stat().st_size

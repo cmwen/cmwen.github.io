@@ -25,6 +25,7 @@ class BlogPost:
     base_slug: Optional[str] = None
     llm_transcript: Optional[str] = None
     featured: bool = False
+    source_stem: Optional[str] = None
 
 
 class BlogParser:
@@ -53,29 +54,30 @@ class BlogParser:
     def load_posts_by_slugs(self, slugs: List[str]) -> List[BlogPost]:
         """Load specific posts by their slugs"""
         posts = []
-        
+        all_posts = self.load_all_posts()
+        posts_by_slug = {}
+        posts_by_source_stem = {}
+
+        for post in all_posts:
+            posts_by_slug.setdefault(post.slug, []).append(post)
+            if post.source_stem:
+                posts_by_source_stem.setdefault(post.source_stem, []).append(post)
+
+        seen = set()
+
         for slug in slugs:
-            # Try different file patterns in main directory and subdirectories
-            for pattern in [f"{slug}.md", f"{slug}*.md", f"*{slug}*.md"]:
-                matches = list(self.content_dir.rglob(pattern))
-                if matches:
-                    # If multiple matches, prefer the one that exactly matches the slug
-                    best_match = matches[0]
-                    for match in matches:
-                        if match.stem == slug or match.stem.startswith(f"{slug}."):
-                            best_match = match
-                            break
-                    
-                    try:
-                        post = self._parse_post_file(best_match)
-                        if post:
-                            posts.append(post)
-                        break
-                    except Exception as e:
-                        print(f"Warning: Failed to parse {best_match}: {e}")
-            else:
+            matches = posts_by_slug.get(slug, []) or posts_by_source_stem.get(slug, [])
+            if not matches:
                 print(f"Warning: Post not found for slug: {slug}")
-        
+                continue
+
+            for post in matches:
+                post_key = (post.slug, post.lang, post.source_stem)
+                if post_key in seen:
+                    continue
+                seen.add(post_key)
+                posts.append(post)
+
         return posts
     
     def _parse_post_file(self, file_path: Path) -> Optional[BlogPost]:
@@ -144,7 +146,8 @@ class BlogParser:
             pub_date=pub_date,
             author=author,
             tags=tags,
-            featured=featured
+            featured=featured,
+            source_stem=file_path.stem
         )
 
     def _read_transcript_file(self, slug: str, lang: str) -> Optional[str]:
