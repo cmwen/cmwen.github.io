@@ -31,7 +31,7 @@ export default function SearchBar({
     null
   );
 
-  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputVal(e.currentTarget.value);
   };
 
@@ -117,7 +117,7 @@ export default function SearchBar({
         {searchResults &&
           searchResults.map(({ item, refIndex }) => (
             <Card
-              href={`${basePrefix}/posts/${(item.data as any).baseSlug ?? item.slug}/`}
+              href={`${basePrefix}/posts/${item.data.baseSlug ?? item.slug}/`}
               frontmatter={item.data}
               key={`${refIndex}-${item.slug}`}
             />

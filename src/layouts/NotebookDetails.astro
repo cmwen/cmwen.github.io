@@ -4,7 +4,7 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
-import type { CollectionEntry } from "astro:content";
+import { render, type CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
 
 export interface Props {
@@ -15,7 +15,7 @@ const { notebook } = Astro.props;
 
 const { title, description, pubDatetime, modDatetime, tags } = notebook.data;
 
-const { Content } = await notebook.render();
+const { Content } = await render(notebook);
 
 const ogImageUrl = `/og.png`; // Use default OG image for notebooks
 const ogUrl = new URL(ogImageUrl, Astro.url.origin).href;

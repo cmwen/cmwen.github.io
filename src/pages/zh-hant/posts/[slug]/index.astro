@@ -5,6 +5,7 @@ import PostDetails from "@layouts/PostDetails.astro";
 import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
+import { getPostSlug } from "@utils/contentEntry";
 
 const lang = "zh-hant" as const;
 
@@ -19,13 +20,10 @@ export async function getStaticPaths() {
     (p: CollectionEntry<"blog">) => !p.data.draft && p.data.lang === "zh-hant"
   );
 
-  const postResult = posts.map((post: CollectionEntry<"blog">) => {
-    const s = (post.data as any).baseSlug ?? post.slug;
-    return {
-      params: { slug: s },
-      props: { post: { ...post, slug: s } as any },
-    };
-  });
+  const postResult = posts.map((post: CollectionEntry<"blog">) => ({
+    params: { slug: getPostSlug(post) },
+    props: { post },
+  }));
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
     params: { slug: String(pageNum) },

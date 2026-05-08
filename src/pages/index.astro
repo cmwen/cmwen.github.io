@@ -8,6 +8,7 @@ import Hr from "@components/Hr.astro";
 import Card from "@components/Card";
 import Socials from "@components/Socials.astro";
 import getSortedPosts from "@utils/getSortedPosts";
+import { getPostSlug } from "@utils/contentEntry";
 import { SOCIALS } from "@config";
 import { defaultLocale } from "@i18n/config";
 import { messages } from "@i18n/dict";
@@ -95,10 +96,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
               {t.common.featured}
             </h2>
             <ul>
-              {featuredPosts.map(({ data, slug }) => (
+              {featuredPosts.map(post => (
                 <Card
-                  href={`/posts/${(data as any).baseSlug ?? slug}/`}
-                  frontmatter={data}
+                  href={`/posts/${getPostSlug(post)}/`}
+                  frontmatter={post.data}
                   secHeading={false}
                 />
               ))}
@@ -117,11 +118,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
           </h2>
           <ul>
             {recentPosts.map(
-              ({ data, slug }, index) =>
+              (post, index) =>
                 index < 4 && (
                   <Card
-                    href={`/posts/${(data as any).baseSlug ?? slug}/`}
-                    frontmatter={data}
+                    href={`/posts/${getPostSlug(post)}/`}
+                    frontmatter={post.data}
                     secHeading={false}
                   />
                 )

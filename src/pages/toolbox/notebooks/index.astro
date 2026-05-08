@@ -7,21 +7,22 @@ import Hr from "@components/Hr.astro";
 import NotebookCard from "@components/NotebookCard";
 import NotebookSearch from "@components/NotebookSearch";
 import getSortedNotebooks from "@utils/getSortedNotebooks";
+import { getNotebookSlug } from "@utils/contentEntry";
 
 const notebooks = await getCollection("notebooks", ({ data }) => !data.draft);
 const sortedNotebooks = getSortedNotebooks(notebooks);
 
 // Prepare notebooks for search
-const searchList = sortedNotebooks.map(({ data, slug }) => ({
-  title: data.title,
-  description: data.description,
-  slug,
+const searchList = sortedNotebooks.map(notebook => ({
+  title: notebook.data.title,
+  description: notebook.data.description,
+  slug: getNotebookSlug(notebook),
   data: {
-    title: data.title,
-    description: data.description,
-    pubDatetime: data.pubDatetime,
-    modDatetime: data.modDatetime,
-    tags: data.tags,
+    title: notebook.data.title,
+    description: notebook.data.description,
+    pubDatetime: notebook.data.pubDatetime,
+    modDatetime: notebook.data.modDatetime,
+    tags: notebook.data.tags,
   },
 }));
 ---
@@ -62,10 +63,10 @@ const searchList = sortedNotebooks.map(({ data, slug }) => ({
       ) : (
         <section id="notebooks" class="pb-6 pt-4">
           <ul>
-            {sortedNotebooks.map(({ data, slug }) => (
+            {sortedNotebooks.map(notebook => (
               <NotebookCard
-                href={`/toolbox/notebooks/${slug}/`}
-                frontmatter={data}
+                href={`/toolbox/notebooks/${getNotebookSlug(notebook)}/`}
+                frontmatter={notebook.data}
                 secHeading={false}
               />
             ))}

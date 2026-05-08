@@ -4,8 +4,9 @@ import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import Tag from "@components/Tag.astro";
 import Datetime from "@components/Datetime";
-import type { CollectionEntry } from "astro:content";
+import { render, type CollectionEntry } from "astro:content";
 import { slugifyStr } from "@utils/slugify";
+import { getPostSlug } from "@utils/contentEntry";
 import ShareLinks from "@components/ShareLinks.astro";
 import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
@@ -32,7 +33,8 @@ const {
   llmKeyIdeas,
 } = post.data;
 
-const { Content } = await post.render();
+const { Content } = await render(post);
+const slug = getPostSlug(post);
 
 const ogImageUrl = typeof ogImage === "string" ? ogImage : ogImage?.src;
 const ogUrl = new URL(
@@ -40,22 +42,13 @@ const ogUrl = new URL(
   Astro.url.origin
 ).href;
 
-// Build alternates: if sibling translation exists, point to it; otherwise, fall back to locale home
-let alternates: { en?: string; "zh-hant"?: string } | undefined;
-try {
-  const slug = (post.data as any)?.baseSlug ?? post.slug;
-  const baseEn = new URL(`/posts/${slug}/`, Astro.site).href;
-  const baseZh = new URL(`/zh-hant/posts/${slug}/`, Astro.site).href;
-  alternates = {
-    en: lang === "en" ? new URL(Astro.url.pathname, Astro.site).href : baseEn,
-    "zh-hant":
-      lang === "zh-hant"
-        ? new URL(Astro.url.pathname, Astro.site).href
-        : baseZh,
-  };
-} catch {
-  // Ignore errors when building alternates
-}
+const baseEn = new URL(`/posts/${slug}/`, Astro.site).href;
+const baseZh = new URL(`/zh-hant/posts/${slug}/`, Astro.site).href;
+const alternates = {
+  en: lang === "en" ? new URL(Astro.url.pathname, Astro.site).href : baseEn,
+  "zh-hant":
+    lang === "zh-hant" ? new URL(Astro.url.pathname, Astro.site).href : baseZh,
+};
 
 const layoutProps = {
   title: `${title} | ${SITE.title}`,
@@ -100,7 +93,7 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
     <!-- Sidebar that moves to top on mobile -->
     <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96">
       <div class="sidebar-sticky lg:sticky lg:top-24">
-        <AudioPlayer client:only="react" slug={post.slug} lang={lang} />
+        <AudioPlayer client:only="react" slug={slug} lang={lang} />
         {
           Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (
             <ChatLink
@@ -164,11 +157,11 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
   <Footer />
 </Layout>
 
-<script
-  is:inline
-  data-mermaid-module={mermaidClientModuleUrl}
-  define:vars={{ MERMAID_MODULE_URL: mermaidClientModuleUrl }}
->
+<script is:inline data-mermaid-module={mermaidClientModuleUrl}>
+  const mermaidModuleUrl = document.currentScript?.getAttribute(
+    "data-mermaid-module"
+  );
+
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
@@ -266,12 +259,6 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
   }
   attachCopyButtons();
 
-  // Use the injected variable from define:vars
-  const MERMAID_MODULE =
-    MERMAID_MODULE_URL ||
-    window.MERMAID_MODULE_URL ||
-    document.currentScript?.dataset.mermaidModule;
-
   /** Initialize Mermaid diagrams in code blocks */
   async function initMermaidDiagrams() {
     /** @type {Set<HTMLElement>} */
@@ -291,19 +278,19 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
     });
 
     if (mermaidPreBlocks.size === 0) return;
-    if (!MERMAID_MODULE) {
+    if (!mermaidModuleUrl) {
       console.warn("Mermaid module URL missing");
       return;
     }
 
-    const { renderMermaidDiagrams } = await import(MERMAID_MODULE);
+    const { renderMermaidDiagrams } = await import(mermaidModuleUrl);
     await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
   }
 
   // Run on initial page load
   initMermaidDiagrams();
 
-  // Re-run when navigating with View Transitions
+  // Re-run after client-side page navigation
   document.addEventListener("astro:page-load", () => {
     initMermaidDiagrams();
   });

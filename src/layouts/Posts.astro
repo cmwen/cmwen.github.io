@@ -9,6 +9,7 @@ import Card from "@components/Card";
 import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
 import { messages } from "@i18n/dict";
+import { getPostSlug } from "@utils/contentEntry";
 
 export interface Props {
   currentPage: number;
@@ -49,9 +50,9 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
   >
     <ul>
       {
-        paginatedPosts.map(({ data, slug }) => {
-          const s = (data as any).baseSlug ?? slug;
-          return <Card href={`${base}/posts/${s}/`} frontmatter={data} />;
+        paginatedPosts.map(post => {
+          const s = getPostSlug(post);
+          return <Card href={`${base}/posts/${s}/`} frontmatter={post.data} />;
         })
       }
     </ul>

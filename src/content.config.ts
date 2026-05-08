@@ -1,5 +1,7 @@
 import { SITE } from "@config";
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { glob } from "astro/loaders";
+import { z, type ZodType } from "astro/zod";
 
 // ---------------------------------------------------------------------------
 // Recursive MindMapNode schema (used by the mindmaps data collection)
@@ -24,7 +26,7 @@ const mindMapRefSchema = z.object({
   label: z.string().optional(),
 });
 
-const mindMapNodeSchema: z.ZodType<MindMapNodeInput> = z.lazy(() =>
+const mindMapNodeSchema: ZodType<MindMapNodeInput> = z.lazy(() =>
   z.object({
     id: z.string(),
     label: z.string(),
@@ -37,7 +39,7 @@ const mindMapNodeSchema: z.ZodType<MindMapNodeInput> = z.lazy(() =>
 );
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx}", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       lang: z.enum(["en", "zh-hant"]).default("en"),
@@ -63,7 +65,7 @@ const blog = defineCollection({
 });
 
 const notebooks = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/notebooks" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -75,7 +77,7 @@ const notebooks = defineCollection({
 });
 
 const mindmaps = defineCollection({
-  type: "data",
+  loader: glob({ pattern: "**/*.json", base: "./src/content/mindmaps" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
