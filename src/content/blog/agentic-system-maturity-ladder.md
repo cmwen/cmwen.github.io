@@ -342,24 +342,75 @@ Total: ~10 hours of sustained work on one problem
 - Resource constraints: GPU availability for extended inference
 - Partial failures: Difficult to recover mid-stream
 
-## Beyond Level 5: Emerging Considerations
+## Level 6: Proactive Goal-Driven Agents (Wake, Decide, Act)
 
-While Level 5 represents the current frontier of agentic capabilities, several dimensions are worth considering for future evolution:
+**Definition:** Agents that can wake up on their own, monitor goals or conditions over time, and take actions proactively without waiting for a user to prompt every step.
 
-**Level 5.5: Environment-Aware Execution**
+**Characteristics:**
+
+- Scheduled or event-driven wake-up loops
+- Explicit goals, priorities, and deadlines
+- Continuous state monitoring between actions
+- Self-initiated tool use when conditions change
+- Goal progress tracking with checkpoints and retries
+
+**Example Architecture:**
+
+```
+Goal State / Triggers
+    ↓
+Wake-up Scheduler or Event Listener
+    ↓
+Agent evaluates goals and current state
+    ↓
+Agent selects next action
+    ↓
+Tool / System Execution
+    ↓
+Observe result and update goal progress
+    ↓
+[Sleep until next trigger or condition]
+```
+
+**What Makes This Distinct:**
+
+- The agent is not just reactive to prompts
+- It can resume work after idle periods
+- It has an internal notion of "what to do next"
+- It can operate like a background worker with agency
+
+**Use Cases:**
+
+- Monitoring systems that file issues, retry jobs, or notify humans
+- Sales or support agents that follow up until a goal is reached
+- Personal agents that track tasks and act when deadlines approach
+- Ops agents that watch for changes and remediate them automatically
+
+**Challenges:**
+
+- Avoiding unwanted or premature actions
+- Defining safe autonomy boundaries
+- Preventing endless wake-act-sleep loops
+- Maintaining trust, auditability, and explicit approvals where needed
+
+## Beyond Level 6: Emerging Considerations
+
+While Level 6 introduces proactive goal execution, several dimensions are worth considering for future evolution:
+
+**Environment-Aware Execution**
 
 - Agents that understand infrastructure constraints
 - Dynamic resource allocation and cost optimization
 - Multi-device coordination and distribution
 
-**Level 6 Possibilities: Cross-Organization Coordination**
+**Cross-Organization Coordination**
 
 - Agents from different organizations collaborating
 - Trust and verification mechanisms
 - Standardized interfaces for agent communication
 - Decentralized orchestration
 
-**Level 7 Possibilities: Emergent Collective Intelligence**
+**Emergent Collective Intelligence**
 
 - Hundreds or thousands of agents working in concert
 - Self-organizing agent networks
@@ -398,6 +449,12 @@ To assess your organization's position on the maturity ladder:
 - [ ] Individual agent handles multi-day projects
 - [ ] Complex reasoning maintained over hours
 - [ ] Single agent quality comparable to human expert on focused tasks
+
+**Level 6 Check:**
+
+- [ ] Agent wakes up on schedule or triggers
+- [ ] Agent acts proactively toward explicit goals
+- [ ] Agent continues work without a fresh user prompt
 
 ## Conclusion: A Roadmap for AI Innovation
 
