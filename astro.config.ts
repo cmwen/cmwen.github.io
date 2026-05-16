@@ -51,6 +51,17 @@ export default defineConfig({
       include: ["react", "react-dom"],
       exclude: ["@resvg/resvg-js"],
     },
+    server: {
+      allowedHosts: [
+        "localhost",
+        "127.0.0.1",
+        "10.255.255.254",
+        "100.85.229.92",
+        "192.168.1.32",
+        "100.118.5.8",
+        "minipc-wsl.tail2e322f.ts.net",
+      ],
+    },
   },
   image: {
     service: {
