@@ -1,6 +1,11 @@
 {
   "name": "template",
   "version": "4.2.0",
+  "packageManager": "pnpm@11.0.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.0.0 <12"
+  },
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -73,12 +78,6 @@
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,mdx,json,astro}": [
       "prettier --write --plugin=prettier-plugin-astro"
-    ]
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "sharp"
     ]
   }
 }
