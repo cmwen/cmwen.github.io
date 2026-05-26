@@ -65,6 +65,7 @@ export const TOOLBOX: ToolboxSection[] = [
           { label: "Copilot", href: "https://copilot.microsoft.com/" },
         ],
         tags: ["browser", "copilot", "work"],
+        current: true,
       },
       {
         name: "Chrome",
@@ -133,15 +134,6 @@ export const TOOLBOX: ToolboxSection[] = [
         tags: ["podcasts", "open-source", "ad-free"],
       },
       {
-        name: "Raindrop.io",
-        why: "Not used much; mainly consume news from podcasts.",
-        links: [
-          { label: "Website", href: "https://raindrop.io/" },
-          { label: "Apps", href: "https://help.raindrop.io/apps" },
-        ],
-        tags: ["bookmarks", "read-it-later"],
-      },
-      {
         name: "Logseq",
         why: "Markdown-based journaling. Simple, indentation matches how I think; pretty free form.",
         links: [
@@ -205,6 +197,44 @@ export const TOOLBOX: ToolboxSection[] = [
           "chatbot",
         ],
         // current will be auto-marked since this section has a single tool
+      },
+    ],
+  },
+  // New: Toolbars section - curated resources and references
+  {
+    id: "toolbars",
+    title: "Toolbars",
+    tools: [
+      {
+        name: "Skills",
+        why: "Modern web guidance and best practices for building web applications.",
+        links: [
+          {
+            label: "Chrome Modern Web Guidance",
+            href: "https://developer.chrome.com/docs/modern-web-guidance",
+          },
+        ],
+        tags: ["resources", "web-development", "best-practices"],
+      },
+      {
+        name: "LLM Reference",
+        why: "Curated references for exploring and comparing language models.",
+        links: [
+          {
+            label: "Artificial Analysis",
+            href: "https://artificialanalysis.ai/",
+          },
+          {
+            label: "Arena AI Leaderboard",
+            href: "https://arena.ai/leaderboard/",
+          },
+          { label: "Models.dev", href: "https://models.dev/" },
+          {
+            label: "Token Calculator",
+            href: "https://tokencalculator.com",
+          },
+        ],
+        tags: ["resources", "llm", "ai-models", "comparison"],
       },
     ],
   },
