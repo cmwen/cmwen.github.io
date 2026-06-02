@@ -1,0 +1,35 @@
+{
+  "name": "github-pages",
+  "description": "Local staging server for the cmwen.github.io Astro site",
+  "type": "node",
+  "repo": "https://github.com/cmwen/cmwen.github.io",
+  "localPath": "/home/cmwen/dev/cmwen.github.io",
+  "window": "github-pages",
+  "ports": [
+    {
+      "port": 4321,
+      "name": "web",
+      "description": "Web UI port"
+    }
+  ],
+  "tailscale": {
+    "export": true,
+    "httpsPort": 7448,
+    "targetPort": 4321
+  },
+  "environment": {
+    "NODE_ENV": "production"
+  },
+  "command": {
+    "type": "shell",
+    "cwd": "/home/cmwen/dev/cmwen.github.io",
+    "command": "pnpm start"
+  },
+  "dependencies": [],
+  "healthCheck": {
+    "type": "http",
+    "interval": 5,
+    "timeout": 10,
+    "target": "http://127.0.0.1:4321/"
+  }
+}
