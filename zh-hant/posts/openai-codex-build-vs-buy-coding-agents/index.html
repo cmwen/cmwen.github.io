@@ -1,0 +1,565 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"> <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/openai-codex-build-vs-buy-coding-agents/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/openai-codex-build-vs-buy-coding-agents/"><meta name="generator" content="Astro v6.3.7"><!-- General Meta Tags --><title>OpenAI Codex 與 Coding Agent 的自建或採用抉擇 | Min Wen</title><meta name="title" content="OpenAI Codex 與 Coding Agent 的自建或採用抉擇 | Min Wen"><meta name="description" content="在我用 tmux、Tailscale 與 PWA 打造自己的 Copilot CLI 控制平面之後，Codex 讓我重新思考開發者應該自己打造什麼，又該採用平台已經做好的什麼。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="OpenAI Codex 與 Coding Agent 的自建或採用抉擇 | Min Wen"><meta property="og:description" content="在我用 tmux、Tailscale 與 PWA 打造自己的 Copilot CLI 控制平面之後，Codex 讓我重新思考開發者應該自己打造什麼，又該採用平台已經做好的什麼。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/"><meta property="og:image" content="https://cmwen.github.io/posts/openai-codex-%E8%88%87-coding-agent-%E7%9A%84%E8%87%AA%E5%BB%BA%E6%88%96%E6%8E%A1%E7%94%A8%E6%8A%89%E6%93%87.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-06-17T00:00:00.000Z"><meta property="article:modified_time" content="2026-06-17T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/"><meta property="twitter:title" content="OpenAI Codex 與 Coding Agent 的自建或採用抉擇 | Min Wen"><meta property="twitter:description" content="在我用 tmux、Tailscale 與 PWA 打造自己的 Copilot CLI 控制平面之後，Codex 讓我重新思考開發者應該自己打造什麼，又該採用平台已經做好的什麼。"><meta property="twitter:image" content="https://cmwen.github.io/posts/openai-codex-%E8%88%87-coding-agent-%E7%9A%84%E8%87%AA%E5%BB%BA%E6%88%96%E6%8E%A1%E7%94%A8%E6%8A%89%E6%93%87.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CAqDO0tx.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.BGDn8VSZ.css">
+<style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media(prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-wi2w6ztr-1"] { view-transition-name: openai-codex-\8207-coding-agent-\7684\81EA\5EFA\6216\63A1\7528\6289\64C7; }@layer astro { ::view-transition-old(openai-codex-\8207-coding-agent-\7684\81EA\5EFA\6216\63A1\7528\6289\64C7) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(openai-codex-\8207-coding-agent-\7684\81EA\5EFA\6216\63A1\7528\6289\64C7) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(openai-codex-\8207-coding-agent-\7684\81EA\5EFA\6216\63A1\7528\6289\64C7) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(openai-codex-\8207-coding-agent-\7684\81EA\5EFA\6216\63A1\7528\6289\64C7) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-wi2w6ztr-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-wi2w6ztr-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-2"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-3"] { view-transition-name: codex; }@layer astro { ::view-transition-old(codex) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(codex) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(codex) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(codex) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-4"] { view-transition-name: copilot; }@layer astro { ::view-transition-old(copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(copilot) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-5"] { view-transition-name: developer-experience; }@layer astro { ::view-transition-old(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-36ssibgs-6"] { view-transition-name: coding-agents; }@layer astro { ::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-36ssibgs-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-36ssibgs-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head> <body>  <header class="astro-3ef6ksr2"> <a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-3ef6ksr2" href="#main-content"> 跳至內容 </a> <div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-3ef6ksr2"> <div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-3ef6ksr2"> <a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-3ef6ksr2"> Min Wen </a> <nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-3ef6ksr2"> <button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-3ef6ksr2" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-3ef6ksr2"> <line x1="7" y1="12" x2="21" y2="12" class="line astro-3ef6ksr2"></line> <line x1="3" y1="6" x2="21" y2="6" class="line astro-3ef6ksr2"></line> <line x1="12" y1="18" x2="21" y2="18" class="line astro-3ef6ksr2"></line> <line x1="18" y1="6" x2="6" y2="18" class="close astro-3ef6ksr2"></line> <line x1="6" y1="6" x2="18" y2="18" class="close astro-3ef6ksr2"></line> </svg> </button> <ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-3ef6ksr2"> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 文章 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 標籤 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/profolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 作品集 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 工具箱 </a> </li> <!-- Toolbox Subnav - shown when toolbox is active -->  <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-3ef6ksr2"> 關於 </a> </li> <li class="col-span-2 flex items-center justify-center astro-3ef6ksr2"> <a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex  astro-3ef6ksr2" aria-label="搜尋" title="搜尋"> <svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-3ef6ksr2"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-3ef6ksr2"></path> </svg> <span class="sr-only astro-3ef6ksr2">搜尋</span> </a> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-3ef6ksr2" title="Toggles light & dark" aria-label="auto" aria-live="polite"> <svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-3ef6ksr2"></path> </svg> <svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-3ef6ksr2"> <path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-3ef6ksr2"></path> </svg> </button> </li> <li class="col-span-1 flex items-center justify-center astro-3ef6ksr2"> <a href="/posts/openai-codex-build-vs-buy-coding-agents/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-3ef6ksr2"> EN </a> </li> </ul> </nav> </div> </div> <div class="max-w-3xl mx-auto px-4"> <hr class="border-skin-line" aria-hidden="true"> </div> </header>  <script type="module">function n(){const e=document.querySelector(".hamburger-menu"),u=document.querySelector(".menu-icon"),a=document.querySelector("#menu-items");e?.addEventListener("click",()=>{const t=e.getAttribute("aria-expanded")==="true";u?.classList.toggle("is-active"),e.setAttribute("aria-expanded",t?"false":"true"),e.setAttribute("aria-label",t?"Open Menu":"Close Menu"),a?.classList.toggle("display-none")})}n();document.addEventListener("astro:after-swap",n);</script>  <div class="mx-auto flex w-full max-w-7xl justify-start px-2"> <button class="focus-outline mb-2 mt-8 flex hover:opacity-75" onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"> <svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg><span>返回</span> </button> </div> <main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"> <!-- Sidebar that moves to top on mobile --> <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"> <div class="sidebar-sticky lg:sticky lg:top-24"> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(c,s,d)=>s in c?g(c,s,{enumerable:!0,configurable:!0,writable:!0,value:d}):c[s]=d;var l=(c,s,d)=>w(c,typeof s!="symbol"?s+"":s,d);var E=new Set(["__proto__","constructor","prototype"]);{let c={0:t=>y(t),1:t=>d(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(d(t)),5:t=>new Set(d(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in c?c[p](e):void 0},d=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let n=this.querySelectorAll("astro-slot"),r={},i=this.querySelectorAll("template[data-astro-template]");for(let o of i){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of n){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let a=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(a+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${a}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,r,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),n.disconnect(),this.childrenConnectedCallback()},n=new MutationObserver(()=>{var r;((r=this.lastChild)==null?void 0:r.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});n.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let n=new URL(e,document.baseURI),r=`astro-retry=${Date.now()}`,i=n.hash.replace(/^#/,"");return n.hash=i?`${i}&${r}`:r,n.toString()}async importWithRetry(e){try{return await import(e)}catch(n){return await new Promise(r=>setTimeout(r,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let n=this.getAttribute("component-url"),r=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:n}});this.dispatchEvent(r)&&console.error(`[astro-island] Error hydrating ${n}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),n=this.getAttribute("client");if(Astro[n]===void 0){window.addEventListener(`astro:${n}`,()=>this.start(),{once:!0});return}try{await Astro[n](async()=>{let r=this.getAttribute("renderer-url");try{let[i,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),r?this.importWithRetry(r):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=i;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=i[h]}return this.hydrator=u,this.hydrate}catch(i){return this.handleHydrationError(i),()=>{}}},e,this)}catch(r){this.handleHydrationError(r)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z7GBd8" component-url="/_astro/AudioPlayer.1aBqPIZB.js" component-export="default" renderer-url="/_astro/client.DTojXMD-.js" props="{&quot;slug&quot;:[0,&quot;openai-codex-build-vs-buy-coding-agents&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> <astro-island uid="Z5hNaX" component-url="/_astro/ChatLink.CUYWtb0T.js" component-export="default" renderer-url="/_astro/client.DTojXMD-.js" props="{&quot;title&quot;:[0,&quot;OpenAI Codex 與 Coding Agent 的自建或採用抉擇&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;OpenAI Codex&quot;],[0,&quot;coding agent 的自建與採用&quot;],[0,&quot;個人 agent 控制平面&quot;],[0,&quot;遠端 coding 工作流程&quot;],[0,&quot;開發者生態系鎖定&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island> </div> </aside> <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"> <h1 class="post-title text-2xl font-semibold text-skin-accent" data-astro-transition-scope="astro-wi2w6ztr-1"> OpenAI Codex 與 Coding Agent 的自建或採用抉擇 </h1> <div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-06-17T00:00:00.000Z">Jun 17, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">12:00 AM</span></span></div> <article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"> <p>今天我有一種很微妙的感覺。</p>
+<p>過去幾個月，我一直在 GitHub Copilot CLI 外面打造自己的控制平面。架構很簡單：讓 agent 跑在我信任機器上的 <code>tmux</code> 工作階段裡，用 Tailscale 提供私有連線，再包一個小型 PWA，讓瀏覽器成為遠端操作介面。這個系統真的讓我很開心，因為它改變了 coding 工作的手感。我可以從另一台裝置打開瀏覽器，交代 agent 要做什麼，查看進度，只有在需要決策時才重新介入。</p>
+<p>這套系統不是玩具。它真的解決了我的問題：如何讓 coding agent 隨時可被觸及，而不必把我綁在某個 terminal 前面。</p>
+<p>然後我在筆電的 WSL 環境裡安裝了 OpenAI Codex，問題突然變得有點尷尬。</p>
+<p>Codex 已經做到很多我原本想做的事。</p>
+<p>它可以作為本機 coding agent 運作，讀寫專案檔案系統，讓 session 與 approval 流程可見，連到遠端主機，提供 remote control 工作流程，而且透過 app surface 與 computer-use 能力，還能把觸角從 terminal 延伸到桌面工作流程。OpenAI 的 <a href="https://developers.openai.com/codex/overview">Codex overview</a> 把 Codex 定位為能協助撰寫、理解、審查、除錯與自動化開發任務的 coding agent。<a href="https://developers.openai.com/codex/cli/features">CLI docs</a> 描述了互動式 session、可恢復對話、遠端 app-server 連線、approval mode 與 scripting。<a href="https://developers.openai.com/codex/remote-connections">remote connection docs</a> 則描述了如何從另一台裝置使用 Codex，而實際的專案、檔案、shell、plugin、browser setup 與本機工具都由被連線的 host 提供。</p>
+<p>換句話說，我原本作為個人控制平面打造的東西，正在變成產品的一部分。</p>
+<h2 id="table-of-contents">Table of contents</h2>
+<p></p><details><summary>Open Table of contents</summary><p></p>
+<ul>
+<li><a href="#%E6%88%91%E5%81%9A%E7%9A%84%E7%B3%BB%E7%B5%B1%E5%85%B6%E5%AF%A6%E6%98%AF%E5%9C%A8%E6%95%99%E6%88%91%E9%9C%80%E6%B1%82">我做的系統其實是在教我需求</a></li>
+<li><a href="#%E7%82%BA%E4%BB%80%E9%BA%BC-codex-%E8%AE%93%E6%88%91%E6%9C%89%E9%BB%9E%E9%9C%87%E6%92%BC">為什麼 Codex 讓我有點震撼</a></li>
+<li><a href="#%E9%8E%96%E5%AE%9A%E7%94%9F%E6%85%8B%E7%B3%BB%E7%9A%84%E5%95%8F%E9%A1%8C%E6%98%AF%E7%9C%9F%E7%9A%84">鎖定生態系的問題是真的</a></li>
+<li><a href="#%E8%87%AA%E5%BB%BA%E8%88%87%E6%8E%A1%E7%94%A8%E7%9A%84%E7%95%8C%E7%B7%9A%E5%B7%B2%E7%B6%93%E4%B8%8A%E7%A7%BB">自建與採用的界線已經上移</a></li>
+<li><a href="#%E6%88%91%E4%BB%8D%E7%84%B6%E6%9C%83%E8%87%AA%E5%B7%B1%E6%89%93%E9%80%A0%E4%BB%80%E9%BA%BC">我仍然會自己打造什麼</a></li>
+<li><a href="#%E6%88%91%E7%8F%BE%E5%9C%A8%E7%9A%84%E7%AD%94%E6%A1%88">我現在的答案</a></li>
+<li><a href="#%E6%9B%B4%E5%BB%A3%E6%B3%9B%E7%9A%84%E9%96%8B%E7%99%BC%E8%80%85%E8%AA%B2%E9%A1%8C">更廣泛的開發者課題</a></li>
+</ul>
+<p></p></details><p></p>
+<h2 id="我做的系統其實是在教我需求">我做的系統其實是在教我需求</h2>
+<p>我的 Copilot 控制平面來自一個很實際的煩惱：我不希望每一個 agent 任務都要求我坐在同一台機器前面。</p>
+<p>我想要的工作流程是：</p>
+<ol>
+<li>從任何地方啟動 coding task。</li>
+<li>讓工作在我信任的桌機或開發機器上執行。</li>
+<li>即使瀏覽器斷線，terminal session 也要繼續活著。</li>
+<li>能查看輸出、介入、稍後再繼續。</li>
+<li>不需要為了控制自己的工具，就把服務暴露到公開網際網路。</li>
+</ol>
+<p><code>tmux</code> 解決了 session persistence。Tailscale 解決了 private access。PWA 解決了操作介面。Copilot CLI 負責實際寫程式。</p>
+<p>回頭看，真正重要的不是實作方式，而是我在過程中發現的需求：我不想要只活在前景 terminal 裡的 coding assistant。我想要一個 agent runtime，它可以貼近我的開發環境，但也允許我在不同裝置之間移動。</p>
+<p>這個需求現在看起來很明顯，但在我親手做出來之前，它其實沒有那麼明顯。</p>
+<h2 id="為什麼-codex-讓我有點震撼">為什麼 Codex 讓我有點震撼</h2>
+<p>Codex 改變問題的原因在於，它不只是提供一個模型，而是提供一套帶有主張的 agentic development 操作介面。</p>
+<p>這個介面包含一些自己維護起來很痛苦的能力：</p>
+<ul>
+<li>session transcript 與可恢復性</li>
+<li>理解 repository 的編輯與指令執行</li>
+<li>approval mode 與 sandbox 邊界</li>
+<li>從另一台裝置 remote control</li>
+<li>app、CLI、IDE、cloud、browser 與 computer-use surface</li>
+<li>plugin 與 MCP 整合點</li>
+<li>以產品等級設計的安全模型</li>
+</ul>
+<p>單看每一項，都不是不能做。難的是讓它們全部一致地運作。</p>
+<p>我自己的系統可以讓 <code>tmux</code> session 活著，並透過瀏覽器串流 terminal。這很有用。但像 Codex 這樣的產品，試圖掌握的是整個迴圈：prompt、plan、edit、run commands、ask for approval、use tools、summarize progress，然後讓我從另一台裝置繼續。</p>
+<p>這個企圖心比我的 PWA 大很多。</p>
+<h2 id="鎖定生態系的問題是真的">鎖定生態系的問題是真的</h2>
+<p>尷尬的地方在於 ecosystem lock-in。</p>
+<p>如果我把工作流程完全搬進 Codex，我選的不只是一個更好的介面。我也在選一整組假設：</p>
+<ul>
+<li>session 如何儲存</li>
+<li>approval 如何建模</li>
+<li>tool 與 plugin 如何被暴露</li>
+<li>remote control 如何驗證身分</li>
+<li>computer use 如何被允許或拒絕</li>
+<li>有多少 workflow state 會留在 OpenAI 生態系裡</li>
+<li>未來功能會朝哪個方向被優先開發</li>
+</ul>
+<p>這可能是很好的取捨。對大多數開發者來說，它甚至可能就是正確取捨。但它仍然是一個取捨。</p>
+<p>風險不只是抽象的「vendor lock-in」。真正的風險是，我的個人開發工作流程會被產品預設值塑形。產品會進步得很快，但它會朝平台認為合理的方向進步。我的粗糙本機系統只有在我願意投入時才會進步，但它可以精準往我想要的方向移動。</p>
+<p>這就是張力所在。</p>
+<h2 id="自建與採用的界線已經上移">自建與採用的界線已經上移</h2>
+<p>我以前以為有價值的中間層，是個人 orchestrator：一個小型 web app、一個持久 terminal session、一個私有網路。</p>
+<p>現在我覺得這一層正在被商品化。</p>
+<p>Remote control、session persistence、approval prompt、command execution、diff、browser access、desktop automation，正在變成嚴肅 coding-agent 產品的標準功能。從零開始打造它們依然很有趣，但不再明顯是最值得投入時間的地方。</p>
+<p>自建與採用的界線已經往上移了。</p>
+<p>我大概不應該在通用 agent runtime 這件事上跟 OpenAI 競爭。那是一場長期很難打的仗：security、UX、integration、platform support、model routing、app distribution、admin control 與 documentation 都會累積優勢。個人專案可以跑得很快，但產品平台可以持續把預設體驗做得更好。</p>
+<p>但這不代表我的系統應該死掉。</p>
+<p>它代表我應該改變這套系統的用途。</p>
+<h2 id="我仍然會自己打造什麼">我仍然會自己打造什麼</h2>
+<p>工作流程裡仍然有一些部分值得自己掌握。</p>
+<p>我仍然會為這些事情打造本機工具：</p>
+<ul>
+<li>編碼我自己的 task template 與 review 習慣</li>
+<li>保存重要決策的 vendor-neutral log</li>
+<li>在 Copilot、Codex、shell script 與內部工具之間建立橋接</li>
+<li>實驗 queue、label、priority 與 task dashboard</li>
+<li>在平台功能不可用時保留 fallback path</li>
+<li>依照自己的工程流程塑造 prompt 與 handoff format</li>
+</ul>
+<p>這和「重做一個 Codex」是完全不同的任務。</p>
+<p>本機系統變成一個實驗室，也變成一個 adapter。它不需要掌握每一次 terminal 互動。它可以站在 agent 產品之上或旁邊，保留我真正重視的 workflow logic。</p>
+<p>實務上，這可能代表 Codex 變成預設的執行介面，而我自己的 PWA 則變成設計任務、追蹤結果、比較 agent、保存 reusable pattern 的地方。Agent 產品負責重活。我的系統負責讓工作流程保持可攜。</p>
+<h2 id="我現在的答案">我現在的答案</h2>
+<p>如果今天一定要做決定，我不會只選其中一邊。</p>
+<p>在 agent runtime 與 remote-control experience 已經很強的地方，我會使用 Codex。它太有用了，不能忽略，而且這個產品很明顯正在往我原本用 <code>tmux</code>、Tailscale 與瀏覽器嘗試逼近的未來移動。</p>
+<p>但我也會讓自己的本機系統以更窄的角色繼續存在。</p>
+<p>真正的問題不是「我應該用 Codex，還是用自己的 orchestrator？」更好的問題是：「哪一層應該由我自己掌握？」</p>
+<p>我不需要永遠掌握那些逐漸商品化的部分。但我確實想掌握那些編碼我工作方式的部分：</p>
+<ul>
+<li>我如何描述任務</li>
+<li>我如何判斷工作是否完成</li>
+<li>我如何讓 context 在不同工具之間延續</li>
+<li>我如何審查 agent output</li>
+<li>我如何避免被單一產品的心智模型困住</li>
+</ul>
+<p>這一層，個人系統仍然有存在價值。</p>
+<h2 id="更廣泛的開發者課題">更廣泛的開發者課題</h2>
+<p>這會成為許多開發者都會遇到的問題。</p>
+<p>Builder 的第一個本能，是把缺的東西做出來。這個本能很好。它會教你理解領域，揭露真實需求，建立品味。但當平台吸收了相同能力之後，負責任的做法是重新評估。</p>
+<p>不是每一個 custom system 都應該變成 infrastructure。</p>
+<p>有時候 prototype 應該變成產品。
+有時候它應該變成 plugin。
+有時候它應該變成 workflow convention。
+有時候它只需要變成經驗。</p>
+<p>對 coding agent 來說，長期有價值的能力，不是知道怎麼把 CLI 包成 web app，而是知道 human judgment、local context 與 platform automation 應該在哪裡交會。</p>
+<p>Codex 讓這個問題變得更銳利。它給了我一個比昨天更強的預設選項。它也提醒我，掌握整個 stack 不等於掌握工作流程裡最重要的部分。</p>
+<p>目前我的答案很簡單：產品已經更好的地方就採用產品；本機系統能保留槓桿的地方就繼續保留；隨著工具進步，持續移動這條界線。</p>
+<p>這比因為自尊而死守自己的系統，或是不假思索地把整個工作流程交出去，都更健康。</p> </article> <ul class="my-8"> <li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-2"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>ai</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/codex/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-3"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>codex</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/copilot/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-4"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>copilot</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/developer-experience/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-5"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>developer-experience</span> </a> </li><li class="inline-block my-1 underline-offset-4"> <a href="/zh-hant/tags/coding-agents/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2" data-astro-transition-scope="astro-36ssibgs-6"> <svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path> </svg>
+&nbsp;<span>coding-agents</span> </a> </li> </ul> <div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"> <button id="back-to-top" class="focus-outline whitespace-nowrap py-1 hover:opacity-75"> <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"> <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path> </svg> <span>回到頂端</span> </button> <div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"> <span class="italic">Share this post on:</span> <div class="text-center"> <a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg> <span class="sr-only">Share this post via WhatsApp</span> </a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg> <span class="sr-only">Share this post on Facebook</span> </a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg> <span class="sr-only">Tweet this post</span> </a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"> <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg> <span class="sr-only">Share this post via Telegram</span> </a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg> <span class="sr-only">Share this post on Pinterest</span> </a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/openai-codex-build-vs-buy-coding-agents/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Share this post via email</span> </a> </div> </div> </div> </div> </main> <footer class="w-full mt-auto"> <div class="max-w-3xl mx-auto px-0"> <hr class="border-skin-line" aria-hidden="true"> </div> <div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"> <div class="social-icons flex flex-wrap gap-1 justify-center"> <a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg> <span class="sr-only"> Min Wen on Github</span> </a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"> <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg> <span class="sr-only">Min Wen on LinkedIn</span> </a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"> <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg> <span class="sr-only">Send an email to Min Wen</span> </a> </div> <div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"> <span>Copyright &#169; 2026</span> <span class="separator hidden sm:inline">&nbsp;|&nbsp;</span> <span>All rights reserved.</span> </div> </div> </footer>  </body></html> <script data-mermaid-module="data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K">
+  const mermaidModuleUrl = document.currentScript?.getAttribute(
+    "data-mermaid-module"
+  );
+
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!mermaidModuleUrl) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(mermaidModuleUrl);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run after client-side page navigation
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script>
