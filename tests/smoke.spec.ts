@@ -12,7 +12,7 @@ test('Homepage loads and shows title', async ({ page }) => {
 test('Navigation links are present', async ({ page }) => {
   await page.goto(PROD_URL);
   // Visible text links in the header nav (Agents is now under Toolbox subnav)
-  const navLinks = ['Posts', 'Tags', 'Profolio', 'Toolbox', 'About'];
+  const navLinks = ['Posts', 'Tags', 'Portfolio', 'Toolbox', 'About'];
   for (const link of navLinks) {
     await expect(page.locator(`nav >> text=${link}`)).toBeVisible();
   }

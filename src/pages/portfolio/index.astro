@@ -1,0 +1,908 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Header from "@components/Header.astro";
+import Footer from "@components/Footer.astro";
+import Main from "@layouts/Main.astro";
+import { SITE } from "@config";
+import { defaultLocale, type Locale } from "@i18n/config";
+import { messages } from "@i18n/dict";
+
+const lang: Locale = Astro.url.pathname.startsWith("/zh-hant/")
+  ? "zh-hant"
+  : defaultLocale;
+const t = messages[lang];
+const title = t.nav.portfolio;
+const description =
+  lang === "zh-hant"
+    ? "個人應用與 MCP 伺服器的簡要作品集。"
+    : "A small portfolio of personal apps and MCP servers.";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout
+  title={`${title} | ${SITE.title}`}
+  lang={lang}
+  alternates={{
+    en: canonical,
+    "zh-hant": new URL(`/zh-hant${Astro.url.pathname}`, Astro.site).href,
+  }}
+>
+  <Header activeNav="portfolio" {lang} />
+  <Main pageTitle={title} pageDesc={description}>
+    <section class="space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.pwa}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/learn-japanese/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.japaneseLearningSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.japaneseDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Svelte + Vite</li>
+              <li>{t.portfolio.tech.pwaPwa}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/learn-japanese"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/learn-japanese</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/text-editor-pwa/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.textEditorSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.textEditorDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Vanilla JavaScript + Vite</li>
+              <li>{t.portfolio.tech.pwaPwa}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/text-editor-pwa"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/text-editor-pwa</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/project-initiator"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              project-initiator — repository bootstrapper
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A small utility and set of templates to quickly scaffold new
+            projects with sensible defaults (TS, linting, CI, and basic project
+            structure).
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript, Node.js</li>
+              <li>Templates for CLI, web, and libraries</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/project-initiator"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/project-initiator</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/podcast-pwa/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.podcastWipSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.podcastDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Preact + TypeScript, Vite</li>
+              <li>
+                Vite PWA, IndexedDB (idb), Cache API; fast-xml-parser,
+                SortableJS
+              </li>
+              <li>Vitest, Playwright, ESLint/Prettier; Lighthouse CI</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/podcast-pwa"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/podcast-pwa</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/home-energy-simulator/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Home Energy Simulator
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            An interactive educational tool for learning about and simulating
+            residential electrical systems. Includes system design, load
+            calculations, scenarios, educational protocols, and energy
+            efficiency strategies with shareable configurations.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>React 19 + TypeScript, Vite</li>
+              <li>Zustand state management, Lucide icons</li>
+              <li>URL sharing, localStorage persistence</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/home-energy-simulator"
+              target="_blank"
+              rel="noopener noreferrer"
+              >github.com/cmwen/home-energy-simulator</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/novated-lease-calculator/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Novated Lease Calculator
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A comprehensive Progressive Web App for learning about and
+            calculating novated leases in Australia. Features interactive
+            calculations, tax savings estimates, official resource links, and
+            strong educational disclaimers with dark/light theme support.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>React 19 + TypeScript, Vite 7</li>
+              <li>vite-plugin-pwa with Workbox</li>
+              <li>CSS Variables for theming, GitHub Pages deployment</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/novated-lease-calculator"
+              target="_blank"
+              rel="noopener noreferrer"
+              >github.com/cmwen/novated-lease-calculator</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.webapps}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/github-dashboard/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub Dashboard
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A static GitHub dashboard PWA for project control, with mock data
+            for GitHub Pages deployments and optional live GitHub API access
+            through Octokit when a token is available.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Deno 2, React 19, Vite 7</li>
+              <li>React Router, TanStack Query, Octokit</li>
+              <li>vite-plugin-pwa, Playwright, GitHub Pages</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/github-dashboard"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/github-dashboard</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/ai-portfolio/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              AI Portfolio
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A media-first side portfolio for AI-generated works, experiments,
+            and progress records, with typed content metadata and static GitHub
+            Pages delivery.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Astro 6, TypeScript, pnpm</li>
+              <li>Tailwind CSS 4, Astro Content Collections, MDX</li>
+              <li>Static output, GitHub Pages deployment</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/ai-portfolio"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/ai-portfolio</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/locallink/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              LocalLink
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A local-first orchestration dashboard and MCP server for a single
+            developer workstation, helping local tools and AI agents inspect
+            config, allocate ports, and trigger lifecycle actions.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Node.js, TypeScript, local HTTP dashboard</li>
+              <li>MCP stdio server, PWA assets</li>
+              <li>Docker, PM2, Taskfile lifecycle integrations</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/locallink"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/locallink</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.cli}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/todo-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.todoMultimode}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.todoDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>{t.portfolio.tech.typescriptMonorepo}</li>
+              <li>{t.portfolio.tech.sqliteWebsocket}</li>
+              <li>{t.portfolio.tech.nextjsMcp}</li>
+              <li>{t.portfolio.tech.cliOrchestrator}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/todo-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/todo-app</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/sdlc-agents"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @cmwen/sdlc-agents — Agentic SDLC Framework
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A lightweight, role-based Agentic SDLC framework where specialized
+            AI agents collaborate to deliver software with strong traceability
+            and human oversight. Includes seven specialized agents: Research,
+            Vision, Product, Design, Execution, QA, and Governance.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript, Node.js CLI</li>
+              <li>Structured Markdown docs with traceability</li>
+              <li>GitHub Copilot, Claude, Cursor integration</li>
+              <li>7 specialized AI agent prompt files</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/sdlc-agents"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/sdlc-agents</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.mcp}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/min-kb-mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.minKbSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.minKbDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>{t.portfolio.tech.typescriptNodejs}</li>
+              <li>{t.portfolio.tech.sqliteWasm}</li>
+              <li>{t.portfolio.tech.mcpServer}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-kb-mcp"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/min-kb-mcp</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://www.npmjs.com/package/@cmwen/min-n8n-mcp"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.minN8nSuffix}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.minN8nDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>TypeScript, Node.js, Zod validation</li>
+              <li>{t.portfolio.tech.httpClientInfra}</li>
+              <li>{t.portfolio.tech.mcpServerMode}</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/min-n8n-mcp"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/min-n8n-mcp</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.extensions}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/own-browse"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.ownBrowseTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.ownBrowseDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>JavaScript, Web Extensions API</li>
+              <li>Cross-browser compatibility (Chrome, Firefox, Edge)</li>
+              <li>Privacy-focused features</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/own-browse"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/own-browse</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.desktop}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub-tauri"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.privateChatHubDesktopTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.privateChatHubDesktopDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Tauri v2 (Rust) + React 19 + TypeScript</li>
+              <li>Zustand, Vite, Lucide React</li>
+              <li>Local-first architecture + Ollama integration</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub-tauri"
+              target="_blank"
+              rel="noopener noreferrer"
+              >github.com/cmwen/private-chat-hub-tauri</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">
+        {t.portfolio.sections.android}
+      </h2>
+      <div class="space-y-4">
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/quick-log-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.quickLogTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.quickLogDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android-only)</li>
+              <li>SQLite local storage</li>
+              <li>Tag-first logging + optional location tracking</li>
+              <li>Material Design 3 + dark mode</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/quick-log-app/"
+              target="_blank"
+              rel="noopener noreferrer">cmwen.github.io/quick-log-app</a
+            >&nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/quick-log-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/quick-log-app</a
+            >&nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/quick-log-app/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Releases
+            </a>
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/prompt-loop-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.promptLoopTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.promptLoopDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android-focused)</li>
+              <li>Deliberate practice sessions + progress tracking</li>
+              <li>BYOK workflow for LLM feedback</li>
+              <li>Material Design 3</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/prompt-loop-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              cmwen.github.io/prompt-loop-app
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/prompt-loop-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/cmwen/prompt-loop-app
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/prompt-loop-app/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Releases
+            </a>
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/read-forge-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.readForgeTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.readForgeDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android)</li>
+              <li>Local-first storage (SQLite via Drift)</li>
+              <li>Multi-language UI + reading themes (light/dark/sepia)</li>
+              <li>Prompt-based workflows for TOC + chapter generation</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/read-forge-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              cmwen.github.io/read-forge-app
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/read-forge-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              github.com/cmwen/read-forge-app
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/read-forge-app/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Releases
+            </a>
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/stash-it-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Stash It — Local-first save-it-later for Android
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A privacy-first, local-first Android app for saving articles and
+            reading them offline. Features a clean reader view, tagging,
+            full-text search, archives, favorites, and export to JSON.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android native)</li>
+              <li>Riverpod, Drift (SQLite)</li>
+              <li>Material 3 UI, local-first/offline-first architecture</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://cmwen.github.io/stash-it-app/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              cmwen.github.io/stash-it-app
+            </a>
+            &nbsp;•&nbsp;
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/stash-it-app/releases/latest"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Releases
+            </a>
+          </p>
+        </div>
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Private Chat Hub — Universal AI Chat Platform
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            A universal Android chat application supporting the full spectrum of
+            AI models: on-device models for privacy (LiteRT), self-hosted Ollama
+            for control, and cloud APIs (OpenAI, Anthropic, Google AI) for
+            convenience. Features offline capability, web search with source
+            references, conversation management, project workspaces, vision
+            support, and smart fallbacks.
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android native), Dart</li>
+              <li>LiteRT local models + Ollama integration + cloud APIs</li>
+              <li>
+                192+ passing tests, Web search, Vision models, Material Design 3
+              </li>
+              <li>Offline-first architecture with model comparison</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/private-chat-hub"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/private-chat-hub</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/gamify-tax-deduction"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.gamifyTaxTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.gamifyTaxDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Android (Kotlin)</li>
+              <li>Gamification mechanics and rewards</li>
+              <li>Receipt capture and tax tracking</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/gamify-tax-deduction"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/gamify-tax-deduction</a
+            >
+          </p>
+        </div>
+
+        <div class="rounded-md border border-skin-line bg-skin-card p-4">
+          <h3 class="text-lg font-semibold">
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/every-pay-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t.portfolio.projects.everyPayAppTitle}
+            </a>
+          </h3>
+          <p class="mt-1 text-sm text-skin-muted">
+            {t.portfolio.projects.everyPayAppDescription}
+          </p>
+          <div class="mt-2 text-sm">
+            <span class="font-medium">{t.toolbox.common.techStack}</span>
+            <ul class="mt-1 list-disc pl-5">
+              <li>Flutter (Android native)</li>
+              <li>Dart</li>
+              <li>Payment management architecture</li>
+            </ul>
+          </div>
+          <p class="mt-2 text-sm">
+            {t.toolbox.common.source}
+            <a
+              class="text-skin-accent hover:underline"
+              href="https://github.com/cmwen/every-pay-app"
+              target="_blank"
+              rel="noopener noreferrer">github.com/cmwen/every-pay-app</a
+            >
+          </p>
+        </div>
+      </div>
+    </section>
+  </Main>
+  <Footer />
+</Layout>

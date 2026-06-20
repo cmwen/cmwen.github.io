@@ -5,7 +5,7 @@ type Dict = {
     posts: string;
     tags: string;
     agents: string;
-    profolio: string;
+    portfolio: string;
     toolbox: string;
     about: string;
     searchAria: string;
@@ -30,7 +30,7 @@ type Dict = {
       source: string;
     };
   };
-  profolio: {
+  portfolio: {
     sections: {
       pwa: string;
       cli: string;
@@ -90,7 +90,7 @@ export const messages: Record<Locale, Dict> = {
       posts: "Posts",
       tags: "Tags",
       agents: "Agents",
-      profolio: "Profolio",
+      portfolio: "Portfolio",
       toolbox: "Toolbox",
       about: "About",
       searchAria: "Search",
@@ -115,7 +115,7 @@ export const messages: Record<Locale, Dict> = {
         source: "Source:",
       },
     },
-    profolio: {
+    portfolio: {
       sections: {
         pwa: "PWA",
         cli: "CLI Applications",
@@ -188,7 +188,7 @@ export const messages: Record<Locale, Dict> = {
       posts: "文章",
       tags: "標籤",
       agents: "代理",
-      profolio: "作品集",
+      portfolio: "作品集",
       toolbox: "工具箱",
       about: "關於",
       searchAria: "搜尋",
@@ -213,7 +213,7 @@ export const messages: Record<Locale, Dict> = {
         source: "原始碼：",
       },
     },
-    profolio: {
+    portfolio: {
       sections: {
         pwa: "PWA 應用",
         cli: "CLI 應用程式",

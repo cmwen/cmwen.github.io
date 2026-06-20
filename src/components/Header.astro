@@ -8,7 +8,7 @@ import Hr from "./Hr.astro";
 import LinkButton from "./LinkButton.astro";
 
 export interface Props {
-  activeNav?: "posts" | "tags" | "about" | "search" | "toolbox" | "profolio";
+  activeNav?: "posts" | "tags" | "about" | "search" | "toolbox" | "portfolio";
   activeSubNav?: "tools" | "agents" | "notebooks" | "mindmaps";
   lang?: Locale;
 }
@@ -138,10 +138,10 @@ function otherLocalePath(): string {
           </li>
           <li class="col-span-2 flex items-center justify-center">
             <a
-              href={`${base}/profolio/`}
-              class={`${navLinkBase} ${activeNav === "profolio" ? navLinkActive : ""}`}
+              href={`${base}/portfolio/`}
+              class={`${navLinkBase} ${activeNav === "portfolio" ? navLinkActive : ""}`}
             >
-              {t.nav.profolio}
+              {t.nav.portfolio}
             </a>
           </li>
           <li class="col-span-2 flex items-center justify-center">
