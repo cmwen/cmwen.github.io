@@ -29,10 +29,10 @@
     "podcast:help": "uv run podcast-generate --help"
   },
   "dependencies": {
-    "@astrojs/mdx": "^5.0.6",
+    "@astrojs/mdx": "^7.0.0",
     "@astrojs/rss": "^4.0.18",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^6.3.7",
+    "astro": "^7.0.0",
     "dotenv": "^17.4.2",
     "fuse.js": "^7.3.0",
     "github-slugger": "^2.0.0",
@@ -46,8 +46,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
-    "@astrojs/react": "^5.0.5",
-    "@astrojs/sitemap": "^3.7.2",
+    "@astrojs/react": "^6.0.0",
+    "@astrojs/sitemap": "^3.7.3",
     "@eslint/js": "^10.0.1",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/typography": "^0.5.19",
