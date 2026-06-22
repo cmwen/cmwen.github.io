@@ -1,4 +1,5 @@
 import { defineConfig, envField } from "astro/config";
+import { unified } from "@astrojs/markdown-remark";
 import tailwind from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
@@ -26,15 +27,17 @@ export default defineConfig({
   },
   integrations: [react(), mdx(), sitemap()],
   markdown: {
-    remarkPlugins: [
-      remarkToc,
-      [
-        remarkCollapse,
-        {
-          test: "Table of contents",
-        },
+    processor: unified({
+      remarkPlugins: [
+        remarkToc,
+        [
+          remarkCollapse,
+          {
+            test: "Table of contents",
+          },
+        ],
       ],
-    ],
+    }),
     shikiConfig: {
       theme: "one-dark-pro",
       wrap: true,
