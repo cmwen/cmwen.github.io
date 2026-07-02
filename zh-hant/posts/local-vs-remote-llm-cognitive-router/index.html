@@ -1,0 +1,919 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/local-vs-remote-llm-cognitive-router/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/local-vs-remote-llm-cognitive-router/"><meta name="generator" content="Astro v7.0.4"><!-- General Meta Tags --><title>本地還是遠端 LLM？不要只靠直覺，打造認知路由器 | Min Wen</title><meta name="title" content="本地還是遠端 LLM？不要只靠直覺，打造認知路由器 | Min Wen"><meta name="description" content="一套實用框架，從風險、隱私、上下文、成本、可驗證性與可逆性，判斷任務該交給本地 LLM、遠端模型，還是混合編排。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="本地還是遠端 LLM？不要只靠直覺，打造認知路由器 | Min Wen"><meta property="og:description" content="一套實用框架，從風險、隱私、上下文、成本、可驗證性與可逆性，判斷任務該交給本地 LLM、遠端模型，還是混合編排。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/"><meta property="og:image" content="https://cmwen.github.io/posts/%E6%9C%AC%E5%9C%B0%E9%82%84%E6%98%AF%E9%81%A0%E7%AB%AF-llm%E4%B8%8D%E8%A6%81%E5%8F%AA%E9%9D%A0%E7%9B%B4%E8%A6%BA%E6%89%93%E9%80%A0%E8%AA%8D%E7%9F%A5%E8%B7%AF%E7%94%B1%E5%99%A8.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-07-02T10:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/"><meta property="twitter:title" content="本地還是遠端 LLM？不要只靠直覺，打造認知路由器 | Min Wen"><meta property="twitter:description" content="一套實用框架，從風險、隱私、上下文、成本、可驗證性與可逆性，判斷任務該交給本地 LLM、遠端模型，還是混合編排。"><meta property="twitter:image" content="https://cmwen.github.io/posts/%E6%9C%AC%E5%9C%B0%E9%82%84%E6%98%AF%E9%81%A0%E7%AB%AF-llm%E4%B8%8D%E8%A6%81%E5%8F%AA%E9%9D%A0%E7%9B%B4%E8%A6%BA%E6%89%93%E9%80%A0%E8%AA%8D%E7%9F%A5%E8%B7%AF%E7%94%B1%E5%99%A8.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.2i1RQzKf.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.C8T9uHCG.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: \672C\5730\9084\662F\9060\7AEF-llm\4E0D\8981\53EA\9760\76F4\89BA\6253\9020\8A8D\77E5\8DEF\7531\5668; }@layer astro { ::view-transition-old(\672C\5730\9084\662F\9060\7AEF-llm\4E0D\8981\53EA\9760\76F4\89BA\6253\9020\8A8D\77E5\8DEF\7531\5668) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\672C\5730\9084\662F\9060\7AEF-llm\4E0D\8981\53EA\9760\76F4\89BA\6253\9020\8A8D\77E5\8DEF\7531\5668) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\672C\5730\9084\662F\9060\7AEF-llm\4E0D\8981\53EA\9760\76F4\89BA\6253\9020\8A8D\77E5\8DEF\7531\5668) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\672C\5730\9084\662F\9060\7AEF-llm\4E0D\8981\53EA\9760\76F4\89BA\6253\9020\8A8D\77E5\8DEF\7531\5668) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: llm; }@layer astro { ::view-transition-old(llm) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(llm) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(llm) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(llm) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: local-first; }@layer astro { ::view-transition-old(local-first) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(local-first) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(local-first) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(local-first) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: automation; }@layer astro { ::view-transition-old(automation) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(automation) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(automation) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(automation) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: agent-orchestration; }@layer astro { ::view-transition-old(agent-orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(agent-orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(agent-orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(agent-orchestration) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-7"] { view-transition-name: privacy; }@layer astro { ::view-transition-old(privacy) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(privacy) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(privacy) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(privacy) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-7"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-7"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-7"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-7"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">跳至內容</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">文章</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">標籤</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">作品集</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">工具箱</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">關於</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="搜尋" title="搜尋"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">搜尋</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/posts/local-vs-remote-llm-cognitive-router/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">EN</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mb-2 mt-8 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>返回</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(c,s,d)=>s in c?g(c,s,{enumerable:!0,configurable:!0,writable:!0,value:d}):c[s]=d;var l=(c,s,d)=>w(c,typeof s!="symbol"?s+"":s,d);var E=new Set(["__proto__","constructor","prototype"]);{let c={0:t=>y(t),1:t=>d(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(d(t)),5:t=>new Set(d(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in c?c[p](e):void 0},d=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let n=this.querySelectorAll("astro-slot"),r={},i=this.querySelectorAll("template[data-astro-template]");for(let o of i){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of n){let a=o.closest(this.tagName);a!=null&&a.isSameNode(this)&&(r[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let a=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(a+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${a}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,r,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),n.disconnect(),this.childrenConnectedCallback()},n=new MutationObserver(()=>{var r;((r=this.lastChild)==null?void 0:r.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});n.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let n=new URL(e,document.baseURI),r=`astro-retry=${Date.now()}`,i=n.hash.replace(/^#/,"");return n.hash=i?`${i}&${r}`:r,n.toString()}async importWithRetry(e){try{return await import(e)}catch(n){return await new Promise(r=>setTimeout(r,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let n=this.getAttribute("component-url"),r=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:n}});this.dispatchEvent(r)&&console.error(`[astro-island] Error hydrating ${n}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),n=this.getAttribute("client");if(Astro[n]===void 0){window.addEventListener(`astro:${n}`,()=>this.start(),{once:!0});return}try{await Astro[n](async()=>{let r=this.getAttribute("renderer-url");try{let[i,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),r?this.importWithRetry(r):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=i;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=i[h]}return this.hydrator=u,this.hydrate}catch(i){return this.handleHydrationError(i),()=>{}}},e,this)}catch(r){this.handleHydrationError(r)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="ZwOdYT" component-url="/_astro/AudioPlayer.CYfr8_kk.js" component-export="default" renderer-url="/_astro/client.DW6xmEpB.js" props="{&quot;slug&quot;:[0,&quot;local-vs-remote-llm-cognitive-router&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="ZRKNR2" component-url="/_astro/ChatLink.BVPfwOf5.js" component-export="default" renderer-url="/_astro/client.DW6xmEpB.js" props="{&quot;title&quot;:[0,&quot;本地還是遠端 LLM？不要只靠直覺，打造認知路由器&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;本地與遠端 LLM 決策框架&quot;],[0,&quot;混合 AI 系統的認知路由器&quot;],[0,&quot;隱私感知的 LLM 路由&quot;],[0,&quot;遠端規劃本地執行&quot;],[0,&quot;本地初稿遠端審查&quot;],[0,&quot;LLM 任務風險評分&quot;],[0,&quot;AI agent 工具權限閘道&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-2xl font-semibold text-skin-accent">本地還是遠端 LLM？不要只靠直覺，打造認知路由器</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-07-02T10:00:00.000Z">Jul 2, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">10:00 AM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>「這個任務應該用本地 LLM 還是遠端 LLM？」這個問題看似簡單，但其實問錯了層級。</p>
+<p>更好的問題是：<strong>這個任務需要哪一種思考？它會碰到什麼資料？如果模型做錯，錯誤是否可以接受？</strong></p>
+<p>本地模型不只是便宜版的前沿模型。遠端模型也不應該只是「比較聰明的預設選項」。在真正可長期運作的工作流裡，它們應該扮演不同角色，並由一層小型的大腦作業系統協調。我會把這一層稱為 <strong>Cognitive Router，認知路由器</strong>：它根據風險、成本、隱私、上下文、可逆性與不確定性來分派工作。</p>
+<p>目標不是盡量不用遠端模型，而是把遠端模型的高級注意力用在最值得的地方。</p>
+<h2 id="本地與遠端模型應該有不同職責">本地與遠端模型應該有不同職責</h2>
+<p>很多本地與遠端模型的討論，最後都變成「小模型 vs 大模型」。這會錯過重點。真正有用的區分是角色。</p>
+<h3 id="本地-llm-適合做什麼">本地 LLM 適合做什麼</h3>
+<p>本地模型更靠近你的環境。它可以讀本地檔案、檢查 log、執行命令，也可以接觸敏感上下文，而不必把資料送出機器。</p>
+<p>我會讓本地模型扮演這些角色：</p>
+<ul>
+<li><strong>偵察兵</strong>：快速檢查任務、檔案樹、錯誤訊息或 log，判斷問題類型。</li>
+<li><strong>壓縮器</strong>：把大型 repo、email thread 或 log 壓縮成遠端模型真正需要看的精簡摘要。</li>
+<li><strong>隱私清洗器</strong>：在任何資料送出機器前，移除 secret、token、內部 hostname、客戶資料與個人資訊。</li>
+<li><strong>執行工人</strong>：套用計畫、修改檔案、跑測試、重試，並產生 patch。</li>
+<li><strong>快取大腦</strong>：處理已知、重複、低風險、模板化任務。</li>
+<li><strong>初稿生成器</strong>：先產生粗略版本，再交給更強的模型審查。</li>
+</ul>
+<p>這代表即使本地模型推理能力較弱，它仍然很有價值。它可以大幅減少遠端模型需要看到的原始上下文。</p>
+<h3 id="遠端-llm-適合做什麼">遠端 LLM 適合做什麼</h3>
+<p>遠端前沿模型不應該被浪費在小改動上。它更適合需要判斷的任務。</p>
+<p>我會讓遠端模型扮演這些角色：</p>
+<ul>
+<li><strong>架構師</strong>：跨檔案、跨系統、跨產品限制與長期維護成本做判斷。</li>
+<li><strong>審查者</strong>：審查本地輸出，找出品質問題、隱藏風險與邏輯漏洞。</li>
+<li><strong>規劃者</strong>：把模糊目標拆成具體步驟、驗收條件與回滾策略。</li>
+<li><strong>衝突仲裁者</strong>：當測試、文件、本地模型輸出與使用者意圖互相衝突時，判斷下一步。</li>
+<li><strong>新問題處理者</strong>：處理不熟悉的框架、混亂的技術債、模糊需求或需要創造力的設計工作。</li>
+</ul>
+<p>簡單說：<strong>本地處理量，遠端處理判斷。</strong></p>
+<h2 id="路由不是二選一">路由不是二選一</h2>
+<p>實用的系統不應該只有「本地」和「遠端」兩種選項，而應該有多種路由模式。</p>
+<h3 id="模式一local-only">模式一：Local Only</h3>
+<p>適合低風險、明確、可逆、重複性高的任務。</p>
+<p>例如：</p>
+<ul>
+<li>修改 JSON 或 YAML config。</li>
+<li>更新 README 的一小段文字。</li>
+<li>根據既有模板產生 boilerplate。</li>
+<li>對單一檔案做明確 refactor。</li>
+<li>格式化結構化資料。</li>
+<li>依照已知模式產生簡單 workflow 草稿。</li>
+</ul>
+<p>判斷標準很簡單：任務清楚、上下文少、失敗成本低，而且可以快速測試，本地就足夠。</p>
+<h3 id="模式二remote-only">模式二：Remote Only</h3>
+<p>適合高抽象度、高風險或高度不確定的任務。</p>
+<p>例如：</p>
+<ul>
+<li>系統架構設計。</li>
+<li>安全性審查。</li>
+<li>Migration strategy。</li>
+<li>Agent workflow 設計。</li>
+<li>跨 repo 技術債整理。</li>
+<li>大型 refactor 前的規劃。</li>
+<li>新技術選型。</li>
+</ul>
+<p>這些任務不是單純改字或補程式碼，而是需要深度推理與取捨。</p>
+<h3 id="模式三local-first-remote-escalation">模式三：Local First, Remote Escalation</h3>
+<p>這是日常工作最實用的預設模式。</p>
+<p>流程像這樣：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>User task</span></span>
+<span class="line"><span>  -> 本地 LLM 檢查並產生初稿</span></span>
+<span class="line"><span>  -> 本地 LLM 評估 confidence、risk、missing context</span></span>
+<span class="line"><span>  -> 低風險：本地完成</span></span>
+<span class="line"><span>  -> 高風險或不確定：升級遠端</span></span></code></pre>
+<p>本地模型不能只回答，它應該輸出路由評估：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "confidence"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">0.72</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "risk"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"medium"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "missing_context"</span><span style="color:#ABB2BF">: [</span><span style="color:#98C379">"package manager"</span><span style="color:#ABB2BF">, </span><span style="color:#98C379">"test command"</span><span style="color:#ABB2BF">],</span></span>
+<span class="line"><span style="color:#E06C75">  "should_escalate"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "reason"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"The change touches cross-file dependencies"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>模型自己的信心不一定可靠，但結構化自評可以讓 router 跟外部訊號一起判斷。</p>
+<h3 id="模式四remote-plan-local-execute">模式四：Remote Plan, Local Execute</h3>
+<p>這是控制隱私與成本最重要的模式。</p>
+<p>遠端模型負責：</p>
+<ul>
+<li>分析。</li>
+<li>設計。</li>
+<li>拆解步驟。</li>
+<li>定義驗收標準。</li>
+<li>指出風險。</li>
+<li>設計回滾策略。</li>
+</ul>
+<p>本地模型負責：</p>
+<ul>
+<li>讀檔。</li>
+<li>改檔。</li>
+<li>跑測試。</li>
+<li>產生 patch。</li>
+<li>根據錯誤局部重試。</li>
+</ul>
+<p>例如要把 Node 14 專案升級到 Node 22，遠端模型不需要看到整個 repository。它可以先產生一份檢查清單：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>檢查以下風險：</span></span>
+<span class="line"><span>1. Babel</span></span>
+<span class="line"><span>2. Jest</span></span>
+<span class="line"><span>3. ESLint</span></span>
+<span class="line"><span>4. peerDependencies</span></span>
+<span class="line"><span>5. node-sass</span></span>
+<span class="line"><span>6. ESM versus CommonJS</span></span>
+<span class="line"><span>7. CI image versions</span></span></code></pre>
+<p>然後由本地模型掃描 repo，把清單對應到實際檔案與 findings。</p>
+<h3 id="模式五local-draft-remote-review">模式五：Local Draft, Remote Review</h3>
+<p>這是品質與成本很平衡的模式。</p>
+<p>本地模型先產生 patch、草稿或 script。遠端模型只看 diff、summary 和 test result，扮演 reviewer，而不是從零開始寫。</p>
+<p>適合：</p>
+<ul>
+<li>PR review。</li>
+<li>Code patch。</li>
+<li>Prompt 改寫。</li>
+<li>Technical writing。</li>
+<li>Migration script。</li>
+<li>Shell script。</li>
+<li>GitHub Actions workflow。</li>
+</ul>
+<p>遠端模型不一定要再寫一份答案。很多時候，它最有價值的角色是反對者。</p>
+<h3 id="模式六shadow-parallelism">模式六：Shadow Parallelism</h3>
+<p>對高價值決策，可以本地與遠端並行。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>同一任務</span></span>
+<span class="line"><span>  -> 本地模型給快速答案</span></span>
+<span class="line"><span>  -> 遠端模型給深度答案</span></span>
+<span class="line"><span>  -> Router 或 judge 比較一致性、衝突、證據與風險</span></span></code></pre>
+<p>這很適合架構選型、長時間卡住的 debugging、AI agent workflow 設計，以及不能亂猜的初步分析。</p>
+<p>價值不在於哪個模型永遠比較聰明，而是不同模型的錯誤型態不同。本地模型可能太快下結論，遠端模型可能過度設計或忽略本地限制。把兩者並排比較，反而能看見雙方盲點。</p>
+<h2 id="十個真正重要的路由指標">十個真正重要的路由指標</h2>
+<p>認知路由器需要可觀察的輸入。我會從以下十個維度評估每個任務。</p>
+<h3 id="1-task-entropy任務熵">1. Task entropy，任務熵</h3>
+<p>低熵任務有明確輸入、固定輸出格式，而且語意模糊少。這類任務通常可以用規則、模板或本地模型完成。</p>
+<p>高熵任務則有不完整意圖、多種可能解法與重要取捨，可能牽涉架構、商業風險、安全或長期維護。這類任務應該偏向遠端。</p>
+<h3 id="2-blast-radius爆炸半徑">2. Blast radius，爆炸半徑</h3>
+<p>問自己：如果模型做錯，影響範圍多大？</p>
+<p>低 blast radius：</p>
+<ul>
+<li>修改一個 Markdown 檔。</li>
+<li>改 UI copy。</li>
+<li>產生草稿。</li>
+<li>修改非核心 config。</li>
+</ul>
+<p>高 blast radius：</p>
+<ul>
+<li>改 auth。</li>
+<li>改 payment。</li>
+<li>改 database migration。</li>
+<li>改 deployment pipeline。</li>
+<li>刪檔。</li>
+<li>碰 production secret。</li>
+<li>大範圍 refactor。</li>
+</ul>
+<p>高 blast radius 應該觸發遠端審查，甚至 human approval。</p>
+<h3 id="3-reversibility可逆性">3. Reversibility，可逆性</h3>
+<p>可逆任務可以透過 git diff、草稿刪除或暫時 branch 回滾。</p>
+<p>不可逆任務包括寄 email、deploy、merge PR、刪資料、改 production config 或公開發布。</p>
+<p>不可逆操作不應該讓本地模型單獨決定。</p>
+<h3 id="4-context-spread上下文分散度">4. Context spread，上下文分散度</h3>
+<p>如果答案只依賴一個檔案，本地通常可以處理。如果需要理解 dependency、CI、runtime log、production behavior、舊 issue、PR history 和設計文件，就應該升級到遠端規劃或遠端審查。</p>
+<h3 id="5-privacy-sensitivity隱私敏感度">5. Privacy sensitivity，隱私敏感度</h3>
+<p>我會這樣分類資料：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>P0 Public: public repositories and public documents</span></span>
+<span class="line"><span>P1 Internal: private notes and non-sensitive private repositories</span></span>
+<span class="line"><span>P2 Sensitive: email, calendar, financial data, customer data</span></span>
+<span class="line"><span>P3 Secret: API keys, tokens, passwords, private certificates</span></span></code></pre>
+<p>路由策略：</p>
+<ul>
+<li><strong>P0</strong> 可以送遠端。</li>
+<li><strong>P1</strong> 可以摘要後送遠端。</li>
+<li><strong>P2</strong> 應該本地優先，必要時先 redaction 再遠端推理。</li>
+<li><strong>P3</strong> 永遠不該送遠端。</li>
+</ul>
+<p>這就是本地 <strong>Privacy Compiler</strong> 有價值的地方：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Raw data -> local scan -> secret removal -> compressed summary -> remote reasoning</span></span></code></pre>
+<p>遠端模型拿到的是抽象後的問題，不是原始敏感資料。</p>
+<h3 id="6-cost-budget成本預算">6. Cost budget，成本預算</h3>
+<p>不要用單次呼叫來決定成本。要把遠端注意力當成預算管理。</p>
+<p>例如：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#E06C75">daily_budget</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  remote_tokens</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">500000</span></span>
+<span class="line"><span style="color:#E06C75">  remote_calls</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">100</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">task_budget</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  small_fix</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">local_only</span></span>
+<span class="line"><span style="color:#E06C75">  debugging</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">max_3_remote_calls</span></span>
+<span class="line"><span style="color:#E06C75">  architecture</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">allow_remote_deep_reasoning</span></span>
+<span class="line"><span style="color:#E06C75">  personal_docs</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">local_first</span></span></code></pre>
+<p>Production incident 可以合理消耗很多遠端呼叫；config typo 不應該消耗任何一次。</p>
+<h3 id="7-confidence-calibration信心校準">7. Confidence calibration，信心校準</h3>
+<p>本地模型應該回報信心，但 router 不應該盲信。</p>
+<p>更好的 confidence 需要混合模型自評與外部訊號：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>confidence =</span></span>
+<span class="line"><span>  model_self_score</span></span>
+<span class="line"><span>  + tests_passed</span></span>
+<span class="line"><span>  + schema_valid</span></span>
+<span class="line"><span>  + lint_passed</span></span>
+<span class="line"><span>  + diff_small</span></span>
+<span class="line"><span>  - touched_critical_files</span></span>
+<span class="line"><span>  - ambiguous_user_goal</span></span>
+<span class="line"><span>  - missing_context</span></span></code></pre>
+<p>「我很有信心」不夠。測試通過、diff 小、schema valid、沒有碰高風險路徑，才更有意義。</p>
+<h3 id="8-verification-availability可驗證性">8. Verification availability，可驗證性</h3>
+<p>如果任務可以快速驗證，本地模型就可以做更多。</p>
+<p>好的驗證訊號包括：</p>
+<ul>
+<li>TypeScript compile。</li>
+<li>Unit test。</li>
+<li>JSON schema validation。</li>
+<li>Markdown lint。</li>
+<li>Snapshot test。</li>
+<li>Dry run。</li>
+<li>AST parsing。</li>
+<li>ShellCheck。</li>
+</ul>
+<p>如果任務很難驗證，例如架構判斷、產品策略、長期維護成本，那更強的遠端推理就更有價值。</p>
+<h3 id="9-novelty新穎度">9. Novelty，新穎度</h3>
+<p>有些任務是熟悉路徑，有些是陌生地形。</p>
+<p>熟悉：</p>
+<ul>
+<li>你常維護的 Astro site。</li>
+<li>固定的 GitHub Pages deployment。</li>
+<li>已知 React 或 Node stack。</li>
+<li>常見 n8n workflow pattern。</li>
+</ul>
+<p>陌生：</p>
+<ul>
+<li>新框架。</li>
+<li>新安全模型。</li>
+<li>新 agent protocol。</li>
+<li>新法規。</li>
+<li>不熟悉的 infra。</li>
+</ul>
+<p>新穎度高時，應該偏向遠端規劃，至少也要遠端審查。</p>
+<h3 id="10-time-criticality時間壓力">10. Time criticality，時間壓力</h3>
+<p>有些任務需要快，有些需要對。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Fast autocomplete -> local</span></span>
+<span class="line"><span>Production incident triage -> local scan plus remote parallel reasoning</span></span>
+<span class="line"><span>Architecture decision -> remote</span></span>
+<span class="line"><span>Simple shell command -> local</span></span>
+<span class="line"><span>Dangerous shell command -> remote review or human confirmation</span></span></code></pre>
+<p>時間壓力不一定代表用最快的模型。有時候代表本地先收集證據，同時讓遠端並行推理。</p>
+<h2 id="一個簡單的路由分數">一個簡單的路由分數</h2>
+<p>可以先用 scoring function 起步：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>remote_score =</span></span>
+<span class="line"><span>  ambiguity * 2</span></span>
+<span class="line"><span>  + blast_radius * 3</span></span>
+<span class="line"><span>  + context_spread * 2</span></span>
+<span class="line"><span>  + privacy_safe_for_remote * 1</span></span>
+<span class="line"><span>  + novelty * 2</span></span>
+<span class="line"><span>  + irreversible_action * 3</span></span>
+<span class="line"><span>  + user_requested_quality * 2</span></span>
+<span class="line"><span>  - local_verifiability * 2</span></span>
+<span class="line"><span>  - repetition * 2</span></span>
+<span class="line"><span>  - cost_pressure * 1</span></span></code></pre>
+<p>然後對應到路由：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>0-3:   Local Only</span></span>
+<span class="line"><span>4-7:   Local First, Remote Review if needed</span></span>
+<span class="line"><span>8-12:  Remote Plan, Local Execute</span></span>
+<span class="line"><span>13+:   Remote Deep Reasoning + Human Approval</span></span></code></pre>
+<p>這不需要第一天就很精準。重點是建立一個可觀察、可調整的決策基準。</p>
+<h2 id="工具權限比模型選擇更重要">工具權限比模型選擇更重要</h2>
+<p>真正危險的不只是模型是否答對，而是模型被允許做什麼。</p>
+<p>我會這樣切分工具權限：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Level 0: Read only</span></span>
+<span class="line"><span>Level 1: Suggest changes</span></span>
+<span class="line"><span>Level 2: Write local files</span></span>
+<span class="line"><span>Level 3: Run tests and commands</span></span>
+<span class="line"><span>Level 4: Git commit</span></span>
+<span class="line"><span>Level 5: Push branch</span></span>
+<span class="line"><span>Level 6: Create PR</span></span>
+<span class="line"><span>Level 7: Merge, deploy, send, or delete</span></span></code></pre>
+<p>本地模型可以有較高的本地讀寫權限，但外部權限較低。遠端模型可以有高推理權限，但不一定有直接執行權。</p>
+<p>比較安全的分工是：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Remote: decides and reviews</span></span>
+<span class="line"><span>Local: executes and touches sensitive environment</span></span>
+<span class="line"><span>Human: approves irreversible actions</span></span></code></pre>
+<p>這比讓遠端模型直接控制所有工具安全很多。</p>
+<h2 id="建立-context-capsule而不是直接傾倒上下文">建立 Context Capsule，而不是直接傾倒上下文</h2>
+<p>遠端模型應該收到高密度上下文，而不是原始雜訊。</p>
+<p>不要把 5000 行 log 全部送給遠端。先讓本地模型聚類錯誤、抽出最相關的 30 行、建立 timeline、移除 secret，再請遠端模型推理 root cause。</p>
+<p>對 coding work，本地模型可以產生 <strong>Context Capsule</strong>：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "task"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Upgrade Node 14 project to Node 22"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "repo_type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"React + Redux + Jest + Babel"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "critical_files"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">    "package.json"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "babel.config.js"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "jest.config.js"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    ".github/workflows/ci.yml"</span></span>
+<span class="line"><span style="color:#ABB2BF">  ],</span></span>
+<span class="line"><span style="color:#E06C75">  "detected_risks"</span><span style="color:#ABB2BF">: [</span></span>
+<span class="line"><span style="color:#98C379">    "node-sass present"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "old babel-jest"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "enzyme dependency"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#98C379">    "CommonJS config files"</span></span>
+<span class="line"><span style="color:#ABB2BF">  ],</span></span>
+<span class="line"><span style="color:#E06C75">  "test_status"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"currently failing"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "error_summary"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"..."</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "secrets_removed"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "request_to_remote"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"Generate migration strategy and risk-prioritized steps"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>這能讓遠端模型基於壓縮後的證據推理，而不是直接吃整個 repo。</p>
+<h2 id="讓每次模型呼叫都有契約">讓每次模型呼叫都有契約</h2>
+<p>每次模型呼叫都應該有 contract。</p>
+<p>本地模型應該回傳結構化路由資料：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "task_type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"code_change"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "risk_level"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"medium"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "requires_remote"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "required_files"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "proposed_action"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "verification_plan"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "uncertainties"</span><span style="color:#ABB2BF">: []</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>遠端模型也應該被限制：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "plan"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "risk_assessment"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "commands_to_run"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "expected_outputs"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "rollback_plan"</span><span style="color:#ABB2BF">: [],</span></span>
+<span class="line"><span style="color:#E06C75">  "do_not_do"</span><span style="color:#ABB2BF">: []</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>沒有 contract，routing 就會變成靠感覺。有 contract，router 才能機械式決策。</p>
+<h2 id="加入升級與降級觸發器">加入升級與降級觸發器</h2>
+<p>遇到這些情況，應該從本地升級遠端：</p>
+<ul>
+<li>測試連續失敗兩次。</li>
+<li>修改超過 N 個檔案。</li>
+<li>任務碰到 auth、payment、security、deployment 或 database migration。</li>
+<li>需要刪除資料。</li>
+<li>錯誤不熟悉。</li>
+<li>使用者目標不清楚。</li>
+<li>本地 confidence 低於 0.7。</li>
+<li>Diff 超過 200 行。</li>
+<li>找不到相關文件。</li>
+<li>模型產生互相矛盾的假設。</li>
+</ul>
+<p>遇到這些情況，可以降級到本地：</p>
+<ul>
+<li>任務完全匹配既有 template。</li>
+<li>有明確 schema。</li>
+<li>只涉及單一檔案。</li>
+<li>Dry run 成功。</li>
+<li>測試快速通過。</li>
+<li>沒有敏感資料。</li>
+<li>系統以前成功處理過類似任務。</li>
+</ul>
+<h2 id="記憶會讓路由越來越好">記憶會讓路由越來越好</h2>
+<p>Router 應該記錄每次決策與結果：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "task"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"modify github action"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "route"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"local_first_remote_review"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "local_model"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"qwen-7b"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "remote_model"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"flagship"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "cost"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">0.13</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "time"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"45s"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "tests_passed"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">true</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "human_correction"</span><span style="color:#ABB2BF">: </span><span style="color:#D19A66">false</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "final_outcome"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"success"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>長期下來，它可以學到：</p>
+<ul>
+<li>哪些任務本地模型常做錯。</li>
+<li>哪些任務其實不需要遠端審查。</li>
+<li>哪些 prompt pattern 成本太高。</li>
+<li>哪些工具最常失敗。</li>
+<li>哪些 repo 區域需要更強推理。</li>
+</ul>
+<p>這會讓 router 從 rule-based script 慢慢變成 adaptive system。</p>
+<h2 id="一個可落地的-mvp">一個可落地的 MVP</h2>
+<p>不要一開始就做巨大平台。先從一個小的 <code>llm-router.yaml</code> 開始：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#E06C75">models</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  local_fast</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    provider</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">ollama</span></span>
+<span class="line"><span style="color:#E06C75">    role</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">scout_executor</span></span>
+<span class="line"><span style="color:#E06C75">    privacy</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">high</span></span>
+<span class="line"><span style="color:#E06C75">    cost</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">zero</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  remote_smart</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    provider</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">remote</span></span>
+<span class="line"><span style="color:#E06C75">    role</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">architect_reviewer</span></span>
+<span class="line"><span style="color:#E06C75">    privacy</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">medium</span></span>
+<span class="line"><span style="color:#E06C75">    cost</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">high</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">privacy</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  never_send_remote</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">".env"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">"*.pem"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">"secrets/**"</span></span>
+<span class="line"><span style="color:#ABB2BF">    - </span><span style="color:#98C379">"private/**"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">critical_paths</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">"auth/**"</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">"payment/**"</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">"database/migrations/**"</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">".github/workflows/**"</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">"infra/**"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">routes</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">  local_only</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    conditions</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">files_touched &#x3C;= 1</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">risk &#x3C;= low</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">reversible == true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  local_first</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    conditions</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">risk &#x3C;= medium</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">context_spread &#x3C;= medium</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  remote_plan_local_execute</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    conditions</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">context_spread == high</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">ambiguity == high</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">  remote_review_required</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#E06C75">    conditions</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">touches_critical_path == true</span></span>
+<span class="line"><span style="color:#ABB2BF">      - </span><span style="color:#98C379">irreversible == true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E06C75">escalation</span><span style="color:#ABB2BF">:</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">test_failed_count >= 2</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">files_touched > 5</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">confidence &#x3C; 0.7</span></span>
+<span class="line"><span style="color:#ABB2BF">  - </span><span style="color:#98C379">security_keywords_detected == true</span></span></code></pre>
+<p>這已經足以讓 routing 顯性化，也能強迫每次升級都有理由。</p>
+<h2 id="最後的原則">最後的原則</h2>
+<p>未來不是「便宜任務用本地模型，困難任務用遠端模型」。這太粗糙了。</p>
+<p>更好的架構是一套 hybrid cognitive system：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Local model  = fast, private, cheap, close to the environment</span></span>
+<span class="line"><span>Remote model = deep, abstract, judgment-oriented, good at review</span></span>
+<span class="line"><span>Router       = decision center</span></span>
+<span class="line"><span>Tool layer   = reality check</span></span>
+<span class="line"><span>Human        = high-risk approver</span></span></code></pre>
+<p>最有價值的設計模式是：</p>
+<p><strong>遠端模型產生高品質規則、計畫、審查與判斷；本地模型把這些東西變成可重複、可執行、可驗證的日常流程。</strong></p>
+<p>這樣你就不需要每次都糾結「到底該用本地還是遠端 LLM」。真正的答案是：先設計一個會判斷的 router。</p></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>ai</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/zh-hant/tags/llm/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>llm</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/zh-hant/tags/local-first/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>local-first</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/zh-hant/tags/automation/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>automation</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/zh-hant/tags/agent-orchestration/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>agent-orchestration</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-7" href="/zh-hant/tags/privacy/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>privacy</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline whitespace-nowrap py-1 hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>回到頂端</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/local-vs-remote-llm-cognitive-router/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script data-mermaid-module="data:video/mp2t;base64,aW1wb3J0IG1lcm1haWQgZnJvbSAibWVybWFpZCI7CmltcG9ydCB0eXBlIHsgTWVybWFpZENvbmZpZyB9IGZyb20gIm1lcm1haWQiOwoKY29uc3QgREVGQVVMVF9DT05GSUc6IE1lcm1haWRDb25maWcgPSB7CiAgc3RhcnRPbkxvYWQ6IGZhbHNlLAogIHNlY3VyaXR5TGV2ZWw6ICJsb29zZSIsCiAgdGhlbWU6ICJuZXV0cmFsIiwKICB0aGVtZVZhcmlhYmxlczogewogICAgcHJpbWFyeUNvbG9yOiAiIzBlYTVlOSIsCiAgICBwcmltYXJ5Qm9yZGVyQ29sb3I6ICIjMDI4NGM3IiwKICAgIGxpbmVDb2xvcjogIiM5NGEzYjgiLAogICAgZm9udFNpemU6ICIxNnB4IiwKICAgIGZvbnRGYW1pbHk6CiAgICAgICJJbnRlciwgdWktc2Fucy1zZXJpZiwgc3lzdGVtLXVpLCAtYXBwbGUtc3lzdGVtLCBCbGlua01hY1N5c3RlbUZvbnQiLAogIH0sCn07CgpsZXQgaW5pdGlhbGl6ZWQgPSBmYWxzZTsKCmZ1bmN0aW9uIGVuc3VyZUluaXRpYWxpemVkKCkgewogIGlmICghaW5pdGlhbGl6ZWQpIHsKICAgIG1lcm1haWQuaW5pdGlhbGl6ZShERUZBVUxUX0NPTkZJRyk7CiAgICBpbml0aWFsaXplZCA9IHRydWU7CiAgfQp9CgpmdW5jdGlvbiBjcmVhdGVEaWFncmFtQ29udGFpbmVyKCk6IEhUTUxEaXZFbGVtZW50IHsKICBjb25zdCBjb250YWluZXIgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCJkaXYiKTsKICBjb250YWluZXIuY2xhc3NOYW1lID0KICAgICJtZXJtYWlkLWRpYWdyYW0gbXktNiBvdmVyZmxvdy14LWF1dG8gcm91bmRlZCBib3JkZXIgYm9yZGVyLXNraW4tbGluZSBiZy1za2luLWNhcmQgcC00IjsKICAvLyBFbnN1cmUgU1ZHcyBpbnNpZGUgZGlzcGxheSBwcm9wZXJseQogIGNvbnRhaW5lci5zdHlsZS5jc3NUZXh0ID0gIm1pbi1oZWlnaHQ6IDEwMHB4OyI7CiAgcmV0dXJuIGNvbnRhaW5lcjsKfQoKZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlbmRlck1lcm1haWREaWFncmFtcygKICBibG9ja3M6IEhUTUxFbGVtZW50W10KKTogUHJvbWlzZTx2b2lkPiB7CiAgZW5zdXJlSW5pdGlhbGl6ZWQoKTsKCiAgYXdhaXQgUHJvbWlzZS5hbGwoCiAgICBibG9ja3MubWFwKGFzeW5jIChwcmUsIGluZGV4KSA9PiB7CiAgICAgIGNvbnN0IGNvZGUgPSBwcmUucXVlcnlTZWxlY3RvcigiY29kZSIpOwogICAgICBjb25zdCBjaGFydERlZmluaXRpb24gPSBjb2RlPy50ZXh0Q29udGVudD8udHJpbSgpOwoKICAgICAgaWYgKCFjaGFydERlZmluaXRpb24pIHsKICAgICAgICByZXR1cm47CiAgICAgIH0KCiAgICAgIGNvbnN0IGNvbnRhaW5lciA9IGNyZWF0ZURpYWdyYW1Db250YWluZXIoKTsKICAgICAgY29uc3QgcmVuZGVySWQgPSBgbWVybWFpZC0ke0RhdGUubm93KCl9LSR7aW5kZXh9YDsKCiAgICAgIHRyeSB7CiAgICAgICAgY29uc3QgeyBzdmcsIGJpbmRGdW5jdGlvbnMgfSA9IGF3YWl0IG1lcm1haWQucmVuZGVyKAogICAgICAgICAgcmVuZGVySWQsCiAgICAgICAgICBjaGFydERlZmluaXRpb24KICAgICAgICApOwogICAgICAgIGNvbnRhaW5lci5pbm5lckhUTUwgPSBzdmc7CgogICAgICAgIC8vIEZpeCBTVkcgc2l6aW5nIC0gZW5zdXJlIGl0J3MgdmlzaWJsZSBhbmQgcHJvcGVybHkgc2NhbGVkCiAgICAgICAgY29uc3Qgc3ZnRWxlbWVudCA9IGNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKCJzdmciKTsKICAgICAgICBpZiAoc3ZnRWxlbWVudCkgewogICAgICAgICAgLy8gU2V0IGV4cGxpY2l0IHdpZHRoIHRvIDEwMCUgYW5kIGxldCBoZWlnaHQgc2NhbGUgcHJvcG9ydGlvbmFsbHkKICAgICAgICAgIHN2Z0VsZW1lbnQuc3R5bGUuY3NzVGV4dCA9CiAgICAgICAgICAgICJ3aWR0aDogMTAwJTsgaGVpZ2h0OiBhdXRvOyBtYXgtd2lkdGg6IDEwMCU7IjsKICAgICAgICAgIC8vIFJlbW92ZSBhbnkgZml4ZWQgd2lkdGgvaGVpZ2h0IGF0dHJpYnV0ZXMgdGhhdCBtaWdodCBpbnRlcmZlcmUKICAgICAgICAgIHN2Z0VsZW1lbnQucmVtb3ZlQXR0cmlidXRlKCJ3aWR0aCIpOwogICAgICAgICAgc3ZnRWxlbWVudC5yZW1vdmVBdHRyaWJ1dGUoImhlaWdodCIpOwogICAgICAgIH0KCiAgICAgICAgYmluZEZ1bmN0aW9ucz8uKGNvbnRhaW5lcik7CiAgICAgICAgcHJlLnJlcGxhY2VXaXRoKGNvbnRhaW5lcik7CiAgICAgIH0gY2F0Y2ggKGVycm9yKSB7CiAgICAgICAgY29uc29sZS5lcnJvcigiRmFpbGVkIHRvIHJlbmRlciBtZXJtYWlkIGRpYWdyYW0iLCBlcnJvcik7CiAgICAgICAgY29uc3QgZXJyb3JXcmFwcGVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgiZGl2Iik7CiAgICAgICAgZXJyb3JXcmFwcGVyLmNsYXNzTmFtZSA9CiAgICAgICAgICAibWVybWFpZC1lcnJvciBib3JkZXIgYm9yZGVyLXJlZC0zMDAgYmctcmVkLTUwIHAtMyB0ZXh0LXNtIHRleHQtcmVkLTcwMCI7CiAgICAgICAgZXJyb3JXcmFwcGVyLnRleHRDb250ZW50ID0gYE1lcm1haWQgcmVuZGVyaW5nIGVycm9yOiAke2Vycm9yIGluc3RhbmNlb2YgRXJyb3IgPyBlcnJvci5tZXNzYWdlIDogU3RyaW5nKGVycm9yKX1gOwogICAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChlcnJvcldyYXBwZXIpOwogICAgICAgIHByZS5yZXBsYWNlV2l0aChjb250YWluZXIpOwogICAgICB9CiAgICB9KQogICk7Cn0K">
+  const mermaidModuleUrl = document.currentScript?.getAttribute(
+    "data-mermaid-module"
+  );
+
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Initialize Mermaid diagrams in code blocks */
+  async function initMermaidDiagrams() {
+    /** @type {Set<HTMLElement>} */
+    const mermaidPreBlocks = new Set();
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
+      const pre = code.closest("pre");
+      if (pre instanceof HTMLElement) {
+        mermaidPreBlocks.add(pre);
+      }
+    });
+
+    if (mermaidPreBlocks.size === 0) return;
+    if (!mermaidModuleUrl) {
+      console.warn("Mermaid module URL missing");
+      return;
+    }
+
+    const { renderMermaidDiagrams } = await import(mermaidModuleUrl);
+    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+  }
+
+  // Run on initial page load
+  initMermaidDiagrams();
+
+  // Re-run after client-side page navigation
+  document.addEventListener("astro:page-load", () => {
+    initMermaidDiagrams();
+  });
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script>
