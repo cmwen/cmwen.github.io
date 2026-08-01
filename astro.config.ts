@@ -44,6 +44,12 @@ export default defineConfig({
     },
   },
   vite: {
+    // `astro check` runs with NODE_ENV=production. Keep its optimized React
+    // runtime separate so it cannot overwrite a running dev server's jsxDEV.
+    cacheDir:
+      process.env.NODE_ENV === "production"
+        ? "node_modules/.vite-production"
+        : "node_modules/.vite-development",
     plugins: [tailwind()],
     resolve: {
       // Ensure a single React instance between renderer and components
