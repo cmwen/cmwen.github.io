@@ -9,6 +9,7 @@
     --color-text-base: 40, 39, 40;
     --color-text-muted: 88, 96, 92;
     --color-accent: 16, 185, 129; /* emerald / green */
+    --color-link: 4, 120, 87;
     --color-card: 236, 251, 240;
     --color-card-muted: 214, 238, 220;
     --color-border: 220, 233, 220;
@@ -19,6 +20,7 @@
     --color-text-base: 236, 241, 244;
     --color-text-muted: 196, 206, 208;
     --color-accent: 16, 185, 129; /* emerald / green */
+    --color-link: 52, 211, 153;
     --color-card: 24, 30, 40;
     --color-card-muted: 36, 60, 48;
     --color-border: 38, 50, 40;
@@ -67,7 +69,7 @@
     --tw-prose-body: rgb(var(--color-text-base));
     --tw-prose-headings: rgb(var(--color-text-base));
     --tw-prose-bold: rgb(var(--color-text-base));
-    --tw-prose-links: rgb(var(--color-text-base));
+    --tw-prose-links: rgb(var(--color-link));
     --tw-prose-links-hover: rgb(var(--color-accent));
     --tw-prose-captions: rgb(var(--color-text-base) / 0.7);
     --tw-prose-code: rgb(var(--color-text-base));
@@ -130,14 +132,16 @@
   .prose hr {
     border-color: rgb(var(--color-border));
   }
-  .prose a {
-    word-break: break-word;
+  .mermaid-diagram {
     color: rgb(var(--color-text-base));
-    text-decoration-style: dashed;
-    text-underline-offset: 2rem;
   }
-  .prose a:hover {
-    color: rgb(var(--color-accent));
+  .mermaid-diagram svg.mermaid-svg {
+    display: block;
+    fill: initial;
+  }
+  .prose .mermaid-diagram :where(p) {
+    margin: 0;
+    color: inherit;
   }
   .prose thead th:first-child,
   tbody td:first-child,
@@ -216,11 +220,31 @@
 }
 
 @layer utilities {
+  .prose {
+    --tw-prose-links: rgb(var(--color-link));
+    --tw-prose-links-hover: rgb(var(--color-accent));
+  }
+  .prose a {
+    word-break: break-word;
+    color: rgb(var(--color-link));
+    text-decoration-color: rgb(var(--color-link) / 0.75);
+    text-decoration-style: solid;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+    text-decoration-skip-ink: auto;
+  }
+  .prose a:hover {
+    color: rgb(var(--color-accent));
+    text-decoration-color: currentColor;
+  }
+  .prose a:focus-visible {
+    outline-color: rgb(var(--color-accent));
+  }
   html[data-theme="dark"] .prose {
     --tw-prose-body: rgb(var(--color-text-base));
     --tw-prose-headings: rgb(var(--color-text-base));
     --tw-prose-bold: rgb(var(--color-text-base));
-    --tw-prose-links: rgb(var(--color-text-base));
+    --tw-prose-links: rgb(var(--color-link));
     --tw-prose-links-hover: rgb(var(--color-accent));
     --tw-prose-captions: rgb(var(--color-text-base) / 0.7);
   }

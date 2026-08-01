@@ -62,9 +62,6 @@ const layoutProps = {
   lang,
   alternates,
 };
-
-const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
-  .default;
 ---
 
 <Layout {...layoutProps}>
@@ -76,7 +73,7 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
 
   <div class="mx-auto flex w-full max-w-7xl justify-start px-2">
     <button
-      class="focus-outline mb-2 mt-8 flex hover:opacity-75"
+      class="focus-outline mt-8 mb-2 flex hover:opacity-75"
       onclick="(() => (history.length === 1) ? window.location = '/' : history.back())()"
     >
       <svg xmlns="http://www.w3.org/2000/svg"
@@ -110,7 +107,7 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
     <div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl">
       <h1
         transition:name={slugifyStr(title)}
-        class="post-title text-2xl font-semibold text-skin-accent"
+        class="post-title text-skin-accent text-2xl font-semibold"
       >
         {title}
       </h1>
@@ -140,7 +137,7 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
       >
         <button
           id="back-to-top"
-          class="focus-outline whitespace-nowrap py-1 hover:opacity-75"
+          class="focus-outline py-1 whitespace-nowrap hover:opacity-75"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="rotate-90">
             <path
@@ -157,11 +154,7 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
   <Footer />
 </Layout>
 
-<script is:inline data-mermaid-module={mermaidClientModuleUrl}>
-  const mermaidModuleUrl = document.currentScript?.getAttribute(
-    "data-mermaid-module"
-  );
-
+<script is:inline>
   /** Create a progress indicator
    *  at the top */
   function createProgressBar() {
@@ -259,42 +252,6 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
   }
   attachCopyButtons();
 
-  /** Initialize Mermaid diagrams in code blocks */
-  async function initMermaidDiagrams() {
-    /** @type {Set<HTMLElement>} */
-    const mermaidPreBlocks = new Set();
-
-    document.querySelectorAll('pre[data-language="mermaid"]').forEach(pre => {
-      if (pre instanceof HTMLElement) {
-        mermaidPreBlocks.add(pre);
-      }
-    });
-
-    document.querySelectorAll("pre code.language-mermaid").forEach(code => {
-      const pre = code.closest("pre");
-      if (pre instanceof HTMLElement) {
-        mermaidPreBlocks.add(pre);
-      }
-    });
-
-    if (mermaidPreBlocks.size === 0) return;
-    if (!mermaidModuleUrl) {
-      console.warn("Mermaid module URL missing");
-      return;
-    }
-
-    const { renderMermaidDiagrams } = await import(mermaidModuleUrl);
-    await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
-  }
-
-  // Run on initial page load
-  initMermaidDiagrams();
-
-  // Re-run after client-side page navigation
-  document.addEventListener("astro:page-load", () => {
-    initMermaidDiagrams();
-  });
-
   /** Scrolls the document to the top when
    * the "Back to Top" button is clicked. */
   function backToTop() {
@@ -304,4 +261,62 @@ const mermaidClientModuleUrl = (await import("../scripts/mermaid-init.ts?url"))
     });
   }
   backToTop();
+</script>
+
+<script>
+  let mermaidModulePromise:
+    | Promise<typeof import("../scripts/mermaid-init")>
+    | undefined;
+
+  function loadMermaidModule() {
+    mermaidModulePromise ??= import("../scripts/mermaid-init");
+    return mermaidModulePromise;
+  }
+
+  async function initMermaidDiagrams() {
+    const mermaidPreBlocks = new Set<HTMLElement>();
+
+    const addBlock = (pre: Element | null) => {
+      if (pre instanceof HTMLElement && pre.dataset.mermaidPending !== "true") {
+        pre.dataset.mermaidPending = "true";
+        mermaidPreBlocks.add(pre);
+      }
+    };
+
+    document.querySelectorAll('pre[data-language="mermaid"]').forEach(addBlock);
+    document
+      .querySelectorAll("pre code.language-mermaid")
+      .forEach(code => addBlock(code.closest("pre")));
+
+    if (mermaidPreBlocks.size > 0) {
+      const { renderMermaidDiagrams } = await loadMermaidModule();
+      await renderMermaidDiagrams(Array.from(mermaidPreBlocks));
+    }
+  }
+
+  let activeTheme = document.documentElement.dataset.theme;
+  const themeObserver = new MutationObserver(async () => {
+    const nextTheme = document.documentElement.dataset.theme;
+    if (nextTheme === activeTheme) return;
+    activeTheme = nextTheme;
+
+    const diagrams = Array.from(
+      document.querySelectorAll<HTMLElement>(
+        ".mermaid-diagram[data-mermaid-definition]"
+      )
+    );
+
+    if (diagrams.length > 0) {
+      const { rerenderMermaidDiagrams } = await loadMermaidModule();
+      await rerenderMermaidDiagrams(diagrams);
+    }
+  });
+
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  initMermaidDiagrams();
+  document.addEventListener("astro:page-load", initMermaidDiagrams);
 </script>
