@@ -1,0 +1,553 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><meta name="generator" content="Astro v7.1.6"><!-- General Meta Tags --><title>A Framework for Composable Workspaces | Min Wen</title><meta name="title" content="A Framework for Composable Workspaces | Min Wen"><meta name="description" content="A composable workspace needs shared entities, data, actions, views, events, and intents—coordinated by a shell, context graph, panel runtime, and local daemon."><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="A Framework for Composable Workspaces | Min Wen"><meta property="og:description" content="A composable workspace needs shared entities, data, actions, views, events, and intents—coordinated by a shell, context graph, panel runtime, and local daemon."><meta property="og:url" content="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><meta property="og:image" content="https://cmwen.github.io/posts/a-framework-for-composable-workspaces.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-08-06T14:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><meta property="twitter:title" content="A Framework for Composable Workspaces | Min Wen"><meta property="twitter:description" content="A composable workspace needs shared entities, data, actions, views, events, and intents—coordinated by a shell, context graph, panel runtime, and local daemon."><meta property="twitter:image" content="https://cmwen.github.io/posts/a-framework-for-composable-workspaces.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.jmhnZfFy.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.B1zy6pOW.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: a-framework-for-composable-workspaces; }@layer astro { ::view-transition-old(a-framework-for-composable-workspaces) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(a-framework-for-composable-workspaces) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(a-framework-for-composable-workspaces) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(a-framework-for-composable-workspaces) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: workspace; }@layer astro { ::view-transition-old(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: mcp; }@layer astro { ::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: user-interface; }@layer astro { ::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">Skip to content</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Posts</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Tags</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Portfolio</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Toolbox</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">About</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="Search" title="Search"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">Search</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/07-framework-for-composable-workspaces/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">中文</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>Go back</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="2nVbT3" component-url="/_astro/AudioPlayer.CHrjwSOC.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;slug&quot;:[0,&quot;07-framework-for-composable-workspaces&quot;],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="WnE10" component-url="/_astro/ChatLink.DaVoM4Tc.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;title&quot;:[0,&quot;A Framework for Composable Workspaces&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/posts/07-framework-for-composable-workspaces/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;composition requires semantic contracts&quot;],[0,&quot;entities data actions views events and intents&quot;],[0,&quot;workspace shell coordinates surfaces&quot;],[0,&quot;context graph preserves working relationships&quot;],[0,&quot;panel runtime isolates interactive views&quot;],[0,&quot;local daemon bridges capabilities and state&quot;]]],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">A Framework for Composable Workspaces</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-08-06T14:00:00.000Z">Aug 6, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">02:00 PM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>Imagine asking a workspace to investigate a production incident.</p>
+<p>It opens the failed deployment beside the relevant pull request, streams logs into a terminal panel, shows a service map, asks an agent to compare the last known-good version, and creates a draft incident timeline. You select an error in the logs; the code view jumps to the likely call site, the map highlights the affected service, and the agent now understands what “this failure” refers to.</p>
+<p>Most of those capabilities already exist. The difficult part is making them behave as one workspace rather than six applications arranged on the same screen.</p>
+<p>Putting a dashboard, editor, terminal, and chat into movable rectangles is useful, but it is only layout composition. A truly composable workspace must also share meaning: which objects are present, what the current selection represents, which actions are available, what changed, and what the user is trying to accomplish.</p>
+<p>My thesis is that <strong>composable workspaces require a small semantic contract—entities, data, actions, views, events, and intents—implemented by a workspace shell, context graph, panel runtime, and local daemon</strong>. Pixels can remain heterogeneous. Meaning cannot.</p>
+<h2 id="composition-has-three-levels">Composition has three levels</h2>
+<p>“Composable” is often applied too early. It helps to separate three levels.</p>
+<h3 id="layout-composition">Layout composition</h3>
+<p>Users can dock, resize, split, hide, and rearrange panels. Yet two adjacent panels may know nothing about one another.</p>
+<h3 id="data-composition">Data composition</h3>
+<p>Panels can exchange identifiers or datasets. Selecting a customer in one view can filter another. A tool result can populate a chart. This is more useful, but still limited if every pair of integrations needs a custom adapter.</p>
+<h3 id="workflow-composition">Workflow composition</h3>
+<p>The workspace understands entities, capabilities, events, and intent well enough to coordinate a multi-step task. It can propose the next useful view, route an action to an appropriate provider, maintain provenance, request permission at the right boundary, and preserve enough context to resume later.</p>
+<p>The third level depends on the first two, but cannot be produced by layout alone. An iframe grid is not an operating model.</p>
+<h2 id="the-six-part-semantic-contract">The six-part semantic contract</h2>
+<p>The contract should be small enough for independent tools to adopt and expressive enough for a shell to coordinate them.</p>
+<h3 id="1-entities-stable-things-in-the-workspace">1. Entities: stable things in the workspace</h3>
+<p>An entity is a domain object with stable identity and type:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "id"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deploy://payments/prod/2026-08-07.3"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deployment"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "title"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"payments prod 2026-08-07.3"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "source"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deployment-service"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>Examples include a file, repository, pull request, customer, invoice, experiment, deployment, alert, document, or generated plan. Entities let panels refer to the same thing without sharing implementation details.</p>
+<p>The identifier need not be a public HTTP URL, but it should be stable within its scope and resolvable by an authorised provider.</p>
+<h3 id="2-data-typed-representations-with-provenance">2. Data: typed representations with provenance</h3>
+<p>Data is a representation of an entity or query result. It needs a media type or schema, the entity or query it came from, freshness information, and provenance.</p>
+<p>A log panel and an agent may consume different representations of the same deployment. The panel needs a stream optimised for reading; the agent may need structured events with timestamps and service IDs. “Same entity” does not imply “same payload.”</p>
+<p>Provenance is essential in AI workspaces. A summary should record which source versions supported it. Derived data should not silently masquerade as authoritative source data. The shell does not need to understand every schema, but it must preserve the relationships.</p>
+<h3 id="3-actions-bounded-capabilities-over-entities">3. Actions: bounded capabilities over entities</h3>
+<p>Actions are typed operations such as <code>open</code>, <code>compare</code>, <code>run_tests</code>, <code>approve</code>, <code>annotate</code>, or <code>deploy</code>. They declare accepted entity types, input schema, possible effects, and the provider that executes them.</p>
+<p>This resembles MCP tools, which expose named operations with input schemas to an AI host. MCP’s value here is the architectural primitive of discoverable capability, not the claim that every workspace action must use MCP. Human menus, keyboard commands, CLIs, and automation APIs can project the same domain action differently (<a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP tools specification</a>).</p>
+<p>Consequential actions should declare whether they mutate state, are reversible, cross a remote boundary, or require confirmation. The provider must still enforce authorisation.</p>
+<h3 id="4-views-projections-not-owners-of-truth">4. Views: projections, not owners of truth</h3>
+<p>A view presents or edits entities and data. It declares what it can render, which actions it supports directly, its preferred size, and whether it can serialise restorable state.</p>
+<p>Possible views include a tree, table, editor, terminal, graph, map, media viewer, form, chat, or small MCP App. Multiple views can represent one entity without duplicating its identity. A deployment can appear as a timeline, log stream, topology node, and summary card.</p>
+<p>Views should own interaction state such as zoom and cursor position. Durable domain changes should go through actions to the responsible provider. Otherwise closing a panel risks deleting the only copy of meaningful work.</p>
+<h3 id="5-events-facts-that-something-changed">5. Events: facts that something changed</h3>
+<p>Events describe completed facts: <code>selection.changed</code>, <code>entity.updated</code>, <code>run.started</code>, <code>permission.denied</code>, or <code>view.closed</code>. They include a source, timestamp, subject entity, correlation ID, and payload schema.</p>
+<p>Events let the workspace react without hard-wiring every producer to every consumer. When a log selection changes, the context graph can update; interested views may highlight related entities; an agent can be notified if the user has granted that scope.</p>
+<p>An event is not a command. <code>deployment.failed</code> records a fact; <code>rollback_deployment</code> requests an effect. Keeping them separate improves auditability and prevents a notification from being mistaken for permission to act.</p>
+<h3 id="6-intents-desired-outcomes-above-individual-actions">6. Intents: desired outcomes above individual actions</h3>
+<p>Intent expresses what the user wants to accomplish: investigate an incident, prepare a customer review, reconcile invoices, publish a release, or compare design alternatives.</p>
+<p>Intent is often incomplete. The workspace may need an AI planner or deterministic workflow to decompose it into queries and actions. It should preserve the original wording, resolved entities, constraints, plan, and approval decisions rather than reducing everything to a chat message.</p>
+<p>An intent can be entered through language, a command palette, a template, a URL, or a button. This prevents “AI-native” from becoming synonymous with “chat-only.”</p>
+<h2 id="four-runtime-components">Four runtime components</h2>
+<p>The semantic contract becomes useful through four cooperating runtime components:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#ABB2BF">flowchart TB</span></span>
+<span class="line"><span style="color:#ABB2BF">    U[User intent] --> S[Workspace shell]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> G[Context graph]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> P[Panel runtime]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> D[Local daemon]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V1[Editor view]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V2[Graph view]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V3[Agent view]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C1[Files and processes]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C2[Remote services]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C3[MCP and CLI capabilities]</span></span></code></pre>
+<h3 id="workspace-shell">Workspace shell</h3>
+<p>The shell owns layout, navigation, commands, focus, notifications, permission prompts, and session restoration. It decides where a view appears and mediates movement between views. It should be opinionated about interaction consistency while remaining neutral about domain-specific rendering.</p>
+<p>Visual Studio Code demonstrates shell-owned placement: extension views can appear in existing or custom containers and move between sidebars and panels (<a href="https://code.visualstudio.com/api/ux-guidelines/views">VS Code Views</a>). It does not, by itself, provide the cross-domain semantic contract proposed here.</p>
+<h3 id="context-graph">Context graph</h3>
+<p>The context graph is working memory expressed as relationships, not a transcript dump. Nodes include entities, views, intents, users, tool results, and derived artefacts. Edges include <code>selected</code>, <code>opened-in</code>, <code>derived-from</code>, <code>blocks</code>, and <code>created-for</code>.</p>
+<p>For an incident, the graph may connect the active deployment to a commit, service, alert, log selection, investigation intent, and draft timeline. When the user says “compare this with the previous one,” the assistant can resolve “this” from focus and selection while still showing the resolved entities before acting.</p>
+<p>The graph needs scope and decay. Not everything visible should enter model context, and not everything once mentioned should remain active. The shell can expose a compact, inspectable subset based on focus, recency, explicit pinning, sensitivity, and token budget.</p>
+<h3 id="panel-runtime">Panel runtime</h3>
+<p>The panel runtime loads views, gives them a constrained API, routes events, applies themes and accessibility settings, and isolates failures. Views may be native components, Web components, sandboxed iframes, terminal surfaces, or remote streams.</p>
+<p>The runtime should prefer narrow contracts for common UI and permit custom Web views when the domain needs them. VS Code’s guidance treats Webviews as fully custom but recommends them only when the standard API is insufficient (<a href="https://code.visualstudio.com/api/ux-guidelines/webviews">VS Code Webviews</a>). The lesson is that unlimited rendering power belongs behind an explicit isolation and lifecycle boundary.</p>
+<h3 id="local-daemon">Local daemon</h3>
+<p>The local daemon connects the shell to capabilities that cannot or should not run inside a view: filesystem access, child processes, local databases, credential brokers, model runtimes, remote APIs, MCP servers, and long-running jobs.</p>
+<p>It also provides continuity. A panel can close while a build continues. The shell can restart and reconnect to the job. A browser-based shell can retain a least-privilege bridge to local resources without giving every embedded view direct machine access.</p>
+<p>“Local” describes placement near the user’s machine and trust boundary, not a requirement that all data stay offline. The daemon may broker remote services while centralising capability, policy, and lifecycle.</p>
+<h2 id="lessons-from-existing-systems-without-searching-for-one-winner">Lessons from existing systems, without searching for one winner</h2>
+<p>No current system needs to be declared the finished composable workspace. Several provide proven primitives.</p>
+<h3 id="posix-shells-action-and-stream-composition">POSIX shells: action and stream composition</h3>
+<p>POSIX shells show how a shared invocation and stream convention lets independent programs compose. Commands do not need to understand each other’s UI. Redirection, pipelines, environment, and exit status form a small contract (<a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX Shell Command Language</a>).</p>
+<p>The limitation is also instructive: byte streams and process status carry little domain meaning. Our workspace contract should keep the small-contract spirit while adding typed entities, effects, provenance, and user intent.</p>
+<h3 id="the-web-identity-and-isolation">The Web: identity and isolation</h3>
+<p>The Web contributes global resource identifiers, links, independent representations, and origin-based isolation. Those primitives let a workspace refer to durable objects and safely host content from different authorities. The W3C Web architecture emphasises the value of global identifiers and interaction with identified resources (<a href="https://www.w3.org/TR/webarch/">Architecture of the World Wide Web</a>).</p>
+<p>The limitation is that ordinary links do not define a shared command, event, or selection model. Embedding two Web Apps does not make their domain state interoperable.</p>
+<h3 id="ide-workbenches-extensible-views-and-commands">IDE workbenches: extensible views and commands</h3>
+<p>IDE workbenches demonstrate contribution points, command registries, movable views, active selections, and extension lifecycles. VS Code also centralises Workspace Trust and Restricted Mode so extensions can gate code-executing behaviour when a folder is untrusted (<a href="https://code.visualstudio.com/api/extension-guides/workspace-trust">VS Code Workspace Trust</a>).</p>
+<p>The transferable primitive is shell-mediated contribution and trust. The limitation is domain scope: an IDE naturally organises around files, repositories, and development actions. A general workspace must support other entity systems without pretending they are files.</p>
+<h3 id="mcp-hosts-discoverable-ai-facing-capabilities">MCP hosts: discoverable AI-facing capabilities</h3>
+<p>MCP hosts demonstrate capability negotiation and discovery across independently developed servers. Tools, resources, and prompts provide different control surfaces for models, applications, and users (<a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a>).</p>
+<p>The limitation is that MCP is not a complete workspace UI, persistence model, or universal event bus. MCP Apps can supply contextual views, but the host still needs layout, identity, state, policy, and lifecycle rules.</p>
+<p>These systems are reference libraries of architectural ideas. The goal is not to place a browser, IDE, terminal, and chat in a feature comparison table. It is to extract the smallest contracts that already enable independent components to cooperate.</p>
+<h2 id="a-concrete-incident-workflow">A concrete incident workflow</h2>
+<p>Return to the production incident. A user enters:</p>
+<blockquote>
+<p>Investigate why the latest payments deployment is timing out. Do not change production.</p>
+</blockquote>
+<p>The workspace can process this without granting an agent unrestricted control:</p>
+<ol>
+<li>The shell records an <code>investigate-incident</code> intent with a read-only constraint.</li>
+<li>Entity providers resolve “latest payments deployment” and show the exact deployment for confirmation.</li>
+<li>The context graph connects that deployment to its commit, service, alerts, and runbook.</li>
+<li>The panel runtime opens logs, topology, code, and agent views with only the relevant entities.</li>
+<li>The daemon streams logs and invokes read-only diagnostics.</li>
+<li>Events update the graph as the user selects an error and the agent produces hypotheses.</li>
+<li>The agent proposes a rollback, but the action metadata conflicts with the read-only intent, so the shell does not execute it.</li>
+<li>The workspace persists a timeline entity with sources and a durable address.</li>
+</ol>
+<p>The useful behaviour comes from shared semantics. Without entities, “latest” may resolve differently in each panel. Without action effects, “do not change production” is merely prose. Without provenance, the timeline cannot be audited. Without a graph, every view must rediscover context independently.</p>
+<h2 id="boundaries-that-keep-composition-safe">Boundaries that keep composition safe</h2>
+<p>Composability expands the blast radius of mistakes. A few boundaries are non-negotiable.</p>
+<h3 id="least-privilege-per-view-and-capability">Least privilege per view and capability</h3>
+<p>A chart that displays metrics should not inherit filesystem or deployment access. Views request narrow capabilities; the shell and daemon enforce them. Providers re-check identity and authorisation.</p>
+<h3 id="trust-is-scoped-visible-and-revocable">Trust is scoped, visible, and revocable</h3>
+<p>Trusting a workspace, server, or extension should not mean trusting every future action. The UI should distinguish source trust, data access, code execution, and consequential remote changes.</p>
+<h3 id="intent-constrains-planning">Intent constrains planning</h3>
+<p>The original user constraint must remain machine-readable throughout orchestration. Plans and actions can narrow authority but cannot silently broaden it. A new permission request must return to the user.</p>
+<h3 id="events-carry-provenance">Events carry provenance</h3>
+<p>Every event and derived artefact should identify its source and correlation chain. This supports debugging, audit, and recovery when several agents and tools act concurrently.</p>
+<h3 id="views-fail-independently">Views fail independently</h3>
+<p>A broken third-party panel should not corrupt the context graph or crash long-running jobs. Isolation, quotas, cancellation, and versioned contracts are part of the panel runtime, not optional polish.</p>
+<h2 id="start-with-one-workflow-not-a-universal-shell">Start with one workflow, not a universal shell</h2>
+<p>The framework is intentionally broad, but implementation should be narrow.</p>
+<p>Choose one workflow where users already juggle several surfaces: incident response, research synthesis, release preparation, customer review, or content production. Identify the five to ten entities that matter. Define a handful of actions and events. Implement two complementary views. Persist one intent and enough context to resume it.</p>
+<p>Only generalise after observing repeated integration pressure. A practical contract grows from real hand-offs: “when this selection changes, that view needs this identifier and provenance.”</p>
+<p>A thin first version might include:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Entities: file, deployment, alert, investigation</span></span>
+<span class="line"><span>Actions: open, query_logs, compare, create_timeline</span></span>
+<span class="line"><span>Events: selection.changed, query.completed, entity.updated</span></span>
+<span class="line"><span>Views: editor, logs, timeline, agent</span></span>
+<span class="line"><span>Intent: investigate_incident with constraints</span></span></code></pre>
+<p>That is enough to test semantic composition without building a new operating system.</p>
+<h2 id="the-workspace-is-a-coordination-model">The workspace is a coordination model</h2>
+<p>The future workspace will not succeed because every application has been squeezed into one window. It will succeed when different capabilities can cooperate without giving up their best interfaces.</p>
+<p>An editor can remain an editor. A terminal can remain a terminal. A graph can remain visual. An agent can remain conversational. The shared layer supplies entity identity, typed data, bounded action, view contracts, factual events, and explicit intent.</p>
+<p>The shell coordinates attention. The context graph maintains working relationships. The panel runtime provides visual composition and isolation. The local daemon supplies privileged capabilities and continuity.</p>
+<p>Together they create something more useful than an app launcher and more honest than a universal chat box: a workspace that understands enough meaning to assemble the right instruments around the work at hand.</p>
+<p><em>Series: <a href="/posts/00-from-apps-to-intent-driven-computing/">Index</a> · Previous: <a href="/posts/06-the-workflow-centric-workbench/">06 — The Workflow-Centric Workbench</a> · Next: <a href="/posts/08-intent-first-computing-and-future-ui/">08 — Intent-First Computing</a></em></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX.1-2024 Shell Command Language</a></li>
+<li><a href="https://www.w3.org/TR/webarch/">W3C: Architecture of the World Wide Web</a></li>
+<li><a href="https://code.visualstudio.com/api/ux-guidelines/views">Visual Studio Code: Views</a></li>
+<li><a href="https://code.visualstudio.com/api/ux-guidelines/webviews">Visual Studio Code: Webviews</a></li>
+<li><a href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Visual Studio Code: Workspace Trust Extension Guide</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP tools specification</a></li>
+</ul></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>architecture</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>ai</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/tags/workspace/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>workspace</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/tags/mcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>mcp</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/tags/user-interface/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>user-interface</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>Back to Top</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.lk5SVoVj.js"></script>

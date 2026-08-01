@@ -1,0 +1,570 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><meta name="generator" content="Astro v7.1.6"><!-- General Meta Tags --><title>如何選擇合適的應用程式介面 | Min Wen</title><meta name="title" content="如何選擇合適的應用程式介面 | Min Wen"><meta name="description" content="比較 CLI、TUI、Web App、PWA、桌面程式、瀏覽器擴充功能與 MCP 時，先看使用者怎麼思考與操作，而不是程式內部有多複雜。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="如何選擇合適的應用程式介面 | Min Wen"><meta property="og:description" content="比較 CLI、TUI、Web App、PWA、桌面程式、瀏覽器擴充功能與 MCP 時，先看使用者怎麼思考與操作，而不是程式內部有多複雜。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/"><meta property="og:image" content="https://cmwen.github.io/posts/%E5%A6%82%E4%BD%95%E9%81%B8%E6%93%87%E5%90%88%E9%81%A9%E7%9A%84%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E4%BB%8B%E9%9D%A2.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-07-31T14:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/"><meta property="twitter:title" content="如何選擇合適的應用程式介面 | Min Wen"><meta property="twitter:description" content="比較 CLI、TUI、Web App、PWA、桌面程式、瀏覽器擴充功能與 MCP 時，先看使用者怎麼思考與操作，而不是程式內部有多複雜。"><meta property="twitter:image" content="https://cmwen.github.io/posts/%E5%A6%82%E4%BD%95%E9%81%B8%E6%93%87%E5%90%88%E9%81%A9%E7%9A%84%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%E4%BB%8B%E9%9D%A2.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.jmhnZfFy.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.B1zy6pOW.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: \5982\4F55\9078\64C7\5408\9069\7684\61C9\7528\7A0B\5F0F\4ECB\9762; }@layer astro { ::view-transition-old(\5982\4F55\9078\64C7\5408\9069\7684\61C9\7528\7A0B\5F0F\4ECB\9762) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\5982\4F55\9078\64C7\5408\9069\7684\61C9\7528\7A0B\5F0F\4ECB\9762) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\5982\4F55\9078\64C7\5408\9069\7684\61C9\7528\7A0B\5F0F\4ECB\9762) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\5982\4F55\9078\64C7\5408\9069\7684\61C9\7528\7A0B\5F0F\4ECB\9762) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: user-interface; }@layer astro { ::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: developer-tools; }@layer astro { ::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: web; }@layer astro { ::view-transition-old(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: mcp; }@layer astro { ::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">跳至內容</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">文章</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">標籤</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">作品集</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">工具箱</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">關於</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="搜尋" title="搜尋"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">搜尋</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/posts/01-choosing-the-right-application-interface/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">EN</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>返回</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="ZYXDIJ" component-url="/_astro/AudioPlayer.CHrjwSOC.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;slug&quot;:[0,&quot;01-choosing-the-right-application-interface&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="1puGzP" component-url="/_astro/ChatLink.DaVoM4Tc.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;title&quot;:[0,&quot;如何選擇合適的應用程式介面&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;介面選擇應配合使用者的認知工作&quot;],[0,&quot;明確意圖與探索需求&quot;],[0,&quot;CLI TUI Web PWA 與桌面程式比較&quot;],[0,&quot;瀏覽器情境中的工作流程&quot;],[0,&quot;MCP 是提供給 AI 的介面&quot;],[0,&quot;一套能力可以搭配多種介面&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">如何選擇合適的應用程式介面</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-07-31T14:00:00.000Z">Jul 31, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">02:00 PM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>不少開發工具都從一行指令開始：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">mytool</span><span style="color:#98C379"> scan</span><span style="color:#98C379"> ./project</span></span></code></pre>
+<p>工具愈來愈好用之後，有人想看執行進度，有人要比較前後兩次掃描結果，團隊則希望大家都能查看。於是專案加入 React 前端、伺服器、登入、資料庫與部署流程，連設定頁都排進待辦清單。</p>
+<p>這些功能未必多餘。問題在於，我們很容易把「功能變多」直接解讀成「介面也應該升級得更複雜」。</p>
+<p>程式內部多複雜，和它適合什麼介面，其實是兩回事。編譯器極其複雜，仍然很適合用指令操作；裁切一張照片的演算法沒那麼複雜，使用者卻需要看著畫面調整。真正該問的是：<strong>使用者要完成這件事時，腦中正在做哪一種判斷？</strong></p>
+<p>如果動作與目標都已經確定，指令通常最直接；如果要從許多選項中找答案，就需要能瀏覽、比較和試作的畫面。工作會不會持續很久、操作偏文字還是空間、執行者是人還是軟體，也都會改變答案。</p>
+<p>因此 CLI、TUI、Web App、PWA、桌面程式、瀏覽器擴充功能與 MCP，不是從簡陋到高級的一條階梯。它們是為不同工作形狀準備的工具。</p>
+<h2 id="先問使用者已經知道答案了嗎">先問：使用者已經知道答案了嗎？</h2>
+<p>挑選介面時，最有用的第一條界線不是「簡單或複雜」，而是使用者要靠<strong>回想</strong>還是<strong>辨認</strong>。</p>
+<p>已經知道動作和對象時，使用者可以直接下指令：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">resize</span><span style="color:#98C379"> photo.jpg</span><span style="color:#D19A66"> --width</span><span style="color:#D19A66"> 1200</span></span>
+<span class="line"><span style="color:#61AFEF">deploy</span><span style="color:#98C379"> payments</span><span style="color:#D19A66"> --environment</span><span style="color:#98C379"> staging</span></span>
+<span class="line"><span style="color:#61AFEF">format</span><span style="color:#98C379"> src/</span></span></code></pre>
+<p>還不知道答案時，情況就不一樣了。使用者可能得先查看現況、找出可選項目、並排比較，或一邊操作一邊看結果。「把照片縮成 1200 像素」很適合指令；「替這張照片找出三種比例都不會破壞構圖的裁切方式」就明顯是視覺探索。兩者底層甚至可能呼叫同一套影像函式庫。</p>
+<p>還可以再問兩件事：</p>
+<ul>
+<li><strong>工作是做完即走，還是會持續一段時間？</strong> 格式轉換跑完就能結束；監控、編輯與除錯則需要保留目前狀態。</li>
+<li><strong>工作偏符號，還是偏空間？</strong> 檔名、參數、路徑與識別碼適合文字；版面、顏色、時間軸、關係圖與並排比較更適合視覺介面。</li>
+</ul>
+<p>把這些問題整理起來，可以得到一個簡單的判斷圖：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#ABB2BF">flowchart TD</span></span>
+<span class="line"><span style="color:#ABB2BF">    A[使用者想完成什麼？] --> B{動作與目標已經明確嗎？}</span></span>
+<span class="line"><span style="color:#ABB2BF">    B -->|是| C{互動短暫而且偏文字嗎？}</span></span>
+<span class="line"><span style="color:#ABB2BF">    C -->|是| D[CLI 或自動化 API]</span></span>
+<span class="line"><span style="color:#ABB2BF">    C -->|否| E[TUI 或持續型應用程式]</span></span>
+<span class="line"><span style="color:#ABB2BF">    B -->|否| F{需要視覺比較或直接操作嗎？}</span></span>
+<span class="line"><span style="color:#ABB2BF">    F -->|是| G[Web、PWA 或桌面介面]</span></span>
+<span class="line"><span style="color:#ABB2BF">    F -->|否| H[TUI、表單或引導流程]</span></span>
+<span class="line"><span style="color:#ABB2BF">    A --> I{執行者是 AI 嗎？}</span></span>
+<span class="line"><span style="color:#ABB2BF">    I -->|是| J[MCP 或其他機器介面]</span></span></code></pre>
+<p>這是幫助思考的起點，不是硬性分類。真實產品往往會同時需要其中幾條路徑。</p>
+<h2 id="cli動作已經很清楚時別讓使用者繞路">CLI：動作已經很清楚時，別讓使用者繞路</h2>
+<p>當一項操作可以說成「動詞 + 對象 + 少量參數」，命令列介面（CLI）通常最合適。尤其是操作需要重複執行、要存進腳本或 CI，或輸出還要交給下一個程式處理時，CLI 的價值很難取代。</p>
+<p>這種組合能力有共同規則支撐。POSIX 對 shell 的定義涵蓋指令解析、參數展開、輸入輸出重新導向、工具執行與結束狀態。小工具因此不必共用圖形框架，也能彼此串接（<a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX Shell Command Language</a>）。</p>
+<p>CLI 特別適合：</p>
+<ul>
+<li>建立、轉換、格式化、驗證、搬移、下載或部署。</li>
+<li>用穩定名稱指向檔案、程式庫、環境或其他物件。</li>
+<li>在本機、遠端與 CI 重複同一個動作。</li>
+<li>輸出 JSON 等結構化結果，並回傳有意義的結束碼。</li>
+<li>讓已熟悉領域的開發者快速操作。</li>
+</ul>
+<p>但當使用者不知道正確指令、需要比較大量物件，或每次都得從文字輸出重新拼湊狀態，CLI 就開始吃力。一個指令支援一百個參數，不等於大家找得到該用哪一個。指令歷史可以幫忙回憶，卻無法取代良好的資訊架構。</p>
+<p>所以不要因為程式碼變多，就急著把 CLI 改成 Web App；也不要在工作明明已經變成探索時，仍只是不斷加參數。</p>
+<h2 id="tui保留終端機效率也保留工作現場">TUI：保留終端機效率，也保留工作現場</h2>
+<p>終端機使用者介面（TUI）適合需要鍵盤效率、遠端操作，又不能每執行一個指令就把狀態丟掉的工作。</p>
+<p>以部署監控為例。使用者會在不同服務之間切換、查看紀錄、篩選錯誤、重試工作，並希望目前選取的項目一直留在畫面上。這些動作都能拆成指令，但 TUI 可以保留這次工作的範圍，免得使用者一直複製貼上識別碼。</p>
+<p>常見用途包括程序與紀錄檢視器、容器和基礎設施管理工具、資料庫與佇列檢查工具、Git 用戶端，以及長時間工作的代理程式監控台。</p>
+<p>它也有明確限制。密集圖表、自由畫布、富文字編輯、拖放、觸控操作，以及多樣的輔助科技支援，都比較難在終端機做好。TUI 不是便宜版 Web App，而是一套以終端機為前提的持續互動方式。</p>
+<h2 id="web-app適合探索也適合一起工作">Web App：適合探索，也適合一起工作</h2>
+<p>當使用者要管理許多物件、查看歷史、比較資料、留言協作，或從不同裝置進入同一套系統時，Web App 很自然。表格、表單、篩選、圖表、權限化畫面與多人協作，都是 Web 擅長的內容。</p>
+<p>Web 的價值也不只在畫面。URL 能指向特定專案、建置結果、文件或決策；權限可以套用在共同位址上；同事收到連結就能打開，不必先安裝同一套桌面軟體。本系列後面討論 AI 時代的 URL 時，會再回到這些特性。</p>
+<p>不過，Web App 不等於 SaaS。工具也可以在使用者電腦啟動本機服務，把資料留在本機，只用瀏覽器負責顯示與操作：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">mytool</span><span style="color:#98C379"> ui</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Opens http://127.0.0.1:4310</span></span></code></pre>
+<p>這樣一樣能做圖表、搜尋紀錄與表單，卻不必立刻導入帳號、多租戶和雲端儲存。<a href="/zh-hant/posts/02-local-web-apps-are-underrated/">下一篇</a>會完整討論這種常被低估的本機 Web App。</p>
+<p>選 Web App 的理由應該是瀏覽器真的適合這份工作，不是團隊剛好熟悉 React。</p>
+<h2 id="pwa當網站需要成為日常使用的程式">PWA：當網站需要成為日常使用的程式</h2>
+<p>漸進式 Web 應用程式（PWA）本質上仍是 Web App。差別在於它能和裝置建立較固定的關係。Web App Manifest 可以定義啟動資訊、圖示、網址範圍與顯示模式；瀏覽器也可能讓使用者把它安裝成獨立視窗。W3C 規格詳細定義了這些啟動參數與深層連結行為（<a href="https://www.w3.org/TR/appmanifest/">W3C Web Application Manifest</a>）。</p>
+<p>如果產品希望用同一套 Web 程式碼服務桌機與手機、使用頻率高、需要安裝圖示或部分離線能力，而且可以接受不同瀏覽器與作業系統的差異，就值得考慮 PWA。</p>
+<p>最後一點很重要。PWA 並不保證每個平台都有相同的原生整合能力，安裝方式也會隨瀏覽器和作業系統而變。Google 的指南就分別說明了各平台行為（<a href="https://web.dev/learn/pwa/installation">web.dev：PWA installation</a>）。如果產品仰賴深度系統整合，必須在真正要支援的平台上驗證，不能只看功能檢查表。</p>
+<h2 id="桌面程式當作業系統本身就是產品邊界">桌面程式：當作業系統本身就是產品邊界</h2>
+<p>IDE、終端機、影片剪輯器、密碼管理器、虛擬化工具與本機 AI 工作台，都需要長期存在於電腦，也經常要使用檔案系統、多視窗、全域快捷鍵、背景程序、原生選單、硬體加速或裝置整合。這時桌面程式才是自然選擇。</p>
+<p>代價是安裝、更新、程式簽章、跨平台差異與安全維護都會成為產品責任。Electron、Tauri 與原生工具組會改變工程成本，卻不會自動回答介面該長什麼樣子。「桌面」只說明程式和電腦的關係；內部仍可能是文件、畫布、儀表板、終端機或對話。</p>
+<p>實務上可以先從能滿足需求的最輕形式開始，等到具體的作業系統需求出現，再加入桌面外殼。「以後也許會用到原生功能」還不算需求。</p>
+<h2 id="瀏覽器擴充功能當眼前網頁就是工作脈絡">瀏覽器擴充功能：當眼前網頁就是工作脈絡</h2>
+<p>如果工作從某個網站裡開始，瀏覽器擴充功能往往比獨立 App 更順手。它可以在瀏覽器加上按鈕、把內容腳本放進頁面、回應瀏覽器事件，或顯示彈出視窗和側邊欄。MDN 也清楚區分資訊清單、背景腳本、擴充功能頁面與在網頁環境中執行的內容腳本（<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension">MDN：Anatomy of an extension</a>）。</p>
+<p>例如把目前頁面收進研究筆記、替特定網站補上工作流程、比較多個已開啟頁面的內容、在使用者同意下填寫資料，或把網頁連到本機開發工具，都很適合擴充功能。</p>
+<p>如果主要工作和目前網頁無關，就不該預設走這條路。擴充功能得處理權限、瀏覽器政策、商店審查與平台差異；要求的權限愈大，產品就愈有責任說清楚用途與信任邊界。</p>
+<h2 id="mcp這是-ai-的介面不是另一種-gui">MCP：這是 AI 的介面，不是另一種 GUI</h2>
+<p>模型情境協定（Model Context Protocol，MCP）可以一起比較，但它屬於不同類別。MCP 伺服器本身不是給人操作的圖形介面，而是讓 AI 應用程式取得工具與情境資料的協定。</p>
+<p>官方架構列出三種主要伺服器能力：工具（tools）執行動作，資源（resources）提供可讀取的情境，提示（prompts）則提供可重複使用的互動範本。主程式會確認雙方支援哪些能力，再決定如何交給模型與使用者（<a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a>）。</p>
+<p>當 AI 需要查詢系統、用有型別的參數執行範圍清楚的動作、讀取背景資料，或在執行時發現可用工具，MCP 很合適。</p>
+<p>這並不表示產品可以拿掉 CLI 或 Web App。人可能需要視覺比較與明確確認，自動化程式需要 API 或 CLI，AI 則需要 MCP。這些介面可以共用同一套領域邏輯，分別服務不同執行者。</p>
+<p>MCP Apps 又多了一層互動畫面，但它和核心 MCP 不是同一件事。官方文件說明相容主程式如何顯示這些畫面，也提醒各家主程式的支援程度不同（<a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps overview</a>）。第 03 篇會專門討論它何時比純對話好用，以及何時仍需要完整應用程式。若想先了解代理程式如何發現網頁提供的工具，也可以讀<a href="/zh-hant/posts/webmcp-discovery-problem/">發現問題：AI 代理如何找到你的 WebMCP 工具？</a>。</p>
+<h2 id="好產品不一定只提供一種介面">好產品不一定只提供一種介面</h2>
+<p>一個設計合理的開發工具，可能同時提供：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>mytool scan       -> 執行一次明確的轉換</span></span>
+<span class="line"><span>mytool status     -> 讓腳本取得狀態</span></span>
+<span class="line"><span>mytool ui         -> 在本機以視覺方式查看</span></span>
+<span class="line"><span>mytool serve-mcp  -> 把能力提供給 AI 代理程式</span></span></code></pre>
+<p>四種介面共用同一套領域邏輯。CLI 不必為了執行一個動作而打開瀏覽器；Web UI 不必把所有操作都塞成按鈕；MCP 也不必用文字假裝圖表很好理解。每一層只負責自己擅長的工作。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>工作形狀</th><th>適合先考慮的介面</th><th>原因</th></tr></thead><tbody><tr><td>一次轉換</td><td>CLI</td><td>精確、可重複、容易組合</td></tr><tr><td>終端機內持續查看</td><td>TUI</td><td>保留狀態與鍵盤效率</td></tr><tr><td>視覺探索</td><td>Web App</td><td>方便比較、發現與呈現</td></tr><tr><td>跨裝置日常使用</td><td>PWA</td><td>保留 Web 觸及範圍，也可安裝</td></tr><tr><td>深度本機整合</td><td>桌面程式</td><td>能處理檔案、程序與裝置</td></tr><tr><td>依賴目前網頁的資料擷取</td><td>瀏覽器擴充功能</td><td>頁面本身就是輸入</td></tr><tr><td>自動化</td><td>CLI、API 或常駐服務</td><td>不需要人工導覽，可預期地呼叫</td></tr><tr><td>AI 存取</td><td>MCP</td><td>結構化能力與情境探索</td></tr></tbody></table>
+<p>這張表提供起點，不是限制。只有當真實工作跨到另一列時，才值得增加新的介面。</p>
+<h2 id="選框架之前先回答七個問題">選框架之前，先回答七個問題</h2>
+<ol>
+<li><strong>使用者一開始已經知道什麼？</strong> 動作和目標都明確，就給直接操作；還不明確，就幫助探索。</li>
+<li><strong>哪些資訊必須一直看得到？</strong> 需要持續狀態、比較或歷史，就要有能保留現場的介面。</li>
+<li><strong>工作偏文字還是空間？</strong> 名稱和參數適合文字；版面、關係與預覽適合視覺。</li>
+<li><strong>脈絡在哪裡？</strong> 終端機、目前網頁、本機電腦、組織共用系統或 AI 主程式，會形成不同邊界。</li>
+<li><strong>誰要操作？</strong> 給人用和給機器用的介面，不該混為一談。</li>
+<li><strong>要如何接上其他工作？</strong> Pipe、URL、API、檔案與 MCP 各有不同組合方式。</li>
+<li><strong>最小但不會隱藏必要複雜度的介面是什麼？</strong> 從這裡開始，才能控制產品生命週期成本。</li>
+</ol>
+<p>多介面當然也有代價。文件與測試可能分散；CLI、Web App 和 MCP 的行為可能不一致；對一般使用者而言，熟悉的 Web UI 有時比高度專門化的介面更容易上手。</p>
+<p>解法不是讓每個產品無限增加介面，而是共用核心規則、明確劃分各介面的責任，並要求每一個新介面都要有真實工作需求作為理由。有些產品只需要一個 Web App，有些只需要一行指令，這兩種答案都完全合理。</p>
+<h2 id="介面不是包裝而是產品的一部分">介面不是包裝，而是產品的一部分</h2>
+<p>介面決定使用者如何說出需求、看見狀態、從錯誤恢復、接上其他工具，以及下次回到還沒做完的工作。它不是程式完成後再補上的外觀。</p>
+<p>CLI、TUI、Web App、PWA、桌面程式、瀏覽器擴充功能與 MCP，分別定義了能力、工作脈絡與執行者之間的關係。</p>
+<p>下一篇會用本機 Web App 進一步驗證這個觀點：工具可以保有適合自動化的指令，也能提供豐富視覺畫面，而且資料不必離開電腦。真正值得問的從來不是「哪一種 App 會贏」，而是「哪幾個介面能讓同一套能力，在工作原本發生的地方，服務真正需要它的人」。</p>
+<p><em>系列導覽：<a href="/zh-hant/posts/00-from-apps-to-intent-driven-computing/">索引</a> · 下一篇：<a href="/zh-hant/posts/02-local-web-apps-are-underrated/">02 — 為什麼本機 Web App 值得重新認識</a></em></p>
+<h2 id="資料來源">資料來源</h2>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX.1-2024 Shell Command Language</a></li>
+<li><a href="https://www.w3.org/TR/appmanifest/">W3C Web Application Manifest</a></li>
+<li><a href="https://web.dev/learn/pwa/installation">web.dev：PWA installation</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension">MDN：Anatomy of an extension</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/architecture">Model Context Protocol architecture overview</a></li>
+<li><a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps overview</a></li>
+</ul></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/zh-hant/tags/user-interface/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>user-interface</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/zh-hant/tags/developer-tools/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>developer-tools</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/zh-hant/tags/web/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>web</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/zh-hant/tags/mcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>mcp</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/zh-hant/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>architecture</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>回到頂端</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.lk5SVoVj.js"></script>

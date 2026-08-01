@@ -1,0 +1,601 @@
+<!DOCTYPE html><html lang="en" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/01-choosing-the-right-application-interface/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><meta name="generator" content="Astro v7.1.6"><!-- General Meta Tags --><title>Choosing the Right Application Interface | Min Wen</title><meta name="title" content="Choosing the Right Application Interface | Min Wen"><meta name="description" content="Choose between a CLI, TUI, Web App, PWA, Desktop App, Browser Extension, and MCP by matching the interface to the user's cognitive work—not the application's internal complexity."><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="Choosing the Right Application Interface | Min Wen"><meta property="og:description" content="Choose between a CLI, TUI, Web App, PWA, Desktop App, Browser Extension, and MCP by matching the interface to the user's cognitive work—not the application's internal complexity."><meta property="og:url" content="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><meta property="og:image" content="https://cmwen.github.io/posts/choosing-the-right-application-interface.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-07-31T14:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/posts/01-choosing-the-right-application-interface/"><meta property="twitter:title" content="Choosing the Right Application Interface | Min Wen"><meta property="twitter:description" content="Choose between a CLI, TUI, Web App, PWA, Desktop App, Browser Extension, and MCP by matching the interface to the user's cognitive work—not the application's internal complexity."><meta property="twitter:image" content="https://cmwen.github.io/posts/choosing-the-right-application-interface.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.jmhnZfFy.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.B1zy6pOW.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: choosing-the-right-application-interface; }@layer astro { ::view-transition-old(choosing-the-right-application-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(choosing-the-right-application-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(choosing-the-right-application-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(choosing-the-right-application-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: user-interface; }@layer astro { ::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: developer-tools; }@layer astro { ::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: web; }@layer astro { ::view-transition-old(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(web) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: mcp; }@layer astro { ::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">Skip to content</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Posts</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Tags</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Portfolio</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">Toolbox</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">About</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="Search" title="Search"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">Search</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/01-choosing-the-right-application-interface/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">中文</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>Go back</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="1vljpz" component-url="/_astro/AudioPlayer.CHrjwSOC.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;slug&quot;:[0,&quot;01-choosing-the-right-application-interface&quot;],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="RD1YY" component-url="/_astro/ChatLink.DaVoM4Tc.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;title&quot;:[0,&quot;Choosing the Right Application Interface&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/posts/01-choosing-the-right-application-interface/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;interface choice follows cognitive work&quot;],[0,&quot;known intent versus exploration&quot;],[0,&quot;CLI TUI Web PWA Desktop comparison&quot;],[0,&quot;browser-contextual workflows&quot;],[0,&quot;MCP is an AI interface&quot;],[0,&quot;hybrid application surfaces&quot;]]],&quot;lang&quot;:[0,&quot;en&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">Choosing the Right Application Interface</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-07-31T14:00:00.000Z">Jul 31, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">02:00 PM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>A familiar developer-tool story begins with one command:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">mytool</span><span style="color:#98C379"> scan</span><span style="color:#98C379"> ./project</span></span></code></pre>
+<p>The command is useful, so its scope grows. Someone asks for a progress view. Someone else wants to compare previous scans. A team asks for shared access. Soon there is a React frontend, a server, authentication, a database, deployment infrastructure, and a backlog for the settings page.</p>
+<p>None of those additions is necessarily wrong. The mistake happens earlier, when “more features” is treated as proof that the tool needs a more elaborate interface.</p>
+<p>The internal complexity of an application does not determine its natural user interface. A compiler is extraordinarily complex and still works well as a command. Cropping one image is technically simple but often needs direct visual manipulation. The better question is: <strong>what cognitive work must the user perform?</strong></p>
+<p>My thesis is that interface choice should follow the shape of the user’s decision: whether the intent is already known, whether the state must be explored, whether manipulation is visual or symbolic, whether the work is brief or sustained, and whether the actor is a human or software.</p>
+<p>That framing makes CLI, TUI, Web App, PWA, Desktop App, Browser Extension, and MCP complementary surfaces rather than competitors in a tournament with one winner.</p>
+<h2 id="start-with-the-users-uncertainty">Start with the user’s uncertainty</h2>
+<p>The strongest first distinction is not simple versus complex. It is <strong>recall versus recognition</strong>.</p>
+<p>When users already know the action and target, they can express an instruction:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">resize</span><span style="color:#98C379"> photo.jpg</span><span style="color:#D19A66"> --width</span><span style="color:#D19A66"> 1200</span></span>
+<span class="line"><span style="color:#61AFEF">deploy</span><span style="color:#98C379"> payments</span><span style="color:#D19A66"> --environment</span><span style="color:#98C379"> staging</span></span>
+<span class="line"><span style="color:#61AFEF">format</span><span style="color:#98C379"> src/</span></span></code></pre>
+<p>When users are uncertain, they need to inspect state, discover options, compare alternatives, or manipulate an object while seeing the result. “Resize this image to 1200 pixels” is command-shaped. “Find the crop that keeps the subject balanced in three aspect ratios” is visual and exploratory, even if both operations call the same image library.</p>
+<p>Two more axes matter:</p>
+<ul>
+<li><strong>Momentary versus sustained work.</strong> A short transformation can finish and disappear. Monitoring, editing, and investigation benefit from a persistent surface that preserves state.</li>
+<li><strong>Symbolic versus spatial work.</strong> Names, flags, paths, and IDs fit text. Layout, colour, timelines, graphs, and side-by-side comparison benefit from visual structure and direct manipulation.</li>
+</ul>
+<p>We can turn those distinctions into a small model:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#ABB2BF">flowchart TD</span></span>
+<span class="line"><span style="color:#ABB2BF">    A[What is the user trying to do?] --> B{Is the intent already precise?}</span></span>
+<span class="line"><span style="color:#ABB2BF">    B -->|Yes| C{Is the interaction brief and symbolic?}</span></span>
+<span class="line"><span style="color:#ABB2BF">    C -->|Yes| D[CLI or automation API]</span></span>
+<span class="line"><span style="color:#ABB2BF">    C -->|No| E[TUI or persistent app]</span></span>
+<span class="line"><span style="color:#ABB2BF">    B -->|No| F{Does the task require visual comparison or manipulation?}</span></span>
+<span class="line"><span style="color:#ABB2BF">    F -->|Yes| G[Web, PWA, or Desktop UI]</span></span>
+<span class="line"><span style="color:#ABB2BF">    F -->|No| H[TUI, form, or guided flow]</span></span>
+<span class="line"><span style="color:#ABB2BF">    A --> I{Is the actor an AI system?}</span></span>
+<span class="line"><span style="color:#ABB2BF">    I -->|Yes| J[MCP or another machine interface]</span></span></code></pre>
+<p>This is a decision aid, not a rigid taxonomy. Real products often need several branches at once.</p>
+<h2 id="when-a-cli-is-the-natural-interface">When a CLI is the natural interface</h2>
+<p>A command-line interface is strongest when an operation can be reduced to <strong>verb + target + a limited set of parameters</strong>. It is especially effective when the output can become the input to another program, the operation must be repeated, or the exact invocation should be saved in a script or CI pipeline.</p>
+<p>This composability is not an accidental convention. POSIX defines a shell as a command-language interpreter that parses commands, performs expansion and redirection, executes utilities, and returns exit status. Those shared rules let small tools participate in larger programs without agreeing on a graphical shell or application framework (<a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX Shell Command Language</a>).</p>
+<p>CLI is therefore a good default for transformations and automation:</p>
+<ul>
+<li>Create, convert, format, validate, migrate, download, or deploy something.</li>
+<li>Address files, repositories, environments, and other objects by stable identifiers.</li>
+<li>Run the same operation locally, remotely, or in CI.</li>
+<li>Produce structured output and meaningful exit codes.</li>
+<li>Expose an operation to developers who already understand the domain.</li>
+</ul>
+<p>CLI becomes weak when users do not know the correct command, need to compare many objects, or must repeatedly reconstruct state from text. A command can expose one hundred flags, but that does not make those flags discoverable. Shell history is useful memory; it is not an information architecture.</p>
+<p>The design warning is simple: do not turn a command into a Web App merely because its implementation grew, and do not keep adding flags when the user’s work has become exploratory.</p>
+<h2 id="tui-persistent-interaction-without-leaving-the-terminal">TUI: persistent interaction without leaving the terminal</h2>
+<p>A terminal user interface is useful when the user wants keyboard efficiency and remote-friendly operation but needs more continuity than a single command provides.</p>
+<p>Consider a deployment monitor. The user may need to move between services, inspect logs, filter failures, trigger a retry, and keep the current selection visible. A sequence of commands can perform each action, but a TUI preserves the working set and reduces the need to remember identifiers between invocations.</p>
+<p>TUIs naturally fit:</p>
+<ul>
+<li>Log and process viewers.</li>
+<li>Cluster, container, and infrastructure managers.</li>
+<li>Database and queue inspectors.</li>
+<li>Git clients and file managers.</li>
+<li>Long-running agent or job supervisors.</li>
+</ul>
+<p>Their limits are also structural. Dense charts, free-form canvases, rich text editing, drag-and-drop, accessibility across diverse assistive technologies, and touch-first interaction are harder. A TUI is not a cheaper Web App; it is a persistent terminal surface with a different interaction vocabulary.</p>
+<h2 id="web-app-exploration-collaboration-and-shared-state">Web App: exploration, collaboration, and shared state</h2>
+<p>A Web App is a strong choice when users must explore a domain, manage many entities, collaborate, or reach the same system across organisations and devices. Tables, forms, filters, diagrams, history, comments, and permission-aware views are all natural web material.</p>
+<p>The Web also provides more than pixels. A URL can identify a project, build, document, or decision. Authentication and permissions can be applied at a shared destination. A teammate can open the same reference without installing the same native package. Those properties will matter later in this series when we ask why Web Apps are likely to survive AI.</p>
+<p>However, a Web App is not synonymous with SaaS. A tool can start a server on <code>localhost</code>, keep all data on the user’s machine, and use the browser only as its rendering and interaction layer:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#61AFEF">mytool</span><span style="color:#98C379"> ui</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#7F848E;font-style:italic"># Opens http://127.0.0.1:4310</span></span></code></pre>
+<p>That pattern can provide charts, searchable history, and forms without immediately introducing accounts, multi-tenancy, or cloud storage. The next article will examine this underrated Local Web App model in detail.</p>
+<p>Choose a Web App when the browser’s strengths match the work. Do not choose it only because the team already knows React.</p>
+<h2 id="pwa-a-web-app-with-an-installable-relationship">PWA: a Web App with an installable relationship</h2>
+<p>A Progressive Web App is still a Web application. Its important difference is the relationship it can establish with the device and user: an application manifest can define launch metadata, icons, scope, and display mode, while user agents may present an installable, standalone experience. The current W3C manifest specification explicitly describes a JSON format for startup parameters and a URL scope, including deep-link behaviour (<a href="https://www.w3.org/TR/appmanifest/">W3C Web Application Manifest</a>).</p>
+<p>PWA is a good fit when a service:</p>
+<ul>
+<li>Should work across desktop and mobile from one Web codebase.</li>
+<li>Benefits from installation, an application icon, or a standalone window.</li>
+<li>Needs some offline or resilient behaviour.</li>
+<li>Is used regularly rather than visited once.</li>
+<li>Can tolerate browser- and platform-dependent capability differences.</li>
+</ul>
+<p>The last point is essential. “PWA” does not guarantee uniform native integration. Installation flows and available capabilities vary by browser and operating system; even Google’s PWA guidance documents platform-specific installation behaviour (<a href="https://web.dev/learn/pwa/installation">web.dev: PWA installation</a>). If the product depends on deep OS integration, a PWA should be validated against the actual target platforms rather than selected from a generic checklist.</p>
+<h2 id="desktop-app-when-the-operating-system-is-part-of-the-product">Desktop App: when the operating system is part of the product</h2>
+<p>A Desktop App is natural when the application needs a durable local presence and the operating system is part of its functional boundary.</p>
+<p>Examples include an IDE, terminal, video editor, password manager, virtualisation tool, or local AI workbench. These products may need filesystem access, multiple windows, global shortcuts, background processes, native menus, hardware acceleration, device integration, or reliable offline operation.</p>
+<p>The price is distribution and lifecycle complexity. Installation, updates, code signing, platform differences, security hardening, and native integration all become product responsibilities. Electron, Tauri, and native toolkits change the engineering trade-offs, but they do not change the interface question. “Desktop” describes the application’s relationship with the machine; it does not tell us whether the internal UI should be a document, canvas, dashboard, terminal, or chat.</p>
+<p>A useful escalation rule is to begin with the lightest surface that satisfies the work, then adopt a desktop shell when concrete OS requirements appear. “It might need native access one day” is not yet a requirement.</p>
+<h2 id="browser-extension-when-the-current-page-is-the-context">Browser Extension: when the current page is the context</h2>
+<p>A Browser Extension is strongest when the user’s task begins inside another website. Its value is contextual: it can add a control to the browser, inject a content script into a page, react to browser events, or provide a popup or side panel. MDN’s extension architecture separates these pieces explicitly—manifest metadata, background scripts, extension pages, and content scripts running in the context of web pages (<a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension">MDN: Anatomy of an extension</a>).</p>
+<p>Natural extension use cases include:</p>
+<ul>
+<li>Capturing the current page into a notes or research system.</li>
+<li>Enhancing a specific site’s workflow.</li>
+<li>Comparing information across open pages.</li>
+<li>Filling or transforming content with explicit user control.</li>
+<li>Connecting a page to a local developer tool.</li>
+</ul>
+<p>An extension is a poor default for an application whose core experience does not depend on browser context. It inherits permission concerns, browser policy, extension-store review, and platform differences. The more permissions it requests, the more carefully its value and trust model must be explained.</p>
+<h2 id="mcp-an-interface-for-ai-not-a-replacement-gui">MCP: an interface for AI, not a replacement GUI</h2>
+<p>MCP belongs in this comparison only if we keep its category clear. A Model Context Protocol server does not, by itself, provide a human user interface. It exposes capabilities and context to an AI application through a client-server protocol.</p>
+<p>The official architecture describes tools, resources, and prompts as core server primitives. Tools perform actions, resources supply contextual data, and prompts provide reusable interaction templates. Hosts discover supported capabilities and decide how to make them available to models and users (<a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a>).</p>
+<p>MCP is appropriate when an AI agent needs a stable, structured way to:</p>
+<ul>
+<li>Query a system without visually operating its UI.</li>
+<li>Perform bounded actions with typed inputs.</li>
+<li>Read contextual resources.</li>
+<li>Discover available capabilities at runtime.</li>
+<li>Work across multiple tools through a consistent host.</li>
+</ul>
+<p>This does not mean the same product should lose its CLI or Web App. Humans may need to inspect, compare, edit, and approve through visual or deterministic controls. Automation may need a CLI or API. AI may need MCP. The surfaces can share one domain layer while serving different actors.</p>
+<p>MCP Apps add an interactive UI extension to this picture, but they are a distinct topic. The official MCP Apps overview describes views rendered by compatible hosts and notes that host support varies (<a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps overview</a>). Article 03 will examine when that contextual surface is preferable to chat and when a full application is still necessary. For a related exploration of agent-facing Web tools, see <a href="/posts/webmcp-discovery-problem/">The Discovery Problem: How Will Agents Find Your WebMCP Tools?</a>.</p>
+<h2 id="most-useful-products-are-hybrids">Most useful products are hybrids</h2>
+<p>The framework should not end with a forced choice. A well-shaped developer utility might expose:</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>mytool scan       -> one-shot transformation</span></span>
+<span class="line"><span>mytool status     -> scriptable inspection</span></span>
+<span class="line"><span>mytool ui         -> local visual management</span></span>
+<span class="line"><span>mytool serve-mcp  -> agent-facing capabilities</span></span></code></pre>
+<p>All four surfaces can call the same domain logic. The CLI does not have to start a browser. The Web UI does not have to encode every operation in buttons. The MCP server does not have to pretend that text is the best representation for a chart. Each interface takes responsibility for the work it represents well.</p>
+<p>This suggests a practical mapping:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Shape of work</th><th>Natural starting surface</th><th>Why</th></tr></thead><tbody><tr><td>Transformation</td><td>CLI</td><td>Precise, repeatable, composable</td></tr><tr><td>Terminal inspection</td><td>TUI</td><td>Persistent state with keyboard efficiency</td></tr><tr><td>Visual exploration</td><td>Web App</td><td>Comparison, discovery, and rich presentation</td></tr><tr><td>Cross-device daily use</td><td>PWA</td><td>Web reach with an installable relationship</td></tr><tr><td>Deep local integration</td><td>Desktop App</td><td>Files, processes, devices, and durable presence</td></tr><tr><td>Browser-contextual capture</td><td>Browser Extension</td><td>The current page is part of the input</td></tr><tr><td>Automation</td><td>CLI + API or daemon</td><td>Deterministic invocation without human navigation</td></tr><tr><td>AI access</td><td>MCP</td><td>Structured capability and context discovery</td></tr></tbody></table>
+<p>The table identifies a starting point, not an architectural prison. Add another surface when a real user task crosses into another row.</p>
+<h2 id="a-decision-process-that-resists-fashion">A decision process that resists fashion</h2>
+<p>Before choosing a framework, ask these questions in order:</p>
+<ol>
+<li><strong>What does the user know at the beginning?</strong> If the action and target are already precise, favour a command or direct action. If not, provide discovery.</li>
+<li><strong>What must remain visible?</strong> If users need ongoing state, comparison, or history, provide a persistent surface.</li>
+<li><strong>Is the work symbolic or spatial?</strong> Text is efficient for identifiers and parameters; visual interfaces are stronger for layout, relationships, and previews.</li>
+<li><strong>Where does the context live?</strong> A terminal, browser page, local machine, shared organisation, or AI host each changes the natural boundary.</li>
+<li><strong>Who or what is the actor?</strong> Human-facing and machine-facing interfaces should not be conflated.</li>
+<li><strong>What must compose with other work?</strong> Pipes, URLs, APIs, files, and MCP capabilities provide different forms of composition.</li>
+<li><strong>What is the smallest surface that remains honest about the task?</strong> Minimise lifecycle cost without hiding necessary complexity from users.</li>
+</ol>
+<p>There are counterarguments. Multiple surfaces can fragment documentation and testing. A CLI plus Web App plus MCP server may expose inconsistent behaviour. A familiar Web UI may be more accessible to a broad audience than a “perfectly matched” specialist interface. These are real costs.</p>
+<p>The answer is not maximal interface proliferation. It is a shared domain model, clear responsibility for each surface, and evidence that a distinct user task justifies each one. Sometimes one Web App is enough. Sometimes one command is enough. The framework is useful precisely because it allows that conclusion.</p>
+<h2 id="the-interface-is-part-of-the-product-model">The interface is part of the product model</h2>
+<p>Choosing an interface is not the final decoration applied after the software is designed. It decides how users express intent, perceive state, recover from mistakes, combine the tool with other systems, and return to unfinished work.</p>
+<p>CLI, TUI, Web App, PWA, Desktop App, Browser Extension, and MCP are not stages in an evolutionary ladder. They are different contracts between capability, context, and actor.</p>
+<p>The next step in this series is to test that idea against a commonly overlooked hybrid. A Local Web App can keep a tool local-first and command-friendly while adding a rich visual surface. It shows why the most useful answer is often not “Which application type wins?” but “Which small set of interfaces lets this capability meet each user where the work already happens?”</p>
+<p><em>Series: <a href="/posts/00-from-apps-to-intent-driven-computing/">Index</a> · Next: <a href="/posts/02-local-web-apps-are-underrated/">02 — Local Web Apps Are Underrated</a></em></p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX.1-2024 Shell Command Language</a></li>
+<li><a href="https://www.w3.org/TR/appmanifest/">W3C Web Application Manifest</a></li>
+<li><a href="https://web.dev/learn/pwa/installation">web.dev: PWA installation</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Anatomy_of_a_WebExtension">MDN: Anatomy of an extension</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/architecture">Model Context Protocol architecture overview</a></li>
+<li><a href="https://modelcontextprotocol.io/extensions/apps/overview">MCP Apps overview</a></li>
+</ul></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/tags/user-interface/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>user-interface</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/tags/developer-tools/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>developer-tools</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/tags/web/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>web</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/tags/mcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>mcp</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>architecture</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>Back to Top</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/posts/01-choosing-the-right-application-interface/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.lk5SVoVj.js"></script>

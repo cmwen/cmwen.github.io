@@ -1,0 +1,524 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/07-framework-for-composable-workspaces/"><meta name="generator" content="Astro v7.1.6"><!-- General Meta Tags --><title>讓工作空間真的能組合：一套共通語意框架 | Min Wen</title><meta name="title" content="讓工作空間真的能組合：一套共通語意框架 | Min Wen"><meta name="description" content="可組合工作空間不只要能排面板，還需要共用物件、資料、動作、畫面、事件與意圖，才能讓不同工具接得起來。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="讓工作空間真的能組合：一套共通語意框架 | Min Wen"><meta property="og:description" content="可組合工作空間不只要能排面板，還需要共用物件、資料、動作、畫面、事件與意圖，才能讓不同工具接得起來。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/"><meta property="og:image" content="https://cmwen.github.io/posts/%E8%AE%93%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%96%93%E7%9C%9F%E7%9A%84%E8%83%BD%E7%B5%84%E5%90%88%E4%B8%80%E5%A5%97%E5%85%B1%E9%80%9A%E8%AA%9E%E6%84%8F%E6%A1%86%E6%9E%B6.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-08-06T14:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/"><meta property="twitter:title" content="讓工作空間真的能組合：一套共通語意框架 | Min Wen"><meta property="twitter:description" content="可組合工作空間不只要能排面板，還需要共用物件、資料、動作、畫面、事件與意圖，才能讓不同工具接得起來。"><meta property="twitter:image" content="https://cmwen.github.io/posts/%E8%AE%93%E5%B7%A5%E4%BD%9C%E7%A9%BA%E9%96%93%E7%9C%9F%E7%9A%84%E8%83%BD%E7%B5%84%E5%90%88%E4%B8%80%E5%A5%97%E5%85%B1%E9%80%9A%E8%AA%9E%E6%84%8F%E6%A1%86%E6%9E%B6.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.jmhnZfFy.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.B1zy6pOW.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: \8B93\5DE5\4F5C\7A7A\9593\771F\7684\80FD\7D44\5408\4E00\5957\5171\901A\8A9E\610F\6846\67B6; }@layer astro { ::view-transition-old(\8B93\5DE5\4F5C\7A7A\9593\771F\7684\80FD\7D44\5408\4E00\5957\5171\901A\8A9E\610F\6846\67B6) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\8B93\5DE5\4F5C\7A7A\9593\771F\7684\80FD\7D44\5408\4E00\5957\5171\901A\8A9E\610F\6846\67B6) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\8B93\5DE5\4F5C\7A7A\9593\771F\7684\80FD\7D44\5408\4E00\5957\5171\901A\8A9E\610F\6846\67B6) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\8B93\5DE5\4F5C\7A7A\9593\771F\7684\80FD\7D44\5408\4E00\5957\5171\901A\8A9E\610F\6846\67B6) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: workspace; }@layer astro { ::view-transition-old(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(workspace) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: mcp; }@layer astro { ::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(mcp) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: user-interface; }@layer astro { ::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(user-interface) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">跳至內容</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">文章</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">標籤</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">作品集</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">工具箱</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">關於</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="搜尋" title="搜尋"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">搜尋</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/posts/07-framework-for-composable-workspaces/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">EN</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>返回</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="oQbT4" component-url="/_astro/AudioPlayer.CHrjwSOC.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;slug&quot;:[0,&quot;07-framework-for-composable-workspaces&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="Z2tMxxV" component-url="/_astro/ChatLink.DaVoM4Tc.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;title&quot;:[0,&quot;讓工作空間真的能組合：一套共通語意框架&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;可組合工作空間需要共通語意契約&quot;],[0,&quot;物件資料動作畫面事件與意圖是六個基本元素&quot;],[0,&quot;工作空間外殼協調不同介面&quot;],[0,&quot;情境圖譜保留工作關係&quot;],[0,&quot;面板執行環境隔離互動畫面&quot;],[0,&quot;本機常駐服務銜接權限能力與狀態&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">讓工作空間真的能組合：一套共通語意框架</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-08-06T14:00:00.000Z">Aug 6, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">02:00 PM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>想像線上付款服務突然大量逾時。你在同一個工作空間裡打開失敗的部署、相關的合併請求、即時紀錄與服務拓樸，再請 AI 比對上一個正常版本。當你點到某一行錯誤訊息，程式碼畫面跳到可能出問題的位置，拓樸圖標出受影響的服務，AI 也知道你說的「這個錯誤」是哪一筆。</p>
+<p>這些工具今天大多已經存在。真正難的是：如何讓它們合作，而不是把六套彼此不相干的程式塞進同一個視窗。</p>
+<p>面板可以拖曳、分割、縮放，頂多代表版面能組合。若要讓工作本身也能接續，系統還得知道大家正在看同一個什麼東西、目前選取了什麼、可以做哪些事、剛才發生什麼變化，以及使用者最後想完成什麼。</p>
+<p>因此，我認為可組合工作空間的核心不是更自由的排版，而是一份夠小、各種工具都能採用的<strong>共通語意契約</strong>。它包含六種基本元素：物件、資料、動作、畫面、事件與意圖；再交由工作空間外殼、情境圖譜、面板執行環境與本機常駐服務協調。</p>
+<h2 id="先分清楚三種可組合">先分清楚三種「可組合」</h2>
+<p>這個詞常被用得太寬鬆，實際上至少有三個層次。</p>
+<p>第一層是<strong>版面組合</strong>。使用者能把紀錄、編輯器和圖表排在一起，但它們彼此仍是陌生人。</p>
+<p>第二層是<strong>資料組合</strong>。在客戶清單點選一家公司，另一張圖表就跟著篩選；工具產生的結果也能直接送進表格。不過，如果每兩套工具都要另外寫一支轉接程式，整合成本仍會快速失控。</p>
+<p>第三層才是<strong>工作流程組合</strong>。系統不只搬資料，還理解物件、能力、事件與意圖，因此能建議下一個適合的畫面、把動作交給正確的服務、保留資料來源，在需要時詢問權限，並讓使用者隔天從原處繼續。</p>
+<p>第三層建立在前兩層之上，卻不會因為多放幾個 iframe 就自然出現。</p>
+<h2 id="六個可以重複使用的整合元素">六個可以重複使用的整合元素</h2>
+<h3 id="1-物件先確認大家指的是同一樣東西">1. 物件：先確認大家指的是同一樣東西</h3>
+<p>物件（entity）是工作領域裡具有穩定識別碼與類型的東西，例如檔案、客戶、發票、合併請求、部署、警示或調查紀錄。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="json"><code><span class="line"><span style="color:#ABB2BF">{</span></span>
+<span class="line"><span style="color:#E06C75">  "id"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deploy://payments/prod/2026-08-07.3"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "type"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deployment"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "title"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"payments prod 2026-08-07.3"</span><span style="color:#ABB2BF">,</span></span>
+<span class="line"><span style="color:#E06C75">  "source"</span><span style="color:#ABB2BF">: </span><span style="color:#98C379">"deployment-service"</span></span>
+<span class="line"><span style="color:#ABB2BF">}</span></span></code></pre>
+<p>識別碼不一定要是公開網址，但在它的適用範圍內必須穩定，也要能由有權限的服務解析。這樣紀錄面板、拓樸圖與 AI 才能指向同一次部署，而不必了解彼此的內部資料結構。</p>
+<h3 id="2-資料不只交付內容也交代從哪裡來">2. 資料：不只交付內容，也交代從哪裡來</h3>
+<p>資料是物件或查詢結果的一種呈現。除了內容本身，它還需要格式或結構描述、來源、更新時間與出處。</p>
+<p>同一次部署，給人看的可能是連續紀錄，給 AI 的則是含時間戳與服務代碼的結構化事件。兩者指向同一個物件，不代表必須傳遞完全相同的內容。</p>
+<p>在 AI 工作空間裡，來源尤其重要。摘要必須知道自己根據哪些版本的檔案產生；推論出的結論也不能冒充原始資料。外殼不必看懂每一種格式，但必須保留這些關係。</p>
+<h3 id="3-動作說清楚能做什麼以及會造成什麼後果">3. 動作：說清楚能做什麼，以及會造成什麼後果</h3>
+<p>動作（action）是作用在物件上的明確能力，例如開啟、比較、執行測試、註記、核准或部署。每個動作都應說明可接受的物件類型、輸入格式、可能影響，以及實際負責執行的服務。</p>
+<p>這和 MCP 工具的設計很接近：主機能發現具名操作及其輸入結構。這裡重要的是「能力可以被發現」這項設計原則，不是要求所有動作都改用 MCP。選單、快捷鍵、命令列與自動化介面，仍可用各自合適的方式呈現同一項領域動作（<a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP tools specification</a>）。</p>
+<p>會改動資料的動作，還要標示能否復原、是否連到外部服務，以及是否需要再次確認。最後執行動作的服務仍必須自行檢查授權，不能只相信前端傳來的指示。</p>
+<h3 id="4-畫面同一個物件可以有不同看法">4. 畫面：同一個物件可以有不同看法</h3>
+<p>畫面（view）負責呈現或編輯物件與資料。它可以是樹狀清單、表格、編輯器、終端機、地圖、圖表、表單、對話或小型 MCP App。同一次部署可以同時出現在時間軸、紀錄串流、拓樸節點與摘要卡片裡，但識別仍只有一份。</p>
+<p>畫面可以保留游標位置、縮放倍率等操作狀態；真正需要長期保存的變更，則應透過動作交回負責的服務。否則關掉面板，可能連重要工作也一起消失。</p>
+<h3 id="5-事件記錄已經發生的事不等於要求執行">5. 事件：記錄已經發生的事，不等於要求執行</h3>
+<p>事件（event）描述完成的事實，例如選取項目已變更、物件已更新、工作已開始或權限被拒絕。它應包含來源、時間、相關物件與追蹤識別碼。</p>
+<p>事件讓各元件不必兩兩綁死。當使用者選了一行紀錄，情境圖譜可以更新，相關畫面可以標示對應物件，AI 也能在授權範圍內取得新情境。</p>
+<p>但「部署失敗」是事件，「回復上一版」是動作。分開兩者，才能避免系統把收到通知誤認成已獲准採取行動，也更容易稽核事後到底發生了什麼。</p>
+<h3 id="6-意圖保留使用者真正要完成的結果">6. 意圖：保留使用者真正要完成的結果</h3>
+<p>意圖（intent）位在單一步驟之上，例如調查事故、準備客戶簡報、核對帳款或發布新版。</p>
+<p>意圖通常不完整，系統可能需要 AI 規劃或固定流程，把它拆成查詢與動作。拆解過程不能丟掉原始說法、限制條件、已解析的物件與核准紀錄。使用者說「只能讀取正式環境，不要修改」，這句話必須一路約束後續規劃，不能只留在對話紀錄裡。</p>
+<p>意圖也不一定從聊天輸入。命令選單、範本、網址與按鈕都可以是入口。「AI 原生」不該等同於「只能聊天」。</p>
+<h2 id="四個負責把契約跑起來的元件">四個負責把契約跑起來的元件</h2>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#ABB2BF">flowchart TB</span></span>
+<span class="line"><span style="color:#ABB2BF">    U[使用者意圖] --> S[工作空間外殼]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> G[情境圖譜]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> P[面板執行環境]</span></span>
+<span class="line"><span style="color:#ABB2BF">    S &#x3C;--> D[本機常駐服務]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V1[編輯器畫面]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V2[圖表畫面]</span></span>
+<span class="line"><span style="color:#ABB2BF">    P --> V3[AI 助理畫面]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C1[檔案與程序]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C2[遠端服務]</span></span>
+<span class="line"><span style="color:#ABB2BF">    D --> C3[MCP 與命令列能力]</span></span></code></pre>
+<h3 id="工作空間外殼協調操作與注意力">工作空間外殼：協調操作與注意力</h3>
+<p>外殼負責版面、導覽、焦點、指令、通知、權限提示與工作階段復原。它決定畫面放在哪裡，也維持共同的操作規則。Visual Studio Code 讓擴充功能的畫面能放進既有或自訂容器，並在側欄與面板之間移動，是外殼管理位置的成熟例子（<a href="https://code.visualstudio.com/api/ux-guidelines/views">VS Code Views</a>）。但跨領域的共通語意，仍需要另外設計。</p>
+<h3 id="情境圖譜保存關係不是傾倒對話紀錄">情境圖譜：保存關係，不是傾倒對話紀錄</h3>
+<p>情境圖譜（context graph）把目前工作的物件、畫面、意圖、工具結果與衍生內容連起來。事故調查中，它可以記住部署對應哪個提交、服務、警示、選取的紀錄與時間軸草稿。當使用者說「拿這個跟上一版比較」，系統才有依據解析「這個」。</p>
+<p>圖譜也必須會淡出。不是畫面上出現過的每一筆資訊都該送進模型，也不是提過一次就要永久記住。焦點、最近使用、使用者釘選、敏感程度與內容預算，都應影響目前公開給 AI 的範圍，而且這個範圍必須能檢查。</p>
+<h3 id="面板執行環境讓畫面能擴充也能各自失敗">面板執行環境：讓畫面能擴充，也能各自失敗</h3>
+<p>它負責載入畫面、提供受限介面、轉送事件、套用主題與無障礙設定，並隔離錯誤。常見介面應優先使用範圍明確的元件；只有領域真的需要時，才開放完全自訂的網頁畫面。VS Code 也建議僅在標準介面不足時使用 Webview（<a href="https://code.visualstudio.com/api/ux-guidelines/webviews">VS Code Webviews</a>）。自由度越高，越需要清楚的隔離與生命週期界線。</p>
+<h3 id="本機常駐服務集中處理權限與長時間工作">本機常駐服務：集中處理權限與長時間工作</h3>
+<p>有些能力不該直接放進面板，例如檔案系統、子程序、憑證、本機資料庫、模型執行環境、遠端 API、MCP 伺服器與長時間工作。常駐服務可以集中管理這些能力與政策，也讓建置工作在關閉面板後繼續執行，等外殼重開再接回來。</p>
+<p>這裡的「本機」指靠近使用者裝置與信任邊界，不代表所有資料都必須離線。它可以代為連接遠端服務，但不需要把整台電腦的權限交給每個內嵌畫面。</p>
+<h2 id="現有系統已經提供哪些積木">現有系統已經提供哪些積木</h2>
+<p>不必等待某套「終極工作空間」。今天的系統已經驗證了不少可重用的設計：</p>
+<ul>
+<li><strong>POSIX shell</strong> 用呼叫方式、管線、重新導向與結束狀態，讓獨立程式互相組合。限制是位元組串流幾乎不帶領域語意（<a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX Shell Command Language</a>）。</li>
+<li><strong>Web</strong> 提供全球識別碼、連結、不同內容表示法與來源隔離，適合引用長期存在的物件；但兩個網頁放在一起，不會自動共用選取狀態或動作（<a href="https://www.w3.org/TR/webarch/">Architecture of the World Wide Web</a>）。</li>
+<li><strong>IDE 工作台</strong> 已有指令登錄、可移動畫面、目前選取與擴充功能生命週期。VS Code 的 Workspace Trust 也示範如何集中控管未受信任資料夾中的程式碼執行（<a href="https://code.visualstudio.com/api/extension-guides/workspace-trust">VS Code Workspace Trust</a>）。限制是 IDE 天然以檔案與程式碼為中心。</li>
+<li><strong>MCP 主機</strong> 能向獨立伺服器協商並發現工具、資源與提示內容，但 MCP 本身不是完整的工作空間介面、狀態儲存或通用事件匯流排（<a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a>）。</li>
+</ul>
+<p>重點不是選出唯一贏家，而是抽出這些系統已經證明有效的小型契約。</p>
+<h2 id="用一次事故調查檢驗整套設計">用一次事故調查檢驗整套設計</h2>
+<p>假設使用者輸入：「調查最新 payments 部署為什麼逾時，不要修改正式環境。」</p>
+<ol>
+<li>外殼把它記成事故調查意圖，並保存「只能讀取」的限制。</li>
+<li>物件服務解析「最新 payments 部署」，畫面先顯示確切版本供使用者確認。</li>
+<li>情境圖譜連起部署、提交、服務、警示與操作手冊。</li>
+<li>面板執行環境只帶入相關物件，開啟紀錄、拓樸、程式碼與 AI 畫面。</li>
+<li>本機常駐服務串流紀錄並執行唯讀診斷。</li>
+<li>使用者點選錯誤、AI 提出假設時，事件持續更新圖譜。</li>
+<li>即使 AI 建議回復版本，動作所標示的「會修改正式環境」仍與意圖限制衝突，因此外殼不執行。</li>
+<li>系統最後保存含來源、時間與固定連結的調查時間軸。</li>
+</ol>
+<p>沒有共同物件，各面板可能各自解讀「最新」；沒有動作後果，「不要修改」就只是一句文字；沒有來源，時間軸無法稽核；沒有圖譜，每個畫面又得重新找一次情境。</p>
+<h2 id="可組合也要限制錯誤的擴散">可組合，也要限制錯誤的擴散</h2>
+<p>整合越深，出錯時影響也越大，因此幾個界線不能省：</p>
+<ul>
+<li>每個畫面只取得完成工作所需的最低權限，顯示指標的圖表不該順便取得部署權限。</li>
+<li>信任要有範圍、看得見，也能撤銷；信任一個工作空間不等於核准未來所有動作。</li>
+<li>意圖中的限制必須能被系統讀取，後續計畫只能縮小權限，不能偷偷放大。</li>
+<li>事件與衍生內容都要帶來源和追蹤關係，才能除錯、稽核與復原。</li>
+<li>第三方畫面必須獨立失敗，不能拖垮情境圖譜或正在背景執行的工作。</li>
+</ul>
+<h2 id="從一個真的會用到的流程開始">從一個真的會用到的流程開始</h2>
+<p>這套框架很廣，但實作時應該從窄處開始。挑一個使用者原本就要在多個工具之間切換的流程，例如事故處理、研究整理、版本發布或內容製作。先列出五到十個重要物件、少量動作與事件，再做兩個互補畫面，並保存一項意圖和足以接續工作的情境。</p>
+<p>只有在多次遇到相同整合需求後，才把契約抽象化。第一版甚至可以只有：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>物件：檔案、部署、警示、調查</span></span>
+<span class="line"><span>動作：開啟、查詢紀錄、比較、建立時間軸</span></span>
+<span class="line"><span>事件：選取已變更、查詢已完成、物件已更新</span></span>
+<span class="line"><span>畫面：編輯器、紀錄、時間軸、AI 助理</span></span>
+<span class="line"><span>意圖：帶有限制條件的事故調查</span></span></code></pre>
+<p>這已經足以測試語意能否真正接起來，不必先打造一套新的作業系統。</p>
+<h2 id="工作空間的價值在協調而不是包辦">工作空間的價值，在協調而不是包辦</h2>
+<p>編輯器可以繼續當編輯器，終端機可以保留精準的文字操作，圖表負責看關係，AI 則負責處理模糊與協調。可組合工作空間不需要把它們磨成同一種介面，而是讓它們對共同物件、資料、動作、畫面、事件與意圖有一致理解。</p>
+<p>外殼協調注意力，情境圖譜保存關係，面板執行環境提供擴充與隔離，本機常駐服務銜接權限能力與持續狀態。組合起來，它不只是應用程式啟動器，也不是什麼都塞進聊天框，而是一個能依眼前工作準備合適工具的環境。</p>
+<p><em>系列導覽：<a href="/zh-hant/posts/00-from-apps-to-intent-driven-computing/">索引</a> · 上一篇：<a href="/zh-hant/posts/06-the-workflow-centric-workbench/">06 — 以工作流程為中心的工作台</a> · 下一篇：<a href="/zh-hant/posts/08-intent-first-computing-and-future-ui/">08 — 意圖優先，不等於只剩聊天</a></em></p>
+<h2 id="資料來源">資料來源</h2>
+<ul>
+<li><a href="https://pubs.opengroup.org/onlinepubs/9799919799/utilities/V3_chap02.html">POSIX.1-2024 Shell Command Language</a></li>
+<li><a href="https://www.w3.org/TR/webarch/">W3C: Architecture of the World Wide Web</a></li>
+<li><a href="https://code.visualstudio.com/api/ux-guidelines/views">Visual Studio Code: Views</a></li>
+<li><a href="https://code.visualstudio.com/api/ux-guidelines/webviews">Visual Studio Code: Webviews</a></li>
+<li><a href="https://code.visualstudio.com/api/extension-guides/workspace-trust">Visual Studio Code: Workspace Trust Extension Guide</a></li>
+<li><a href="https://modelcontextprotocol.io/docs/learn/architecture">MCP architecture overview</a></li>
+<li><a href="https://modelcontextprotocol.io/specification/2025-11-25/server/tools">MCP tools specification</a></li>
+</ul></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/zh-hant/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>architecture</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>ai</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/zh-hant/tags/workspace/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>workspace</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/zh-hant/tags/mcp/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>mcp</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/zh-hant/tags/user-interface/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>user-interface</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>回到頂端</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/07-framework-for-composable-workspaces/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.lk5SVoVj.js"></script>

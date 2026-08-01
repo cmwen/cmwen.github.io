@@ -1,0 +1,590 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/06-the-workflow-centric-workbench/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/06-the-workflow-centric-workbench/"><meta name="generator" content="Astro v7.1.6"><!-- General Meta Tags --><title>以工作流程為中心的 Workbench：讓一項工作有自己的位置 | Min Wen</title><meta name="title" content="以工作流程為中心的 Workbench：讓一項工作有自己的位置 | Min Wen"><meta name="description" content="Workflow-centric workbench 以正在推進的成果為核心，在保留專業工具權責的前提下，整理意圖、證據、狀態與下一步。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="以工作流程為中心的 Workbench：讓一項工作有自己的位置 | Min Wen"><meta property="og:description" content="Workflow-centric workbench 以正在推進的成果為核心，在保留專業工具權責的前提下，整理意圖、證據、狀態與下一步。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/"><meta property="og:image" content="https://cmwen.github.io/posts/%E4%BB%A5%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E7%82%BA%E4%B8%AD%E5%BF%83%E7%9A%84-workbench%E8%AE%93%E4%B8%80%E9%A0%85%E5%B7%A5%E4%BD%9C%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BD%8D%E7%BD%AE.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-08-05T14:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/"><meta property="twitter:title" content="以工作流程為中心的 Workbench：讓一項工作有自己的位置 | Min Wen"><meta property="twitter:description" content="Workflow-centric workbench 以正在推進的成果為核心，在保留專業工具權責的前提下，整理意圖、證據、狀態與下一步。"><meta property="twitter:image" content="https://cmwen.github.io/posts/%E4%BB%A5%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E7%82%BA%E4%B8%AD%E5%BF%83%E7%9A%84-workbench%E8%AE%93%E4%B8%80%E9%A0%85%E5%B7%A5%E4%BD%9C%E6%9C%89%E8%87%AA%E5%B7%B1%E7%9A%84%E4%BD%8D%E7%BD%AE.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.jmhnZfFy.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.B1zy6pOW.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: \4EE5\5DE5\4F5C\6D41\7A0B\70BA\4E2D\5FC3\7684-workbench\8B93\4E00\9805\5DE5\4F5C\6709\81EA\5DF1\7684\4F4D\7F6E; }@layer astro { ::view-transition-old(\4EE5\5DE5\4F5C\6D41\7A0B\70BA\4E2D\5FC3\7684-workbench\8B93\4E00\9805\5DE5\4F5C\6709\81EA\5DF1\7684\4F4D\7F6E) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(\4EE5\5DE5\4F5C\6D41\7A0B\70BA\4E2D\5FC3\7684-workbench\8B93\4E00\9805\5DE5\4F5C\6709\81EA\5DF1\7684\4F4D\7F6E) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(\4EE5\5DE5\4F5C\6D41\7A0B\70BA\4E2D\5FC3\7684-workbench\8B93\4E00\9805\5DE5\4F5C\6709\81EA\5DF1\7684\4F4D\7F6E) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(\4EE5\5DE5\4F5C\6D41\7A0B\70BA\4E2D\5FC3\7684-workbench\8B93\4E00\9805\5DE5\4F5C\6709\81EA\5DF1\7684\4F4D\7F6E) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: developer-experience; }@layer astro { ::view-transition-old(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-experience) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: workflow; }@layer astro { ::view-transition-old(workflow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(workflow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(workflow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(workflow) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: developer-tools; }@layer astro { ::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(developer-tools) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-6"] { view-transition-name: architecture; }@layer astro { ::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(architecture) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-6"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-6"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">跳至內容</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">文章</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">標籤</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">作品集</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">工具箱</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">關於</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="搜尋" title="搜尋"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">搜尋</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/posts/06-the-workflow-centric-workbench/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">EN</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>返回</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="1iSvMG" component-url="/_astro/AudioPlayer.CHrjwSOC.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;slug&quot;:[0,&quot;06-the-workflow-centric-workbench&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="Z1I5WVN" component-url="/_astro/ChatLink.DaVoM4Tc.js" component-export="default" renderer-url="/_astro/client.DNGcaFFt.js" props="{&quot;title&quot;:[0,&quot;以工作流程為中心的 Workbench：讓一項工作有自己的位置&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;工作流程是理解工作的主要單位&quot;],[0,&quot;workbench 保留專業工具的資料權責&quot;],[0,&quot;把意圖證據狀態與行動放在一起&quot;],[0,&quot;建立工作流程關係圖而不是複製儀表板資料&quot;],[0,&quot;workbench 不等於 developer portal&quot;],[0,&quot;AI 協助整理但不能抹除來源&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">以工作流程為中心的 Workbench：讓一項工作有自己的位置</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-08-05T14:00:00.000Z">Aug 5, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">02:00 PM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p><a href="/zh-hant/posts/05-the-tab-problem-and-app-centric-fragmentation/">上一篇</a>談到一項散落在 Jira、Figma、Confluence、Bitbucket、Bamboo、Microsoft Teams 與本機終端機的軟體修改。分頁太多只是表面；真正的麻煩，是同一項工作的身分、狀態、意圖、行動、注意力和權責，都被應用程式的邊界切開。</p>
+<p>面對這個問題，最不該做的，就是在第八套應用程式裡重做前面七套工具。</p>
+<p>更合理的方向，是建立一個 <strong>workflow-centric workbench</strong>。這裡的 workbench 可以理解成「工作台」：第一個出現在使用者眼前的物件，不再是某套應用程式，而是他正在推進的成果。工作台把與這項成果有關的證據、關係、狀態和可執行動作整理在一起；Jira、Figma、Bitbucket 等專業工具仍然保有各自資料的最終權責。</p>
+<p>本文的主張是：<strong>Workbench 應把工作流程建模成一張持續變動、生命週期有限的關係圖，裡面包含意圖、證據、決策與行動；它不該成為另一套 system of record（正式資料來源）。</strong> 守住這條界線，才能避免它變成只會顯示燈號的淺層儀表板，也不會膨脹成想取代所有工具的平台。</p>
+<p>這項區分也能說明它和 Developer Portal（開發者入口網站）有什麼不同。Portal 通常圍繞組織內相對穩定的服務目錄；Workbench 關心的，則是眼前這項工作現在發生了什麼、卡在哪裡、下一步能做什麼。</p>
+<h2 id="先選工作不是先選應用程式">先選工作，不是先選應用程式</h2>
+<p>回到上一篇的 <code>PAY-241</code>：更換收款帳號前，要多一道確認。</p>
+<p>在以應用程式為中心的環境裡，工程師得先判斷該開 Jira、Figma、Bitbucket 還是 Bamboo。使用 Workbench 時，他可以直接從 <code>PAY-241</code>，或「收款帳號確認流程」這種自然描述開始。進入後第一個畫面應回答四個問題：</p>
+<ol>
+<li>這項工作要達成什麼？</li>
+<li>哪些證據構成目前狀態？</li>
+<li>現在卡在哪裡，或有哪些事情還不確定？</li>
+<li>我接下來可以做什麼？</li>
+</ol>
+<p>同一個畫面可能整理出：</p>
+<ul>
+<li>Jira 裡的需求意圖與驗收條件。</li>
+<li>已核准的 Figma Frame，以及它究竟核准了哪一部分的明確關係。</li>
+<li>規範這次修改的 Confluence 決議，連同最後取得的版本。</li>
+<li>本機分支、尚未 Commit 的變更與精準測試結果。</li>
+<li>Bitbucket Pull Request 的最新 Commit、審查討論與核准狀態。</li>
+<li>對應該 Commit 的 Bamboo Plan 與部署結果。</li>
+<li>一段可能構成新決策的 Teams 討論，附上來源連結與參與者。</li>
+</ul>
+<p>這個單位不是把其他工具資料抄過來組成另一個「專案」。它是一項有起點、持續變化，而且有完成條件的明確工作。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#ABB2BF">flowchart TD</span></span>
+<span class="line"><span style="color:#ABB2BF">    W[工作流程 PAY-241]</span></span>
+<span class="line"><span style="color:#ABB2BF">    W --> I[意圖與限制]</span></span>
+<span class="line"><span style="color:#ABB2BF">    W --> E[相連的證據]</span></span>
+<span class="line"><span style="color:#ABB2BF">    W --> S[推導出的狀態]</span></span>
+<span class="line"><span style="color:#ABB2BF">    W --> A[可執行的動作]</span></span>
+<span class="line"><span style="color:#ABB2BF">    E --> X[具最終權責的來源系統]</span></span>
+<span class="line"><span style="color:#ABB2BF">    A --> X</span></span></code></pre>
+<p>這張圖刻意不是左右對稱。證據從來源系統進入 Workbench，動作則回到擁有該物件的系統執行。Workbench 能顯示所有資訊，不代表它就應該悄悄接管最終權責。</p>
+<h2 id="一個工作流程物件不能只是書籤集合">一個工作流程物件，不能只是書籤集合</h2>
+<p>最簡單的版本，是在 <code>PAY-241</code> 底下整理一排相關連結。這可以省下搜尋時間，卻無法解決上一篇提到的語意落差。</p>
+<p>真正有用的工作流程物件，至少要包含五種資訊。</p>
+<h3 id="1-意圖">1. 意圖</h3>
+<p>意圖說明這項工作為什麼存在、要達成什麼成果、受到哪些限制，以及哪些事情不在範圍內。它不只等於 Jira Description，也可能包含一條驗收條件、Confluence 裡的資安限制，或審查過程中正式確認的決策。</p>
+<p>意圖應該精簡、可檢查，而且能回到證據。Workbench 可以替使用者整理，但必須分清楚每句話是原文抄錄、系統推論，還是經負責人明確確認。這和<a href="/zh-hant/posts/pr-review-should-start-with-intent/">先理解意圖，再進行 Pull Request Review</a>採用的是同一個原則：實作是證據，意圖則是拿來判斷證據是否正確的契約。</p>
+<h3 id="2-產出物與證據">2. 產出物與證據</h3>
+<p>Issue、Frame、頁面、Branch、Commit、Pull Request、建置、部署、訊息、檔案與測試結果，都屬於原始系統管理的物件。Workbench 保存的是它們的引用與經過挑選的觀察結果，不是擅自建立一份無條件取代原始資料的副本。</p>
+<p>每一項觀察都應該附上來源、取得時間、可取得時的來源版本或識別碼，以及當時的權限脈絡。</p>
+<p>「Bamboo 是綠燈」幾乎無法檢查；下面這句才夠具體：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>部署結果 8127 於 14:32 回報：Commit 4f6d... 已成功部署到 staging。</span></span>
+<span class="line"><span>Workbench 於 14:33 取得此結果。</span></span></code></pre>
+<h3 id="3-有類型的關係">3. 有類型的關係</h3>
+<p>單純放連結只表示「兩者可能相關」，有類型的關係則能說明它們為什麼相關：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>Figma frame B --是已核准設計------> PAY-241</span></span>
+<span class="line"><span>commit 4f6d    --實作----------------> PAY-241</span></span>
+<span class="line"><span>Bamboo 8127   --驗證----------------> commit 4f6d</span></span>
+<span class="line"><span>Teams msg 391 --可能取代------------> Confluence 決議 v4</span></span></code></pre>
+<p>箭頭上的動詞非常重要。有些關係可以由來源資料直接確定，例如建置結果帶有 Commit Hash；有些是使用者明確指定；還有一些只是 AI 推論，在人確認之前必須一直標示為暫定，不能假裝已經定案。</p>
+<h3 id="4-從證據推導出的工作狀態">4. 從證據推導出的工作狀態</h3>
+<p>Workbench 可以綜合來源，整理出較高層次的狀態，但不能把所有資訊壓成一個綠色勾勾。</p>
+<p>例如：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>實作：  已 Push；本機仍有尚未 Commit 的變更</span></span>
+<span class="line"><span>審查：  有一則尚未解決的 Blocking 討論</span></span>
+<span class="line"><span>驗證：  最新 Commit 已通過單元測試 Plan</span></span>
+<span class="line"><span>交付：  前一個 Commit 已到 staging；最新版本尚未部署</span></span>
+<span class="line"><span>決策：  錯誤文案已核准；資安例外仍未確定</span></span></code></pre>
+<p>這比「進行中」有用得多，因為每一個面向需要的下一步不同。當來源更新時間不一致，或兩套系統暫時說法不同時，它也能如實保留落差，而不是硬湊成一個看似完整的狀態。</p>
+<h3 id="5-可執行的下一步">5. 可執行的下一步</h3>
+<p>只能看、不能做的 Workbench，最後會變成另一套報表系統。有效的下一步應該和證據放在一起：開啟 Figma 的指定 Frame、回覆某則 Review 討論、在本機執行精準測試、要求核准、觸發有權限的 Bamboo 部署，或更新 Jira 狀態。</p>
+<p>真正的修改仍由來源系統執行，或透過使用者身分授權、範圍明確的 Connector 執行。動作送出前，Workbench 要清楚顯示目標、可能影響和使用的權限；高影響動作要再次確認，完成後則附回原始系統的結果。</p>
+<h2 id="workbench-是投影不是資料倉儲">Workbench 是投影，不是資料倉儲</h2>
+<p>做跨工具整合時，最容易想到的架構是把所有資料匯入一個大型資料庫，然後宣告「現在都串好了」。這可能得到一座資料倉儲，卻未必得到可信的工作台。</p>
+<p>比較合適的模型是：<strong>帶著原始權責連結的具體化投影（materialised projection）</strong>。Workbench 可以快取足夠的 Metadata，讓使用者快速掌握全貌與跨來源關係；容易變動或敏感的細節則在需要時才讀取，所有修改仍送回原本的應用程式。</p>
+<p>實務上可以拆成四層：</p>
+<ol>
+<li><strong>Connectors</strong>：讀取來源物件，並呼叫權限範圍明確的動作。</li>
+<li><strong>身分解析</strong>：把需求編號、URL、Branch、Commit 與使用者確認結果，對應成工作流程關係。</li>
+<li><strong>工作流程投影</strong>：保存意圖、有類型的連結、觀察結果、資料新鮮度與個人注意力狀態。</li>
+<li><strong>使用介面</strong>：用 Web App、桌面程式、IDE 面板、終端機畫面或 AI 介面呈現同一套工作流程。</li>
+</ol>
+<p>介面可以改變，不必跟著重做工作流程模型。完整瀏覽器畫面適合並排比較視覺內容；<code>workbench status PAY-241</code> 這類終端機指令可以快速回答目前狀態；IDE 面板只顯示目前分支相關資訊；AI 介面則可以查詢證據並提出下一步。只要共用同一個領域層，這些介面是互補，不是競爭。</p>
+<p>這種設計也要把失敗明確呈現。Bamboo 暫時無法連線時，部署卡片應顯示「無法更新」，並保留最後取得時間；不能把缺少資料默認成成功或失敗。使用者沒有 Figma 檔案權限時，Workbench 可以顯示有一個無法存取的引用，但不能洩漏快取內容。</p>
+<h2 id="開發者的本機狀態不能被忽略">開發者的本機狀態不能被忽略</h2>
+<p>很多整合儀表板只連遠端 API，對開發者 Workbench 來說仍少了一半。</p>
+<p>本機 Working Tree 往往擁有最新、也最關鍵的狀態：還沒 Commit 的修改、新產生的檔案、仍在執行的測試程序、本機服務，或做到一半的 Coding Agent 任務。若 Workbench 看不到這些狀態，就算跨系統摘要再漂亮，也已經落後真實工作。</p>
+<p>這正是 <a href="/zh-hant/posts/02-local-web-apps-are-underrated/">Local Web App 模式</a>適合發揮的地方。本機輔助程式可以在明確授權下觀察目前 Repository、執行限制好的指令，再提供視覺化介面。它能把遠端證據和本機事實放在同一個脈絡裡，不必把整份 Working Tree 上傳到雲端。</p>
+<p>界線必須刻意畫清楚。本機程式可以回報 Branch、Commit、變更路徑與測試結果；不能因此向遠端 Connector 開放任意檔案系統存取，也不該預設把原始碼傳給 AI 模型。使用者需要知道哪些觀察只留在本機、哪些 Metadata 會同步，以及哪些動作會呼叫外部服務。</p>
+<p>純雲端 Workbench 仍可能適合其他工作流程；但對軟體交付而言，本機與遠端是同一項成果不可分割的兩半。</p>
+<h2 id="ai-最適合處理那些語意不明的接縫">AI 最適合處理那些語意不明的接縫</h2>
+<p>能用確定規則處理的關係，就不必交給 AI。Bamboo 結果已經寫明 Commit Hash，直接比對即可；Bitbucket Pull Request 明確提到 <code>PAY-241</code>，一般文字解析就能建立關係。</p>
+<p>真正需要 AI 的，是語意或對話造成的不確定接縫：</p>
+<ul>
+<li>找出可能改變驗收條件的 Teams 對話段落。</li>
+<li>比較 Figma 標註與目前實作畫面的說明。</li>
+<li>按照「等待哪一項決策」整理尚未解決的 Review 討論。</li>
+<li>解釋為什麼目前部署不包含 Pull Request 的最新 Commit。</li>
+<li>根據卡住的面向，提出可能的下一步。</li>
+</ul>
+<p>這裡的「可能」不能省略。AI 產出應以一項帶有來源、可信程度和確認狀態的主張進入關係圖，而不是悄悄變成事實。摘要要能引用原始物件；準備執行的修改要先預覽；從對話擷取決策時，要保留發言者和前後文。</p>
+<p>AI 最有價值的角色，是降低人工整理多套系統的成本，同時讓不確定性仍然看得見。能跨應用程式閱讀，不等於模型自動取得決策權。</p>
+<h2 id="workbench-不只是-developer-portal-換名字">Workbench 不只是 Developer Portal 換名字</h2>
+<p>Workbench 和 Developer Portal 的功能確實會重疊，因此更需要把差異講清楚。</p>
+<p>Backstage 把自己定位為建立 Developer Portal 的開放原始碼框架。它的 Software Catalog 以服務、網站、程式庫、資料管線等相對穩定的實體為中心，記錄擁有者與 Metadata，讓組織內的軟體容易被找到，也讓外掛能以 Catalog Entity 為核心整理基礎設施工具（<a href="https://backstage.io/docs/features/software-catalog/">Backstage Software Catalog</a>；<a href="https://backstage.io/docs/overview/generated-index/">Backstage overview</a>）。這是一套很有價值的組織模型。</p>
+<p>以工作流程為中心的 Workbench，重心不同：</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Developer Portal</th><th>Workflow-centric Workbench</th></tr></thead><tbody><tr><td>主要識別單位是軟體服務或由團隊擁有的資源</td><td>主要識別單位是要達成的成果或範圍明確的一項工作</td></tr><tr><td>改善探索、標準化、擁有權和自助服務</td><td>改善方向感、協調與下一步行動</td></tr><tr><td>多半描述相對穩定的組織拓樸</td><td>描述可能每分鐘都在改變的暫時關係圖</td></tr><tr><td>常回答：「這個服務要怎麼操作？」</td><td>常回答：「這項修改現在還缺什麼？」</td></tr><tr><td>通常從中央登錄的 Metadata 開始</td><td>通常從需求單、Branch、事故或意圖開始</td></tr></tbody></table>
+<p>兩者可以共存，也可以互相整合。<code>PAY-241</code> 可能涉及 Catalog 裡的 <code>payments-api</code>；Portal 提供擁有團隊、文件、Runbook 與範本，Workbench 只要連到這個 Entity，不必重新建立一份。反過來，Developer Portal 的外掛也可以承載 Workbench 畫面。</p>
+<p>這是一條概念界線，不代表一定要做成兩套產品。Portal 若把目前成果當成主要物件，並整理即時的跨系統證據，它就在扮演 Workflow Workbench；Workbench 若開始負責全公司的服務目錄、Golden Path 和平台治理，它也已經承擔 Portal 的責任。</p>
+<p>保留這條區分，是為了避免範圍失控。Workbench 不必先解決全公司的軟體探索、Scaffolding、文件發布與平台治理，才有資格幫一位工程師完成 <code>PAY-241</code>。</p>
+<h2 id="一個使用-workbench-的早晨">一個使用 Workbench 的早晨</h2>
+<p>想像 Reviewer 在你下班後留下回覆。隔天早上，你先打開 Workbench，而不是逐一檢查七套工具。</p>
+<p>最上方的 <code>PAY-241</code> 仍清楚寫著：「更換收款帳號前加入確認，不改變既有 SSO 流程。」這項意圖已由產品負責人確認，也連回 Jira 的驗收條件。</p>
+<p>下面列出你離開後的三項變化：</p>
+<ol>
+<li>Bitbucket Reviewer 把一則討論標為 Blocking，要求調整錯誤文案。</li>
+<li>設計師連上一個新的 Figma Frame，並註明它取代先前的錯誤狀態。</li>
+<li>Bamboo 完成一次 staging 部署，但部署的 Commit 比最新 Push 更舊。</li>
+</ol>
+<p>另一串 Teams 討論被獨立標示為：「可能的決策：保留 24 小時驗證期限。」因為相關負責人尚未確認，它沒有被直接寫成正式意圖。</p>
+<p>因此，Workbench 建議的不是一份按 App 分組的通知清單，而是和目前狀態直接相關的下一步：</p>
+<ul>
+<li>確認 Teams 的說法是否改變驗收條件。</li>
+<li>把新的 Figma Frame 和 Blocking Review 留言並排開啟。</li>
+<li>在本機套用文案修改，執行精準測試。</li>
+<li>Push 後等待對應新 Commit 的 Bamboo Plan，再部署那一份產出。</li>
+</ul>
+<p>每一項都能回到來源。本機動作留在本機；部署仍受 Bamboo 權限管理；使用者也可以不同意系統建議的順序。</p>
+<p>Workbench 沒有替人自動完成工作。它移除的是那筆一直被忽略、卻遮住真正工作的「脈絡重建稅」。</p>
+<h2 id="第一版最重要的能力是懂得節制">第一版最重要的能力，是懂得節制</h2>
+<p>Workbench 很容易一路長成「什麼都要做」的平台，所以可信的第一版，反而要明確知道哪些事情不做。</p>
+<p>它不應該：</p>
+<ul>
+<li>複製每套應用程式的每一個欄位。</li>
+<li>取代原始系統專用的編輯器、畫布、Review 畫面或日誌。</li>
+<li>只看單一狀態就判定工作完成。</li>
+<li>保存超級使用者憑證，代替所有人執行大範圍動作。</li>
+<li>顯示無法追溯來源的 AI 摘要。</li>
+<li>變成把所有事件再抄一次的第二套通知中心。</li>
+<li>要求整間公司先完成統一建模，單一工作流程才能使用。</li>
+</ul>
+<p>一個收斂的第一版，可以只支援「由 Jira 需求單開始的程式碼修改」，整合本機 Git、Bitbucket、Bamboo，以及設計或知識文件連結。它只回答幾個關鍵問題：目前最新 Commit 是哪一個、Review 卡在哪裡、建置與部署是否對應最新版本，以及這項工作的意圖是什麼。</p>
+<p>Teams 與 Figma 的語意整合，可以等基本的身分與權限模型值得信任後再加入。</p>
+<p>成功標準也不是「所有工具都接好了」，而是工程師被打斷後，能更快恢復工作，正確說出目前狀態與下一項決策，而且少做幾個錯誤假設。</p>
+<h2 id="從一堆-app變成一個能回去的工作位置">從一堆 App，變成一個能回去的工作位置</h2>
+<p>以工作流程為中心的 Workbench，把第一個問題從「我要開哪個 App？」改成「我現在要推進哪一個成果？」</p>
+<p>表面看來只是改善導覽，實際影響更深。它替一項工作建立不依賴任何單一來源的身分，同時不抹除原始系統的最終權責；它讓意圖和實作並排，區分觀察與推論，接上本機和遠端狀態，再把可執行動作放到支持它的證據旁邊。</p>
+<p>它的價值不在於把分頁數量降到零。有些動作本來就應該回到 Figma、Bitbucket、Bamboo 或終端機完成。真正的改善是：即使離開再回來，也不必重新從七套工具拼湊方向。</p>
+<p>這也是 Workbench 不能只被視為 Developer Portal 新名稱的原因。Portal 告訴我組織有哪些軟體、誰負責，以及建議如何操作；Workbench 告訴我這項持續變動的工作現在代表什麼、為何還沒完成，以及哪個經過授權的動作能讓它前進。</p>
+<p>專業應用程式不會消失。改變的是它們的邊界不再主導人的思考方式，而工作流程終於有了一個屬於自己的位置。</p>
+<p><em>系列導覽：<a href="/zh-hant/posts/00-from-apps-to-intent-driven-computing/">索引</a> · 上一篇：<a href="/zh-hant/posts/05-the-tab-problem-and-app-centric-fragmentation/">05 — 分頁越開越多，真正的問題不是瀏覽器</a> · 下一篇：<a href="/zh-hant/posts/07-framework-for-composable-workspaces/">07 — 可組合工作空間框架</a></em></p>
+<h2 id="資料來源">資料來源</h2>
+<ul>
+<li><a href="https://backstage.io/docs/features/software-catalog/">Backstage Software Catalog</a></li>
+<li><a href="https://backstage.io/docs/overview/generated-index/">Backstage overview</a></li>
+<li><a href="https://developer.atlassian.com/cloud/jira/software/rest/api-group-development-information/">Jira Software Cloud Development Information API</a></li>
+<li><a href="https://developer.atlassian.com/server/bamboo/rest/api-group-api/">Bamboo REST API</a></li>
+<li><a href="https://learn.microsoft.com/en-us/microsoftteams/platform/concepts/build-and-test/deep-links">Microsoft Teams deep links</a></li>
+</ul></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/zh-hant/tags/developer-experience/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>developer-experience</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/zh-hant/tags/workflow/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>workflow</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/zh-hant/tags/developer-tools/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>developer-tools</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>ai</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-6" href="/zh-hant/tags/architecture/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>architecture</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>回到頂端</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/06-the-workflow-centric-workbench/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.lk5SVoVj.js"></script>
