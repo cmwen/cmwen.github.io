@@ -20,7 +20,8 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { title, description, tags, root, updatedAt, createdAt } = entry.data;
+const { title, description, tags, root, updatedAt, createdAt, initialDepth } =
+  entry.data;
 const mindmap = {
   slug: entry.id,
   title,
@@ -29,6 +30,7 @@ const mindmap = {
   root,
   updatedAt,
   createdAt,
+  initialDepth,
 };
 
 const lang = "zh-hant" as const;

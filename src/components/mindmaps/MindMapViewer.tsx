@@ -274,12 +274,13 @@ export function MindMapViewer({ mindmap }: Props) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() => {
     const ids = new Set<string>();
-    ids.add(mindmap.root.id);
-    mindmap.root.children?.forEach(c => {
-      ids.add(c.id);
-      // Also expand level-2 for a richer initial view
-      c.children?.forEach(gc => ids.add(gc.id));
-    });
+    const initialDepth = mindmap.initialDepth ?? 3;
+    const expandToDepth = (node: MindMapNode, depth: number) => {
+      if (depth >= initialDepth) return;
+      ids.add(node.id);
+      node.children?.forEach(child => expandToDepth(child, depth + 1));
+    };
+    expandToDepth(mindmap.root, 0);
     return ids;
   });
 

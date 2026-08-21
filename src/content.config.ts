@@ -84,6 +84,7 @@ const mindmaps = defineCollection({
     tags: z.array(z.string()).default([]),
     createdAt: z.string(),
     updatedAt: z.string(),
+    initialDepth: z.number().int().min(1).optional(),
     root: mindMapNodeSchema,
   }),
 });

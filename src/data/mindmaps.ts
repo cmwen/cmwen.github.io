@@ -41,6 +41,8 @@ export interface MindMap {
   createdAt: string;
   /** ISO 8601 last-modified date. */
   updatedAt: string;
+  /** Number of tree levels expanded on first render. Defaults to 3. */
+  initialDepth?: number;
   /** The root node of the mind map tree. */
   root: MindMapNode;
 }

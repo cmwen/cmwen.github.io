@@ -1,62 +1,101 @@
 {
-  "title": "IdP, OAuth 2.1, OIDC & PKCE",
-  "description": "How Identity Providers, OAuth 2.1, OpenID Connect, and PKCE fit together: roles, tokens, flows, and security trade-offs.",
-  "tags": ["identity", "security", "oauth", "oidc", "pkce", "sso"],
+  "title": "Modern OAuth/OIDC: IdP, PKCE, STS & OBO",
+  "description": "A practical map of identity, OAuth 2.1, OpenID Connect, PKCE, security token services, on-behalf-of delegation, hardened profiles, threats, and operations.",
+  "tags": [
+    "identity",
+    "security",
+    "oauth",
+    "oidc",
+    "pkce",
+    "sts",
+    "obo",
+    "sso"
+  ],
   "createdAt": "2026-03-01T00:00:00Z",
-  "updatedAt": "2026-03-01T00:00:00Z",
+  "updatedAt": "2026-08-22T00:00:00Z",
+  "initialDepth": 1,
   "root": {
     "id": "root",
-    "label": "Identity + OAuth/OIDC",
-    "notes": "OAuth is for authorization (API access). OIDC layers authentication (login) on top of OAuth. PKCE hardens the Authorization Code flow for public clients.",
-    "annotation": "overview",
+    "label": "Modern Identity + API Authorization",
+    "notes": "OAuth delegates authorization to protected resources; OIDC adds authentication and identity claims; PKCE binds authorization codes to clients; an STS exchanges credentials across trust boundaries; OBO preserves a user's delegated context through a service chain. Treat tokens as purpose-bound credentials, not interchangeable proof of identity.",
+    "annotation": "architecture map",
     "children": [
       {
         "id": "idp",
         "label": "Identity Provider (IdP)",
         "color": "#0EA5E9",
-        "notes": "The system that authenticates users and issues tokens. In OIDC terms, an IdP is typically the OpenID Provider (OP) and often also acts as the OAuth Authorization Server.",
+        "notes": "The authority that authenticates users and manages identity lifecycle. In OIDC it is the OpenID Provider (OP); it often also operates the OAuth Authorization Server, but those are distinct roles.",
         "children": [
           {
             "id": "idp-concepts",
-            "label": "Core Concepts",
-            "notes": "Identity store + authentication methods + session management + token issuance. Many IdPs also provide federation, MFA, and user lifecycle automation.",
+            "label": "Identity Plane",
+            "notes": "Directories, identity proofing, authenticators, policies, sessions, federation, and lifecycle management establish who a principal is before tokens represent that result.",
             "children": [
               {
                 "id": "idp-auth-methods",
-                "label": "Auth Methods",
-                "notes": "Passwords, passkeys (WebAuthn), TOTP, SMS (avoid for high assurance), hardware keys, and enterprise IdPs. Strong auth reduces downstream token risk.",
-                "annotation": "security"
+                "label": "Authenticators",
+                "notes": "Prefer phishing-resistant passkeys/WebAuthn or hardware keys for high assurance. Passwords, TOTP, push, and recovery methods should be evaluated as a complete authentication system.",
+                "annotation": "MFA / passkeys"
               },
               {
-                "id": "idp-sessions",
-                "label": "Sessions",
-                "notes": "Browser sessions (cookies) enable SSO and silent re-auth. Sessions are distinct from OAuth access tokens; confusing them leads to broken logout and refresh logic.",
-                "annotation": "gotcha"
+                "id": "idp-lifecycle",
+                "label": "Identity Lifecycle",
+                "notes": "Joiner/mover/leaver processes, SCIM provisioning, entitlement review, account recovery, and credential reset can be more important than the login protocol itself."
               },
               {
-                "id": "idp-tenanting",
-                "label": "Tenants",
-                "notes": "Multi-tenant IdPs separate policies, apps, and user directories. Tenant boundaries influence issuer URLs, keys, and audience validation.",
-                "annotation": "design"
+                "id": "idp-assurance",
+                "label": "Assurance Context",
+                "notes": "OIDC acr and amr can describe authentication strength and methods. Treat them as policy inputs only when issuer-specific values and freshness requirements are understood.",
+                "refs": [
+                  { "targetId": "oidc-auth-request", "label": "requested by" },
+                  { "targetId": "step-up-auth", "label": "drives" }
+                ]
               }
             ]
           },
           {
+            "id": "idp-sessions",
+            "label": "SSO Sessions",
+            "notes": "The IdP's browser cookie provides SSO; the application's own session represents local login state. Neither is an OAuth access token. Logout must consider both layers.",
+            "annotation": "separate states",
+            "children": [
+              {
+                "id": "idp-session-cookie",
+                "label": "IdP Cookie",
+                "notes": "Usually scoped to the IdP domain with Secure, HttpOnly, and appropriate SameSite settings. It enables reauthentication without exposing credentials to clients."
+              },
+              {
+                "id": "app-session",
+                "label": "App Session",
+                "notes": "A web app or BFF should normally expose only an opaque, Secure, HttpOnly session cookie to the browser while keeping OAuth tokens server-side.",
+                "refs": [{ "targetId": "browser-bff", "label": "used by" }]
+              }
+            ]
+          },
+          {
+            "id": "idp-tenanting",
+            "label": "Tenants & Issuers",
+            "notes": "Tenant boundaries determine issuer identifiers, policies, directories, and keys. Validate the exact issuer; never infer tenant trust merely from a shared host name.",
+            "annotation": "trust boundary"
+          },
+          {
             "id": "idp-federation",
-            "label": "Federation",
-            "notes": "Trust relationships between IdPs (SAML or OIDC federation) enable enterprise SSO. Federation shifts auth responsibility while keeping app integration stable.",
+            "label": "Federation & Brokering",
+            "notes": "A broker accepts an upstream identity protocol and issues tokens in a stable local trust domain. Federation changes who authenticates the user, not which audience an API token is valid for.",
             "children": [
               {
                 "id": "idp-saml",
-                "label": "SAML",
-                "notes": "Common in enterprises for browser SSO. Often used for workforce identity, with OIDC/OAuth used for modern apps and APIs.",
+                "label": "SAML Federation",
+                "notes": "Common for workforce browser SSO. A broker can translate a validated SAML assertion into a local OIDC session and tokens without forwarding the assertion to every application.",
                 "annotation": "enterprise"
               },
               {
                 "id": "idp-oidc-federation",
                 "label": "OIDC Federation",
-                "notes": "Apps rely on OIDC while the IdP may authenticate users via upstream identity sources. Standard OIDC discovery makes integration simpler than bespoke SAML setups.",
-                "refs": [{ "targetId": "oidc-discovery", "label": "uses" }]
+                "notes": "OIDC federation and identity brokering use issuer metadata and cryptographic trust to connect providers. Do not confuse upstream identity federation with downstream API token exchange.",
+                "refs": [
+                  { "targetId": "oidc-discovery", "label": "uses metadata" }
+                ]
               }
             ]
           }
@@ -64,74 +103,88 @@
       },
       {
         "id": "oauth21",
-        "label": "OAuth 2.1",
+        "label": "OAuth 2.1 Authorization",
         "color": "#22C55E",
-        "notes": "Authorization framework for delegated access to APIs. OAuth 2.1 consolidates best practices: it drops the Implicit flow, requires PKCE for public clients, and emphasizes secure redirects.",
+        "notes": "OAuth grants a client limited access to a resource. OAuth 2.1 is still an evolving Internet-Draft; it consolidates OAuth 2.0 plus modern security practice rather than introducing a different authorization model.",
+        "annotation": "draft standard",
         "children": [
           {
             "id": "oauth-roles",
-            "label": "Roles",
-            "notes": "Resource Owner (user), Client (app), Authorization Server (issues tokens), Resource Server (API). Keeping these roles clear avoids incorrect token validation.",
+            "label": "Actors & Trust",
+            "notes": "Resource Owner authorizes; Client requests access; Authorization Server (AS) issues tokens; Resource Server (RS) protects APIs. One product may host several roles, but validation must preserve the logical boundaries.",
             "children": [
               {
                 "id": "oauth-client-types",
-                "label": "Client Types",
-                "notes": "Confidential clients can keep secrets (server apps). Public clients cannot (SPAs, mobile, desktop). Client type drives which flows and protections are safe.",
-                "refs": [{ "targetId": "pkce", "label": "hardened by" }]
+                "label": "Public vs Confidential",
+                "notes": "Public clients cannot keep static credentials; SPAs and installed apps are public even if a secret is embedded. Confidential clients authenticate securely at the token endpoint.",
+                "refs": [{ "targetId": "pkce", "label": "code-bound by" }]
               },
               {
-                "id": "oauth-redirect-uris",
-                "label": "Redirect URIs",
-                "notes": "Strictly register exact redirect URIs. Open redirects and wildcard matching are a top cause of code/token leakage.",
-                "annotation": "critical"
+                "id": "oauth-resource-indicators",
+                "label": "Resource Indicators",
+                "notes": "RFC 8707 resource parameters let a client identify the target protected resource. Issue one narrowly scoped token per resource rather than a universal downstream token.",
+                "refs": [{ "targetId": "sts-downscope", "label": "narrows" }]
+              },
+              {
+                "id": "oauth-consent",
+                "label": "Consent vs Policy",
+                "notes": "Consent records a user's authorization choice; it does not replace organizational policy, legal basis, or API authorization checks. First-party and administrator-approved access may use different policy paths."
               }
             ]
           },
           {
             "id": "oauth-flows",
-            "label": "Flows",
-            "notes": "OAuth defines multiple flows; OAuth 2.1 pushes the industry toward Authorization Code with PKCE for interactive user agents.",
+            "label": "Grant Selection",
+            "notes": "Choose a grant from the actor and interaction model. Do not select a flow because a vendor UI happens to expose it.",
             "children": [
               {
                 "id": "oauth-auth-code",
                 "label": "Authorization Code",
-                "notes": "Browser redirects yield an authorization code, which is exchanged for tokens. Use PKCE for public clients to prevent intercepted code reuse.",
-                "refs": [{ "targetId": "pkce", "label": "requires" }]
+                "notes": "The browser carries a short-lived, one-time code; the client redeems it at the token endpoint. Use PKCE, state or an equivalent transaction binding, exact redirects, and OIDC nonce when applicable.",
+                "refs": [{ "targetId": "pkce", "label": "bound with" }]
               },
               {
                 "id": "oauth-client-credentials",
                 "label": "Client Credentials",
-                "notes": "Machine-to-machine flow for service accounts. No user involved, so no ID token; scopes represent app permissions.",
-                "annotation": "m2m"
+                "notes": "A workload acts as itself. There is no user and normally no ID token; permissions belong to the client or service principal.",
+                "annotation": "app-only"
               },
               {
                 "id": "oauth-device-code",
-                "label": "Device Code",
-                "notes": "For TVs/CLI tools without a browser. User completes auth on a separate device; the device polls to obtain tokens.",
-                "annotation": "ux"
+                "label": "Device Authorization",
+                "notes": "RFC 8628 supports input-constrained devices and CLIs. The user authorizes on a separate device; polling must respect interval, expiry, and slow_down responses.",
+                "annotation": "limited input"
+              },
+              {
+                "id": "oauth-assertion-grants",
+                "label": "Assertion Grants",
+                "notes": "JWT or SAML bearer assertions can be authorization grants (RFC 7523/7522). Validate issuer, audience, time, signature, and replay identifiers; an assertion grant is distinct from client authentication.",
+                "refs": [
+                  { "targetId": "workload-federation", "label": "supports" }
+                ]
+              },
+              {
+                "id": "oauth-deprecated-grants",
+                "label": "Do Not Use",
+                "notes": "Implicit exposes tokens through the front channel; Resource Owner Password Credentials trains clients to collect passwords. OAuth Security BCP deprecates both. Use code + PKCE or an appropriate non-password grant.",
+                "annotation": "implicit / ROPC"
               }
             ]
           },
           {
-            "id": "oauth-tokens",
-            "label": "Tokens",
-            "notes": "Access tokens authorize API calls; refresh tokens renew access. Tokens can be opaque (introspected) or JWTs (self-validated) depending on architecture.",
-            "children": [
-              {
-                "id": "oauth-access-token",
-                "label": "Access Token",
-                "notes": "Send to APIs (resource servers). Keep lifetimes short; scope and audience must match what the API expects.",
-                "refs": [
-                  { "targetId": "token-validation", "label": "validated by" }
-                ]
-              },
-              {
-                "id": "oauth-refresh-token",
-                "label": "Refresh Token",
-                "notes": "High-value credential used to mint new access tokens. Store with extra protections; rotate and revoke aggressively.",
-                "annotation": "sensitive"
-              }
+            "id": "oauth-redirect-uris",
+            "label": "Redirect & Transaction Binding",
+            "notes": "Register exact redirect URIs, reject open redirectors, bind callbacks to the initiating browser transaction, and use authorization-server issuer identification where multiple issuers share a client.",
+            "annotation": "critical",
+            "refs": [
+              { "targetId": "threat-csrf", "label": "prevents" },
+              { "targetId": "threat-mixup", "label": "prevents" }
             ]
+          },
+          {
+            "id": "oauth-scope-authz",
+            "label": "Scopes Are Not Full AuthZ",
+            "notes": "Scopes bound what a client may attempt. The API must still enforce resource ownership, tenant, role, object, relationship, and business rules. Never treat token presence alone as authorization."
           }
         ]
       },
@@ -139,38 +192,77 @@
         "id": "oidc",
         "label": "OpenID Connect (OIDC)",
         "color": "#F97316",
-        "notes": "Authentication layer on top of OAuth. OIDC adds the ID token, standard claims, discovery, and a userinfo endpoint so apps can verify who the user is.",
+        "notes": "OIDC is an authentication and identity layer over OAuth. It adds ID tokens, standardized authentication requests and claims, discovery, UserInfo, session/logout specifications, and conformance profiles.",
         "refs": [{ "targetId": "oauth21", "label": "built on" }],
         "children": [
           {
+            "id": "oidc-auth-request",
+            "label": "Authentication Request",
+            "notes": "openid scope activates OIDC. state binds the response to client state; nonce binds the ID token to the request and mitigates replay. prompt, max_age, login_hint, acr_values, and claims refine interaction.",
+            "children": [
+              {
+                "id": "step-up-auth",
+                "label": "Step-up Authentication",
+                "notes": "Request stronger or fresher authentication when a sensitive action requires it. Verify returned acr/amr/auth_time against policy; do not assume MFA from a generic claim.",
+                "annotation": "adaptive access"
+              },
+              {
+                "id": "oidc-reauth",
+                "label": "Reauthentication",
+                "notes": "max_age and prompt=login can request fresh interaction, but the client must validate auth_time and provider behavior. Reauthentication is not the same as re-consent."
+              }
+            ]
+          },
+          {
             "id": "oidc-id-token",
             "label": "ID Token",
-            "notes": "A JWT that represents an authentication event for the client. It is for the client app, not for APIs; do not send ID tokens to your resource servers.",
-            "annotation": "gotcha"
+            "notes": "A signed statement about an authentication event for one client. Validate iss, aud, exp, nonce, signature, and azp when required. Never use an ID token as an API access token.",
+            "annotation": "client only",
+            "refs": [{ "targetId": "jwt-validation", "label": "validated by" }]
           },
           {
             "id": "oidc-claims",
-            "label": "Claims",
-            "notes": "Standard fields like issuer (iss), audience (aud), subject (sub), expiry (exp), plus profile/email groups if configured. Claims drive authorization decisions only if your policy explicitly trusts them.",
-            "refs": [{ "targetId": "token-validation", "label": "checked in" }]
+            "label": "Subjects & Claims",
+            "notes": "sub is the stable subject identifier within an issuer; pairwise subjects reduce correlation across clients. email, groups, and names are attributes that can change and are poor database keys.",
+            "children": [
+              {
+                "id": "oidc-subject",
+                "label": "Issuer + Subject Key",
+                "notes": "Use the pair (iss, sub) as the external identity key. A sub value is not globally unique and an email address is not a durable identifier.",
+                "annotation": "identity key"
+              },
+              {
+                "id": "oidc-claim-minimization",
+                "label": "Claim Minimization",
+                "notes": "Release only claims the client needs. Large group lists create leakage, stale authorization, and token-size problems; prefer API-side entitlement lookup for complex policy."
+              }
+            ]
           },
           {
             "id": "oidc-discovery",
-            "label": "Discovery",
-            "notes": "The .well-known OpenID configuration publishes endpoints, supported features, and the JWKS URL. This enables clients and APIs to configure themselves safely.",
-            "annotation": "standard"
+            "label": "Discovery & Registration",
+            "notes": "The .well-known configuration publishes issuer, endpoints, supported algorithms, and jwks_uri. Pin the expected issuer and apply secure dynamic registration policy; metadata is not blanket trust.",
+            "annotation": "metadata"
           },
           {
             "id": "oidc-jwks",
-            "label": "JWKS",
-            "notes": "JSON Web Key Set endpoint used to verify JWT signatures. Key rotation is normal; clients should cache and refresh keys based on cache headers.",
-            "refs": [{ "targetId": "token-validation", "label": "used by" }]
+            "label": "JWKS & Key Rotation",
+            "notes": "Cache JWKS using HTTP semantics, select keys by kid plus allowed algorithm, refresh on an unknown key with rate limits, and retain overlap during rotation. Never accept keys supplied by an untrusted token header.",
+            "refs": [{ "targetId": "jwt-validation", "label": "keys for" }]
           },
           {
             "id": "oidc-userinfo",
             "label": "UserInfo",
-            "notes": "An endpoint to fetch user claims using an access token. Useful when you want minimal ID tokens and fetch additional profile data on demand.",
+            "notes": "A protected endpoint for additional claims. Validate that its sub matches the ID token subject; access-token authorization and privacy policy determine released data.",
             "annotation": "optional"
+          },
+          {
+            "id": "oidc-logout",
+            "label": "OIDC Logout",
+            "notes": "RP-initiated logout begins at a relying party; front-channel and back-channel logout notify clients. Logout UX, application sessions, IdP sessions, and token revocation are separate controls.",
+            "refs": [
+              { "targetId": "logout-revocation", "label": "coordinates with" }
+            ]
           }
         ]
       },
@@ -178,67 +270,434 @@
         "id": "pkce",
         "label": "PKCE",
         "color": "#A855F7",
-        "notes": "Proof Key for Code Exchange binds the authorization code to the original client by using a code verifier/challenge. It prevents intercepted authorization codes from being redeemed by an attacker.",
+        "notes": "Proof Key for Code Exchange (RFC 7636) binds an authorization code to the client instance that initiated the request. It mitigates intercepted-code redemption; it is not client authentication and does not replace state, nonce, or redirect validation.",
+        "annotation": "RFC 7636",
         "children": [
           {
             "id": "pkce-why",
-            "label": "Why It Exists",
-            "notes": "Public clients cannot keep a client secret. PKCE provides a per-authentication secret (verifier) so the token endpoint can verify the same party that initiated the request completes the exchange.",
-            "annotation": "public clients"
+            "label": "Threat Addressed",
+            "notes": "If an attacker steals a code from an OS redirect, browser history, proxy, or log, the attacker still lacks the verifier needed at the token endpoint.",
+            "annotation": "code interception"
           },
           {
             "id": "pkce-steps",
-            "label": "How It Works",
-            "notes": "Client generates a high-entropy code_verifier, derives code_challenge (S256), sends code_challenge in the auth request, then sends code_verifier to the token endpoint to redeem the code.",
+            "label": "Verifier → Challenge",
+            "notes": "Generate a fresh high-entropy code_verifier for each authorization request. Send BASE64URL(SHA-256(verifier)) as code_challenge, then send the verifier only during code redemption.",
             "children": [
               {
                 "id": "pkce-s256",
-                "label": "S256",
-                "notes": "Use S256 (SHA-256) as the challenge method. Plain is legacy and weak; most providers require S256.",
+                "label": "S256 Only",
+                "notes": "Use code_challenge_method=S256. Do not downgrade to plain when S256 is supported; authorization servers should enforce the original challenge method.",
                 "annotation": "best practice"
               }
             ]
           },
           {
+            "id": "pkce-confidential",
+            "label": "Use Beyond Public Clients",
+            "notes": "Modern guidance applies PKCE to authorization-code clients generally, including confidential clients. A client secret authenticates the client; PKCE binds the individual authorization transaction."
+          },
+          {
             "id": "pkce-common-mistakes",
             "label": "Common Mistakes",
-            "notes": "Not persisting the verifier across redirects, reusing verifiers, or mixing up code vs. token exchange parameters. Treat verifier like a one-time secret.",
-            "annotation": "gotcha"
+            "notes": "Reusing or logging verifiers, losing the verifier across redirects, accepting a token request without the original challenge, low entropy, or assuming PKCE prevents login CSRF.",
+            "annotation": "gotchas"
+          }
+        ]
+      },
+      {
+        "id": "sts",
+        "label": "STS & Token Exchange",
+        "color": "#14B8A6",
+        "notes": "A Security Token Service validates one security context and issues a new, purpose-bound token. OAuth Token Exchange (RFC 8693) standardizes an HTTP/JSON STS for impersonation and delegation across services or trust domains.",
+        "annotation": "RFC 8693",
+        "children": [
+          {
+            "id": "sts-exchange-request",
+            "label": "Exchange Request",
+            "notes": "Use grant_type=urn:ietf:params:oauth:grant-type:token-exchange with subject_token and its type. Optional actor_token, resource/audience, scope, and requested_token_type express the desired context.",
+            "children": [
+              {
+                "id": "sts-subject-token",
+                "label": "Subject Token",
+                "notes": "Represents the party on whose behalf the request is made. Validate its token type, issuer, audience, time, signature or introspection result, and whether policy permits exchange."
+              },
+              {
+                "id": "sts-actor-token",
+                "label": "Actor Token",
+                "notes": "Optionally represents the acting party receiving delegated rights. The issued token can carry an act claim, including a nested delegation chain.",
+                "annotation": "delegation"
+              },
+              {
+                "id": "sts-output-token",
+                "label": "Issued Token",
+                "notes": "The response identifies issued_token_type and token_type. The new token has its own lifetime, audience, scope, and revocation behavior; exchange does not automatically invalidate or tightly link the input token."
+              }
+            ]
+          },
+          {
+            "id": "sts-semantics",
+            "label": "Delegation vs Impersonation",
+            "notes": "Impersonation makes the issued credential represent the subject in a limited context. Delegation preserves both subject and actor so the receiver knows who is acting for whom.",
+            "children": [
+              {
+                "id": "sts-impersonation",
+                "label": "Impersonation",
+                "notes": "The actor operates as the subject within the issued token's rights. Use only when the downstream service does not need actor identity and policy explicitly permits it.",
+                "annotation": "subject-centric"
+              },
+              {
+                "id": "sts-delegation",
+                "label": "Delegation",
+                "notes": "The actor remains identifiable while exercising rights delegated by the subject. Preserve and audit both identities; bound delegation chains and prevent confused-deputy behavior.",
+                "annotation": "subject + actor"
+              }
+            ]
+          },
+          {
+            "id": "sts-downscope",
+            "label": "Downscoping",
+            "notes": "Every hop should narrow audience, scope, lifetime, and authorization context. Never forward a broad front-end token to multiple services or let exchange amplify privileges.",
+            "annotation": "least privilege"
+          },
+          {
+            "id": "sts-cross-domain",
+            "label": "Cross-Domain Exchange",
+            "notes": "An STS can bridge token formats, issuers, clouds, or legacy protocols only through explicit trust policy. Translation is not trust: validate the source and issue a new local credential for a precise target."
+          },
+          {
+            "id": "sts-policy",
+            "label": "Exchange Policy",
+            "notes": "Authorize which clients may exchange which subject/actor tokens for which resources and scopes. Enforce maximum chain depth, no privilege amplification, replay defense, and full subject/actor audit trails.",
+            "annotation": "authorization gate",
+            "refs": [
+              { "targetId": "security-observability", "label": "audited by" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "obo",
+        "label": "On-Behalf-Of (OBO)",
+        "color": "#06B6D4",
+        "notes": "OBO is an architecture pattern in which API A uses a user's delegated context to obtain a new token for API B. Microsoft names a concrete on_behalf_of grant; standards-oriented platforms commonly model the pattern with RFC 8693 token exchange.",
+        "annotation": "delegated chain",
+        "refs": [{ "targetId": "sts", "label": "implemented by" }],
+        "children": [
+          {
+            "id": "obo-sequence",
+            "label": "A → API A → STS → API B",
+            "notes": "The client calls API A with a token whose audience is API A. API A authenticates itself to the STS and presents the user token; the STS issues a new token whose audience is API B.",
+            "children": [
+              {
+                "id": "obo-inbound",
+                "label": "Validate Inbound Token",
+                "notes": "API A must validate issuer, API-A audience, time, signature or introspection, sender constraint if present, scopes, tenant, and authorization before requesting another token."
+              },
+              {
+                "id": "obo-client-auth",
+                "label": "Authenticate API A",
+                "notes": "API A is a confidential client. Prefer private_key_jwt, mTLS, or managed workload identity over shared secrets; do not confuse API A's identity with the user's identity.",
+                "refs": [{ "targetId": "client-auth", "label": "uses" }]
+              },
+              {
+                "id": "obo-downstream",
+                "label": "Issue for API B",
+                "notes": "The downstream access token must target API B, carry only allowed delegated permissions, and preserve user plus actor context when downstream policy or auditing needs both."
+              }
+            ]
+          },
+          {
+            "id": "obo-vs-client-credentials",
+            "label": "OBO vs App-only",
+            "notes": "Use OBO when downstream authorization depends on the user. Use client credentials when the service acts under its own application permissions. Never invent a user context for a background workload.",
+            "annotation": "choose semantics"
+          },
+          {
+            "id": "obo-hop-by-hop",
+            "label": "Hop-by-Hop Tokens",
+            "notes": "Each API validates a token intended for itself and exchanges for the next API. Do not relay the original bearer token through the chain; audience restriction limits blast radius.",
+            "annotation": "no token forwarding"
+          },
+          {
+            "id": "obo-authorization",
+            "label": "Effective Permissions",
+            "notes": "The result should be no broader than the intersection of user delegation, API A's permitted downstream access, tenant policy, consent, and API B's authorization rules.",
+            "annotation": "intersection"
+          },
+          {
+            "id": "obo-failure-modes",
+            "label": "OBO Failure Modes",
+            "notes": "Wrong inbound audience, forwarding ID tokens, accepting app-only tokens as users, over-broad downstream scopes, unbounded delegation, missing actor audit, and assuming upstream consent automatically authorizes every downstream API."
+          }
+        ]
+      },
+      {
+        "id": "clients",
+        "label": "Client & Workload Patterns",
+        "color": "#3B82F6",
+        "notes": "Client architecture determines where credentials and tokens can safely live. Prefer patterns that keep bearer credentials out of hostile or highly exposed execution contexts.",
+        "children": [
+          {
+            "id": "browser-bff",
+            "label": "Browser + BFF",
+            "notes": "A Backend for Frontend performs code + PKCE as a confidential client, keeps tokens server-side, and gives the browser a hardened session cookie. Protect cookie-authenticated endpoints against CSRF and session fixation.",
+            "annotation": "preferred web pattern"
+          },
+          {
+            "id": "browser-spa",
+            "label": "Pure SPA",
+            "notes": "A SPA is a public client: use code + PKCE, no embedded secret, short token lifetimes, strict CSP, and avoid persistent browser storage. XSS can still act through the client even when tokens are sender-constrained.",
+            "annotation": "XSS-sensitive"
+          },
+          {
+            "id": "native-app",
+            "label": "Native & Desktop",
+            "notes": "Follow RFC 8252: launch the external user-agent, use code + PKCE, prefer claimed HTTPS or loopback redirects where appropriate, and store refresh tokens or keys in platform secure storage."
+          },
+          {
+            "id": "service-workload",
+            "label": "Services & Jobs",
+            "notes": "Use client credentials for app-only access or token exchange for delegated access. Prefer short-lived, automatically rotated workload credentials over static secrets.",
+            "refs": [
+              {
+                "targetId": "oauth-client-credentials",
+                "label": "self access"
+              },
+              { "targetId": "obo", "label": "delegated access" }
+            ]
+          },
+          {
+            "id": "workload-federation",
+            "label": "Workload Identity Federation",
+            "notes": "Exchange a platform-attested workload credential—such as Kubernetes, cloud, or CI identity—for a short-lived target credential. Bind issuer, subject, audience, repository/environment, and deployment policy tightly.",
+            "annotation": "secretless"
           }
         ]
       },
       {
         "id": "token-validation",
-        "label": "Validation and Security",
+        "label": "Tokens & Validation",
         "color": "#64748B",
-        "notes": "Security comes from correct validation, least privilege, and safe client storage. Most real incidents are validation or redirect mistakes, not broken crypto.",
+        "notes": "Tokens are typed, audience-bound protocol artifacts. A JWT is only a serialization format; its validity depends on the issuer, profile, key, claims, intended recipient, and authorization policy.",
         "children": [
           {
+            "id": "token-types",
+            "label": "Token Types",
+            "notes": "Access tokens authorize APIs; ID tokens inform clients about authentication; refresh tokens obtain new access; authorization codes are one-time exchange artifacts. Do not substitute one for another.",
+            "children": [
+              {
+                "id": "oauth-access-token",
+                "label": "Access Token",
+                "notes": "May be opaque or structured. The client should treat it as opaque; only the intended API or its validation tier interprets it.",
+                "annotation": "API credential"
+              },
+              {
+                "id": "oauth-refresh-token",
+                "label": "Refresh Token",
+                "notes": "A high-value credential for the AS token endpoint. Rotate or sender-constrain public-client refresh tokens, detect reuse, and revoke the token family after compromise.",
+                "annotation": "high value"
+              },
+              {
+                "id": "opaque-vs-jwt",
+                "label": "Opaque vs JWT",
+                "notes": "Opaque tokens centralize validation through introspection and hide claims. JWTs allow local validation but complicate revocation, key rotation, claim freshness, and privacy. Choose from system needs, not convenience."
+              }
+            ]
+          },
+          {
             "id": "jwt-validation",
-            "label": "JWT Validation",
-            "notes": "Verify signature with JWKS, then validate iss/aud/exp/nbf, and often azp/client_id. Never accept alg=none; pin accepted algorithms.",
+            "label": "JWT Validation Pipeline",
+            "notes": "Select the expected token profile first; pin allowed algorithms; resolve trusted keys; verify signature; validate exact iss, aud, exp, nbf and profile-specific claims; then apply authorization. Reject ambiguous or duplicate semantics.",
+            "annotation": "RFC 8725",
             "refs": [
-              { "targetId": "oidc-jwks", "label": "keys from" },
-              { "targetId": "oidc-claims", "label": "checks" }
+              { "targetId": "oidc-jwks", "label": "trusted keys" },
+              { "targetId": "scopes-audience", "label": "then authorize" }
             ]
           },
           {
             "id": "scopes-audience",
-            "label": "Scopes and Audience",
-            "notes": "Scopes describe permissions; audience identifies the intended API. Your resource server should enforce both and reject tokens minted for other APIs.",
-            "annotation": "api authz"
+            "label": "Audience, Scope & Subject",
+            "notes": "aud identifies the intended recipient; scope describes delegated capability; sub identifies the represented principal in the issuer's namespace. All three may be necessary but are not sufficient for resource authorization.",
+            "annotation": "API policy"
+          },
+          {
+            "id": "introspection",
+            "label": "Token Introspection",
+            "notes": "RFC 7662 lets an authorized resource server ask whether a token is active and obtain metadata. Authenticate the caller, restrict disclosures, cache only within risk tolerance, and still enforce audience and authorization."
           },
           {
             "id": "token-storage",
-            "label": "Token Storage",
-            "notes": "For browsers, avoid long-lived tokens and prefer BFF patterns or secure cookies. For mobile/desktop, use platform keychains. Storage choices determine your exposure to XSS and device compromise.",
-            "annotation": "design"
+            "label": "Storage & Leakage",
+            "notes": "Never place tokens in URLs or logs. Keep browser tokens in memory or behind a BFF; use OS-protected storage for native apps; encrypt server caches; minimize token lifetime, claims, and propagation.",
+            "annotation": "minimize exposure"
           },
           {
             "id": "logout-revocation",
-            "label": "Logout and Revocation",
-            "notes": "Logout ends sessions; revocation invalidates refresh tokens (and sometimes access tokens). Design for short access token TTLs and refresh token rotation for practical control.",
-            "annotation": "operations"
+            "label": "Expiry, Revocation & Logout",
+            "notes": "Short-lived access tokens limit replay; RFC 7009 revokes grants or refresh credentials; introspection can provide near-real-time status. Session logout and token revocation are related but not equivalent.",
+            "annotation": "lifecycle"
+          }
+        ]
+      },
+      {
+        "id": "advanced-security",
+        "label": "Hardened OAuth Profiles",
+        "color": "#EAB308",
+        "notes": "PKCE protects authorization codes, but high-value ecosystems also protect authorization messages, authenticate clients strongly, and bind tokens to their presenters.",
+        "children": [
+          {
+            "id": "client-auth",
+            "label": "Client Authentication",
+            "notes": "Confidential clients authenticate at the token endpoint. Prefer asymmetric private_key_jwt or mTLS where practical; rotate keys, validate assertion audience and jti, and avoid long-lived shared secrets.",
+            "children": [
+              {
+                "id": "private-key-jwt",
+                "label": "private_key_jwt",
+                "notes": "The client signs a short-lived assertion with a registered private key. Validate iss/sub as client_id, token-endpoint audience, time, signature, and replay-resistant jti."
+              },
+              {
+                "id": "mtls-client-auth",
+                "label": "mTLS Client Auth",
+                "notes": "RFC 8705 uses client certificates for token-endpoint authentication and can certificate-bind access tokens. Plan certificate issuance, rotation, proxy termination, and trust anchors carefully."
+              }
+            ]
+          },
+          {
+            "id": "sender-constrained",
+            "label": "Sender-Constrained Tokens",
+            "notes": "A stolen bearer token can be replayed by whoever possesses it. DPoP or mTLS binds a token to key possession so theft of the token alone is insufficient.",
+            "annotation": "proof of possession",
+            "children": [
+              {
+                "id": "dpop",
+                "label": "DPoP",
+                "notes": "RFC 9449 uses a per-request signed proof with htm, htu, iat, jti and, for resource calls, ath. Verify key binding, method/URI, access-token hash, time window, and replay; DPoP is not client authentication.",
+                "annotation": "application layer"
+              },
+              {
+                "id": "mtls-bound-token",
+                "label": "mTLS-bound Token",
+                "notes": "The AS binds the token to a certificate thumbprint and the RS verifies the same client certificate. Strong for controlled server environments; operationally harder through gateways and service meshes."
+              }
+            ]
+          },
+          {
+            "id": "par-jar-jarm",
+            "label": "PAR, JAR & JARM",
+            "notes": "PAR (RFC 9126) pushes the request directly to the AS; JAR (RFC 9101) signs/encrypts request parameters; JARM signs/encrypts authorization responses. Together they reduce front-channel tampering and ambiguity.",
+            "annotation": "message integrity"
+          },
+          {
+            "id": "rar",
+            "label": "Rich Authorization Requests",
+            "notes": "RAR (RFC 9396) expresses structured authorization_details such as payment amount, account, action, or location. It complements scopes and enables explicit fine-grained consent and policy.",
+            "annotation": "fine-grained intent"
+          },
+          {
+            "id": "fapi2",
+            "label": "FAPI 2.0",
+            "notes": "The final OpenID FAPI 2.0 Security Profile combines OAuth Security BCP, PAR, PKCE, strong client authentication, and sender-constrained tokens for high-value APIs. Use the conformance suite rather than assembling an ad hoc subset.",
+            "annotation": "high assurance"
+          },
+          {
+            "id": "ciba",
+            "label": "CIBA",
+            "notes": "Client-Initiated Backchannel Authentication decouples the consumption device from user authentication. It suits call-center, decoupled, and headless scenarios; authenticate the client and protect binding/user codes from social engineering."
+          }
+        ]
+      },
+      {
+        "id": "security-threats",
+        "label": "Threats & Defenses",
+        "color": "#EF4444",
+        "notes": "Use RFC 9700 OAuth Security BCP as the baseline threat model. Most failures are trust-boundary, redirect, replay, validation, or authorization mistakes rather than broken cryptography.",
+        "annotation": "RFC 9700",
+        "children": [
+          {
+            "id": "threat-csrf",
+            "label": "Login CSRF & State Injection",
+            "notes": "Bind the authorization response to the initiating browser transaction using state or an equivalent framework mechanism, single-use server state, PKCE, and OIDC nonce. Do not accept unsolicited callbacks."
+          },
+          {
+            "id": "threat-mixup",
+            "label": "Authorization Server Mix-up",
+            "notes": "A client talking to multiple issuers can send a code to the wrong token endpoint. Bind the transaction to the expected issuer and validate the issuer identifier in the authorization response and tokens."
+          },
+          {
+            "id": "threat-code-injection",
+            "label": "Code Injection & Replay",
+            "notes": "Use PKCE, exact redirects, one-time short-lived codes, transaction binding, and secure callback handling. A code should be redeemable only by the intended client and redirect context."
+          },
+          {
+            "id": "threat-token-replay",
+            "label": "Token Theft & Replay",
+            "notes": "Use TLS, prevent logging/leakage, short lifetimes, audience restriction, rotation, and sender-constrained tokens where risk warrants. DPoP/mTLS reduce off-device replay but do not cure XSS or compromised clients."
+          },
+          {
+            "id": "threat-confused-deputy",
+            "label": "Confused Deputy",
+            "notes": "A service must not use its authority for an untrusted caller without validating purpose, subject, audience, and delegated scope. This is central to STS and OBO policy.",
+            "refs": [{ "targetId": "sts-policy", "label": "controlled by" }]
+          },
+          {
+            "id": "threat-cross-jwt",
+            "label": "Cross-JWT Confusion",
+            "notes": "Separate validation rules for ID tokens, access tokens, client assertions, logout tokens, DPoP proofs, and authorization responses. Pin typ/profile, issuer, audience, keys, and algorithms; never use one JWT kind where another is expected."
+          },
+          {
+            "id": "threat-xss-csrf",
+            "label": "XSS, CSRF & Cookies",
+            "notes": "CSP, output encoding, dependency hygiene, HttpOnly/Secure/SameSite cookies, CSRF tokens or origin checks, and session rotation work together. OAuth protocol controls cannot compensate for arbitrary script execution."
+          },
+          {
+            "id": "threat-secrets",
+            "label": "Secret & Key Hygiene",
+            "notes": "Keep secrets out of source, images, URLs, logs, and public clients. Use managed key stores, least-privilege access, automated rotation, overlap for verification keys, and incident-ready revocation."
+          }
+        ]
+      },
+      {
+        "id": "operations",
+        "label": "Policy & Operations",
+        "color": "#8B5CF6",
+        "notes": "A secure protocol deployment requires lifecycle controls, explicit policy, observability, resilience, privacy, and conformance testing—not only correct happy-path token issuance.",
+        "children": [
+          {
+            "id": "authz-model",
+            "label": "Authorization Model",
+            "notes": "Combine coarse token capabilities with API-side RBAC, ABAC, ReBAC, or policy-as-code. Centralize policy where consistency matters, but keep enforcement at each resource boundary.",
+            "annotation": "deny by default"
+          },
+          {
+            "id": "security-observability",
+            "label": "Audit & Correlation",
+            "notes": "Record issuer, client, subject, actor, tenant, audience, scopes, grant/exchange type, policy decision, token identifier hash, and correlation ID without logging raw tokens. Preserve OBO actor chains for investigation."
+          },
+          {
+            "id": "key-rotation",
+            "label": "Key & Credential Rotation",
+            "notes": "Automate signing-key publication and overlap, client-key/certificate rollover, secret expiry, emergency revocation, and cache refresh. Test rotation before incidents make it urgent."
+          },
+          {
+            "id": "resilience",
+            "label": "Resilience & Caching",
+            "notes": "Define behavior for AS, JWKS, introspection, policy, and STS outages. Bound caches by credential lifetime and revocation risk; fail closed for authorization without turning transient key rotation into a global outage."
+          },
+          {
+            "id": "privacy",
+            "label": "Privacy & Data Minimization",
+            "notes": "Minimize scopes and claims, use pairwise subjects where appropriate, avoid identity data in URLs/logs, restrict introspection, define retention, and consider correlation created by shared identifiers."
+          },
+          {
+            "id": "conformance",
+            "label": "Conformance & Negative Tests",
+            "notes": "Use certified implementations and OpenID conformance tests where applicable. Test wrong issuer/audience, expired and future tokens, alg/key confusion, replay, redirect variants, scope escalation, token substitution, and delegation-chain abuse."
+          },
+          {
+            "id": "incident-response",
+            "label": "Incident Response",
+            "notes": "Prepare to revoke grants and credentials, rotate keys, invalidate sessions, reduce lifetimes, block clients or issuers, trace subject/actor chains, notify relying parties, and recover without reintroducing compromised trust."
           }
         ]
       }
