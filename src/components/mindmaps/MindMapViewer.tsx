@@ -256,6 +256,53 @@ function estimateNodeWidth(label: string, depth: number): number {
 
 const NODE_HEIGHT = 32;
 const ROOT_HEIGHT = 40;
+const EDGE_GAP = 2.5;
+
+interface Point {
+  x: number;
+  y: number;
+}
+
+/**
+ * Find where a ray from a node's centre toward another point meets the
+ * outside of the node. Keeping connectors outside node rectangles prevents
+ * lines and arrowheads from competing with labels.
+ */
+function pointOutsideNode(
+  node: LayoutNode,
+  center: Point,
+  toward: Point
+): Point {
+  const width = estimateNodeWidth(node.label, node.depth);
+  const height = node.depth === 0 ? ROOT_HEIGHT : NODE_HEIGHT;
+  const dx = toward.x - center.x;
+  const dy = toward.y - center.y;
+  const distance = Math.hypot(dx, dy);
+
+  if (distance === 0) return center;
+
+  const scale = Math.min(
+    width / 2 / (Math.abs(dx) || Number.EPSILON),
+    height / 2 / (Math.abs(dy) || Number.EPSILON)
+  );
+
+  return {
+    x: center.x + dx * scale + (dx / distance) * EDGE_GAP,
+    y: center.y + dy * scale + (dy / distance) * EDGE_GAP,
+  };
+}
+
+function connectorEndpoints(
+  fromNode: LayoutNode,
+  toNode: LayoutNode,
+  from: Point,
+  to: Point
+): { start: Point; end: Point } {
+  return {
+    start: pointOutsideNode(fromNode, from, to),
+    end: pointOutsideNode(toNode, to, from),
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Drag threshold — movement (px in screen space) below which a pointer
@@ -686,17 +733,44 @@ export function MindMapViewer({ mindmap }: Props) {
         }}
       >
         <g transform={`translate(${pan.x}, ${pan.y}) scale(${zoom})`}>
-          {/* Defs for arrow markers */}
+          {/* Direction markers end at node boundaries so their tips stay visible. */}
           <defs>
+            {edges
+              .filter(edge => !edge.isRef)
+              .map(edge => {
+                const to = nodeMap.get(edge.to);
+                if (!to) return null;
+                const color = themeColor(to.color, isDark);
+                return (
+                  <marker
+                    key={`parent-arrow-${edge.to}`}
+                    id={`parent-arrow-${edge.to}`}
+                    markerWidth="9"
+                    markerHeight="9"
+                    refX="8"
+                    refY="4.5"
+                    orient="auto"
+                    markerUnits="userSpaceOnUse"
+                    viewBox="0 0 9 9"
+                  >
+                    <path d="M 0 0 L 9 4.5 L 0 9 Z" fill={color} />
+                  </marker>
+                );
+              })}
             <marker
               id="ref-arrow"
-              markerWidth="8"
-              markerHeight="8"
-              refX="7"
-              refY="4"
+              markerWidth="9"
+              markerHeight="9"
+              refX="8"
+              refY="4.5"
               orient="auto"
+              markerUnits="userSpaceOnUse"
+              viewBox="0 0 9 9"
             >
-              <path d="M 0 0 L 8 4 L 0 8 Z" fill="#888" opacity="0.5" />
+              <path
+                d="M 0 0 L 9 4.5 L 0 9 Z"
+                fill={isDark ? "#FCD34D" : "#D97706"}
+              />
             </marker>
           </defs>
 
@@ -706,19 +780,27 @@ export function MindMapViewer({ mindmap }: Props) {
             .map(edge => {
               const fromPos = nodePos(edge.from);
               const toPos = nodePos(edge.to);
+              const from = nodeMap.get(edge.from);
               const to = nodeMap.get(edge.to);
-              if (!fromPos || !toPos || !to) return null;
+              if (!fromPos || !toPos || !from || !to) return null;
+              const { start, end } = connectorEndpoints(
+                from,
+                to,
+                fromPos,
+                toPos
+              );
               const isHighlighted =
                 hoveredId === edge.from || hoveredId === edge.to;
               const color = themeColor(to.color, isDark);
               return (
                 <path
                   key={`${edge.from}-${edge.to}`}
-                  d={parentChildPath(fromPos.x, fromPos.y, toPos.x, toPos.y)}
+                  d={parentChildPath(start.x, start.y, end.x, end.y)}
                   fill="none"
                   stroke={color}
-                  strokeWidth={isHighlighted ? 2.5 : 1.5}
-                  opacity={hoveredId ? (isHighlighted ? 0.9 : 0.15) : 0.5}
+                  strokeWidth={isHighlighted ? 2.1 : 1.15}
+                  opacity={hoveredId ? (isHighlighted ? 0.85 : 0.1) : 0.3}
+                  markerEnd={`url(#parent-arrow-${edge.to})`}
                   style={{ transition: "opacity 0.2s, stroke-width 0.2s" }}
                 />
               );
@@ -730,19 +812,27 @@ export function MindMapViewer({ mindmap }: Props) {
             .map(edge => {
               const fromPos = nodePos(edge.from);
               const toPos = nodePos(edge.to);
-              if (!fromPos || !toPos) return null;
+              const from = nodeMap.get(edge.from);
+              const to = nodeMap.get(edge.to);
+              if (!fromPos || !toPos || !from || !to) return null;
+              const { start, end } = connectorEndpoints(
+                from,
+                to,
+                fromPos,
+                toPos
+              );
               const isHighlighted =
                 hoveredId === edge.from || hoveredId === edge.to;
               const refColor = isDark ? "#FCD34D" : "#D97706";
               return (
                 <g key={`ref-${edge.from}-${edge.to}`}>
                   <path
-                    d={refPath(fromPos.x, fromPos.y, toPos.x, toPos.y)}
+                    d={refPath(start.x, start.y, end.x, end.y)}
                     fill="none"
                     stroke={refColor}
-                    strokeWidth={isHighlighted ? 2 : 1.2}
+                    strokeWidth={isHighlighted ? 1.8 : 1}
                     strokeDasharray="6 4"
-                    opacity={hoveredId ? (isHighlighted ? 0.9 : 0.12) : 0.4}
+                    opacity={hoveredId ? (isHighlighted ? 0.85 : 0.08) : 0.28}
                     markerEnd="url(#ref-arrow)"
                     style={{ transition: "opacity 0.2s" }}
                   />
@@ -753,7 +843,7 @@ export function MindMapViewer({ mindmap }: Props) {
                       textAnchor="middle"
                       fontSize="9"
                       fill={refColor}
-                      opacity={hoveredId ? (isHighlighted ? 0.9 : 0.1) : 0.55}
+                      opacity={hoveredId ? (isHighlighted ? 0.9 : 0.08) : 0.45}
                       style={{ pointerEvents: "none" }}
                     >
                       {edge.label}
@@ -831,7 +921,17 @@ export function MindMapViewer({ mindmap }: Props) {
                   cursor: hasChildren ? "grab" : "default",
                 }}
               >
-                {/* Node background */}
+                {/* Opaque base masks every connector that crosses this node. */}
+                <rect
+                  x={-w / 2}
+                  y={-h / 2}
+                  width={w}
+                  height={h}
+                  rx={isRoot ? 12 : 8}
+                  fill="rgb(var(--color-fill))"
+                />
+
+                {/* Node tint and border */}
                 <rect
                   x={-w / 2}
                   y={-h / 2}

@@ -1,0 +1,568 @@
+{
+  "title": "Observability, OpenTelemetry & GenAI",
+  "description": "A practical map of observability signals, OpenTelemetry and OTLP, traces and spans, context propagation, GenAI telemetry, operating practices, and popular tools.",
+  "tags": [
+    "observability",
+    "opentelemetry",
+    "otel",
+    "otlp",
+    "distributed-tracing",
+    "genai",
+    "sre"
+  ],
+  "createdAt": "2026-08-23T00:00:00Z",
+  "updatedAt": "2026-08-23T00:00:00Z",
+  "initialDepth": 1,
+  "root": {
+    "id": "observability",
+    "label": "Observability",
+    "notes": "Observability is the ability to understand a system's internal state from its outputs. Telemetry is the evidence; observability is the engineering capability that turns that evidence into answers, decisions, and safer operations.",
+    "annotation": "system understanding",
+    "children": [
+      {
+        "id": "observability-foundations",
+        "label": "Foundations & Mental Models",
+        "color": "#326CE5",
+        "notes": "Start with questions and decisions, not dashboards. Useful telemetry helps explain user impact, locate failure domains, test hypotheses, and verify whether a change improved the system.",
+        "annotation": "start here",
+        "children": [
+          {
+            "id": "foundations-telemetry-vs-observability",
+            "label": "Telemetry vs. Observability",
+            "notes": "Telemetry is emitted data such as traces, metrics, logs, and profiles. Monitoring checks known conditions. Observability supports investigation of both known and novel failure modes by preserving useful context and relationships."
+          },
+          {
+            "id": "foundations-questions-first",
+            "label": "Questions First",
+            "notes": "Work backward from operational questions: Which users are affected? Where is time spent? What changed? Which dependency failed? Then choose signals, attributes, retention, and views that can answer them.",
+            "annotation": "design principle"
+          },
+          {
+            "id": "foundations-golden-signals",
+            "label": "Golden Signals",
+            "notes": "Latency, traffic, errors, and saturation provide a compact service-health baseline. Add domain-specific indicators such as checkout success, queue age, model quality, or token cost when they reflect real outcomes.",
+            "children": [
+              {
+                "id": "golden-latency",
+                "label": "Latency",
+                "notes": "Measure distributions and percentiles, not averages alone. Separate successful from failed work and, for streaming AI, distinguish time to first output from total duration."
+              },
+              {
+                "id": "golden-traffic-errors",
+                "label": "Traffic & Errors",
+                "notes": "Track demand and unsuccessful outcomes using definitions users care about. Technical 2xx responses can still be product failures, and retries can hide dependency failures while multiplying load."
+              },
+              {
+                "id": "golden-saturation",
+                "label": "Saturation",
+                "notes": "Watch constrained resources and queues: CPU throttling, memory pressure, connection pools, worker utilization, queue depth, rate limits, or model concurrency."
+              }
+            ]
+          },
+          {
+            "id": "foundations-operating-loop",
+            "label": "Observe → Explain → Act",
+            "notes": "A healthy loop detects user impact, pivots across correlated signals, forms a causal explanation, takes action, and verifies recovery. Telemetry that never changes a decision is a candidate for removal.",
+            "refs": [
+              { "targetId": "practice-slos", "label": "measured by" },
+              { "targetId": "practice-correlation", "label": "enabled by" }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observability-signals",
+        "label": "Signals & Data Model",
+        "color": "#0F1689",
+        "notes": "Signals are complementary views of the same system. Correlation through consistent resources, timestamps, trace identifiers, and domain attributes is usually more valuable than optimizing one signal in isolation.",
+        "annotation": "evidence",
+        "children": [
+          {
+            "id": "signals-traces",
+            "label": "Traces",
+            "notes": "A trace represents the path of a request or transaction across components. It is composed of spans that share a trace ID and are related through parent-child edges or explicit links.",
+            "children": [
+              {
+                "id": "signals-trace",
+                "label": "Trace",
+                "notes": "A trace is the end-to-end execution graph. It shows critical path, fan-out, retries, queues, remote calls, and failure propagation; incomplete context propagation produces disconnected fragments."
+              },
+              {
+                "id": "signals-span",
+                "label": "Span: Unit of Work",
+                "notes": "A span records one operation with a name, start and end time, kind, attributes, events, links, status, parent relationship, resource, and instrumentation scope. Its SpanContext carries trace ID, span ID, trace flags, and trace state.",
+                "annotation": "core concept",
+                "refs": [
+                  {
+                    "targetId": "context-w3c-trace-context",
+                    "label": "continued by"
+                  }
+                ]
+              },
+              {
+                "id": "signals-span-relationships",
+                "label": "Parents, Links & Events",
+                "notes": "Parent-child relationships model nested causal work. Span links represent causal relationships that do not fit one parent, such as batch consumers or asynchronous fan-in. Events mark timestamped facts within a span."
+              },
+              {
+                "id": "signals-span-kind-status",
+                "label": "Kind, Status & Errors",
+                "notes": "Span kinds describe roles such as SERVER, CLIENT, PRODUCER, CONSUMER, and INTERNAL. Record exceptions and set status according to the semantic convention; avoid marking every non-ideal business result as a technical error."
+              }
+            ]
+          },
+          {
+            "id": "signals-metrics",
+            "label": "Metrics",
+            "notes": "Metrics are aggregatable measurements suited to trends, alerting, capacity, and SLOs. Their low storage cost depends on controlling attribute cardinality.",
+            "children": [
+              {
+                "id": "signals-metric-instruments",
+                "label": "Counters, Gauges & Histograms",
+                "notes": "Counters represent monotonic totals, up-down counters track changing totals, gauges observe current values, and histograms preserve distributions such as latency or payload size."
+              },
+              {
+                "id": "signals-metric-temporality",
+                "label": "Temporality & Aggregation",
+                "notes": "Delta reports change over an interval; cumulative reports change since a start time. SDK views control aggregation and attributes, while backends must interpret temporality correctly."
+              },
+              {
+                "id": "signals-exemplars",
+                "label": "Exemplars",
+                "notes": "Exemplars attach representative trace context to a metric data point, allowing a latency spike or histogram bucket to link directly to a concrete trace.",
+                "annotation": "signal bridge",
+                "refs": [
+                  { "targetId": "practice-correlation", "label": "supports" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "signals-logs",
+            "label": "Logs & Events",
+            "notes": "Logs record discrete events. Structured logs with consistent severity, resource identity, trace ID, and span ID are easier to search and correlate than unstructured text.",
+            "children": [
+              {
+                "id": "signals-structured-logs",
+                "label": "Structured Records",
+                "notes": "Prefer stable fields over parsing prose. Preserve body, timestamp, observed timestamp, severity, attributes, resource, and instrumentation scope while applying redaction before export."
+              },
+              {
+                "id": "signals-log-correlation",
+                "label": "Trace-Log Correlation",
+                "notes": "Inject trace and span identifiers into log records through the logging integration. This enables a trace-to-log pivot without placing unbounded log text on every span."
+              }
+            ]
+          },
+          {
+            "id": "signals-profiles",
+            "label": "Profiles",
+            "notes": "Profiles explain code-level resource use such as CPU time and allocations. Correlation with traces can reveal which code paths dominate a slow request. OpenTelemetry profile support and OTLP profile transport remain under development.",
+            "annotation": "developing"
+          }
+        ]
+      },
+      {
+        "id": "opentelemetry",
+        "label": "OpenTelemetry (OTel)",
+        "color": "#7B42BC",
+        "notes": "OpenTelemetry is a vendor-neutral framework and specification for generating, processing, and exporting telemetry. It standardizes instrumentation and transport; it is not itself a long-term storage or visualization backend.",
+        "annotation": "vendor neutral",
+        "children": [
+          {
+            "id": "otel-client-architecture",
+            "label": "API, SDK & Instrumentation",
+            "notes": "Application code and libraries call the API. The SDK supplies processors, samplers, readers, and exporters. Instrumentation may be manual, automatic, or provided by libraries and framework integrations.",
+            "children": [
+              {
+                "id": "otel-api-sdk-separation",
+                "label": "API vs. SDK",
+                "notes": "Libraries should depend on the API so applications retain control. The application configures one SDK implementation and export path, avoiding hard-coded vendor clients in every dependency."
+              },
+              {
+                "id": "otel-auto-instrumentation",
+                "label": "Automatic Instrumentation",
+                "notes": "Language agents, hooks, or zero-code distributions instrument common frameworks quickly. Validate naming, duplicate spans, propagation, and overhead; add manual spans around business operations automation cannot infer."
+              },
+              {
+                "id": "otel-resources-scopes",
+                "label": "Resources & Scopes",
+                "notes": "A Resource identifies the entity producing telemetry, commonly with service name/version/instance and deployment environment. InstrumentationScope identifies the library or module that produced a signal."
+              },
+              {
+                "id": "otel-semantic-conventions",
+                "label": "Semantic Conventions",
+                "notes": "Semantic conventions standardize span names, metric names, units, attributes, and meaning for domains such as HTTP, RPC, databases, messaging, Kubernetes, and GenAI. Pin and manage convention versions during migrations.",
+                "annotation": "shared vocabulary",
+                "refs": [
+                  { "targetId": "genai-conventions", "label": "extended by" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "otel-collector",
+            "label": "OTel Collector",
+            "notes": "The Collector is a vendor-agnostic telemetry pipeline. It offloads batching, retries, filtering, enrichment, routing, sampling, and multi-backend export from application processes.",
+            "annotation": "pipeline",
+            "children": [
+              {
+                "id": "collector-components",
+                "label": "Receivers → Processors → Exporters",
+                "notes": "Receivers ingest or scrape data; processors batch, filter, sample, transform, or enrich it; exporters send it onward. Connectors join pipelines and extensions add operational capabilities such as health checks."
+              },
+              {
+                "id": "collector-deployment-patterns",
+                "label": "Agent & Gateway Patterns",
+                "notes": "Agents run close to workloads for local collection and host context. Gateways centralize policy, routing, and tail sampling. Larger systems often combine both and scale signal-specific tiers independently."
+              },
+              {
+                "id": "collector-resilience",
+                "label": "Queues, Batching & Retries",
+                "notes": "Use memory limits, batches, sending queues, retry policies, and persistent queues where loss tolerance requires them. Backpressure and exporter saturation must be observable themselves."
+              },
+              {
+                "id": "collector-tail-sampling",
+                "label": "Tail Sampling",
+                "notes": "Tail sampling waits for enough of a trace to choose based on errors, latency, or attributes. It preserves valuable traces but requires state, trace-aware routing, memory, and careful capacity planning.",
+                "refs": [
+                  { "targetId": "practice-sampling", "label": "implements" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "otel-otlp",
+            "label": "OTLP Protocol",
+            "notes": "The OpenTelemetry Protocol defines the encoding, transport, and delivery of telemetry among SDKs, Collectors, and backends. Stable OTLP support covers traces, metrics, and logs; profiles are still developing.",
+            "annotation": "wire protocol",
+            "refs": [{ "targetId": "tools-platforms", "label": "feeds" }],
+            "children": [
+              {
+                "id": "otlp-protobuf",
+                "label": "Protobuf Data Model",
+                "notes": "OTLP uses Protocol Buffers schemas grouped by Resource and InstrumentationScope. Signal-specific Export requests carry spans, metric data points, log records, or developing profile data."
+              },
+              {
+                "id": "otlp-grpc",
+                "label": "OTLP/gRPC :4317",
+                "notes": "OTLP/gRPC uses signal-specific gRPC Export services and binary Protobuf. Port 4317 is the default. It is efficient for long-lived service-to-collector connections."
+              },
+              {
+                "id": "otlp-http",
+                "label": "OTLP/HTTP :4318",
+                "notes": "OTLP/HTTP sends POST requests to paths such as /v1/traces, /v1/metrics, and /v1/logs on default port 4318. Payloads use binary Protobuf or Protobuf JSON, with gzip supported."
+              },
+              {
+                "id": "otlp-delivery",
+                "label": "Delivery & Failure Semantics",
+                "notes": "Export is request/response and can report full success, partial success, throttling, or retryable failure. Lost acknowledgements can cause retries and duplicates, so pipelines should tolerate duplicate telemetry."
+              },
+              {
+                "id": "otlp-security",
+                "label": "TLS, Auth & Boundaries",
+                "notes": "Use TLS for network export, authenticate endpoints, limit receiver exposure, rotate credentials, and define egress policy. Treat telemetry as sensitive production data rather than harmless diagnostics."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "context-propagation",
+        "label": "Context Propagation",
+        "color": "#EE0000",
+        "notes": "Context propagation carries trace identity and optional baggage across process, network, and asynchronous boundaries so separately recorded spans can form one distributed trace.",
+        "annotation": "trace continuity",
+        "children": [
+          {
+            "id": "context-inject-extract",
+            "label": "Inject & Extract",
+            "notes": "A propagator injects context into a carrier before an outbound call and extracts it on receipt. Carriers include HTTP headers, gRPC metadata, message properties, and framework-specific request objects.",
+            "annotation": "mechanism"
+          },
+          {
+            "id": "context-w3c-trace-context",
+            "label": "W3C Trace Context",
+            "notes": "The default interoperable format uses traceparent for portable trace identity and tracestate for optional vendor-specific state. Preserve valid upstream context unless a deliberate trust-boundary policy restarts it.",
+            "children": [
+              {
+                "id": "context-traceparent",
+                "label": "traceparent",
+                "notes": "The header encodes version, trace ID, parent ID, and trace flags. Each participating downstream operation creates a new span ID while keeping the trace ID, which preserves the causal chain."
+              },
+              {
+                "id": "context-tracestate",
+                "label": "tracestate",
+                "notes": "An optional ordered list of vendor-specific key/value entries that accompanies a valid traceparent. It supports interoperability without putting user data into the core trace identity."
+              }
+            ]
+          },
+          {
+            "id": "context-baggage",
+            "label": "Baggage",
+            "notes": "Baggage is a propagated key/value store carried beside trace context. It is not automatically a span attribute. Copy only allow-listed values into telemetry and never propagate secrets or unnecessary personal data.",
+            "annotation": "privacy risk"
+          },
+          {
+            "id": "context-async-messaging",
+            "label": "Async & Messaging",
+            "notes": "Propagation must survive task scheduling, callbacks, queues, and batch processing. A consumer span may parent from one producer or link to several producer contexts when a batch has multiple causes.",
+            "refs": [
+              {
+                "targetId": "signals-span-relationships",
+                "label": "uses links"
+              }
+            ]
+          },
+          {
+            "id": "context-runtime-boundaries",
+            "label": "Runtime Context",
+            "notes": "Thread-local storage alone is insufficient for modern async runtimes. Use the language's supported context manager and verify propagation across executors, coroutines, reactive streams, and background jobs."
+          },
+          {
+            "id": "context-trust-boundaries",
+            "label": "Trust Boundaries",
+            "notes": "Validate inbound headers, cap baggage size, strip unsafe keys before third-party calls, and decide where public or tenant boundaries require restarting or sanitizing context."
+          }
+        ]
+      },
+      {
+        "id": "genai-observability",
+        "label": "GenAI Observability",
+        "color": "#0EA5E9",
+        "notes": "GenAI adds nondeterministic outputs, long and streamed operations, token-based cost, retrieval, tools, agent loops, and quality evaluation. Traditional service telemetry remains necessary but is no longer sufficient.",
+        "annotation": "emerging practice",
+        "children": [
+          {
+            "id": "genai-conventions",
+            "label": "OTel GenAI Conventions",
+            "notes": "The OpenTelemetry GenAI semantic conventions define shared spans, metrics, events, and attributes for model clients, agents, tools, retrieval, evaluations, MCP, and provider-specific behavior. They evolve independently from the core semantic-conventions repository.",
+            "annotation": "evolving",
+            "children": [
+              {
+                "id": "genai-inference-spans",
+                "label": "Inference Spans",
+                "notes": "Represent model operations such as chat, content generation, or text completion. Capture operation, provider, requested and response model, response ID, finish reasons, error type, duration, and token usage when available."
+              },
+              {
+                "id": "genai-tool-agent-spans",
+                "label": "Tools, Agents & Retrieval",
+                "notes": "Model tool execution, agent invocation, embeddings, and retrieval as distinct operations so retries, handoffs, external dependencies, and the actual execution graph remain visible."
+              },
+              {
+                "id": "genai-metrics",
+                "label": "GenAI Metrics",
+                "notes": "Useful measurements include client operation duration, time to first chunk, time between output chunks, input/output token usage, server request duration, time to first token, and time per output token."
+              },
+              {
+                "id": "genai-events-content",
+                "label": "Messages & Content Events",
+                "notes": "Input/output messages, system instructions, tool arguments, and results can explain behavior but may contain secrets, personal data, or proprietary prompts. Treat content capture as explicit opt-in with filtering and retention controls."
+              },
+              {
+                "id": "genai-mcp-telemetry",
+                "label": "MCP Telemetry",
+                "notes": "Developing MCP conventions describe client/server request spans and align tool execution with GenAI spans. Record low-cardinality method and target identity; tool arguments, results, resources, and prompt variables need opt-in privacy controls.",
+                "annotation": "development"
+              }
+            ]
+          },
+          {
+            "id": "genai-execution-graph",
+            "label": "Execution Graph",
+            "notes": "Trace the user request through orchestration, model calls, retrieval, tools, memory, guardrails, and downstream services. Use parent-child structure for nested work and links for handoffs or other non-tree causality.",
+            "refs": [
+              { "targetId": "context-propagation", "label": "depends on" }
+            ],
+            "children": [
+              {
+                "id": "genai-rag",
+                "label": "RAG Pipeline",
+                "notes": "Separate query rewriting, embedding, vector search, reranking, context assembly, and generation. Capture document IDs or safe hashes, scores, counts, and latency without placing sensitive retrieved content on every span."
+              },
+              {
+                "id": "genai-agents",
+                "label": "Agent Loops & Handoffs",
+                "notes": "Track agent identity, conversation or invocation, plans, repeated model calls, tool selection, handoffs, stop conditions, retries, and loop depth. Guard against unbounded IDs becoming metric dimensions."
+              },
+              {
+                "id": "genai-streaming",
+                "label": "Streaming",
+                "notes": "Total latency alone hides user experience. Measure time to first chunk or token, inter-chunk cadence, cancellation, partial output, and whether errors occurred before or after output began."
+              }
+            ]
+          },
+          {
+            "id": "genai-quality-evaluation",
+            "label": "Quality & Evaluation",
+            "notes": "Operational health does not prove answer quality. Pair online telemetry with task-success signals and offline or sampled evaluations such as correctness, relevance, groundedness, safety, and user feedback.",
+            "annotation": "not just latency",
+            "children": [
+              {
+                "id": "genai-eval-design",
+                "label": "Evaluators & Scores",
+                "notes": "Record evaluator name/version, target output, score or label, explanation where safe, dataset or experiment version, and whether evaluation is deterministic, human, heuristic, or model-based."
+              },
+              {
+                "id": "genai-cost",
+                "label": "Tokens, Cost & Caching",
+                "notes": "Attribute token usage and cost to a stable feature, workflow, model, and tenant tier where safe. Separate input, output, reasoning, and cache read/write tokens when the provider reports them."
+              },
+              {
+                "id": "genai-safety-privacy",
+                "label": "Safety, Privacy & Retention",
+                "notes": "Redact secrets and personal data, minimize prompt/response capture, protect evaluation datasets, restrict access, define short content retention, and keep auditability for model or policy changes."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "observability-practice",
+        "label": "Operating Practices",
+        "color": "#F59E0B",
+        "notes": "Good observability is a maintained production capability. Define ownership, data contracts, reliability and cost budgets for the telemetry pipeline itself.",
+        "annotation": "make it useful",
+        "children": [
+          {
+            "id": "practice-instrumentation-strategy",
+            "label": "Instrumentation Strategy",
+            "notes": "Begin with automatic instrumentation for broad coverage, then add manual telemetry for important business operations and failure boundaries. Standardize service naming and required resource attributes."
+          },
+          {
+            "id": "practice-correlation",
+            "label": "Cross-Signal Correlation",
+            "notes": "Align service identity, environment, version, region, tenant tier, trace IDs, deployment markers, and clocks. Use exemplars and trace/log correlation to pivot without copying high-cardinality data everywhere.",
+            "annotation": "high leverage"
+          },
+          {
+            "id": "practice-slos",
+            "label": "SLIs, SLOs & Alerts",
+            "notes": "Define service-level indicators from user-visible outcomes, set objectives and error budgets, then alert on actionable burn rates or symptoms. Dashboards explain alerts; they should not be the alerting strategy."
+          },
+          {
+            "id": "practice-sampling",
+            "label": "Sampling",
+            "notes": "Head sampling decides early and is efficient; tail sampling can retain errors, slow traces, or selected attributes after seeing more of the trace. Preserve complete traces and document bias introduced by sampling.",
+            "children": [
+              {
+                "id": "practice-head-sampling",
+                "label": "Head Sampling",
+                "notes": "Make a consistent probability decision near trace creation, commonly from trace ID. It protects applications and pipelines but cannot know whether a downstream error will occur."
+              },
+              {
+                "id": "practice-tail-sampling",
+                "label": "Tail Sampling",
+                "notes": "Buffer spans and decide using trace-wide evidence such as status, latency, route, or business attributes. Route all spans for a trace to the same decision point."
+              }
+            ]
+          },
+          {
+            "id": "practice-cardinality",
+            "label": "Cardinality & Cost",
+            "notes": "Never use user IDs, request IDs, raw URLs, prompts, or exception messages as metric labels. Keep high-cardinality detail in traces or logs, aggregate intentionally, and budget ingest, storage, queries, and egress."
+          },
+          {
+            "id": "practice-pipeline-health",
+            "label": "Observe the Pipeline",
+            "notes": "Monitor SDK export failures and Collector accepted/refused/sent counts, queue fill, send failures, dropped data, memory, CPU, and configuration changes. A silent telemetry outage destroys confidence during incidents."
+          },
+          {
+            "id": "practice-data-quality",
+            "label": "Telemetry Data Quality",
+            "notes": "Continuously check missing service names, orphan spans, invalid durations, clock skew, schema drift, duplicate instrumentation, unexpected cardinality, and redaction failures."
+          }
+        ]
+      },
+      {
+        "id": "observability-tools",
+        "label": "Popular Tools",
+        "color": "#10B981",
+        "notes": "Choose tools by signal coverage, query workflow, scale, retention, operational burden, cost, and standards support. OTLP and semantic conventions reduce coupling, but backend features and query languages still differ.",
+        "annotation": "ecosystem",
+        "children": [
+          {
+            "id": "tools-collection",
+            "label": "Collection & Standards",
+            "notes": "OpenTelemetry SDKs and Collector are the common vendor-neutral path. Prometheus scraping and remote write remain central for metrics; Fluent Bit and Vector are common log and event pipelines."
+          },
+          {
+            "id": "tools-metrics-alerting",
+            "label": "Prometheus & Alertmanager",
+            "notes": "Prometheus provides pull-based metric collection, PromQL, and time-series storage; Alertmanager groups and routes alerts. Common long-term scale-out options include Grafana Mimir, Thanos, and Cortex."
+          },
+          {
+            "id": "tools-tracing",
+            "label": "Jaeger & Grafana Tempo",
+            "notes": "Jaeger is a widely used distributed tracing system. Tempo provides object-storage-oriented trace storage and integrates closely with Grafana, logs, metrics, and exemplars."
+          },
+          {
+            "id": "tools-logs",
+            "label": "Loki, Elastic & OpenSearch",
+            "notes": "Loki emphasizes label-based log indexing in the Grafana ecosystem. Elastic Stack and OpenSearch combine full-text search, analytics, dashboards, and log-oriented workflows."
+          },
+          {
+            "id": "tools-platforms",
+            "label": "Unified Observability Platforms",
+            "notes": "Common managed platforms include Datadog, Dynatrace, New Relic, Splunk Observability, Honeycomb, and Grafana Cloud. OTel-native or open-source unified options include SigNoz and OpenObserve."
+          },
+          {
+            "id": "tools-genai",
+            "label": "GenAI-Focused Tools",
+            "notes": "Common GenAI-focused options include Langfuse, Arize Phoenix, LangSmith, and Weights & Biases Weave. Compare their OpenTelemetry support, trace model, evaluation workflow, prompt/content controls, and export portability.",
+            "refs": [
+              { "targetId": "genai-quality-evaluation", "label": "supports" }
+            ]
+          },
+          {
+            "id": "tools-visualization",
+            "label": "Grafana & Kibana",
+            "notes": "Grafana provides multi-source dashboards, exploration, and correlations across metrics, logs, traces, and profiles. Kibana is the primary exploration and visualization UI for Elastic data."
+          }
+        ]
+      },
+      {
+        "id": "observability-rollout",
+        "label": "Adoption & Troubleshooting",
+        "color": "#EC4899",
+        "notes": "Roll out observability as a thin vertical slice, validate data end to end, and expand only after teams can use it. Reliability, privacy, and cost controls should arrive with instrumentation, not after an incident.",
+        "annotation": "practical path",
+        "children": [
+          {
+            "id": "rollout-thin-slice",
+            "label": "Start with One Journey",
+            "notes": "Choose one user-critical request. Instrument its entry point, dependencies, errors, golden metrics, and logs; propagate context; export through one Collector; build one useful investigation path and SLO."
+          },
+          {
+            "id": "rollout-broken-traces",
+            "label": "Broken or Fragmented Traces",
+            "notes": "Check inject/extract configuration, async context managers, message metadata, proxy header forwarding, conflicting propagators, sampling flags, and services that start new roots unexpectedly.",
+            "refs": [
+              { "targetId": "context-inject-extract", "label": "debug here" }
+            ]
+          },
+          {
+            "id": "rollout-missing-telemetry",
+            "label": "Missing Telemetry",
+            "notes": "Trace the pipeline hop by hop: SDK creation and flush, endpoint/protocol, DNS/TLS/auth, Collector receiver, processor drops, queues, exporter errors, backend ingestion, and query time range."
+          },
+          {
+            "id": "rollout-overhead",
+            "label": "Overhead & Backpressure",
+            "notes": "Benchmark CPU, allocations, payload size, queue behavior, and shutdown flush. Batch exports, cap attributes and events, avoid synchronous network work on request paths, and define acceptable loss behavior."
+          },
+          {
+            "id": "rollout-common-antipatterns",
+            "label": "Common Anti-Patterns",
+            "notes": "Avoid dashboard-first projects, one span per tiny function, duplicate auto/manual instrumentation, sensitive payload capture by default, unbounded metric labels, alerts without owners, and collectors nobody monitors."
+          },
+          {
+            "id": "rollout-governance",
+            "label": "Schema & Ownership",
+            "notes": "Assign platform and service ownership, publish naming rules, test required attributes, manage semantic-convention upgrades, review sensitive fields, and version shared dashboards and alert definitions."
+          }
+        ]
+      }
+    ]
+  }
+}
