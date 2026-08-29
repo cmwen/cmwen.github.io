@@ -4,6 +4,7 @@ import { defaultLocale, toHtmlLang, type Locale } from "@i18n/config";
 import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
+import type { WebMCPPageContext } from "../types/webmcp";
 
 const googleSiteVerification = PUBLIC_GOOGLE_SITE_VERIFICATION;
 
@@ -18,6 +19,7 @@ export interface Props {
   scrollSmooth?: boolean;
   lang?: Locale;
   alternates?: Partial<Record<Locale, string>>;
+  webMCPPageContext?: WebMCPPageContext;
 }
 
 const {
@@ -31,12 +33,16 @@ const {
   scrollSmooth = false,
   lang = Astro.url.pathname.startsWith("/zh-hant/") ? "zh-hant" : defaultLocale,
   alternates,
+  webMCPPageContext,
 } = Astro.props;
 
 const socialImageURL = new URL(
   ogImage ?? SITE.ogImage ?? "og.png",
   Astro.url.origin
 ).href;
+const webMCPPageContextJson = webMCPPageContext
+  ? JSON.stringify(webMCPPageContext).replaceAll("<", "\\u003c")
+  : undefined;
 ---
 
 <!doctype html>
@@ -74,7 +80,6 @@ const socialImageURL = new URL(
     }
 
     <meta name="generator" content={Astro.generator} />
-
     <!-- General Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
@@ -141,5 +146,18 @@ const socialImageURL = new URL(
   </head>
   <body>
     <slot />
+    {
+      webMCPPageContextJson && (
+        <script
+          is:inline
+          id="webmcp-page-context"
+          type="application/json"
+          set:html={webMCPPageContextJson}
+        />
+      )
+    }
+    <script>
+      import "../scripts/webmcp";
+    </script>
   </body>
 </html>

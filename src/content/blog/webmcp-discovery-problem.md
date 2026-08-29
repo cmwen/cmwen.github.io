@@ -3,6 +3,7 @@ title: "The Discovery Problem: How Will Agents Find Your WebMCP Tools?"
 description: "WebMCP's biggest unsolved challenge is tool discovery—the future of agent-web interaction depends on solving how AI agents find your website's structured tools without expensive navigation."
 author: "Min Wen"
 pubDatetime: 2025-11-21T00:00:00.000Z
+modDatetime: 2026-08-29T00:00:00.000Z
 slug: "webmcp-discovery-problem"
 featured: true
 tags: ["webmcp", "discovery", "agents", "web-standards", "ai"]
@@ -30,7 +31,7 @@ Today, WebMCP discovery works like this:
 
 1. Agent decides to visit your website (somehow)
 2. Browser navigates to your page
-3. JavaScript executes and registers tools via `navigator.modelContext.provideContext()`
+3. JavaScript executes and registers tools via `document.modelContext.registerTool()`
 4. Agent discovers available tools
 5. Agent can now invoke tools
 
@@ -136,27 +137,27 @@ Service workers offer a more sophisticated approach by decoupling tools from vis
 
 ### The Architecture
 
-When a user installs a PWA, its service worker could register WebMCP tools that persist even after the browser window closes:
+When a user installs a PWA, its service worker could eventually register WebMCP tools that persist even after the browser window closes.
+
+> **August 2026 update:** Current WebMCP tools are tab-bound. Worker integration remains under active design, so the following is illustrative pseudocode rather than a standardized API.
 
 ```javascript
 // In service worker scope
 self.addEventListener("activate", () => {
-  self.agent.provideContext({
-    tools: [
-      {
-        name: "addToCalendar",
-        description: "Add event to user's calendar",
-        execute: async ({ title, date, duration }) => {
-          // Call backend API, update local storage, etc.
-          await fetch("/api/calendar/add", {
-            method: "POST",
-            body: JSON.stringify({ title, date, duration }),
-          });
-          return { content: [{ type: "text", text: `Added: ${title}` }] };
-        },
+  registerProposedWorkerTools([
+    {
+      name: "addToCalendar",
+      description: "Add event to user's calendar",
+      execute: async ({ title, date, duration }) => {
+        // Call backend API, update local storage, etc.
+        await fetch("/api/calendar/add", {
+          method: "POST",
+          body: JSON.stringify({ title, date, duration }),
+        });
+        return `Added: ${title}`;
       },
-    ],
-  });
+    },
+  ]);
 });
 ```
 
@@ -349,7 +350,7 @@ This follows web conventions and positions you well if a standard emerges using 
 
 ### 4. Join the Conversation
 
-The WebMCP proposal has [31 open issues on GitHub](https://github.com/webmachinelearning/webmcp/issues). Discovery is discussed in multiple threads. Contributing to this discussion helps shape the eventual solution.
+The WebMCP proposal has an [active issue tracker on GitHub](https://github.com/webmachinelearning/webmcp/issues). Discovery is discussed in multiple threads. Contributing to this discussion helps shape the eventual solution.
 
 ## The Future: Agent SEO
 

@@ -1,5 +1,5 @@
 import js from "@eslint/js";
-import astroEslintParser from "astro-eslint-parser";
+import * as astroEslintParser from "astro-eslint-parser";
 import * as tsParser from "@typescript-eslint/parser";
 import astroPlugin from "eslint-plugin-astro";
 

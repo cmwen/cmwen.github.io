@@ -72,7 +72,10 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'pnpm -s build && pnpm -s preview --port 4321',
+    // Astro auto-backgrounds servers when it detects an AI agent. Playwright
+    // needs to own a foreground process for startup and teardown.
+    command:
+      'pnpm -s build && ASTRO_PREVIEW_BACKGROUND=0 pnpm -s preview --port 4321',
     url: 'http://localhost:4321',
     reuseExistingServer: !process.env.CI,
     timeout: process.env.PLAYWRIGHT_WEB_SERVER_TIMEOUT

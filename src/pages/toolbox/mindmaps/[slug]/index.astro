@@ -6,6 +6,7 @@ import Footer from "@components/Footer.astro";
 import Main from "@layouts/Main.astro";
 import { MindMapViewer } from "@components/mindmaps/MindMapViewer";
 import { SITE } from "@config";
+import type { WebMCPMindMapPageContext } from "../../../../types/webmcp";
 
 export interface Props {
   entry: CollectionEntry<"mindmaps">;
@@ -34,16 +35,27 @@ const mindmap = {
 };
 
 const lang = "en" as const;
+const alternates = {
+  en: new URL(`/toolbox/mindmaps/${entry.id}/`, Astro.site).href,
+  "zh-hant": new URL(`/zh-hant/toolbox/mindmaps/${entry.id}/`, Astro.site).href,
+};
+const webMCPPageContext: WebMCPMindMapPageContext = {
+  kind: "mindmap",
+  title,
+  description,
+  lang,
+  canonicalUrl: alternates.en,
+  alternates,
+  tags,
+  root,
+};
 ---
 
 <Layout
   title={`${title} | ${SITE.title}`}
   lang={lang}
-  alternates={{
-    en: new URL(`/toolbox/mindmaps/${entry.id}/`, Astro.site).href,
-    "zh-hant": new URL(`/zh-hant/toolbox/mindmaps/${entry.id}/`, Astro.site)
-      .href,
-  }}
+  {alternates}
+  {webMCPPageContext}
 >
   <Header activeNav="toolbox" activeSubNav="mindmaps" lang={lang} />
   <Main pageTitle={title} pageDesc={description}>

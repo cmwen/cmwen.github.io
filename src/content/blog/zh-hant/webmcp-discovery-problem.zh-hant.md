@@ -6,6 +6,7 @@ title: "發現問題：AI 代理如何找到你的 WebMCP 工具？"
 description: "WebMCP 最大的未解決挑戰是工具發現——代理與網頁互動的未來取決於解決 AI 代理如何在不需要昂貴導航的情況下找到你網站的結構化工具。"
 author: "Min Wen"
 pubDatetime: 2025-11-21T00:00:00.000Z
+modDatetime: 2026-08-29T00:00:00.000Z
 featured: true
 tags: ["webmcp", "discovery", "agents", "web-standards", "ai"]
 llmKeyIdeas:
@@ -32,7 +33,7 @@ llmKeyIdeas:
 
 1. 代理決定訪問你的網站（不知怎麼的）
 2. 瀏覽器導航到你的頁面
-3. JavaScript 執行並透過 `navigator.modelContext.provideContext()` 註冊工具
+3. JavaScript 執行並透過 `document.modelContext.registerTool()` 註冊工具
 4. 代理發現可用的工具
 5. 代理現在可以呼叫工具
 
@@ -138,27 +139,27 @@ Service workers 透過將工具與可見的瀏覽器視窗分離，提供了更�
 
 ### 架構
 
-當使用者安裝 PWA 時，其 service worker 可以註冊 WebMCP 工具，即使在瀏覽器視窗關閉後也能持續存在：
+當使用者安裝 PWA 時，其 service worker 最終或許可以註冊 WebMCP 工具，即使在瀏覽器視窗關閉後也能持續存在。
+
+> **2026 年 8 月更新：**目前的 WebMCP 工具僅存在於開啟的分頁中。Worker 整合仍在積極設計階段，因此以下是說明概念的虛擬程式碼，而不是已標準化的 API。
 
 ```javascript
 // In service worker scope
 self.addEventListener("activate", () => {
-  self.agent.provideContext({
-    tools: [
-      {
-        name: "addToCalendar",
-        description: "Add event to user's calendar",
-        execute: async ({ title, date, duration }) => {
-          // Call backend API, update local storage, etc.
-          await fetch("/api/calendar/add", {
-            method: "POST",
-            body: JSON.stringify({ title, date, duration }),
-          });
-          return { content: [{ type: "text", text: `Added: ${title}` }] };
-        },
+  registerProposedWorkerTools([
+    {
+      name: "addToCalendar",
+      description: "Add event to user's calendar",
+      execute: async ({ title, date, duration }) => {
+        // Call backend API, update local storage, etc.
+        await fetch("/api/calendar/add", {
+          method: "POST",
+          body: JSON.stringify({ title, date, duration }),
+        });
+        return `Added: ${title}`;
       },
-    ],
-  });
+    },
+  ]);
 });
 ```
 
@@ -351,7 +352,7 @@ https://yoursite.com/.well-known/webmcp.json
 
 ### 4. 加入對話
 
-WebMCP 提案在 [GitHub 上有 31 個未解決的問題](https://github.com/webmachinelearning/webmcp/issues)。發現在多個討論串中被討論。為這個討論做出貢獻有助於塑造最終的解決方案。
+WebMCP 提案在 GitHub 上有一個[活躍的議題追蹤器](https://github.com/webmachinelearning/webmcp/issues)。發現在多個討論串中被討論。為這個討論做出貢獻有助於塑造最終的解決方案。
 
 ## 未來：代理 SEO
 

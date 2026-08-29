@@ -6,11 +6,13 @@ import getSortedPosts from "@utils/getSortedPosts";
 import getPageNumbers from "@utils/getPageNumbers";
 import getPagination from "@utils/getPagination";
 import { getPostSlug } from "@utils/contentEntry";
+import type { Locale } from "@i18n/config";
 
 const lang = "zh-hant" as const;
 
 export interface Props {
   post: CollectionEntry<"blog">;
+  alternateLanguages: Locale[];
 }
 
 export async function getStaticPaths() {
@@ -19,10 +21,18 @@ export async function getStaticPaths() {
   const posts = all.filter(
     (p: CollectionEntry<"blog">) => !p.data.draft && p.data.lang === "zh-hant"
   );
+  const published = all.filter(
+    (post: CollectionEntry<"blog">) => !post.data.draft
+  );
 
   const postResult = posts.map((post: CollectionEntry<"blog">) => ({
     params: { slug: getPostSlug(post) },
-    props: { post },
+    props: {
+      post,
+      alternateLanguages: published
+        .filter(candidate => getPostSlug(candidate) === getPostSlug(post))
+        .map(candidate => candidate.data.lang),
+    },
   }));
 
   const pagePaths = getPageNumbers(posts.length).map(pageNum => ({
@@ -33,7 +43,7 @@ export async function getStaticPaths() {
 }
 
 const { slug } = Astro.params;
-const { post } = Astro.props;
+const { post, alternateLanguages } = Astro.props;
 
 const posts = (await getCollection("blog")).filter(
   (p: CollectionEntry<"blog">) => p.data.lang === lang
@@ -47,4 +57,4 @@ const pagination = getPagination({
 });
 ---
 
-{post ? <PostDetails post={post} /> : <Posts {...pagination} />}
+{post ? <PostDetails {post} {alternateLanguages} /> : <Posts {...pagination} />}

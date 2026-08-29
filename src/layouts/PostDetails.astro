@@ -12,14 +12,19 @@ import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
 import ChatLink from "@components/ChatLink";
 import AudioPlayer from "@components/AudioPlayer";
+import type { WebMCPContentPageContext } from "../types/webmcp";
 
 export interface Props {
   post: CollectionEntry<"blog">;
   lang?: Locale;
+  alternateLanguages?: Locale[];
 }
 
-const { post, lang = (post.data.lang as Locale) ?? defaultLocale } =
-  Astro.props;
+const {
+  post,
+  lang = (post.data.lang as Locale) ?? defaultLocale,
+  alternateLanguages = [lang],
+} = Astro.props;
 
 const {
   title,
@@ -44,10 +49,21 @@ const ogUrl = new URL(
 
 const baseEn = new URL(`/posts/${slug}/`, Astro.site).href;
 const baseZh = new URL(`/zh-hant/posts/${slug}/`, Astro.site).href;
-const alternates = {
-  en: lang === "en" ? new URL(Astro.url.pathname, Astro.site).href : baseEn,
-  "zh-hant":
-    lang === "zh-hant" ? new URL(Astro.url.pathname, Astro.site).href : baseZh,
+const alternates: Partial<Record<Locale, string>> = {};
+if (alternateLanguages.includes("en")) alternates.en = baseEn;
+if (alternateLanguages.includes("zh-hant")) alternates["zh-hant"] = baseZh;
+const webMCPPageContext: WebMCPContentPageContext = {
+  kind: "post",
+  title,
+  description,
+  author,
+  lang,
+  canonicalUrl: canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href,
+  alternates,
+  publishedAt: pubDatetime.toISOString(),
+  updatedAt: modDatetime?.toISOString(),
+  tags,
+  keyIdeas: llmKeyIdeas,
 };
 
 const layoutProps = {
@@ -61,6 +77,7 @@ const layoutProps = {
   scrollSmooth: true,
   lang,
   alternates,
+  webMCPPageContext,
 };
 ---
 
