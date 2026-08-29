@@ -28,7 +28,7 @@ This theme is self-documented \_ which means articles/posts in this theme can al
 - [x] followed best practices
 - [x] highly customizable
 - [x] dynamic OG image generation for blog posts [#15](https://github.com/satnaing/astro-paper/pull/15) ([Blog Post](https://astro-paper.pages.dev/posts/dynamic-og-image-generation-in-astropaper-blog-posts/))
-- [x] **🎙️ blog-to-podcast system** - Convert blog posts to audio with RSS feeds ([See docs](scripts/podcast/README.md))
+- [x] **🎙️ podcast editions** - Audio versions and RSS feeds are published from the separate [cmwen/podcasts](https://github.com/cmwen/podcasts) repository
 - [x] **📊 Mermaid diagram support** - Create flowcharts, sequence diagrams, and more in markdown ([See guide](docs/MERMAID_GUIDE.md))
 
 _Note: I've tested screen-reader accessibility of AstroPaper using **VoiceOver** on Mac and **TalkBack** on Android. I couldn't test all other screen-readers out there. However, accessibility enhancements in AstroPaper should be working fine on others as well._
@@ -164,9 +164,8 @@ Dependabot keeps the project evergreen by regularly checking for new releases:
 
 - **npm (pnpm)** dependencies are reviewed weekly so Astro, AstroPaper, and other direct dependencies stay current.
 - **GitHub Actions** workflows are refreshed weekly to pick up the latest CI features and fixes.
-- **Python** tooling for the podcast generator is scanned monthly to balance stability with security updates.
 
-When Dependabot raises a pull request, run `pnpm install` (for JavaScript) or `uv sync` (for Python) locally to verify the lockfiles and execute the relevant test suites before merging.
+When Dependabot raises a pull request, run `pnpm install` locally to verify the lockfile and execute the relevant test suites before merging.
 
 ## License
 

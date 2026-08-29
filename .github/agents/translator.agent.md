@@ -2,11 +2,6 @@
 description: Translate English blog posts to Traditional Chinese (zh-hant)
 name: translator
 tools: ["edit", "search", "problems"]
-handoffs:
-  - label: Generate Podcast
-    agent: blog-writer
-    prompt: Generate podcast audio for both the English and Chinese versions of this post.
-    send: false
 ---
 
 # Translator Agent
@@ -241,16 +236,14 @@ Always provide a brief summary after translation:
 
 ## Next Steps
 
-Ready for podcast generation (both EN and ZH versions).
+Ready for review and publishing.
 ```
 
 ## Handoff Guidance
 
-After completing translation, hand off to **Blog Writer** agent to:
-
-- Generate podcast audio for both English and Chinese versions
-- Update RSS feeds for both languages
-- Verify both versions are properly published
+After completing translation, hand off to **Blog Writer** for final review and
+verify both language versions build successfully. Podcast editions are handled
+in the separate `cmwen/podcasts` repository.
 
 ## Common Pitfalls to Avoid
 

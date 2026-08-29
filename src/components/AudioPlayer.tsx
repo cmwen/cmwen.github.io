@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { PODCAST_BASE_URL } from "@config";
 
 type AudioPlayerProps = {
   slug: string;
@@ -19,8 +20,8 @@ export default function AudioPlayer({ slug, lang = "en" }: AudioPlayerProps) {
   // Construct the audio URL based on slug and language
   const audioUrl =
     lang === "zh-hant"
-      ? `/podcasts/${slug}.zh-hant.mp3`
-      : `/podcasts/${slug}.mp3`;
+      ? `${PODCAST_BASE_URL}/${slug}.zh-hant.mp3`
+      : `${PODCAST_BASE_URL}/${slug}.mp3`;
 
   // Check if audio file exists
   useEffect(() => {

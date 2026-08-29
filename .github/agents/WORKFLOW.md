@@ -29,10 +29,8 @@ graph TD
 
     T -->|Translates to zh-hant<br/>Maintains structure<br/>Preserves code| T_Output[Chinese Version]
 
-    T_Output -->|Handoff: Generate Podcast| P[Podcast Generation]
-    W_Output -->|Direct: Generate Podcast| P
-
-    P -->|Kokoro TTS<br/>MP3 output<br/>RSS feeds| End([Published: EN + ZH + Audio])
+    T_Output --> End([Published: EN + ZH])
+    W_Output --> End
 
     style Start fill:#e1f5e1
     style End fill:#e1f5e1
@@ -41,8 +39,6 @@ graph TD
     style W fill:#fff3e0
     style F fill:#fce4ec
     style T fill:#e0f2f1
-    style P fill:#f1f8e9
-
     style R_Output fill:#bbdefb
     style I_Output fill:#e1bee7
     style W_Output fill:#ffe0b2
@@ -71,8 +67,8 @@ stateDiagram-v2
     BlogWriter --> Translator: Translate (optional)
     FactChecker --> BlogWriter: Fix Issues
     FactChecker --> Translator: Content Verified
-    Translator --> BlogWriter: Generate Podcast
-    BlogWriter --> [*]: Publish
+    Translator --> [*]: Publish translated post
+    BlogWriter --> [*]: Publish English post
 ```
 
 ## Workflow Variations
@@ -80,7 +76,7 @@ stateDiagram-v2
 ### 1. Full Pipeline (Recommended for Technical Posts)
 
 ```
-Research → Ideas → Write → Fact Check → Translate → Podcast → Publish
+Research → Ideas → Write → Fact Check → Translate → Publish
 ```
 
 **Use when**:
@@ -93,7 +89,7 @@ Research → Ideas → Write → Fact Check → Translate → Podcast → Publis
 ### 2. Quick Write (For Opinion/Analysis)
 
 ```
-Ideas → Write → Translate → Podcast → Publish
+Ideas → Write → Translate → Publish
 ```
 
 **Use when**:
@@ -119,7 +115,7 @@ Research → Research → Research → Ideas → Write → Fact Check → Publis
 ### 4. English-Only (Fast Track)
 
 ```
-Ideas → Write → Podcast → Publish
+Ideas → Write → Publish
 ```
 
 **Use when**:
@@ -149,7 +145,7 @@ graph TD
     I -->|No| H
 
     H -->|Yes| J[Use Translator]
-    H -->|No| K[Generate Podcast]
+    H -->|No| K[Publish]
 
     J --> K
     K --> L[Publish]
@@ -167,8 +163,7 @@ graph TD
 | Writing                   | 15-30 min      | ✅ Yes (agent)       |
 | Fact Checking             | 10-15 min      | ✅ Yes (agent)       |
 | Translation               | 10-15 min      | ✅ Yes (agent)       |
-| Podcast Generation        | 2-5 min        | ✅ Yes (automated)   |
-| **Total (Full Pipeline)** | **52-95 min**  | **Mostly automated** |
+| **Total (Full Pipeline)** | **50-90 min**  | **Mostly automated** |
 
 _Note: Times vary based on topic complexity and content length_
 
@@ -193,7 +188,7 @@ _Note: Times vary based on topic complexity and content length_
 ✅ Speed: Skip research if timely
 ✅ Accuracy: Still fact-check claims
 ✅ Length: Can be shorter (500+ words)
-✅ Podcast: Quick updates work well
+✅ Publish: Keep the review loop short
 
 ### For Deep Dives
 
@@ -210,7 +205,6 @@ If something goes wrong at any stage:
 2. **Writing Problems**: Provide more outline detail
 3. **Fact-Check Failures**: Return to writer with corrections
 4. **Translation Errors**: Check YAML syntax, verify frontmatter
-5. **Podcast Generation**: Run `uv sync`, check models
 
 ## Monitoring Progress
 

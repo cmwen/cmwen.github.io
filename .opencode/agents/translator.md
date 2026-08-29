@@ -206,6 +206,6 @@ After completing translation, provide:
 ## Next Steps
 
 The translated post is ready for:
-1. Podcast generation (audio for Chinese version)
-2. Publishing and deployment
-3. Cross-linking with English version via `baseSlug`
+1. Publishing and deployment
+2. Cross-linking with English version via `baseSlug`
+3. Optional audio generation in the separate `cmwen/podcasts` repository

@@ -32,7 +32,7 @@ Quick commands and prompts for the blog generation agentic system.
 3. Review ideas, click "Write Blog Post"
 4. Click "Fact Check Content"
 5. Click "Translate to Chinese"
-6. Click "Generate Podcast"
+6. Publish after final review
 ```
 
 ### Quick Opinion Post
@@ -41,7 +41,7 @@ Quick commands and prompts for the blog generation agentic system.
 1. @blog-writer write opinion post about [topic]
 2. Review and edit
 3. @translator translate this post
-4. Run: uv run podcast-generate --posts "slug"
+4. Publish after final review
 ```
 
 ### Research & Ideate (No Writing Yet)
@@ -108,9 +108,12 @@ Quick commands and prompts for the blog generation agentic system.
 
 ## 🛠️ Terminal Commands
 
-### Podcast Generation
+### Podcast editions (separate repository)
 
 ```bash
+# Run from a sibling checkout of https://github.com/cmwen/podcasts
+cd ../podcasts
+
 # Generate for specific post
 uv run podcast-generate --posts "post-slug"
 
@@ -120,21 +123,8 @@ uv run podcast-generate --all
 # Force regenerate existing
 uv run podcast-generate --posts "post-slug" --force
 
-# Wrapper script (via pnpm)
-pnpm podcast:generate
-```
-
-### Python Environment
-
-```bash
-# Setup Python dependencies
+# Setup or refresh Python dependencies in the podcast repository
 uv sync
-
-# Check Python version
-python --version
-
-# Test podcast system
-uv run podcast-generate --help
 ```
 
 ### Blog Development
@@ -192,15 +182,14 @@ baseSlug: "original-post-slug"
 
 After each agent completes, you'll see handoff buttons:
 
-| From Agent      | Button           | Goes To         | Purpose                |
-| --------------- | ---------------- | --------------- | ---------------------- |
-| Researcher      | Generate Ideas   | Ideas Generator | Create post concepts   |
-| Ideas Generator | Write Blog Post  | Blog Writer     | Start writing          |
-| Blog Writer     | Fact Check       | Fact Checker    | Verify accuracy        |
-| Blog Writer     | Translate        | Translator      | Create Chinese version |
-| Fact Checker    | Back to Writer   | Blog Writer     | Make corrections       |
-| Fact Checker    | Translate        | Translator      | Continue if verified   |
-| Translator      | Generate Podcast | Blog Writer     | Create audio           |
+| From Agent      | Button          | Goes To         | Purpose                |
+| --------------- | --------------- | --------------- | ---------------------- |
+| Researcher      | Generate Ideas  | Ideas Generator | Create post concepts   |
+| Ideas Generator | Write Blog Post | Blog Writer     | Start writing          |
+| Blog Writer     | Fact Check      | Fact Checker    | Verify accuracy        |
+| Blog Writer     | Translate       | Translator      | Create Chinese version |
+| Fact Checker    | Back to Writer  | Blog Writer     | Make corrections       |
+| Fact Checker    | Translate       | Translator      | Continue if verified   |
 
 ## ⚠️ Common Issues
 
@@ -221,14 +210,14 @@ Solution: Remove from tools list in agent frontmatter
                   runCommands, problems
 ```
 
-### Podcast generation fails
+### Podcast edition missing
 
 ```
-Error: Post not found or invalid frontmatter
-Solution: 1. Run `uv sync` to setup Python env
-         2. Check post frontmatter is valid YAML
-         3. Verify post slug matches file
-         4. Check `pnpm dev` shows the post
+Error: Audio player is not shown for a post
+Solution: 1. Open the sibling `podcasts` repository
+         2. Verify the episode exists under `public/`
+         3. Deploy that repository's GitHub Pages workflow
+         4. Confirm `PODCAST_BASE_URL` points to the published project
 ```
 
 ### Translation file collision
@@ -288,7 +277,7 @@ src/content/blog/
 └── zh-hant/
     └── *.zh-hant.md       # Chinese posts
 
-public/podcasts/
+../podcasts/public/        # Owned by https://github.com/cmwen/podcasts
 ├── *.mp3                  # Audio files
 ├── feed.xml               # Main RSS feed
 ├── en/feed.xml            # English feed
@@ -308,7 +297,7 @@ public/podcasts/
 
 1. Use full pipeline with simple post
 2. Practice fact-checking
-3. Generate podcast
+3. Publish the post
 4. Review published output
 
 ### Day 3: Translation
@@ -316,7 +305,7 @@ public/podcasts/
 1. Write English post
 2. Use translator agent
 3. Verify both versions
-4. Generate bilingual podcasts
+4. Publish both versions
 
 ### Day 4: Optimization
 
@@ -332,7 +321,7 @@ public/podcasts/
 ✅ **Fact-check technical posts**: Always verify code
 ✅ **Keep tools minimal**: Only add what you need
 ✅ **Name agents consistently**: Use hyphens, lowercase
-✅ **Test podcasts locally**: Run before committing
+✅ **Test podcast changes in their own repository**: Deploy audio before relying on it here
 ✅ **Save research reports**: Reuse for multiple posts
 ✅ **Batch translations**: Do multiple at once
 
@@ -341,7 +330,7 @@ public/podcasts/
 - **Documentation**: See `README.md` and `WORKFLOW.md`
 - **VS Code Docs**: https://code.visualstudio.com/docs/copilot/customization/custom-agents
 - **Project Docs**: See `/AGENTS.MD` in repo root
-- **Podcast System**: See `podcast_generator/` directory
+- **Podcast System**: https://github.com/cmwen/podcasts
 
 ---
 

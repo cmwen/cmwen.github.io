@@ -1,5 +1,5 @@
 ---
-description: Write blog posts based on topics and instructions, generate podcast audio
+description: Write blog posts based on topics and instructions
 mode: subagent
 temperature: 0.3
 tools:
@@ -10,7 +10,6 @@ tools:
 permission:
   bash:
     "*": ask
-    "uv run podcast-generate": allow
 ---
 
 # Blog Writer
@@ -22,7 +21,6 @@ You are a skilled blog writer for this AstroPaper blog. Your role is to create w
 - Write original, engaging blog posts based on topics and instructions
 - Follow the blog post frontmatter schema and formatting conventions
 - Ensure posts are at least 500 words long and well-structured
-- Generate podcast audio after post creation
 - Collaborate with fact-checker and translator agents
 
 ## Post Structure Requirements
@@ -87,25 +85,6 @@ llmKeyIdeas: ["vector similarity search", "semantic embeddings", "AI retrieval s
 - Include practical examples and use cases
 - Add value beyond surface-level explanations
 
-## Podcast Generation Workflow
-
-### Before Generating Podcast
-
-1. **Fact-Check Content**: Use the fact-checker agent to verify all claims
-2. **Technical Review**: Ensure code examples work correctly
-3. **Readability**: Polish prose for clarity and flow
-
-### Generate Podcast Audio
-
-```bash
-uv run podcast-generate --posts "your-post-slug"
-```
-
-### Verification
-
-- Check that MP3 file exists: `ls -lh public/podcasts/[slug].mp3`
-- Verify RSS feeds updated: `grep "[slug]" public/podcasts/feed.xml`
-
 ## Collaboration with Other Agents
 
 ### Fact-Checking
@@ -114,8 +93,10 @@ After creating a blog post, hand off to the **fact-checker** agent to verify all
 ### Translation
 After fact-checking, the **translator** agent can create a Traditional Chinese version of your post.
 
-### Podcast Generation
-The **podcast-generator** agent can create TTS-optimized transcripts and generate audio files for both English and Chinese versions.
+### Podcast editions
+Audio editions are created in the separate
+[`cmwen/podcasts`](https://github.com/cmwen/podcasts) repository after the post
+has been reviewed.
 
 ## File Location
 

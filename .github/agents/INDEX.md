@@ -13,15 +13,14 @@ Complete documentation for the blog generation agentic system.
 
 ## 🤖 Agent Files
 
-| Agent                 | File                                                       | Purpose                                 |
-| --------------------- | ---------------------------------------------------------- | --------------------------------------- |
-| **Researcher**        | [researcher.agent.md](./researcher.agent.md)               | Research and information gathering      |
-| **Ideas Generator**   | [ideas.agent.md](./ideas.agent.md)                         | Ideation and outline creation           |
-| **Blog Writer**       | [blog-writer.agent.md](./blog-writer.agent.md)             | Content creation and podcast generation |
-| **Fact Checker**      | [fact-checker.agent.md](./fact-checker.agent.md)           | Accuracy verification                   |
-| **Translator**        | [translator.agent.md](./translator.agent.md)               | Translation to Traditional Chinese      |
-| **Podcast Generator** | [podcast-generator.agent.md](./podcast-generator.agent.md) | TTS transcript and audio generation     |
-| **GitHub Publisher**  | [github-publisher.agent.md](./github-publisher.agent.md)   | CI/CD deployment and monitoring         |
+| Agent                | File                                                     | Purpose                            |
+| -------------------- | -------------------------------------------------------- | ---------------------------------- |
+| **Researcher**       | [researcher.agent.md](./researcher.agent.md)             | Research and information gathering |
+| **Ideas Generator**  | [ideas.agent.md](./ideas.agent.md)                       | Ideation and outline creation      |
+| **Blog Writer**      | [blog-writer.agent.md](./blog-writer.agent.md)           | Content creation                   |
+| **Fact Checker**     | [fact-checker.agent.md](./fact-checker.agent.md)         | Accuracy verification              |
+| **Translator**       | [translator.agent.md](./translator.agent.md)             | Translation to Traditional Chinese |
+| **GitHub Publisher** | [github-publisher.agent.md](./github-publisher.agent.md) | CI/CD deployment and monitoring    |
 
 ## 🎯 Quick Navigation
 
@@ -117,13 +116,12 @@ Complete documentation for the blog generation agentic system.
 │   ├─→ Common issues
 │   └─→ Troubleshooting
 │
-└── *.agent.md (7 agents)
+└── *.agent.md (6 agents)
     ├─→ researcher.agent.md
     ├─→ ideas.agent.md
     ├─→ blog-writer.agent.md
     ├─→ fact-checker.agent.md
     ├─→ translator.agent.md
-    ├─→ podcast-generator.agent.md
     └─→ github-publisher.agent.md
 ```
 
@@ -167,7 +165,8 @@ Complete documentation for the blog generation agentic system.
 
 ### "Where are the podcasts saved?"
 
-→ `public/podcasts/*.mp3`, see [QUICK_REFERENCE.md](./QUICK_REFERENCE.md#-file-locations)
+→ In the separate [`cmwen/podcasts`](https://github.com/cmwen/podcasts)
+repository under `public/`.
 
 ## 🎓 Learning Paths
 
@@ -201,13 +200,13 @@ Complete documentation for the blog generation agentic system.
 | **Workflows**     | WORKFLOW.md          | Your experiments           |
 | **Frontmatter**   | blog-writer.agent.md | QUICK_REFERENCE.md         |
 | **Translation**   | translator.agent.md  | QUICK_REFERENCE.md         |
-| **Podcasts**      | blog-writer.agent.md | podcast_generator/         |
+| **Podcasts**      | External repository  | `cmwen/podcasts`           |
 
 ## 🔗 External Resources
 
 - **VS Code Custom Agents**: https://code.visualstudio.com/docs/copilot/customization/custom-agents
 - **AstroPaper Blog Docs**: `/AGENTS.MD` in repo root
-- **Podcast System**: `/podcast_generator/` directory
+- **Podcast System**: https://github.com/cmwen/podcasts
 - **GitHub Copilot**: https://github.com/features/copilot
 
 ## 📊 File Sizes Reference
@@ -235,7 +234,7 @@ Use this to track your learning:
 - [ ] Write first post
 - [ ] Use fact checker
 - [ ] Translate a post
-- [ ] Generate podcast
+- [ ] Publish optional audio in `cmwen/podcasts`
 - [ ] Read QUICK_REFERENCE.md
 - [ ] Customize an agent
 - [ ] Create your own workflow

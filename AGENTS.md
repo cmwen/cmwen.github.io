@@ -18,7 +18,7 @@ This document provides comprehensive guidance for AI agents working on the cmwen
 - ✅ **SEO optimization**: Auto-generated OG images, sitemap, RSS feeds
 - ✅ **Content management**: Astro Collections with schema validation
 - ✅ **Interactive components**: React-based agents directory, search functionality
-- ✅ **Podcast generation**: Python-based TTS system with multi-language support
+- ✅ **Podcast playback**: Audio editions hosted by the separate `cmwen/podcasts` repository
 - ✅ **Developer experience**: Hot reload, TypeScript, ESLint, Prettier, conventional commits
 
 ## 2. Architecture Overview
@@ -51,7 +51,6 @@ src/content/blog/
 ### Prerequisites
 - **Node.js**: v18+ (specified in `.nvmrc`)
 - **Package Manager**: pnpm (lockfile: `pnpm-lock.yaml`)
-- **Python**: 3.8+ for podcast generation (managed via `uv`)
 - **Optional**: Docker via `.devcontainer/` for consistent environment
 
 ### Setup Commands
@@ -61,10 +60,6 @@ pnpm install          # Install dependencies
 pnpm dev              # Start dev server (http://localhost:4321)
 pnpm build            # Build for production
 pnpm preview          # Preview production build
-
-# Python podcast system
-uv sync               # Install Python dependencies
-uv run podcast-generate --help  # See podcast CLI options
 
 # Code quality
 pnpm lint             # ESLint
@@ -139,64 +134,17 @@ src/
 - **Hydration**: Use `client:load` sparingly, prefer `client:idle` or `client:visible`
 - **TypeScript**: All components must be typed, use `src/types.ts` for shared types
 
-## 6. Podcast Generation System
+## 6. Podcast Integration
 
-### Architecture
-Pure Python system for converting blog posts to podcasts:
+Podcast audio, RSS feeds, transcripts, and TTS generation are owned by the
+separate [`cmwen/podcasts`](https://github.com/cmwen/podcasts) repository.
+This site only renders the audio player and reads episode files from
+`https://cmwen.github.io/podcasts/`, configured by `PODCAST_BASE_URL` in
+`src/config.ts`.
 
-```
-podcast_generator/
-├── main.py           # CLI interface (Click + Rich)
-├── blog_parser.py    # Markdown → structured data
-├── tts_engine.py     # Kokoro TTS integration
-├── feed_generator.py # RSS feed generation
-└── __init__.py       # Package exports
-```
-
-### Multi-Language TTS
-- **English**: Kokoro v1.0 model, `af_sarah` voice, direct text input
-- **Chinese**: Kokoro v1.1-zh model, `zf_001` voice, misaki phonemization
-- **Auto-switching**: TTS engine reinitializes for language changes
-- **Voice options**: 90+ Chinese voices available (`zf_001`-`zf_099`, `zm_009`-`zm_100`)
-
-### LLM transcripts for better audio
-
-The podcast generator supports optional LLM-generated transcripts. Use an LLM (via the `agents` UI) to create a TTS-optimized transcript and save it in `src/content/blog/transcripts/`.
-
-Naming conventions:
-- `slug.txt` — generic transcript for any language
-- `slug.en.txt` / `slug.zh-hant.txt` — language-specific transcript
-
-If a transcript exists for a post, the generator will prefer the transcript over the derived markdown text. This lets the LLM remove code blocks, tables, or add spoken clarifications.
-
-Agent workflow: generate a transcript, save the file, run `uv run podcast-generate --posts "slug"`, then push audio to GitHub.
-
-### Usage Patterns
-```bash
-# Generate specific posts
-uv run podcast-generate --posts "post-slug"
-
-# Generate all posts
-uv run podcast-generate --all
-
-# Force regeneration
-uv run podcast-generate --posts "slug" --force
-
-# Test Chinese voices
-python test_chinese_voices.py  # If testing script exists
-```
-
-### Output Structure
-```
-public/podcasts/
-├── feed.xml              # Main RSS feed
-├── post-slug.mp3         # English podcasts
-├── post-slug.zh-hant.mp3 # Chinese podcasts
-├── en/
-│   └── feed.xml          # English-specific feed
-└── zh-hant/
-    └── feed.xml          # Chinese-specific feed
-```
+Keep blog Markdown in this repository. When publishing a new audio edition,
+run the generator from a sibling checkout of the podcast repository and deploy
+that repository before deploying a site change that depends on the new audio.
 
 ## 7. Build and Deployment
 
@@ -244,7 +192,6 @@ GitHub Actions workflow (`.github/workflows/main.yaml`):
 - **`astro.config.ts`**: Framework configuration, integrations, build settings
 - **`src/config.ts`**: Site constants, metadata, feature flags
 - **`tsconfig.json`**: TypeScript + path aliases (`@components/*`, `@utils/*`)
-- **`pyproject.toml`**: Python dependencies and package configuration
 - **`package.json`**: Node.js dependencies and npm scripts
 
 ### Path Aliases
@@ -269,7 +216,7 @@ import { dict } from '@i18n/dict';
 1. **Build failures**: Check TypeScript errors, missing imports
 2. **Hydration mismatches**: Ensure deterministic initial state in React components
 3. **Missing translations**: Verify `baseSlug` and file naming conventions
-4. **Podcast generation**: Check Python environment, model downloads in `~/.cache/kokoro-onnx/`
+4. **Podcast playback**: Verify the matching episode is deployed by `cmwen/podcasts` and check `PODCAST_BASE_URL`
 5. **OG image generation**: Verify fonts in `src/assets/fonts/`
 
 ### Debug Commands
@@ -278,7 +225,6 @@ import { dict } from '@i18n/dict';
 pnpm build --verbose       # Detailed build output
 pnpm dev --host            # Debug on other devices
 pnpm test --debug          # Playwright debugging
-uv run podcast-generate --dry-run  # Test without generation
 ```
 
 ### Performance Debugging
@@ -304,13 +250,6 @@ uv run podcast-generate --dry-run  # Test without generation
 - **Testing**: Consider test implications for new features
 - **Dependencies**: Minimize new dependencies, check bundle impact
 
-### Podcast System Best Practices
-- **Voice selection**: Test Chinese voices for user preferences
-- **Content preparation**: Clean markdown properly for TTS
-- **Error handling**: Graceful failures for TTS generation
-- **Model management**: Respect cache directory structure
-- **RSS compliance**: Ensure podcast feeds validate
-
 ## 12. Future Considerations
 
 ### Potential Enhancements
@@ -325,7 +264,7 @@ uv run podcast-generate --dry-run  # Test without generation
 - **CDN**: CloudFlare or similar for global distribution
 - **Images**: External image optimization service
 - **Search**: Dedicated search service for large content volumes
-- **Podcasts**: Separate storage for audio files (S3, etc.)
+- **Podcasts**: Consider a dedicated CDN if GitHub Pages bandwidth becomes limiting
 
 ---
 

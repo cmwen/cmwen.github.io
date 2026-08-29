@@ -4,7 +4,7 @@ This directory contains custom agents that form an agentic workflow for generati
 
 ## 🎯 Overview
 
-The agentic system consists of **5 specialized agents** that work together through **handoffs** to create high-quality, fact-checked, bilingual blog posts with podcast audio:
+The agentic system consists of **5 specialized agents** that work together through **handoffs** to create high-quality, fact-checked, bilingual blog posts:
 
 ```
 ┌─────────────┐
@@ -96,7 +96,6 @@ The agentic system consists of **5 specialized agents** that work together throu
 - Creates proper frontmatter with all required fields
 - Ensures AstroPaper schema compliance
 - Generates engaging, informative content
-- Produces podcast audio using TTS system
 - Maintains professional tone and quality
 
 **When to use**:
@@ -104,7 +103,6 @@ The agentic system consists of **5 specialized agents** that work together throu
 - Ready to write from outline
 - Creating new blog post
 - Need properly formatted Markdown
-- Want automatic podcast generation
 
 **Handoffs**:
 
@@ -159,7 +157,7 @@ The agentic system consists of **5 specialized agents** that work together throu
 - Want bilingual content
 - Reaching Chinese-speaking audience
 
-**Handoff**: Back to **Blog Writer** for podcast generation (both languages)
+The translated post returns to the normal review and publishing workflow.
 
 ## 📋 Workflow Examples
 
@@ -172,8 +170,8 @@ The agentic system consists of **5 specialized agents** that work together throu
 3. **Review ideas** → Select your favorite, click "Write Blog Post" handoff
 4. **Review draft** → Click "Fact Check Content" handoff
 5. **Review fact-check** → If issues found, go back to writer; if clean, click "Translate to Chinese"
-6. **Review translation** → Click "Generate Podcast" to create audio for both versions
-7. **Done!** Both English and Chinese posts published with podcasts
+6. **Review translation**
+7. **Done!** Publish the English and Chinese posts
 
 ### Quick Writing Workflow
 
@@ -184,7 +182,7 @@ The agentic system consists of **5 specialized agents** that work together throu
 3. **Review draft** → Make any manual edits
 4. **Optional**: Use fact-checker for verification
 5. **Optional**: Translate to Chinese
-6. Run podcast generation: `uv run podcast-generate --posts "slug"`
+6. Publish after final review
 
 ### Research-Only Workflow
 
@@ -283,7 +281,7 @@ Handoffs enable guided transitions between agents:
 - Follow the outline structure
 - Use proper frontmatter schema
 - Test code examples
-- Generate podcasts after writing
+- Hand off optional audio editions to the separate podcast repository
 
 ### For Fact Checkers
 
@@ -324,7 +322,7 @@ Then follow the handoff buttons to move through the pipeline!
 - **Custom Agents Documentation**: https://code.visualstudio.com/docs/copilot/customization/custom-agents
 - **Prompt Files**: https://code.visualstudio.com/docs/copilot/customization/prompt-files
 - **AstroPaper Blog**: See `AGENTS.MD` in root directory for project-specific details
-- **Podcast System**: See `podcast_generator/` for TTS implementation
+- **Podcast System**: https://github.com/cmwen/podcasts
 
 ## 🤝 Contributing
 

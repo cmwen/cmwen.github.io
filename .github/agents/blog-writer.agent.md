@@ -1,7 +1,7 @@
 ---
 name: blog-writer
 argument-hint: "You will be given a topic and instructions to write a blog post in Markdown format."
-description: "Write blog posts based on topics and instructions, generate podcast audio"
+description: "Write blog posts based on topics and instructions"
 tools: ["runCommands", "edit", "search", "problems"]
 handoffs:
   - label: Fact Check Content
@@ -47,7 +47,7 @@ If you follow these rules your generated markdown will pass content schema valid
 
 ## Fact-Checking
 
-After creating a blog post but BEFORE generating the podcast, you MUST perform a thorough fact-check:
+After creating a blog post but BEFORE publishing it, you MUST perform a thorough fact-check:
 
 1. **Verify factual claims**:
    - Check any statistics, dates, version numbers, or technical specifications mentioned
@@ -82,43 +82,6 @@ After creating a blog post but BEFORE generating the podcast, you MUST perform a
 - Technical specifications and RFCs
 - Authoritative industry sources
 
-Only proceed to podcast generation after confirming all facts are accurate.
-
-## Podcast Generation
-
-After creating or updating a blog post AND completing fact-checking, you MUST generate podcast audio and RSS feeds:
-
-1. **Generate podcast for the specific post** (recommended for new/updated posts):
-
-   ```bash
-   uv run podcast-generate --posts "post-slug"
-   ```
-
-   Replace `post-slug` with the actual slug from the post's frontmatter.
-
-2. **Alternative: Generate for all posts** (if updating multiple posts):
-
-   ```bash
-   uv run podcast-generate --all
-   ```
-
-3. **Force regeneration** (if the post was edited and audio needs updating):
-
-   ```bash
-   uv run podcast-generate --posts "post-slug" --force
-   ```
-
-4. **Verify the podcast generation**:
-   - Check that the MP3 file was created in `public/podcasts/`
-   - Verify RSS feeds were updated in `public/podcasts/feed.xml` and language-specific feeds
-
-**Important Notes:**
-
-- The podcast generator supports both English and Traditional Chinese (zh-hant) posts automatically
-- Audio files are named with the post slug: `{slug}.mp3`
-- The system uses Kokoro TTS with different models for each language
-- RSS feeds aggregate all existing episodes, so partial generation won't lose earlier entries
-- If podcast generation fails, check that:
-  - Python environment is set up correctly (run `uv sync` if needed)
-  - The post frontmatter is valid and the post was successfully created
-  - Models are downloaded (first run may take time to download TTS models)
+Only proceed to publishing after confirming all facts are accurate. Podcast
+editions are generated separately in the
+[`cmwen/podcasts`](https://github.com/cmwen/podcasts) repository.

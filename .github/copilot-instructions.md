@@ -41,17 +41,14 @@
 - Providers/agents in `src/data/agents.ts`; UX helpers in `src/utils/agents.ts` (persist provider in localStorage, deep-link or copy-to-clipboard, URL length guard).
 - Keep initial state deterministic on first render to avoid hydration mismatch (see `AgentsApp.tsx` useEffect note).
 
-## Podcast generation system
+## Podcast integration
 
-- Pure Python system using Kokoro TTS for multi-language audio generation (`podcast_generator/`).
-- Multi-language support: English (Kokoro v1.0), Chinese (Kokoro v1.1-zh) with automatic model switching.
-- Blog post conversion: Markdown → cleaned text → phonemized speech → MP3 with FFmpeg.
-- Package management: `uv` for Python dependencies (`pyproject.toml`), automatic model download to `~/.cache/kokoro-onnx/`.
-- Chinese TTS: Uses misaki[zh] for G2P phonemization, 90+ voice options (`zf_001`-`zf_099` female, `zm_009`-`zm_100` male).
-- RSS feed generation: Language-specific feeds for podcast apps (`public/podcasts/{lang}/feed.xml`).
-- Commands: `uv run podcast-generate --posts "slug" --force` or `pnpm podcast:generate` (wrapper).
-- Output: MP3 files in `public/podcasts/`, automatic chunking for long content, timezone-aware publication dates.
-- **Troubleshooting**: If posts not found by slug, verify frontmatter validity (use `BlogParser._parse_post_file()` directly or check dev server collection).
+- Podcast audio, feeds, transcripts, and the generator live in the separate
+  [`cmwen/podcasts`](https://github.com/cmwen/podcasts) repository.
+- `src/components/AudioPlayer.tsx` loads episode files from
+  `PODCAST_BASE_URL` in `src/config.ts`.
+- Keep episode paths stable under `https://cmwen.github.io/podcasts/`; generate
+  or repair audio in the podcast repository, not in this site repository.
 
 ## Build, test, CI
 
@@ -73,5 +70,4 @@
 ## Common pitfalls
 
 - **Post not appearing**: Check `pubDatetime` is past (UTC), YAML arrays valid, no slug collision between locales.
-- **Podcast generator "Found 0 posts"**: Verify frontmatter passes Astro schema validation; check dev server `/posts/` to confirm post loads.
 - **Hydration mismatch (React)**: Initial state must be deterministic; use `useEffect` for localStorage/URL reads (see `AgentsApp.tsx`).

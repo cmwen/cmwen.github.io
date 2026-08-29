@@ -31,7 +31,6 @@ git status
 
 # Review key files
 git diff src/content/blog/          # Blog posts
-git diff public/podcasts/           # Podcast files
 git diff src/                       # Source changes
 
 # Verify no unintended changes
@@ -59,10 +58,7 @@ pnpm test
 - [ ] Blog post frontmatter is valid YAML
 - [ ] No trailing commas in arrays
 - [ ] `pubDatetime` is in past (UTC)
-- [ ] Podcast files generated successfully
-- [ ] RSS feeds updated correctly
 - [ ] No broken links or missing images
-- [ ] File sizes reasonable (podcasts <100MB)
 
 ### 2. Stage and Commit Changes
 
@@ -70,7 +66,7 @@ Use conventional commits format for better changelog generation:
 
 **Commit Type Conventions:**
 
-- `feat:` - New features or content (blog posts, podcasts)
+- `feat:` - New features or content (blog posts)
 - `fix:` - Bug fixes or corrections
 - `docs:` - Documentation updates
 - `style:` - Formatting, no code change
@@ -85,9 +81,6 @@ Use conventional commits format for better changelog generation:
 ```bash
 # Stage blog posts
 git add src/content/blog/
-
-# Stage podcast files
-git add public/podcasts/
 
 # Stage other changes
 git add src/ public/ package.json
@@ -104,25 +97,12 @@ pnpm cz
 
 # Option 2: Manual conventional commit
 git commit -m "feat(blog): add new post on AI agents"
-git commit -m "feat(podcast): generate audio for AI agents post"
 git commit -m "chore: update dependencies"
 
 # Good commit message examples:
 # feat(blog): add guide on prompt engineering
-# feat(podcast): generate Chinese audio for latest post
-# fix(rss): correct podcast feed timestamps
 # docs: update agent instructions
 # chore(deps): upgrade Astro to v4.0
-```
-
-**Multi-File Commits:**
-For related changes, group them logically:
-
-```bash
-git add src/content/blog/my-post.md
-git add public/podcasts/my-post.mp3
-git add public/podcasts/feed.xml
-git commit -m "feat(content): add new post with podcast audio"
 ```
 
 ### 3. Push to GitHub
