@@ -1,0 +1,458 @@
+<!DOCTYPE html><html lang="zh-Hant" class="scroll-smooth"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="alternate icon" type="image/png" sizes="512x512" href="/favicon.png"><link rel="apple-touch-icon" sizes="512x512" href="/favicon.png"><link rel="canonical" href="https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/"><link rel="alternate" hreflang="en" href="https://cmwen.github.io/posts/git-stores-what-changed-not-why-we-got-there/"><link rel="alternate" hreflang="zh-Hant" href="https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/"><link rel="alternate" hreflang="x-default" href="https://cmwen.github.io/posts/git-stores-what-changed-not-why-we-got-there/"><meta name="generator" content="Astro v7.2.9"><!-- General Meta Tags --><title>Git 記得改了什麼，卻不記得我們為什麼走到這裡 | Min Wen</title><meta name="title" content="Git 記得改了什麼，卻不記得我們為什麼走到這裡 | Min Wen"><meta name="description" content="Agent session 會產生目標、失敗、發現與決策。真正該長期保存的不是完整對話，而是經過整理、未來仍有工程價值的那一小部分。"><meta name="author" content="Min Wen"><link rel="sitemap" href="/sitemap-index.xml"><!-- Open Graph / Facebook --><meta property="og:title" content="Git 記得改了什麼，卻不記得我們為什麼走到這裡 | Min Wen"><meta property="og:description" content="Agent session 會產生目標、失敗、發現與決策。真正該長期保存的不是完整對話，而是經過整理、未來仍有工程價值的那一小部分。"><meta property="og:url" content="https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/"><meta property="og:image" content="https://cmwen.github.io/posts/git-%E8%A8%98%E5%BE%97%E6%94%B9%E4%BA%86%E4%BB%80%E9%BA%BC%E5%8D%BB%E4%B8%8D%E8%A8%98%E5%BE%97%E6%88%91%E5%80%91%E7%82%BA%E4%BB%80%E9%BA%BC%E8%B5%B0%E5%88%B0%E9%80%99%E8%A3%A1.png"><!-- Article Published/Modified time --><meta property="article:published_time" content="2026-08-24T00:00:00.000Z"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/"><meta property="twitter:title" content="Git 記得改了什麼，卻不記得我們為什麼走到這裡 | Min Wen"><meta property="twitter:description" content="Agent session 會產生目標、失敗、發現與決策。真正該長期保存的不是完整對話，而是經過整理、未來仍有工程價值的那一小部分。"><meta property="twitter:image" content="https://cmwen.github.io/posts/git-%E8%A8%98%E5%BE%97%E6%94%B9%E4%BA%86%E4%BB%80%E9%BA%BC%E5%8D%BB%E4%B8%8D%E8%A8%98%E5%BE%97%E6%88%91%E5%80%91%E7%82%BA%E4%BB%80%E9%BA%BC%E8%B5%B0%E5%88%B0%E9%80%99%E8%A3%A1.png"><!-- Google Font --><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet"><meta name="theme-color" content=""><meta name="astro-view-transitions-enabled" content="true"><meta name="astro-view-transitions-fallback" content="animate"><script type="module" src="/_astro/ClientRouter.astro_astro_type_script_index_0_lang.CYDbzu1r.js"></script><script src="/toggle-theme.js"></script><link rel="stylesheet" href="/_astro/Footer.C1MmNbis.css"><style>@keyframes astroFadeInOut{0%{opacity:1}to{opacity:0}}@keyframes astroFadeIn{0%{opacity:0;mix-blend-mode:plus-lighter}to{opacity:1;mix-blend-mode:plus-lighter}}@keyframes astroFadeOut{0%{opacity:1;mix-blend-mode:plus-lighter}to{opacity:0;mix-blend-mode:plus-lighter}}@keyframes astroSlideFromRight{0%{transform:translate(100%)}}@keyframes astroSlideFromLeft{0%{transform:translate(-100%)}}@keyframes astroSlideToRight{to{transform:translate(100%)}}@keyframes astroSlideToLeft{to{transform:translate(-100%)}}@media (prefers-reduced-motion){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*),[data-astro-transition-scope]{animation:none!important}}
+</style><style>[data-astro-transition-scope="astro-eq54l3i4-1"] { view-transition-name: git-\8A18\5F97\6539\4E86\4EC0\9EBC\537B\4E0D\8A18\5F97\6211\5011\70BA\4EC0\9EBC\8D70\5230\9019\88E1; }@layer astro { ::view-transition-old(git-\8A18\5F97\6539\4E86\4EC0\9EBC\537B\4E0D\8A18\5F97\6211\5011\70BA\4EC0\9EBC\8D70\5230\9019\88E1) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(git-\8A18\5F97\6539\4E86\4EC0\9EBC\537B\4E0D\8A18\5F97\6211\5011\70BA\4EC0\9EBC\8D70\5230\9019\88E1) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(git-\8A18\5F97\6539\4E86\4EC0\9EBC\537B\4E0D\8A18\5F97\6211\5011\70BA\4EC0\9EBC\8D70\5230\9019\88E1) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(git-\8A18\5F97\6539\4E86\4EC0\9EBC\537B\4E0D\8A18\5F97\6211\5011\70BA\4EC0\9EBC\8D70\5230\9019\88E1) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-eq54l3i4-1"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-eq54l3i4-1"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-2"] { view-transition-name: ai; }@layer astro { ::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(ai) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-2"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-2"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-3"] { view-transition-name: coding-agents; }@layer astro { ::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(coding-agents) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-3"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-3"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-4"] { view-transition-name: git; }@layer astro { ::view-transition-old(git) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(git) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(git) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(git) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-4"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-4"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style><style>[data-astro-transition-scope="astro-bztu2lml-5"] { view-transition-name: engineering-knowledge; }@layer astro { ::view-transition-old(engineering-knowledge) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }::view-transition-new(engineering-knowledge) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back]::view-transition-old(engineering-knowledge) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back]::view-transition-new(engineering-knowledge) { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; } }[data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }[data-astro-transition=back][data-astro-transition-fallback="old"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="old"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeOut; }[data-astro-transition=back][data-astro-transition-fallback="new"] [data-astro-transition-scope="astro-bztu2lml-5"],
+			[data-astro-transition=back][data-astro-transition-fallback="new"][data-astro-transition-scope="astro-bztu2lml-5"] { 
+	animation-duration: 180ms;
+	animation-timing-function: cubic-bezier(0.76, 0, 0.24, 1);
+	animation-fill-mode: both;
+	animation-name: astroFadeIn; }</style></head><body><header class="astro-nen7h5rs"><a id="skip-to-content" class="absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4 astro-nen7h5rs" href="#main-content">跳至內容</a><div class="nav-container mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row astro-nen7h5rs"><div class="top-nav-wrap relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8 astro-nen7h5rs"><a href="/zh-hant/" class="logo whitespace-nowrap absolute py-1 text-xl font-semibold sm:static sm:text-2xl astro-nen7h5rs">Min Wen</a><nav id="nav-menu" class="flex w-full flex-col items-center sm:ml-2 sm:flex-row sm:justify-end sm:space-x-4 sm:py-0 astro-nen7h5rs"><button class="hamburger-menu focus-outline self-end p-2 sm:hidden astro-nen7h5rs" aria-label="Open Menu" aria-expanded="false" aria-controls="menu-items"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="menu-icon h-6 w-6 scale-125 fill-skin-base hover:fill-skin-accent astro-nen7h5rs"><line x1="7" y1="12" x2="21" y2="12" class="line astro-nen7h5rs"></line><line x1="3" y1="6" x2="21" y2="6" class="line astro-nen7h5rs"></line><line x1="12" y1="18" x2="21" y2="18" class="line astro-nen7h5rs"></line><line x1="18" y1="6" x2="6" y2="18" class="close astro-nen7h5rs"></line><line x1="6" y1="6" x2="18" y2="18" class="close astro-nen7h5rs"></line></svg></button><ul id="menu-items" class="display-none mt-4 grid w-44 grid-cols-2 grid-rows-3 gap-x-2 gap-y-2 sm:ml-0 sm:mt-0 sm:w-auto sm:flex sm:gap-x-5 sm:gap-y-0 astro-nen7h5rs"><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/posts/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">文章</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/tags/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">標籤</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/portfolio/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">作品集</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/toolbox/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">工具箱</a></li><!-- Toolbox Subnav - shown when toolbox is active --><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/about/" class="w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1  astro-nen7h5rs">關於</a></li><li class="col-span-2 flex items-center justify-center astro-nen7h5rs"><a href="/zh-hant/search/" class="group inline-block hover:text-skin-accent w-full px-4 py-3 text-center font-medium hover:text-skin-accent sm:my-0 sm:px-2 sm:py-1 focus-outline flex " aria-label="搜尋" title="搜尋"><svg xmlns="http://www.w3.org/2000/svg" class="scale-125 sm:scale-100 fill-skin-base astro-nen7h5rs"><path d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z" class="astro-nen7h5rs"></path></svg><span class="sr-only astro-nen7h5rs">搜尋</span></a></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><button id="theme-btn" class="focus-outline p-3 sm:p-1 astro-nen7h5rs" title="Toggles light &amp; dark" aria-label="auto" aria-live="polite"><svg xmlns="http://www.w3.org/2000/svg" id="moon-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M20.742 13.045a8.088 8.088 0 0 1-2.077.271c-2.135 0-4.14-.83-5.646-2.336a8.025 8.025 0 0 1-2.064-7.723A1 1 0 0 0 9.73 2.034a10.014 10.014 0 0 0-4.489 2.582c-3.898 3.898-3.898 10.243 0 14.143a9.937 9.937 0 0 0 7.072 2.93 9.93 9.93 0 0 0 7.07-2.929 10.007 10.007 0 0 0 2.583-4.491 1.001 1.001 0 0 0-1.224-1.224zm-2.772 4.301a7.947 7.947 0 0 1-5.656 2.343 7.953 7.953 0 0 1-5.658-2.344c-3.118-3.119-3.118-8.195 0-11.314a7.923 7.923 0 0 1 2.06-1.483 10.027 10.027 0 0 0 2.89 7.848 9.972 9.972 0 0 0 7.848 2.891 8.036 8.036 0 0 1-1.484 2.059z" class="astro-nen7h5rs"></path></svg><svg xmlns="http://www.w3.org/2000/svg" id="sun-svg" class="h-6 w-6 fill-skin-base hover:fill-skin-accent scale-125 hover:rotate-12 sm:scale-100 astro-nen7h5rs"><path d="M6.993 12c0 2.761 2.246 5.007 5.007 5.007s5.007-2.246 5.007-5.007S14.761 6.993 12 6.993 6.993 9.239 6.993 12zM12 8.993c1.658 0 3.007 1.349 3.007 3.007S13.658 15.007 12 15.007 8.993 13.658 8.993 12 10.342 8.993 12 8.993zM10.998 19h2v3h-2zm0-17h2v3h-2zm-9 9h3v2h-3zm17 0h3v2h-3zM4.219 18.363l2.12-2.122 1.415 1.414-2.12 2.122zM16.24 6.344l2.122-2.122 1.414 1.414-2.122 2.122zM6.342 7.759 4.22 5.637l1.415-1.414 2.12 2.122zm13.434 10.605-1.414 1.414-2.122-2.122 1.414-1.414z" class="astro-nen7h5rs"></path></svg></button></li><li class="col-span-1 flex items-center justify-center astro-nen7h5rs"><a href="/posts/git-stores-what-changed-not-why-we-got-there/" class="w-auto px-2 py-1 text-center hover:text-skin-accent astro-nen7h5rs">EN</a></li></ul></nav></div></div><div class="max-w-3xl mx-auto px-4"><hr class="border-skin-line" aria-hidden="true"></div></header><script type="module">function e(){let e=document.querySelector(`.hamburger-menu`),t=document.querySelector(`.menu-icon`),n=document.querySelector(`#menu-items`);e?.addEventListener(`click`,()=>{let r=e.getAttribute(`aria-expanded`)===`true`;t?.classList.toggle(`is-active`),e.setAttribute(`aria-expanded`,r?`false`:`true`),e.setAttribute(`aria-label`,r?`Open Menu`:`Close Menu`),n?.classList.toggle(`display-none`)})}e(),document.addEventListener(`astro:after-swap`,e);</script><div class="mx-auto flex w-full max-w-7xl justify-start px-2"><button class="focus-outline mt-8 mb-2 flex hover:opacity-75" onclick="(() =&gt; (history.length === 1) ? window.location = '/' : history.back())()"><svg xmlns="http://www.w3.org/2000/svg"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>返回</span></button></div><main id="main-content" class="post-layout mx-auto flex w-full max-w-7xl flex-col px-4 pb-12 lg:flex-row lg:gap-8"><!-- Sidebar that moves to top on mobile --><aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96"><div class="sidebar-sticky lg:sticky lg:top-24"><style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).only=e;window.dispatchEvent(new Event("astro:only"));})();</script><script>(()=>{var g=Object.defineProperty;var w=(a,s,c)=>s in a?g(a,s,{enumerable:!0,configurable:!0,writable:!0,value:c}):a[s]=c;var l=(a,s,c)=>w(a,typeof s!="symbol"?s+"":s,c);var E=new Set(["__proto__","constructor","prototype"]);{let a={0:t=>y(t),1:t=>c(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(c(t)),5:t=>new Set(c(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>Number.POSITIVE_INFINITY*t},s=t=>{let[p,e]=t;return p in a?a[p](e):void 0},c=t=>t.map(s),y=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([p,e])=>[p,s(e)]));class f extends HTMLElement{constructor(){super(...arguments);l(this,"Component");l(this,"hydrator");l(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let r=this.querySelectorAll("astro-slot"),n={},d=this.querySelectorAll("template[data-astro-template]");for(let o of d){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("data-astro-template")||"default"]=o.innerHTML,o.remove())}for(let o of r){let i=o.closest(this.tagName);i!=null&&i.isSameNode(this)&&(n[o.getAttribute("name")||"default"]=o.innerHTML)}let u;try{u=this.hasAttribute("props")?y(JSON.parse(this.getAttribute("props"))):{}}catch(o){let i=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(i+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${i}`,this.getAttribute("props"),o),o}let h;await this.hydrator(this)(this.Component,u,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});l(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),r.disconnect(),this.childrenConnectedCallback()},r=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});r.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}getRetryImportUrl(e){let r=new URL(e,document.baseURI);return r.searchParams.set("astro-retry",Date.now().toString()),r.toString()}async importWithRetry(e){try{return await import(e)}catch(r){return await new Promise(n=>setTimeout(n,1e3)),import(this.getRetryImportUrl(e))}}handleHydrationError(e){let r=this.getAttribute("component-url"),n=new CustomEvent("astro:hydration-error",{cancelable:!0,bubbles:!0,composed:!0,detail:{error:e,componentUrl:r}});this.dispatchEvent(n)&&console.error(`[astro-island] Error hydrating ${r}`,e)}async start(){let e=JSON.parse(this.getAttribute("opts")),r=this.getAttribute("client");if(Astro[r]===void 0){window.addEventListener(`astro:${r}`,()=>this.start(),{once:!0});return}try{await Astro[r](async()=>{let n=this.getAttribute("renderer-url");try{let[d,{default:u}]=await Promise.all([this.importWithRetry(this.getAttribute("component-url")),n?this.importWithRetry(n):Promise.resolve({default:()=>()=>{}})]),h=this.getAttribute("component-export")||"default";if(h.includes(".")){this.Component=d;for(let m of h.split(".")){if(E.has(m)||!this.Component||typeof this.Component!="object"&&typeof this.Component!="function"||!Object.hasOwn(this.Component,m))throw new Error(`Invalid component export path: ${h}`);this.Component=this.Component[m]}}else{if(E.has(h))throw new Error(`Invalid component export path: ${h}`);this.Component=d[h]}return this.hydrator=u,this.hydrate}catch(d){return this.handleHydrationError(d),()=>{}}},e,this)}catch(n){this.handleHydrationError(n)}}attributeChangedCallback(){this.hydrate()}}l(f,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",f)}})();</script><astro-island uid="Z1tX6ix" component-url="/_astro/AudioPlayer.SH8UQ7jD.js" component-export="default" renderer-url="/_astro/client.B41ESfhR.js" props="{&quot;slug&quot;:[0,&quot;git-stores-what-changed-not-why-we-got-there&quot;],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;AudioPlayer&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island><astro-island uid="2kvEGm" component-url="/_astro/ChatLink.WOQM7zUA.js" component-export="default" renderer-url="/_astro/client.B41ESfhR.js" props="{&quot;title&quot;:[0,&quot;Git 記得改了什麼，卻不記得我們為什麼走到這裡&quot;],&quot;url&quot;:[0,&quot;https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/&quot;],&quot;keyIdeas&quot;:[1,[[0,&quot;Git 擅長保存變更但不擅長保存完整工程推理&quot;],[0,&quot;runtime telemetry 應整理後才進入 Git&quot;],[0,&quot;耐久工程知識適合使用簡單可讀的檔案&quot;],[0,&quot;從有邊界的 agent Run 提升知識&quot;],[0,&quot;immutable events 與 compaction 的實際限制&quot;]]],&quot;lang&quot;:[0,&quot;zh-hant&quot;]}" ssr client="only" opts="{&quot;name&quot;:&quot;ChatLink&quot;,&quot;value&quot;:&quot;react&quot;}"></astro-island></div></aside><div class="post-content order-2 flex-1 lg:order-1 lg:max-w-3xl"><h1 data-astro-transition-scope="astro-eq54l3i4-1" class="post-title text-skin-accent text-2xl font-semibold">Git 記得改了什麼，卻不記得我們為什麼走到這裡</h1><div class="flex items-center space-x-2 opacity-80 my-2"><svg xmlns="http://www.w3.org/2000/svg" class="scale-100 inline-block h-6 w-6 min-w-[1.375rem] fill-skin-base" aria-hidden="true"><path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z"></path><path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z"></path></svg><span class="sr-only">Published:</span><span class="italic text-base"><time dateTime="2026-08-24T00:00:00.000Z">Aug 24, 2026</time><span aria-hidden="true"> | </span><span class="sr-only"> at </span><span class="text-nowrap">12:00 AM</span></span></div><article id="article" role="article" class="prose mx-auto mt-8 max-w-3xl"><p>在工作上最讓人挫折的時刻，不一定是程式壞掉，而是程式明明能跑，卻沒有人能解釋它為什麼長這樣。</p>
+<p>我曾經在幾週後回頭看一個 agent 協助完成的 commit。測試有寫，commit message 也沒亂寫，但某段 retry logic 放在很奇怪的位置。我只記得當時討論過相容性問題，卻找不到最後做決定的依據。</p>
+<p>Jira 只留下需求；Teams 裡的討論已經沉下去；agent session 有大量 command output 和來回修正。Git 忠實告訴我哪幾行被改掉，卻回答不了「為什麼不是另一種寫法」。</p>
+<h2 id="agent-做完一次任務留下的不只-diff">Agent 做完一次任務，留下的不只 diff</h2>
+<p>傳統 Git history 很擅長保存：</p>
+<ul>
+<li>commit</li>
+<li>diff</li>
+<li>author</li>
+<li>timestamp</li>
+<li>message</li>
+</ul>
+<p>Coding agent 的工作過程，還會產生另一批有價值的資訊：</p>
+<ul>
+<li>最初目標與限制</li>
+<li>探索時發現的系統行為</li>
+<li>已經試過但失敗的路</li>
+<li>測試、log 與實驗證據</li>
+<li>最後採用某方案的理由</li>
+<li>下次不該再踩的坑</li>
+<li>可重用的指令或 skill 改進</li>
+</ul>
+<p>問題是：這些東西不適合全部塞進 commit message，也不該把整段對話原封不動 commit 進 Repo。</p>
+<h2 id="完整對話不是工程文件">完整對話不是工程文件</h2>
+<p>Agent 對話允許混亂，這正是它能探索的原因。裡面會有猜測、推翻、重複、工具輸出、暫時方案，甚至不小心出現敏感資訊。</p>
+<p>如果全部長期保存，未來搜尋的人反而很難分辨：哪一句是已驗證的結論，哪一句只是 agent 十分鐘前的猜測？</p>
+<p>我後來把流程改成三段：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#C678DD">flowchart</span><span style="color:#61AFEF"> LR</span></span>
+<span class="line"><span style="color:#E06C75">    T</span><span style="color:#C678DD">[</span><span style="color:#98C379">執行期 telemetry</span><span style="color:#C678DD">]</span><span style="color:#C678DD"> --></span><span style="color:#E06C75"> D</span><span style="color:#C678DD">[</span><span style="color:#98C379">整理與驗證</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    D </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> K</span><span style="color:#C678DD">[</span><span style="color:#98C379">可長期使用的工程知識</span><span style="color:#C678DD">]</span></span></code></pre>
+<p>關鍵不是 recording，而是 promotion：只有當一項發現被整理成清楚、可 review、放在正確 scope 的內容，它才進入長期記憶。</p>
+<h2 id="三種記憶不同保存期限">三種記憶，不同保存期限</h2>
+<p>我會把資料分成三層。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#C678DD">flowchart</span><span style="color:#61AFEF"> TD</span></span>
+<span class="line"><span style="color:#E06C75">    R</span><span style="color:#C678DD">[</span><span style="color:#98C379">一次 Agent Run</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> T</span><span style="color:#C678DD">[</span><span style="color:#98C379">Runtime telemetry&#x3C;br/>完整 log</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">訊息</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">command output</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> E</span><span style="color:#C678DD">[</span><span style="color:#98C379">Run events&#x3C;br/>啟動</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">失敗</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">產生 candidate</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> K</span><span style="color:#C678DD">[</span><span style="color:#98C379">Durable knowledge&#x3C;br/>決策</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">限制</span><span style="color:#ABB2BF">、</span><span style="color:#98C379">測試方式</span><span style="color:#C678DD">]</span></span></code></pre>
+<h3 id="runtime-telemetry">Runtime telemetry</h3>
+<p>用來 debug 當下或剛失敗的 Run。它可能很大、與特定機器有關，也可能只保留幾天。預設不進 Git。</p>
+<h3 id="run-events">Run events</h3>
+<p>保存重要生命週期事實，例如 <code>run.started</code>、<code>tests.failed</code>、<code>candidate.produced</code>、<code>run.completed</code>。它讓 coordinator 可以做狀態重建與 crash recovery，不必重播完整對話。</p>
+<h3 id="durable-knowledge">Durable knowledge</h3>
+<p>這才是未來的人與 agent 都值得讀的內容：架構決策、相容性限制、正式測試方式、系統地圖修正，或一條會反覆影響任務的注意事項。</p>
+<h2 id="boring-files-往往最耐用">Boring files 往往最耐用</h2>
+<p>我們當然可以把知識放進特殊 Git object、向量資料庫或 knowledge graph。第一版我反而偏好普通檔案：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="text"><code><span class="line"><span>.workspace/</span></span>
+<span class="line"><span>├── context/</span></span>
+<span class="line"><span>│   └── authentication.md</span></span>
+<span class="line"><span>├── decisions/</span></span>
+<span class="line"><span>│   └── 004-client-retry-boundary.md</span></span>
+<span class="line"><span>└── events/</span></span>
+<span class="line"><span>    └── 2026-08-24.jsonl</span></span></code></pre>
+<p>原因很務實：工程師可以直接開、pull request 可以 review、任何 coding agent 都能讀，也不會把架構綁死在某個 vendor 或 database format。</p>
+<p>高頻率、本機專屬的 coordinator state 仍然可以放 SQLite。真正需要跨時間、跨工具分享的少量知識，再被提升成檔案。</p>
+<blockquote>
+<p>Git 應該保存耐久的工程歷史，不是 agent 的整顆腦袋。</p>
+</blockquote>
+<h2 id="event-是事實knowledge-是解釋">Event 是事實，Knowledge 是解釋</h2>
+<p><code>tests.failed</code> 只是說測試失敗。真正有用的知識可能是：「整合測試必須使用 test issuer，否則 token refresh case 會在進入 client logic 前失敗。」</p>
+<p>前者適合 event，後者才是可以幫助下一次工作的說明。</p>
+<p>Agent 可以在 Run 結束時提出 knowledge proposal，但不應直接宣布它是真理。Proposal 需要被確認：這是穩定限制，還是只發生在當時那台機器？應該放在 Repo 文件、Workspace context，還是根本不值得保留？</p>
+<p>這個 review gate，避免暫時推理默默升格成團隊規則。</p>
+<h2 id="沒有-merge-的-run-也可能有價值">沒有 merge 的 Run 也可能有價值</h2>
+<p>有一次 agent 證明需求在目前 contract 下不可行，candidate 最後沒有採用。但它找出了一個過去沒寫下來的相容性限制。</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#C678DD">flowchart</span><span style="color:#61AFEF"> TD</span></span>
+<span class="line"><span style="color:#E06C75">    R</span><span style="color:#C678DD">[</span><span style="color:#98C379">Run 結果</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> C</span><span style="color:#C678DD">[</span><span style="color:#98C379">Candidate 拒絕</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> T</span><span style="color:#C678DD">[</span><span style="color:#98C379">測試證據暫時保留</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    R </span><span style="color:#C678DD">--></span><span style="color:#E06C75"> K</span><span style="color:#C678DD">[</span><span style="color:#98C379">Knowledge proposal 接受</span><span style="color:#C678DD">]</span></span></code></pre>
+<p>如果 commit 是唯一成果，這次工作看起來像失敗。把程式碼整合和知識提升分開後，我們可以丟掉不適合的實作，同時保留真正重要的發現。</p>
+<h2 id="compaction-不會讓-git-歷史自動變小">Compaction 不會讓 Git 歷史自動變小</h2>
+<p>Event 採 append-only 很容易稽核，也方便重建狀態。但資料累積後，常有人提出 compaction。</p>
+<p>要注意兩件事不同：建立 snapshot 可以讓讀取更快，卻不會讓已經 commit 的舊 Git object 消失。真的要縮小歷史，得依賴 retention policy、外部 storage 或重寫 history。</p>
+<p>所以最有效的空間策略，不是事後壓縮所有 agent telemetry，而是一開始就不要把不需要長期保存的資料放進 Git。</p>
+<h2 id="我在工作上學到的事">我在工作上學到的事</h2>
+<p>我原本以為問題只是 commit message 太短。後來才發現，一次 agent 工作會產生好幾種成果，而且各自有不同生命週期：</p>
+<pre class="astro-code one-dark-pro" style="background-color:#282c34;color:#abb2bf; overflow-x: auto; white-space: pre-wrap; word-wrap: break-word;" tabindex="0" data-language="mermaid"><code><span class="line"><span style="color:#C678DD">flowchart</span><span style="color:#61AFEF"> LR</span></span>
+<span class="line"><span style="color:#E06C75">    C</span><span style="color:#C678DD">[</span><span style="color:#98C379">候選程式碼</span><span style="color:#C678DD">]</span><span style="color:#C678DD"> --></span><span style="color:#E06C75"> I</span><span style="color:#C678DD">[</span><span style="color:#98C379">Repo integration</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    K</span><span style="color:#C678DD">[</span><span style="color:#98C379">知識提案</span><span style="color:#C678DD">]</span><span style="color:#C678DD"> --></span><span style="color:#E06C75"> W</span><span style="color:#C678DD">[</span><span style="color:#98C379">Workspace / Repo 知識</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    E</span><span style="color:#C678DD">[</span><span style="color:#98C379">Run events</span><span style="color:#C678DD">]</span><span style="color:#C678DD"> --></span><span style="color:#E06C75"> A</span><span style="color:#C678DD">[</span><span style="color:#98C379">生命週期與稽核</span><span style="color:#C678DD">]</span></span>
+<span class="line"><span style="color:#E06C75">    T</span><span style="color:#C678DD">[</span><span style="color:#98C379">Runtime telemetry</span><span style="color:#C678DD">]</span><span style="color:#C678DD"> --></span><span style="color:#E06C75"> D</span><span style="color:#C678DD">[</span><span style="color:#98C379">短期除錯</span><span style="color:#C678DD">]</span></span></code></pre>
+<p>我們不必保存完整過程，只需要提供一條路，讓值得留下的部分變成未來看得懂的工程知識。</p>
+<p>下一個教訓更直接：就算 context 和知識都準備好了，只要 agent 和我共用同一個 checkout，它仍然可能在產生 commit 之前就破壞我的工作狀態。</p>
+<p>下一篇：<a href="/zh-hant/posts/one-agent-one-isolated-run/">一個 Agent，一次隔離的 Run</a>。</p></article><ul class="my-8"><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-2" href="/zh-hant/tags/ai/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>ai</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-3" href="/zh-hant/tags/coding-agents/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>coding-agents</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-4" href="/zh-hant/tags/git/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>git</span></a></li><li class="inline-block my-1 underline-offset-4"><a data-astro-transition-scope="astro-bztu2lml-5" href="/zh-hant/tags/engineering-knowledge/" class="text-sm group relative underline decoration-dashed hover:-top-0.5 hover:text-skin-accent focus-visible:p-1 pr-2"><svg xmlns="http://www.w3.org/2000/svg" class="-mr-5 h-6 w-6 text-skin-base opacity-80 group-hover:fill-skin-accent scale-75"><path d="M16.018 3.815 15.232 8h-4.966l.716-3.815-1.964-.37L8.232 8H4v2h3.857l-.751 4H3v2h3.731l-.714 3.805 1.965.369L8.766 16h4.966l-.714 3.805 1.965.369.783-4.174H20v-2h-3.859l.751-4H21V8h-3.733l.716-3.815-1.965-.37zM14.106 14H9.141l.751-4h4.966l-.752 4z"></path></svg>&nbsp;<span>engineering-knowledge</span></a></li></ul><div class="flex flex-col-reverse items-center justify-between gap-6 sm:flex-row-reverse sm:items-end sm:gap-4"><button id="back-to-top" class="focus-outline py-1 whitespace-nowrap hover:opacity-75"><svg xmlns="http://www.w3.org/2000/svg" class="rotate-90"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path></svg><span>回到頂端</span></button><div class="social-icons flex flex-col flex-wrap items-center justify-center gap-1 sm:items-start"><span class="italic">Share this post on:</span><div class="text-center"><a href="https://wa.me/?text=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via WhatsApp"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M3 21l1.65 -3.8a9 9 0 1 1 3.4 2.9l-5.05 .9"></path>
+      <path d="M9 10a0.5 .5 0 0 0 1 0v-1a0.5 .5 0 0 0 -1 0v1a5 5 0 0 0 5 5h1a0.5 .5 0 0 0 0 -1h-1a0.5 .5 0 0 0 0 1"></path>
+    </svg><span class="sr-only">Share this post via WhatsApp</span></a><a href="https://www.facebook.com/sharer.php?u=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Facebook"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3"
+    ></path>
+  </svg><span class="sr-only">Share this post on Facebook</span></a><a href="https://twitter.com/intent/tweet?url=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Tweet this post"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"></path>
+    </svg><span class="sr-only">Tweet this post</span></a><a href="https://t.me/share/url?url=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via Telegram"><svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="icon-tabler"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+        <path d="M15 10l-4 4l6 6l4 -16l-18 7l4 2l2 6l3 -4"></path>
+      </svg><span class="sr-only">Share this post via Telegram</span></a><a href="https://pinterest.com/pin/create/button/?url=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post on Pinterest"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <line x1="8" y1="20" x2="12" y2="11"></line>
+      <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7"></path>
+      <circle cx="12" cy="12" r="9"></circle>
+    </svg><span class="sr-only">Share this post on Pinterest</span></a><a href="mailto:?subject=See%20this%20post&amp;body=https://cmwen.github.io/zh-hant/posts/git-stores-what-changed-not-why-we-got-there/" class="group inline-block hover:text-skin-accent link-button scale-90 p-2 hover:rotate-6 sm:p-1" title="Share this post via email"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Share this post via email</span></a></div></div></div></div></main><footer class="w-full mt-auto"><div class="max-w-3xl mx-auto px-0"><hr class="border-skin-line" aria-hidden="true"></div><div class="footer-wrapper flex flex-col items-center justify-between py-6 sm:flex-row-reverse sm:py-4"><div class="social-icons flex flex-wrap gap-1 justify-center"><a href="https://github.com/cmwen" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title=" Min Wen on Github"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path
+      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
+    ></path>
+  </svg><span class="sr-only"> Min Wen on Github</span></a><a href="https://www.linkedin.com/in/chung-min-wen/" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Min Wen on LinkedIn"><svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon-tabler"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+    <line x1="8" y1="11" x2="8" y2="16"></line>
+    <line x1="8" y1="8" x2="8" y2="8.01"></line>
+    <line x1="12" y1="16" x2="12" y2="11"></line>
+    <path d="M16 16v-3a2 2 0 0 0 -4 0"></path>
+  </svg><span class="sr-only">Min Wen on LinkedIn</span></a><a href="mailto:chungmin.wen@gmail.com" class="group inline-block hover:text-skin-accent link-button p-2 hover:rotate-6 sm:p-1" title="Send an email to Min Wen"><svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="icon-tabler"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <rect x="3" y="5" width="18" height="14" rx="2"></rect>
+      <polyline points="3 7 12 13 21 7"></polyline>
+    </svg><span class="sr-only">Send an email to Min Wen</span></a></div><div class="copyright-wrapper my-2 flex flex-col items-center whitespace-nowrap sm:flex-row"><span>Copyright &#169; 2026</span><span class="separator hidden sm:inline">&nbsp;|&nbsp;</span><span>All rights reserved.</span></div></div></footer></body></html><script>
+  /** Create a progress indicator
+   *  at the top */
+  function createProgressBar() {
+    // Create the main container div
+    const progressContainer = document.createElement("div");
+    progressContainer.className =
+      "progress-container fixed top-0 z-10 h-1 w-full bg-skin-fill";
+
+    // Create the progress bar div
+    const progressBar = document.createElement("div");
+    progressBar.className = "progress-bar h-1 w-0 bg-skin-accent";
+    progressBar.id = "myBar";
+
+    // Append the progress bar to the progress container
+    progressContainer.appendChild(progressBar);
+
+    // Append the progress container to the document body or any other desired parent element
+    document.body.appendChild(progressContainer);
+  }
+  createProgressBar();
+
+  /** Update the progress bar
+   *  when user scrolls */
+  function updateScrollProgress() {
+    const winScroll =
+      document.body.scrollTop || document.documentElement.scrollTop;
+    const height =
+      document.documentElement.scrollHeight -
+      document.documentElement.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    if (document) {
+      const myBar = document.getElementById("myBar");
+      if (myBar) {
+        myBar.style.width = scrolled + "%";
+      }
+    }
+  }
+  document.addEventListener("scroll", updateScrollProgress);
+
+  /** Attaches links to headings in the document,
+   *  allowing sharing of sections easily */
+  function addHeadingLinks() {
+    let headings = Array.from(document.querySelectorAll("h2, h3, h4, h5, h6"));
+    for (let heading of headings) {
+      heading.classList.add("group");
+      let link = document.createElement("a");
+      link.innerText = "#";
+      link.className = "heading-link hidden group-hover:inline-block ml-2";
+      link.href = "#" + heading.id;
+      link.ariaHidden = "true";
+      heading.appendChild(link);
+    }
+  }
+  addHeadingLinks();
+
+  /** Attaches copy buttons to code blocks in the document,
+   * allowing users to copy code easily. */
+  function attachCopyButtons() {
+    let copyButtonLabel = "Copy";
+    let codeBlocks = Array.from(document.querySelectorAll("pre"));
+
+    for (let codeBlock of codeBlocks) {
+      let wrapper = document.createElement("div");
+      wrapper.style.position = "relative";
+
+      let copyButton = document.createElement("button");
+      copyButton.className =
+        "copy-code absolute right-3 -top-3 rounded bg-skin-card px-2 py-1 text-xs leading-4 text-skin-base font-medium";
+      copyButton.innerHTML = copyButtonLabel;
+      codeBlock.setAttribute("tabindex", "0");
+      codeBlock.appendChild(copyButton);
+
+      // wrap codebock with relative parent element
+      codeBlock?.parentNode?.insertBefore(wrapper, codeBlock);
+      wrapper.appendChild(codeBlock);
+
+      copyButton.addEventListener("click", async () => {
+        await copyCode(codeBlock, copyButton);
+      });
+    }
+
+    async function copyCode(block, button) {
+      let code = block.querySelector("code");
+      let text = code?.innerText;
+
+      await navigator.clipboard.writeText(text ?? "");
+
+      // visual feedback that task is completed
+      button.innerText = "Copied";
+
+      setTimeout(() => {
+        button.innerText = copyButtonLabel;
+      }, 700);
+    }
+  }
+  attachCopyButtons();
+
+  /** Scrolls the document to the top when
+   * the "Back to Top" button is clicked. */
+  function backToTop() {
+    document.querySelector("#back-to-top")?.addEventListener("click", () => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    });
+  }
+  backToTop();
+</script><script type="module" src="/_astro/PostDetails.astro_astro_type_script_index_0_lang.BZEp5hMz.js"></script>
