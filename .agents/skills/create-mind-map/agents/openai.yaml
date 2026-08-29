@@ -1,0 +1,4 @@
+interface:
+  display_name: "Create Mind Map"
+  short_description: "Create and update validated mind map data"
+  default_prompt: "Use $create-mind-map to create or update a mind map for the requested topic."

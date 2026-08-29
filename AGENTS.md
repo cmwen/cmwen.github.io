@@ -1,271 +1,97 @@
-# AGENTS.md: Instructions for AI Coding Agents
+# Repository guide
 
-This document provides comprehensive guidance for AI agents working on the cmwen.github.io AstroPaper blog project. It combines technical architecture, development practices, and project-specific conventions.
+## Goal
 
-## 1. Project Overview
+Maintain `cmwen.github.io`, a bilingual AstroPaper-based personal site. Prefer small,
+coherent changes that preserve static generation, accessibility, SEO, and minimal
+client-side JavaScript.
 
-**cmwen.github.io** is a content-driven blog built on the AstroPaper theme with modern web technologies:
+## Stack and layout
 
-- **Framework**: Astro with React components
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Content**: Markdown with frontmatter validation
-- **Deployment**: GitHub Pages via GitHub Actions
-- **Package Manager**: pnpm
+- Runtime: Node.js 22+, pnpm 11 (see `package.json`).
+- Framework: Astro 7, React 19 for interactive islands, TypeScript strict mode,
+  and Tailwind CSS 4.
+- Site configuration: `astro.config.ts` and `src/config.ts`.
+- Content schema: `src/content.config.ts` is authoritative.
+- Blog posts: `src/content/blog/`; Traditional Chinese translations:
+  `src/content/blog/zh-hant/`.
+- Notebooks: `src/content/notebooks/*.mdx`.
+- Mind maps: `src/content/mindmaps/*.json`.
+- Static pages and routes: `src/pages/`; reusable UI: `src/components/` and
+  `src/layouts/`; helpers: `src/utils/`.
+- Tests: `tests/*.spec.ts`; deployment: `.github/workflows/main.yaml`.
 
-### Core Features
-- ✅ **Bilingual support**: English (`en`) and Traditional Chinese (`zh-hant`)
-- ✅ **SEO optimization**: Auto-generated OG images, sitemap, RSS feeds
-- ✅ **Content management**: Astro Collections with schema validation
-- ✅ **Interactive components**: React-based agents directory, search functionality
-- ✅ **Podcast playback**: Audio editions hosted by the separate `cmwen/podcasts` repository
-- ✅ **Developer experience**: Hot reload, TypeScript, ESLint, Prettier, conventional commits
+Use the aliases in `tsconfig.json` (`@components/*`, `@utils/*`, `@layouts/*`,
+`@i18n/*`, and others) instead of inventing new import styles.
 
-## 2. Architecture Overview
+## Commands
 
-### Frontend Stack
-```
-Astro (SSG) 
-├── React (Interactive components)
-├── TypeScript (Type safety)
-├── Tailwind CSS (Styling)
-└── Vite (Build tool)
-```
+Use pnpm throughout.
 
-### Content System
-```
-src/content/blog/
-├── *.md (English posts)
-└── zh-hant/
-    └── *.zh-hant.md (Chinese posts)
-```
+- Install: `pnpm install`
+- Develop: `pnpm dev`
+- Type-check and build: `pnpm build`
+- Lint: `pnpm lint`
+- Check formatting: `pnpm format:check`
+- Format: `pnpm format`
+- End-to-end tests: `pnpm test`
 
-### Routing Strategy
-- **Static generation**: Routes auto-generated from `src/pages/`
-- **Dynamic pages**: `[slug]` patterns with `getStaticPaths()`
-- **Internationalization**: `/zh-hant/` prefix for Chinese content
-- **SEO**: Canonical URLs and alternates for language switching
+Run the narrowest relevant checks while iterating. Before completing code or content
+schema changes, run `pnpm build`. Run `pnpm lint` for TypeScript, JavaScript, Astro,
+or configuration changes. Run focused Playwright tests for affected user flows; the
+Playwright configuration builds and starts a preview server automatically.
 
-## 3. Development Environment
+## Implementation conventions
 
-### Prerequisites
-- **Node.js**: v18+ (specified in `.nvmrc`)
-- **Package Manager**: pnpm (lockfile: `pnpm-lock.yaml`)
-- **Optional**: Docker via `.devcontainer/` for consistent environment
+- Prefer Astro components for static or SEO-critical content. Use React only when
+  client-side state or interaction is required, and hydrate as late as practical.
+- Keep React's initial render deterministic. Read URLs, local storage, and browser-only
+  state after mount to avoid hydration mismatches.
+- Preserve semantic HTML, keyboard access, visible focus, heading order, and useful alt
+  text.
+- Avoid `any`; follow existing types and nearby patterns before adding abstractions.
+- Do not add a dependency when the existing stack or a small local helper is sufficient.
 
-### Setup Commands
-```bash
-# Frontend development
-pnpm install          # Install dependencies
-pnpm dev              # Start dev server (http://localhost:4321)
-pnpm build            # Build for production
-pnpm preview          # Preview production build
+## Content conventions
 
-# Code quality
-pnpm lint             # ESLint
-pnpm format           # Prettier
-pnpm test             # Playwright tests
-pnpm cz               # Conventional commits
-```
+Treat `src/content.config.ts` as the source of truth rather than copying legacy
+frontmatter from an old post.
 
-## 4. Content Management
+- Blog posts require `title`, `description`, and `pubDatetime`. `lang` defaults to
+  `en`, `author` defaults to `Min Wen`, and `tags` defaults to `["others"]`.
+- Use valid YAML and ISO 8601 UTC timestamps. A future `pubDatetime` is intentionally
+  hidden until it passes `SITE.scheduledPostMargin`.
+- Derive the route from the filename or `baseSlug`; do not add the legacy `slug` field
+  to new posts.
+- Use `baseSlug` as the stable cross-locale route. A Chinese translation belongs at
+  `src/content/blog/zh-hant/<source-file>.zh-hant.md`, uses `lang: "zh-hant"`, and sets
+  both `baseSlug` and `translatedFrom` to the source post's canonical slug.
+- Keep `llmKeyIdeas`, when present, as a short list of concrete discovery or follow-up
+  topics.
+- Notebooks are concise MDX references and are separate from the blog and RSS feed.
+- Mind-map JSON must satisfy the `mindmaps` collection schema. Keep every node ID unique
+  and every `refs[].targetId` valid within the same map.
 
-### Blog Post Schema
-All posts must include frontmatter validated by `src/content/config.ts`:
+The reusable workflows for researching, drafting, checking, translating, and publishing
+content live under `.agents/skills/` and should be loaded only when relevant.
 
-```yaml
----
-title: "Your Post Title"
-description: "SEO description"
-lang: "en" | "zh-hant"
-author: "Min Wen"  # Defaults to SITE.author
-pubDatetime: 2025-01-01T00:00:00Z
-modDatetime: 2025-01-02T00:00:00Z  # Optional, used for sorting
-tags: ["ai", "coding"]  # Defaults to ["others"]
-featured: false
-draft: false
-ogImage: "/path/to/image.jpg"  # Optional, auto-generated if omitted
-canonicalURL: "https://example.com"  # Optional
-baseSlug: "shared-slug"  # For linking translations
-translatedFrom: "original-base-slug"  # If this is a translation
-llmKeyIdeas: ["key-concept-1", "key-concept-2"]  # For AI/chat UIs
----
+## Internationalization and routing
 
-Your markdown content here...
-```
+- English routes are unprefixed; Traditional Chinese routes use `/zh-hant/`.
+- Use `getPostSlug` from `src/utils/contentEntry.ts` for post routes rather than
+  duplicating slug normalization.
+- When adding a localized page, preserve canonical URLs and language alternates.
+- Do not assume every English post already has a translation.
 
-### Multilingual Content
-- **English posts**: `src/content/blog/post-name.md`
-- **Chinese posts**: `src/content/blog/zh-hant/post-name.zh-hant.md`
-- **Linking translations**: Use `baseSlug` and `translatedFrom` fields
-- **URL structure**: English at `/posts/slug/`, Chinese at `/zh-hant/posts/slug/`
+## Podcast boundary
 
-### Content Processing
-- **Scheduled publishing**: `SITE.scheduledPostMargin` hides future posts
-- **Draft filtering**: `draft: true` posts excluded from production
-- **Sorting**: By `modDatetime` then `pubDatetime` (newest first)
-- **SEO**: Auto-generated OG images via Satori + Resvg if `ogImage` omitted
+This repository only renders podcast audio through `PODCAST_BASE_URL`. Audio files,
+feeds, transcripts, and generation belong to the separate `cmwen/podcasts` repository.
+Do not generate or repair podcast assets here.
 
-## 5. Component Architecture
+## Git and deployment
 
-### File Organization
-```
-src/
-├── components/
-│   ├── *.astro          # Astro components (SSG)
-│   ├── *.tsx            # React components (interactive)
-│   └── agents/          # Agents mini-app components
-├── layouts/             # Page layouts
-├── pages/               # Route definitions
-├── utils/               # Utility functions
-└── i18n/               # Internationalization
-```
-
-### Key Components
-- **`Card.tsx`**: Blog post preview cards with i18n support
-- **`Search.tsx`**: Fuse.js-powered search with baseSlug awareness
-- **`agents/AgentsApp.tsx`**: Client-side React app for AI agents directory
-- **`Header.astro`**: Navigation with language switching
-- **OG templates**: `src/utils/og-templates/` for auto-generated images
-
-### Component Guidelines
-- **Astro components**: For static content, layouts, SEO-critical elements
-- **React components**: For interactivity, state management, real-time features
-- **Hydration**: Use `client:load` sparingly, prefer `client:idle` or `client:visible`
-- **TypeScript**: All components must be typed, use `src/types.ts` for shared types
-
-## 6. Podcast Integration
-
-Podcast audio, RSS feeds, transcripts, and TTS generation are owned by the
-separate [`cmwen/podcasts`](https://github.com/cmwen/podcasts) repository.
-This site only renders the audio player and reads episode files from
-`https://cmwen.github.io/podcasts/`, configured by `PODCAST_BASE_URL` in
-`src/config.ts`.
-
-Keep blog Markdown in this repository. When publishing a new audio edition,
-run the generator from a sibling checkout of the podcast repository and deploy
-that repository before deploying a site change that depends on the new audio.
-
-## 7. Build and Deployment
-
-### CI/CD Pipeline
-GitHub Actions workflow (`.github/workflows/main.yaml`):
-
-1. **Environment**: Node.js 22, pnpm 9
-2. **Dependencies**: Install and cache
-3. **Build**: `pnpm build` → `dist/`
-4. **Deploy**: Push to `gh-pages` branch
-5. **Testing**: Playwright (separate workflow)
-
-### Build Optimizations
-- **Image optimization**: Astro's built-in image processing
-- **Code splitting**: Automatic via Vite
-- **Static generation**: All routes pre-rendered
-- **Asset optimization**: CSS purging, JS minification
-
-### Performance Targets
-- **Lighthouse scores**: >90 on all metrics
-- **Core Web Vitals**: LCP <2.5s, FID <100ms, CLS <0.1
-- **Bundle size**: Minimal JavaScript for static content
-
-## 8. Development Practices
-
-### Code Quality
-- **TypeScript**: Strict mode enabled, no `any` types
-- **ESLint**: Astro + TypeScript configuration
-- **Prettier**: Consistent formatting
-- **Husky**: Pre-commit hooks for linting
-
-### Git Workflow
-- **Conventional commits**: Use `pnpm cz` for structured messages
-- **Branch strategy**: Direct to `main` for single developer
-- **Deployment**: Automatic on push to `main`
-
-### Testing Strategy
-- **E2E testing**: Playwright (`tests/*.spec.ts`)
-- **Smoke tests**: Production validation (`tests/smoke.spec.ts`)
-- **Component testing**: Manual for now, consider Vitest for unit tests
-
-## 9. Configuration Reference
-
-### Key Config Files
-- **`astro.config.ts`**: Framework configuration, integrations, build settings
-- **`src/config.ts`**: Site constants, metadata, feature flags
-- **`tsconfig.json`**: TypeScript + path aliases (`@components/*`, `@utils/*`)
-- **`package.json`**: Node.js dependencies and npm scripts
-
-### Path Aliases
-```typescript
-// Available in all TypeScript files
-import { SITE } from '@config';
-import Card from '@components/Card.tsx';
-import { slugify } from '@utils/slugify';
-import Layout from '@layouts/Layout.astro';
-import { dict } from '@i18n/dict';
-```
-
-### Environment Variables
-- **Development**: `.env.example` shows available options
-- **Production**: Set in GitHub repository settings
-- **Build-time**: Prefix with `PUBLIC_` for client-side access
-
-## 10. Troubleshooting
-
-### Common Issues
-
-1. **Build failures**: Check TypeScript errors, missing imports
-2. **Hydration mismatches**: Ensure deterministic initial state in React components
-3. **Missing translations**: Verify `baseSlug` and file naming conventions
-4. **Podcast playback**: Verify the matching episode is deployed by `cmwen/podcasts` and check `PODCAST_BASE_URL`
-5. **OG image generation**: Verify fonts in `src/assets/fonts/`
-
-### Debug Commands
-```bash
-# Check for issues
-pnpm build --verbose       # Detailed build output
-pnpm dev --host            # Debug on other devices
-pnpm test --debug          # Playwright debugging
-```
-
-### Performance Debugging
-- **Bundle analyzer**: Add `vite-bundle-analyzer` for bundle inspection
-- **Lighthouse CI**: Run locally with `lhci autorun`
-- **Network tab**: Check for oversized assets, failed requests
-
-## 11. AI Agent Guidelines
-
-### When Working on This Project
-
-1. **Content creation**: Follow frontmatter schema, use proper file naming
-2. **Component development**: Prefer Astro for static, React for interactive
-3. **Internationalization**: Always consider both languages, use `baseSlug` for linking
-4. **Performance**: Minimize client-side JavaScript, optimize images
-5. **SEO**: Maintain meta tags, structured data, OG images
-6. **Accessibility**: Use semantic HTML, proper heading hierarchy, alt texts
-
-### Code Generation Best Practices
-- **Type safety**: Generate TypeScript, avoid `any`
-- **Consistency**: Follow existing patterns in codebase
-- **Documentation**: Include JSDoc for complex functions
-- **Testing**: Consider test implications for new features
-- **Dependencies**: Minimize new dependencies, check bundle impact
-
-## 12. Future Considerations
-
-### Potential Enhancements
-- **Search improvements**: Consider Algolia or local search index
-- **Analytics**: Privacy-friendly analytics integration
-- **Comments**: GitHub Discussions or Giscus integration
-- **Newsletter**: Email subscription system
-- **PWA**: Service worker for offline reading
-- **API**: Headless CMS integration for dynamic content
-
-### Scalability
-- **CDN**: CloudFlare or similar for global distribution
-- **Images**: External image optimization service
-- **Search**: Dedicated search service for large content volumes
-- **Podcasts**: Consider a dedicated CDN if GitHub Pages bandwidth becomes limiting
-
----
-
-This document serves as the authoritative guide for AI agents working on this project. Keep it updated as the project evolves, and refer to it when making architectural decisions or onboarding new contributors.
+- Preserve unrelated working-tree changes.
+- Use conventional commit messages when asked to commit.
+- Pushing `main` triggers the GitHub Pages workflow. Do not force-push, rewrite history,
+  or publish unless the user explicitly requests it.

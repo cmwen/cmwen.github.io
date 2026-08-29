@@ -1,0 +1,4 @@
+interface:
+  display_name: "Manage Blog Content"
+  short_description: "Research, draft, and verify blog posts"
+  default_prompt: "Use $manage-blog-content to research and create a publication-ready blog post about the requested topic."

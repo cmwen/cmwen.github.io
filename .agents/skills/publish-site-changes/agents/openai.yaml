@@ -1,0 +1,4 @@
+interface:
+  display_name: "Publish Site Changes"
+  short_description: "Validate, commit, push, and monitor deploys"
+  default_prompt: "Use $publish-site-changes to validate and publish the current site changes."

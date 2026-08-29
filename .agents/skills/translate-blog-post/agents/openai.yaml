@@ -1,0 +1,4 @@
+interface:
+  display_name: "Translate Blog Post"
+  short_description: "Rewrite posts for Taiwanese readers"
+  default_prompt: "Use $translate-blog-post to rewrite the specified English post as a natural Traditional Chinese edition for readers in Taiwan."

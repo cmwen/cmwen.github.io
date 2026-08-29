@@ -1,0 +1,4 @@
+interface:
+  display_name: "Write Notebook"
+  short_description: "Create and update concise MDX notebooks"
+  default_prompt: "Use $write-notebook to create or update a concise notebook for the requested topic."
