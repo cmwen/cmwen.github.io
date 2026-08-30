@@ -4,6 +4,7 @@ import { defaultLocale, toHtmlLang, type Locale } from "@i18n/config";
 import "@styles/base.css";
 import { ClientRouter } from "astro:transitions";
 import { PUBLIC_GOOGLE_SITE_VERIFICATION } from "astro:env/client";
+import ContentConstellation from "@components/ContentConstellation.astro";
 import type { WebMCPPageContext } from "../types/webmcp";
 
 const googleSiteVerification = PUBLIC_GOOGLE_SITE_VERIFICATION;
@@ -145,7 +146,10 @@ const webMCPPageContextJson = webMCPPageContext
     <script is:inline src="/toggle-theme.js"></script>
   </head>
   <body>
-    <slot />
+    <ContentConstellation />
+    <div id="site-content">
+      <slot />
+    </div>
     {
       webMCPPageContextJson && (
         <script

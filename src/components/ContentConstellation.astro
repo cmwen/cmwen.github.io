@@ -1,0 +1,297 @@
+---
+import { getCollection } from "astro:content";
+import postFilter from "@utils/postFilter";
+
+const posts = (
+  await getCollection(
+    "blog",
+    post => post.data.lang === "en" && postFilter(post)
+  )
+).sort((a, b) => a.data.pubDatetime.getTime() - b.data.pubDatetime.getTime());
+
+const tagFrequency = new Map<string, number>();
+for (const post of posts) {
+  for (const tag of post.data.tags) {
+    const normalizedTag = tag.trim().toLowerCase();
+    tagFrequency.set(normalizedTag, (tagFrequency.get(normalizedTag) ?? 0) + 1);
+  }
+}
+
+const tagGroupScore = (tag: string) => {
+  const frequency = tagFrequency.get(tag) ?? 1;
+  const singletonPenalty = frequency === 1 ? 1.5 : 0;
+  return Math.abs(Math.log2(frequency) - Math.log2(5)) + singletonPenalty;
+};
+
+const nodes = posts.map(post => ({
+  id: post.id,
+  title: post.data.title,
+  tags: post.data.tags,
+  group:
+    post.data.tags
+      .map(tag => tag.trim().toLowerCase())
+      .sort(
+        (a, b) =>
+          tagGroupScore(a) - tagGroupScore(b) ||
+          (tagFrequency.get(b) ?? 0) - (tagFrequency.get(a) ?? 0) ||
+          a.localeCompare(b)
+      )[0] ?? "others",
+  date: post.data.pubDatetime.toISOString(),
+  featured: post.data.featured === true,
+}));
+const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
+---
+
+<canvas
+  id="content-constellation"
+  aria-hidden="true"
+  data-node-count={nodes.length}
+  data-constellation-state="disabled"
+  data-nodes={nodeData}></canvas>
+
+<style>
+  #content-constellation {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    opacity: 0.72;
+  }
+
+  @media (max-width: 1023px),
+    (pointer: coarse),
+    (prefers-reduced-motion: reduce) {
+    #content-constellation {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  type ConstellationNode = {
+    title: string;
+    group: string;
+    date: string;
+    featured: boolean;
+  };
+  type Point = { x: number; y: number; group: string };
+
+  const rootWindow = window as Window & {
+    __contentConstellationCleanup?: () => void;
+  };
+
+  const hash = (value: string) => {
+    let result = 2166136261;
+    for (let index = 0; index < value.length; index += 1) {
+      result ^= value.charCodeAt(index);
+      result = Math.imul(result, 16777619);
+    }
+    return (result >>> 0) / 4294967296;
+  };
+
+  const start = () => {
+    rootWindow.__contentConstellationCleanup?.();
+    const canvas = document.getElementById(
+      "content-constellation"
+    ) as HTMLCanvasElement | null;
+    if (!canvas) return;
+    if (!eligibility.matches) {
+      canvas.dataset.constellationState = "disabled";
+      return;
+    }
+
+    const nodes = JSON.parse(
+      canvas.dataset.nodes ?? "[]"
+    ) as ConstellationNode[];
+    const gl =
+      canvas.getContext("webgl2", { alpha: true, antialias: true }) ??
+      canvas.getContext("webgl", { alpha: true, antialias: true });
+    if (!gl) {
+      canvas.dataset.constellationState = "unsupported";
+      return;
+    }
+    canvas.dataset.constellationState = "ready";
+    const context = gl as WebGLRenderingContext;
+    const vertex = `attribute vec2 a_position; attribute float a_size; attribute float a_brightness; varying float v_brightness; void main(){gl_Position=vec4(a_position,0.0,1.0);gl_PointSize=a_size;v_brightness=a_brightness;}`;
+    const fragment = `precision mediump float; uniform vec3 u_color; varying float v_brightness; void main(){vec2 p=gl_PointCoord-0.5;float glow=1.0-smoothstep(0.05,0.5,dot(p,p));gl_FragColor=vec4(u_color,glow*v_brightness);}`;
+    const lineVertex = `attribute vec2 a_position; void main(){gl_Position=vec4(a_position,0.0,1.0);}`;
+    const lineFragment = `precision mediump float; uniform vec3 u_color; void main(){gl_FragColor=vec4(u_color,0.11);}`;
+    const compile = (type: number, source: string) => {
+      const shader = context.createShader(type);
+      if (!shader) return null;
+      context.shaderSource(shader, source);
+      context.compileShader(shader);
+      return context.getShaderParameter(shader, context.COMPILE_STATUS)
+        ? shader
+        : null;
+    };
+    const program = context.createProgram();
+    const lineProgram = context.createProgram();
+    const pointShader = compile(context.VERTEX_SHADER, vertex);
+    const pixelShader = compile(context.FRAGMENT_SHADER, fragment);
+    const lineVertexShader = compile(context.VERTEX_SHADER, lineVertex);
+    const linePixelShader = compile(context.FRAGMENT_SHADER, lineFragment);
+    if (
+      !program ||
+      !lineProgram ||
+      !pointShader ||
+      !pixelShader ||
+      !lineVertexShader ||
+      !linePixelShader
+    ) {
+      canvas.dataset.constellationState = "unsupported";
+      return;
+    }
+    context.attachShader(program, pointShader);
+    context.attachShader(program, pixelShader);
+    context.attachShader(lineProgram, lineVertexShader);
+    context.attachShader(lineProgram, linePixelShader);
+    context.linkProgram(program);
+    context.linkProgram(lineProgram);
+    if (
+      !context.getProgramParameter(program, context.LINK_STATUS) ||
+      !context.getProgramParameter(lineProgram, context.LINK_STATUS)
+    ) {
+      canvas.dataset.constellationState = "unsupported";
+      return;
+    }
+    const position = context.getAttribLocation(program, "a_position");
+    const size = context.getAttribLocation(program, "a_size");
+    const brightness = context.getAttribLocation(program, "a_brightness");
+    const color = context.getUniformLocation(program, "u_color");
+    const linePosition = context.getAttribLocation(lineProgram, "a_position");
+    const lineColor = context.getUniformLocation(lineProgram, "u_color");
+    const pointBuffer = context.createBuffer();
+    const lineBuffer = context.createBuffer();
+    const colorScheme = window.matchMedia("(prefers-color-scheme: dark)");
+    let frame = 0;
+    let width = 0;
+    let height = 0;
+    let points: Point[] = [];
+    const resize = () => {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = width * ratio;
+      canvas.height = height * ratio;
+      context.viewport(0, 0, canvas.width, canvas.height);
+    };
+    const draw = (time: number) => {
+      // One orbit takes several minutes, keeping the background nearly still.
+      const elapsed = time * 0.000012;
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      points = nodes.map((node, index) => {
+        const groupSeed = hash(node.group);
+        const seed = hash(`${node.title ?? index}:${node.date}`);
+        const direction = groupSeed > 0.5 ? 1 : -1;
+        const angle =
+          seed * Math.PI * 2 + elapsed * direction * (0.65 + groupSeed * 0.35);
+        const centerX = groupSeed > 0.5 ? width * 0.935 : width * 0.065;
+        const centerY = height * (0.14 + hash(`${node.group}:y`) * 0.72);
+        const rx = width * (0.045 + seed * 0.075);
+        const ry = height * (0.08 + hash(`${node.date}:y`) * 0.1);
+        return {
+          x: ((Math.cos(angle) * rx + centerX) / width) * 2 - 1,
+          y: ((Math.sin(angle) * ry + centerY) / height) * -2 + 1,
+          group: node.group,
+        };
+      });
+      context.clearColor(0, 0, 0, 0);
+      context.clear(context.COLOR_BUFFER_BIT);
+      context.enable(context.BLEND);
+      context.blendFunc(context.SRC_ALPHA, context.ONE_MINUS_SRC_ALPHA);
+      context.useProgram(program);
+      const selectedTheme = document.documentElement.dataset.theme;
+      const dark = selectedTheme
+        ? selectedTheme === "dark"
+        : colorScheme.matches;
+      const pointColor = dark ? [0.48, 0.92, 0.7] : [0.08, 0.31, 0.21];
+      const trailColor = dark ? [0.2, 0.72, 0.52] : [0.2, 0.42, 0.28];
+      context.uniform3fv(color, pointColor);
+      const lineData: number[] = [];
+
+      // Dotted shared-tag orbit trails establish the peripheral rhythm.
+      const groups = [...new Set(nodes.map(node => node.group))];
+      groups.forEach(group => {
+        const groupSeed = hash(group);
+        const centerX = groupSeed > 0.5 ? width * 0.935 : width * 0.065;
+        const centerY = height * (0.14 + hash(`${group}:y`) * 0.72);
+        const radiusX = width * (0.07 + groupSeed * 0.045);
+        const radiusY = height * (0.12 + hash(`${group}:radius`) * 0.07);
+        const segments = 44;
+        for (let segment = 0; segment < segments; segment += 2) {
+          const from = (segment / segments) * Math.PI * 2;
+          const to = ((segment + 1) / segments) * Math.PI * 2;
+          lineData.push(
+            ((Math.cos(from) * radiusX + centerX) / width) * 2 - 1,
+            ((Math.sin(from) * radiusY + centerY) / height) * -2 + 1,
+            ((Math.cos(to) * radiusX + centerX) / width) * 2 - 1,
+            ((Math.sin(to) * radiusY + centerY) / height) * -2 + 1
+          );
+        }
+      });
+
+      points.forEach((point, index) => {
+        points.slice(index + 1).forEach(other => {
+          const dx = point.x - other.x;
+          const dy = point.y - other.y;
+          if (point.group === other.group && dx * dx + dy * dy < 0.045)
+            lineData.push(point.x, point.y, other.x, other.y);
+        });
+      });
+      context.bindBuffer(context.ARRAY_BUFFER, lineBuffer);
+      context.bufferData(
+        context.ARRAY_BUFFER,
+        new Float32Array(lineData),
+        context.DYNAMIC_DRAW
+      );
+      context.useProgram(lineProgram);
+      context.uniform3fv(lineColor, trailColor);
+      context.enableVertexAttribArray(linePosition);
+      context.vertexAttribPointer(linePosition, 2, context.FLOAT, false, 0, 0);
+      context.lineWidth(1);
+      context.drawArrays(context.LINES, 0, lineData.length / 2);
+
+      const pointData = new Float32Array(
+        points.flatMap((point, index) => [
+          point.x,
+          point.y,
+          (nodes[index].featured ? 4 : 2.2) * ratio,
+          (nodes[index].featured ? 0.92 : 0.55) + hash(nodes[index].date) * 0.2,
+        ])
+      );
+      context.bindBuffer(context.ARRAY_BUFFER, pointBuffer);
+      context.bufferData(context.ARRAY_BUFFER, pointData, context.DYNAMIC_DRAW);
+      context.useProgram(program);
+      context.uniform3fv(color, pointColor);
+      context.enableVertexAttribArray(position);
+      context.vertexAttribPointer(position, 2, context.FLOAT, false, 16, 0);
+      context.enableVertexAttribArray(size);
+      context.vertexAttribPointer(size, 1, context.FLOAT, false, 16, 8);
+      context.enableVertexAttribArray(brightness);
+      context.vertexAttribPointer(brightness, 1, context.FLOAT, false, 16, 12);
+      context.drawArrays(context.POINTS, 0, points.length);
+      frame = requestAnimationFrame(draw);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+    frame = requestAnimationFrame(draw);
+    rootWindow.__contentConstellationCleanup = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      window.removeEventListener("resize", resize);
+      context.deleteProgram(program);
+      context.deleteProgram(lineProgram);
+      canvas.dataset.constellationState = "disabled";
+    };
+  };
+
+  const eligibility = window.matchMedia(
+    "(min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference)"
+  );
+  eligibility.addEventListener("change", start);
+  document.addEventListener("astro:page-load", start);
+  start();
+</script>
