@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import postFilter from "@utils/postFilter";
+import { getPostSlug } from "@utils/contentEntry";
 
 const posts = (
   await getCollection(
@@ -25,6 +26,7 @@ const tagGroupScore = (tag: string) => {
 
 const nodes = posts.map(post => ({
   id: post.id,
+  slug: getPostSlug(post),
   title: post.data.title,
   tags: post.data.tags,
   group:
@@ -71,8 +73,10 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
 
 <script>
   type ConstellationNode = {
+    slug: string;
     title: string;
     group: string;
+    tags: string[];
     date: string;
     featured: boolean;
   };
@@ -80,6 +84,8 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
 
   const rootWindow = window as Window & {
     __contentConstellationCleanup?: () => void;
+    __contentConstellationFrame?: number;
+    __contentConstellationCurrentSlug?: string | null;
   };
 
   const hash = (value: string) => {
@@ -105,6 +111,22 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
     const nodes = JSON.parse(
       canvas.dataset.nodes ?? "[]"
     ) as ConstellationNode[];
+    const pathSegments = window.location.pathname.split("/").filter(Boolean);
+    const postsSegment = pathSegments.indexOf("posts");
+    const routeSlug = pathSegments[postsSegment + 1];
+    let currentSlug: string | null = null;
+    if (postsSegment !== -1 && routeSlug && !/^\d+$/.test(routeSlug)) {
+      try {
+        currentSlug = decodeURIComponent(routeSlug);
+      } catch {
+        currentSlug = routeSlug;
+      }
+    }
+    const currentNode = nodes.find(node => node.slug === currentSlug);
+    const currentTags = new Set(
+      currentNode?.tags.map(tag => tag.trim().toLowerCase()) ?? []
+    );
+    rootWindow.__contentConstellationCurrentSlug = currentNode?.slug ?? null;
     const gl =
       canvas.getContext("webgl2", { alpha: true, antialias: true }) ??
       canvas.getContext("webgl", { alpha: true, antialias: true });
@@ -117,7 +139,7 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
     const vertex = `attribute vec2 a_position; attribute float a_size; attribute float a_brightness; varying float v_brightness; void main(){gl_Position=vec4(a_position,0.0,1.0);gl_PointSize=a_size;v_brightness=a_brightness;}`;
     const fragment = `precision mediump float; uniform vec3 u_color; varying float v_brightness; void main(){vec2 p=gl_PointCoord-0.5;float glow=1.0-smoothstep(0.05,0.5,dot(p,p));gl_FragColor=vec4(u_color,glow*v_brightness);}`;
     const lineVertex = `attribute vec2 a_position; void main(){gl_Position=vec4(a_position,0.0,1.0);}`;
-    const lineFragment = `precision mediump float; uniform vec3 u_color; void main(){gl_FragColor=vec4(u_color,0.11);}`;
+    const lineFragment = `precision mediump float; uniform vec3 u_color; void main(){gl_FragColor=vec4(u_color,0.14);}`;
     const compile = (type: number, source: string) => {
       const shader = context.createShader(type);
       if (!shader) return null;
@@ -179,8 +201,13 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
       context.viewport(0, 0, canvas.width, canvas.height);
     };
     const draw = (time: number) => {
-      // One orbit takes several minutes, keeping the background nearly still.
-      const elapsed = time * 0.000012;
+      rootWindow.__contentConstellationFrame = time;
+      // Keep the motion gentle, but visible while reading. At this pace a full
+      // orbit takes roughly two minutes instead of looking frozen for several.
+      const elapsed = time * 0.00005;
+      const drift = time * 0.000028;
+      const pulseTime = time * 0.0018;
+      const focusPulse = 0.5 + 0.5 * Math.sin(pulseTime);
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
       points = nodes.map((node, index) => {
         const groupSeed = hash(node.group);
@@ -191,10 +218,24 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
         const centerX = groupSeed > 0.5 ? width * 0.935 : width * 0.065;
         const centerY = height * (0.14 + hash(`${node.group}:y`) * 0.72);
         const rx = width * (0.045 + seed * 0.075);
+        const orbitRadiusX =
+          node.slug === currentNode?.slug ? Math.min(rx, width * 0.055) : rx;
         const ry = height * (0.08 + hash(`${node.date}:y`) * 0.1);
+        // A small independent float keeps each dot from reading as a static
+        // point on a rigid ring while preserving the metadata-derived layout.
+        const floatX =
+          Math.sin(drift * (0.8 + seed * 0.4) + seed * Math.PI * 2) *
+          width *
+          0.003;
+        const floatY =
+          Math.cos(drift * (0.7 + groupSeed * 0.5) + groupSeed * Math.PI * 2) *
+          height *
+          0.004;
         return {
-          x: ((Math.cos(angle) * rx + centerX) / width) * 2 - 1,
-          y: ((Math.sin(angle) * ry + centerY) / height) * -2 + 1,
+          x:
+            ((Math.cos(angle) * orbitRadiusX + centerX + floatX) / width) * 2 -
+            1,
+          y: ((Math.sin(angle) * ry + centerY + floatY) / height) * -2 + 1,
           group: node.group,
         };
       });
@@ -211,6 +252,36 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
       const trailColor = dark ? [0.2, 0.72, 0.52] : [0.2, 0.42, 0.28];
       context.uniform3fv(color, pointColor);
       const lineData: number[] = [];
+      const appendEdge = (
+        fromX: number,
+        fromY: number,
+        toX: number,
+        toY: number
+      ) => {
+        const dx = toX - fromX;
+        const dy = toY - fromY;
+        const length = Math.hypot(dx, dy);
+        if (length === 0) return;
+        // Triangles keep the edge visibly thicker across browsers where
+        // WebGL's lineWidth is capped at one physical pixel.
+        const halfWidth = 0.75 * ratio;
+        const offsetX = (-dy / length) * ((halfWidth * 2) / canvas.width);
+        const offsetY = (dx / length) * ((halfWidth * 2) / canvas.height);
+        lineData.push(
+          fromX + offsetX,
+          fromY + offsetY,
+          toX + offsetX,
+          toY + offsetY,
+          toX - offsetX,
+          toY - offsetY,
+          fromX + offsetX,
+          fromY + offsetY,
+          toX - offsetX,
+          toY - offsetY,
+          fromX - offsetX,
+          fromY - offsetY
+        );
+      };
 
       // Dotted shared-tag orbit trails establish the peripheral rhythm.
       const groups = [...new Set(nodes.map(node => node.group))];
@@ -224,7 +295,7 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
         for (let segment = 0; segment < segments; segment += 2) {
           const from = (segment / segments) * Math.PI * 2;
           const to = ((segment + 1) / segments) * Math.PI * 2;
-          lineData.push(
+          appendEdge(
             ((Math.cos(from) * radiusX + centerX) / width) * 2 - 1,
             ((Math.sin(from) * radiusY + centerY) / height) * -2 + 1,
             ((Math.cos(to) * radiusX + centerX) / width) * 2 - 1,
@@ -238,7 +309,7 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
           const dx = point.x - other.x;
           const dy = point.y - other.y;
           if (point.group === other.group && dx * dx + dy * dy < 0.045)
-            lineData.push(point.x, point.y, other.x, other.y);
+            appendEdge(point.x, point.y, other.x, other.y);
         });
       });
       context.bindBuffer(context.ARRAY_BUFFER, lineBuffer);
@@ -251,16 +322,35 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
       context.uniform3fv(lineColor, trailColor);
       context.enableVertexAttribArray(linePosition);
       context.vertexAttribPointer(linePosition, 2, context.FLOAT, false, 0, 0);
-      context.lineWidth(1);
-      context.drawArrays(context.LINES, 0, lineData.length / 2);
+      context.drawArrays(context.TRIANGLES, 0, lineData.length / 2);
 
       const pointData = new Float32Array(
-        points.flatMap((point, index) => [
-          point.x,
-          point.y,
-          (nodes[index].featured ? 4 : 2.2) * ratio,
-          (nodes[index].featured ? 0.92 : 0.55) + hash(nodes[index].date) * 0.2,
-        ])
+        points.flatMap((point, index) => {
+          const node = nodes[index];
+          const isCurrent = node.slug === currentNode?.slug;
+          const isRelated =
+            !isCurrent &&
+            currentNode !== undefined &&
+            node.group === currentNode.group &&
+            node.tags.some(tag => currentTags.has(tag.trim().toLowerCase()));
+          const baseSize = node.featured ? 4.8 : 3.2;
+          const size = isCurrent
+            ? 6 + focusPulse * 2
+            : isRelated
+              ? Math.min(baseSize * 1.12, 5.4) * (1 + focusPulse * 0.08)
+              : baseSize;
+          const baseBrightness =
+            (node.featured ? 0.92 : 0.55) + hash(node.date) * 0.2;
+          const brightness = isCurrent
+            ? 0.92 + focusPulse * 0.08
+            : isRelated
+              ? Math.min(
+                  0.86,
+                  Math.max(baseBrightness, 0.68) + focusPulse * 0.12
+                )
+              : baseBrightness;
+          return [point.x, point.y, size * ratio, brightness];
+        })
       );
       context.bindBuffer(context.ARRAY_BUFFER, pointBuffer);
       context.bufferData(context.ARRAY_BUFFER, pointData, context.DYNAMIC_DRAW);
@@ -281,6 +371,8 @@ const nodeData = JSON.stringify(nodes).replaceAll("<", "\\u003c");
     rootWindow.__contentConstellationCleanup = () => {
       cancelAnimationFrame(frame);
       frame = 0;
+      delete rootWindow.__contentConstellationFrame;
+      delete rootWindow.__contentConstellationCurrentSlug;
       window.removeEventListener("resize", resize);
       context.deleteProgram(program);
       context.deleteProgram(lineProgram);

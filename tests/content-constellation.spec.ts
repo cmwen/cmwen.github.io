@@ -83,4 +83,53 @@ test.describe('content constellation background', () => {
     await expect(constellation).toHaveAttribute('data-node-count', initialNodeCount!);
     await expect(constellation).toHaveAttribute('data-constellation-state', initialState!);
   });
+
+  test('advances animation frames when WebGL is available', async ({ page }) => {
+    await page.goto(HOME);
+
+    const constellation = page.locator('canvas#content-constellation');
+    const webglAvailable = await webglIsAvailable(page);
+    const state = await constellation.getAttribute('data-constellation-state');
+    test.skip(!webglAvailable || state !== 'ready', 'WebGL is unavailable in this browser');
+
+    const firstFrame = await page.evaluate(
+      () =>
+        (window as Window & { __contentConstellationFrame?: number })
+          .__contentConstellationFrame,
+    );
+    await page.waitForTimeout(150);
+    const nextFrame = await page.evaluate(
+      () =>
+        (window as Window & { __contentConstellationFrame?: number })
+          .__contentConstellationFrame,
+    );
+
+    expect(firstFrame).toBeDefined();
+    expect(nextFrame).toBeDefined();
+    expect(nextFrame).toBeGreaterThan(firstFrame!);
+  });
+
+  test('matches the current post across bilingual routes, not pagination fallbacks', async ({ page }) => {
+    await page.goto('/posts/webmcp-discovery-problem/');
+
+    const constellation = page.locator('canvas#content-constellation');
+    const webglAvailable = await webglIsAvailable(page);
+    const state = await constellation.getAttribute('data-constellation-state');
+    test.skip(!webglAvailable || state !== 'ready', 'WebGL is unavailable in this browser');
+
+    const currentSlug = () =>
+      page.evaluate(
+        () =>
+          (window as Window & { __contentConstellationCurrentSlug?: string | null })
+            .__contentConstellationCurrentSlug,
+      );
+
+    expect(await currentSlug()).toBe('webmcp-discovery-problem');
+
+    await page.goto('/zh-hant/posts/webmcp-discovery-problem/');
+    expect(await currentSlug()).toBe('webmcp-discovery-problem');
+
+    await page.goto('/posts/1/');
+    expect(await currentSlug()).toBeNull();
+  });
 });
