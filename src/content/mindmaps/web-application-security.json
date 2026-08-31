@@ -1,0 +1,396 @@
+{
+  "title": "Web Application Security: Browser Standards & Defenses",
+  "description": "A practical, defense-in-depth map of web-platform security standards, browser policies, cookie sessions, authentication, authorization, input handling, APIs, and secure operations.",
+  "tags": [
+    "security",
+    "web",
+    "browser",
+    "http",
+    "authentication",
+    "authorization",
+    "api"
+  ],
+  "createdAt": "2026-08-31T00:00:00Z",
+  "updatedAt": "2026-08-31T00:00:00Z",
+  "initialDepth": 2,
+  "root": {
+    "id": "web-application-security",
+    "label": "Web Application Security",
+    "notes": "Use defense in depth: establish an encrypted origin, let browsers enforce restrictive policies, keep credentials out of untrusted code, authorize every request and object, safely handle untrusted data, and operate with least privilege. No one header or control makes an application secure.",
+    "annotation": "defense in depth",
+    "children": [
+      {
+        "id": "secure-foundations",
+        "label": "Secure Foundations",
+        "color": "#0EA5E9",
+        "notes": "A secure application starts with clear trust boundaries: origins, hosts, services, users, tenants, devices, and third parties. Prefer secure defaults and deny by default when a boundary is uncertain.",
+        "children": [
+          {
+            "id": "https-tls",
+            "label": "HTTPS & TLS",
+            "notes": "Serve every page and API over HTTPS with valid, current TLS configuration. Redirect HTTP to HTTPS before issuing cookies or credentials, and do not load active or passive mixed content.",
+            "children": [
+              {
+                "id": "hsts",
+                "label": "HSTS",
+                "notes": "Strict-Transport-Security tells a browser to use HTTPS for future requests to the host. Enable it only after HTTPS is complete; includeSubDomains and preload have wider, potentially hard-to-reverse scope.",
+                "annotation": "RFC 6797"
+              },
+              {
+                "id": "mixed-content",
+                "label": "Mixed Content",
+                "notes": "Block HTTP scripts, styles, frames, fonts, images, and network calls from HTTPS pages. Content-Security-Policy upgrade-insecure-requests can help during migration, but fixing URLs is clearer.",
+                "refs": [
+                  {
+                    "targetId": "content-security-policy",
+                    "label": "reinforced by"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "same-origin-policy",
+            "label": "Same-Origin Policy",
+            "notes": "Browsers isolate documents by scheme, host, and port. This baseline prevents one origin from freely reading another origin's data, but does not prevent a malicious site from sending many kinds of cross-site request.",
+            "annotation": "browser baseline",
+            "refs": [{ "targetId": "cors", "label": "selectively relaxes" }]
+          },
+          {
+            "id": "origin-design",
+            "label": "Origin & Host Design",
+            "notes": "Keep production, preview, admin, customer, and untrusted user content on deliberately chosen origins. A subdomain is not an isolation boundary for broadly scoped cookies, shared parent-domain settings, or flawed postMessage handling.",
+            "children": [
+              {
+                "id": "untrusted-content-isolation",
+                "label": "Untrusted Content",
+                "notes": "Serve user-controlled HTML and files from a separate origin without ambient application cookies. Sandboxed iframes are an additional containment layer, not a replacement for origin isolation.",
+                "annotation": "separate origin"
+              },
+              {
+                "id": "postmessage",
+                "label": "Cross-Window Messaging",
+                "notes": "For postMessage, send to an exact targetOrigin and verify event.origin and message shape before acting. Never trust a claimed origin, window name, or message payload without validation."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "browser-security-policies",
+        "label": "Browser Security Policies",
+        "color": "#8B5CF6",
+        "notes": "Response headers can make browsers enforce a smaller execution, embedding, data-sharing, and feature-use surface. Use report-only modes first where a policy could break an established application.",
+        "children": [
+          {
+            "id": "content-security-policy",
+            "label": "Content Security Policy (CSP)",
+            "notes": "CSP limits the origins and types of content a page may load or execute. Build a tight per-page policy with default-src as a fallback, explicit script-src and object-src 'none', and no broad wildcards or unsafe-inline when avoidable.",
+            "annotation": "XSS mitigation",
+            "children": [
+              {
+                "id": "csp-nonces-and-hashes",
+                "label": "Nonces, Hashes & Trusted Types",
+                "notes": "Use an unpredictable per-response nonce or stable hashes for necessary inline scripts; never reuse a nonce. Trusted Types can require DOM XSS-sensitive sinks to receive reviewed TrustedHTML-like values, complementing sanitization.",
+                "annotation": "avoid unsafe-inline"
+              },
+              {
+                "id": "csp-framing",
+                "label": "Framing Policy",
+                "notes": "Use frame-ancestors to specify exactly which sites may embed the page. It supersedes X-Frame-Options where supported and is the principal defense against clickjacking.",
+                "refs": [{ "targetId": "clickjacking", "label": "mitigates" }]
+              },
+              {
+                "id": "csp-reporting",
+                "label": "Report-Only & Reporting",
+                "notes": "Deploy Content-Security-Policy-Report-Only first for complex pages, collect violation reports without sensitive payloads, then enforce. Treat reports as telemetry; do not use them as an authorization signal."
+              }
+            ]
+          },
+          {
+            "id": "cors",
+            "label": "Cross-Origin Resource Sharing (CORS)",
+            "notes": "CORS is a browser read-permission protocol layered on the same-origin policy. It does not authenticate a caller, authorize an API, or stop non-browser clients. Return the smallest exact allowlist of trusted origins, methods, and headers.",
+            "annotation": "not access control",
+            "children": [
+              {
+                "id": "cors-credentials",
+                "label": "Credentialed Requests",
+                "notes": "When credentials are allowed, set Access-Control-Allow-Credentials only for a validated, explicit Origin and return Vary: Origin. Never combine credentialed CORS with Access-Control-Allow-Origin: *.",
+                "refs": [{ "targetId": "cookie-sessions", "label": "can send" }]
+              },
+              {
+                "id": "cors-preflight",
+                "label": "Preflight & Caching",
+                "notes": "Browsers preflight some cross-origin requests using OPTIONS. Validate the requested origin, method, and headers at the server; cache results cautiously because permissive cached decisions broaden exposure."
+              }
+            ]
+          },
+          {
+            "id": "embedding-and-isolation",
+            "label": "Embedding & Cross-Origin Isolation",
+            "notes": "Control who embeds your pages, which cross-origin resources they use, and which documents can share a browsing context group. These headers reduce clickjacking, data leaks, and cross-origin side-channel exposure.",
+            "children": [
+              {
+                "id": "coop-coep-corp",
+                "label": "COOP, COEP & CORP",
+                "notes": "Cross-Origin-Opener-Policy separates top-level browsing contexts; Cross-Origin-Embedder-Policy requires safe opt-in for cross-origin embeds; Cross-Origin-Resource-Policy lets a resource restrict which origins may load it. Test carefully because third-party assets often need changes.",
+                "annotation": "isolation suite"
+              },
+              {
+                "id": "permissions-policy",
+                "label": "Permissions Policy",
+                "notes": "Disable browser features such as camera, microphone, geolocation, payment, or fullscreen unless a page needs them. Delegate a capability to an iframe only through an intentional allowlist.",
+                "annotation": "least privilege"
+              },
+              {
+                "id": "referrer-policy",
+                "label": "Referrer Policy",
+                "notes": "Use strict-origin-when-cross-origin or a stricter policy to avoid disclosing full paths and query strings to other origins. Never place secrets or bearer tokens in URLs, regardless of this header."
+              }
+            ]
+          },
+          {
+            "id": "subresource-integrity",
+            "label": "Subresource Integrity (SRI)",
+            "notes": "For static third-party scripts or styles, integrity hashes let the browser reject bytes that do not match the expected asset. Pin versions, review the supply chain, and pair SRI with a restrictive CSP; a CDN compromise can still affect resources you repin.",
+            "annotation": "third-party assets"
+          }
+        ]
+      },
+      {
+        "id": "sessions-and-identity",
+        "label": "Sessions & Identity",
+        "color": "#16A34A",
+        "notes": "Authentication establishes a principal; a session maintains that result; authorization decides an action. Keep browser-exposed credential material minimal, short-lived, purpose-bound, and revocable where risk warrants it.",
+        "children": [
+          {
+            "id": "cookie-sessions",
+            "label": "Scoped Cookie Sessions",
+            "notes": "A Secure, HttpOnly cookie containing an opaque session identifier protects that identifier from JavaScript and is usually preferable to exposing an OAuth access token to browser code. Scope the cookie narrowly and keep access and refresh tokens on a backend-for-frontend when possible.",
+            "annotation": "recommended pattern",
+            "children": [
+              {
+                "id": "cookie-attributes",
+                "label": "Cookie Attributes",
+                "notes": "Set Secure and HttpOnly. Choose SameSite=Lax or Strict when the product allows it; use SameSite=None only for necessary cross-site use and always with Secure. Omit Domain to make a host-only cookie, and use the smallest practical Path, while remembering Path is not an access-control boundary.",
+                "annotation": "scope carefully"
+              },
+              {
+                "id": "cookie-prefixes",
+                "label": "Cookie Prefixes & Partitioning",
+                "notes": "Prefer __Host- for primary host cookies: it requires Secure, Path=/, and no Domain, preventing subdomain scoping. __Secure- requires Secure. Partitioned cookies can limit third-party cookie state per top-level site but do not replace session design.",
+                "annotation": "browser-enforced"
+              },
+              {
+                "id": "session-lifecycle",
+                "label": "Session Lifecycle",
+                "notes": "Generate session IDs with a cryptographically secure random source, rotate them after login or privilege changes, expire idle and absolute sessions, invalidate on logout and compromise, and limit concurrent sessions according to risk."
+              }
+            ]
+          },
+          {
+            "id": "csrf",
+            "label": "Cross-Site Request Forgery (CSRF)",
+            "notes": "Because cookies may be attached automatically, protect every state-changing cookie-authenticated endpoint with SameSite plus a server-validated anti-CSRF token or an equivalent origin-bound design. Verify Origin or Referer as defense in depth, and never use GET to change state.",
+            "annotation": "cookie companion",
+            "refs": [{ "targetId": "cookie-sessions", "label": "protects" }]
+          },
+          {
+            "id": "oauth-and-oidc",
+            "label": "OAuth & OpenID Connect",
+            "notes": "Use authorization code flow with PKCE for browser sign-in. Validate redirect URIs, state, nonce, issuer, audience, signature, expiry, and authorization context. An ID token identifies an authentication event; it is not an API access token.",
+            "children": [
+              {
+                "id": "token-storage",
+                "label": "Token Storage",
+                "notes": "Avoid localStorage and sessionStorage for long-lived bearer credentials because XSS can read them. A BFF can keep OAuth tokens server-side and expose only an HttpOnly session cookie to the browser.",
+                "refs": [
+                  { "targetId": "cookie-sessions", "label": "prefer instead" }
+                ]
+              },
+              {
+                "id": "passkeys-mfa",
+                "label": "Passkeys & MFA",
+                "notes": "Prefer phishing-resistant WebAuthn passkeys or security keys for sensitive accounts. Require fresh or stronger authentication for high-risk actions and ensure recovery paths do not silently downgrade assurance."
+              }
+            ]
+          },
+          {
+            "id": "password-security",
+            "label": "Passwords & Recovery",
+            "notes": "If passwords are supported, hash them with a modern adaptive password hash such as Argon2id, rate-limit and monitor login attempts, allow password managers, avoid security questions, and make reset tokens single-use, short-lived, and high entropy."
+          }
+        ]
+      },
+      {
+        "id": "application-and-api-defense",
+        "label": "Application & API Defense",
+        "color": "#F97316",
+        "notes": "Treat every request, parameter, file, callback, and queued message as untrusted. Enforce authorization at the server on every access, not in UI logic, token appearance, client-supplied claims, or network location.",
+        "children": [
+          {
+            "id": "authorization",
+            "label": "Authorization",
+            "notes": "Deny by default and make a server-side decision for every action. Combine tenant, principal, role, ownership, relationship, resource state, and business policy as applicable; cache carefully and re-evaluate after privilege changes.",
+            "annotation": "every object",
+            "children": [
+              {
+                "id": "broken-object-authorization",
+                "label": "Object-Level Authorization",
+                "notes": "Prevent IDOR/BOLA by loading or checking each requested object in the authenticated principal's authorized tenant and scope. Never trust an object ID, user ID, role, or tenant ID supplied by the client.",
+                "annotation": "common API risk"
+              },
+              {
+                "id": "least-privilege",
+                "label": "Least Privilege",
+                "notes": "Use distinct roles and service identities, narrow OAuth scopes and audiences, time-bound elevated access, and separate admin interfaces. Log authorization decisions for sensitive actions without logging secrets."
+              }
+            ]
+          },
+          {
+            "id": "xss-and-output",
+            "label": "XSS & Safe Output",
+            "notes": "Use framework auto-escaping and contextual output encoding for HTML, attributes, URLs, JavaScript, and CSS. Avoid dangerous DOM sinks such as innerHTML; when HTML is required, sanitize with a maintained allowlist and preserve CSP as a backstop.",
+            "annotation": "untrusted data",
+            "refs": [
+              {
+                "targetId": "content-security-policy",
+                "label": "backstopped by"
+              }
+            ]
+          },
+          {
+            "id": "input-and-injection",
+            "label": "Input Validation & Injection",
+            "notes": "Validate type, length, format, range, structure, and business rules at every trust boundary. Use parameterized queries and safe APIs for SQL, NoSQL, LDAP, commands, templates, and URLs; validation complements rather than replaces parameterization.",
+            "children": [
+              {
+                "id": "ssrf",
+                "label": "Server-Side Request Forgery",
+                "notes": "For server-side URL fetching, use an allowlist of schemes, destinations, ports, redirects, and response sizes. Resolve and recheck destinations to prevent access to loopback, link-local, internal, or cloud metadata services.",
+                "annotation": "outbound boundary"
+              },
+              {
+                "id": "file-uploads",
+                "label": "File Uploads",
+                "notes": "Authenticate and authorize uploads, validate content independently of filename and MIME claim, enforce size limits, scan as appropriate, generate server-side names, and store outside the executable web root or on a separate file origin."
+              },
+              {
+                "id": "deserialization",
+                "label": "Deserialization & Parsers",
+                "notes": "Avoid native object deserialization of untrusted bytes. Apply schemas and resource limits to JSON, XML, archives, images, and document parsers; disable XML external entities unless explicitly needed."
+              }
+            ]
+          },
+          {
+            "id": "api-abuse-controls",
+            "label": "API Abuse Controls",
+            "notes": "Set request size, rate, concurrency, pagination, query-complexity, and timeout limits. Authenticate before expensive work where possible, use idempotency keys for retriable writes, and return errors that are useful without revealing internals.",
+            "children": [
+              {
+                "id": "fetch-metadata",
+                "label": "Fetch Metadata",
+                "notes": "Sec-Fetch-Site, Sec-Fetch-Mode, and related request headers can help reject unexpected cross-site browser requests. Use them as a supplemental policy because they are browser signals, not universal client authentication."
+              },
+              {
+                "id": "webhooks",
+                "label": "Webhooks & Callbacks",
+                "notes": "Verify a signature over the raw body using a per-sender secret or public key, enforce timestamp and replay protection, allowlist callback URLs, and make processing idempotent. Do not trust source IP alone."
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "secure-delivery-and-operations",
+        "label": "Secure Delivery & Operations",
+        "color": "#DC2626",
+        "notes": "Security continues after code ships: protect secrets and build systems, understand third parties, observe high-value events, patch quickly, and rehearse recovery. Production configuration is code worthy of review and testing.",
+        "children": [
+          {
+            "id": "secrets-and-keys",
+            "label": "Secrets & Key Management",
+            "notes": "Keep secrets out of source, browser bundles, URLs, logs, and error reports. Use a managed secret store, scoped workload identity, encryption in transit and at rest, rotation, access audit trails, and rapid revocation paths.",
+            "annotation": "assume leakage possible"
+          },
+          {
+            "id": "supply-chain",
+            "label": "Software Supply Chain",
+            "notes": "Pin and review dependencies, lock package resolution, remove unused packages, scan for known vulnerabilities, protect CI permissions, verify release provenance where available, and assess every third-party script or service as a trust decision.",
+            "refs": [
+              {
+                "targetId": "subresource-integrity",
+                "label": "browser control"
+              }
+            ]
+          },
+          {
+            "id": "security-headers",
+            "label": "Response Hardening",
+            "notes": "Set CSP, HSTS, Referrer-Policy, Permissions-Policy, and an appropriate frame-ancestors policy deliberately. X-Content-Type-Options: nosniff prevents certain MIME-sniffing risks. Do not rely on legacy X-XSS-Protection as an XSS defense.",
+            "refs": [
+              { "targetId": "content-security-policy", "label": "includes" },
+              { "targetId": "hsts", "label": "includes" }
+            ]
+          },
+          {
+            "id": "logging-and-response",
+            "label": "Logging, Monitoring & Response",
+            "notes": "Log authentication, authorization failures, privilege changes, administrative actions, webhook verification failures, and suspicious rate-limit events with correlation IDs. Redact secrets, tokens, passwords, and unnecessary personal data; alert, investigate, contain, and learn through rehearsed incident response."
+          },
+          {
+            "id": "security-verification",
+            "label": "Security Verification",
+            "notes": "Use threat modeling, code review, dependency and secret scanning, tests for authorization boundaries, dynamic testing, configuration review, and periodic penetration testing. Retest after architecture, authentication, or data-flow changes.",
+            "annotation": "continuous practice"
+          }
+        ]
+      },
+      {
+        "id": "common-attack-paths",
+        "label": "Attack Paths & Priorities",
+        "color": "#D97706",
+        "notes": "Prioritize controls by the data, privileges, exposure, exploitability, and blast radius in your application. Link each threat to prevention, detection, and recovery rather than relying on a generic checklist.",
+        "children": [
+          {
+            "id": "xss",
+            "label": "Cross-Site Scripting (XSS)",
+            "notes": "An attacker gets script to run in a trusted origin, enabling UI manipulation and access to data that page scripts can access. Prevent with safe rendering and sanitization; CSP limits impact; HttpOnly cookies reduce but do not eliminate session abuse.",
+            "refs": [
+              { "targetId": "xss-and-output", "label": "prevent with" },
+              { "targetId": "cookie-sessions", "label": "limits token theft" }
+            ]
+          },
+          {
+            "id": "clickjacking",
+            "label": "Clickjacking",
+            "notes": "A hostile site frames a trusted page and tricks a user into clicking it. Use CSP frame-ancestors, explicit embed allowlists, and confirmation or reauthentication for high-impact actions.",
+            "refs": [{ "targetId": "csp-framing", "label": "prevent with" }]
+          },
+          {
+            "id": "credential-and-session-theft",
+            "label": "Credential & Session Theft",
+            "notes": "Phishing, malware, exposed tokens, session fixation, insecure recovery, and over-broad cookie scope can lead to account takeover. Use passkeys or MFA, secure session lifecycle, scoped cookies, anomaly detection, and fast revocation.",
+            "refs": [
+              { "targetId": "passkeys-mfa", "label": "reduce phishing" },
+              { "targetId": "session-lifecycle", "label": "contain" }
+            ]
+          },
+          {
+            "id": "data-exposure",
+            "label": "Data Exposure",
+            "notes": "Over-broad APIs, missing object checks, permissive CORS, sensitive URLs, verbose errors, logs, caches, and third-party scripts can disclose data. Minimize collection and disclosure, encrypt appropriately, and enforce authorization on each object.",
+            "refs": [
+              {
+                "targetId": "broken-object-authorization",
+                "label": "prevent with"
+              },
+              { "targetId": "cors", "label": "review" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
