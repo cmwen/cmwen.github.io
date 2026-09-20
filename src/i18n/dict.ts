@@ -24,6 +24,8 @@ type Dict = {
       "knowledge-media": string;
       "development-tools": string;
       "automation-tools": string;
+      "ai-coding-models": string;
+      infrastructure: string;
     };
     common: {
       techStack: string;
@@ -109,6 +111,8 @@ export const messages: Record<Locale, Dict> = {
         "knowledge-media": "Knowledge & Media",
         "development-tools": "Development Tools",
         "automation-tools": "Automation Tools",
+        "ai-coding-models": "AI Coding & Models",
+        infrastructure: "Infrastructure",
       },
       common: {
         techStack: "Tech stack:",
@@ -207,6 +211,8 @@ export const messages: Record<Locale, Dict> = {
         "knowledge-media": "知識與媒體",
         "development-tools": "開發工具",
         "automation-tools": "自動化工具",
+        "ai-coding-models": "AI 開發與模型",
+        infrastructure: "基礎設施",
       },
       common: {
         techStack: "技術堆疊：",

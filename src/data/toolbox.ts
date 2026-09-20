@@ -37,10 +37,9 @@ export const TOOLBOX: ToolboxSection[] = [
       },
       {
         name: "OpenAI Atlas",
-        why: "Current AI-native browser I rely on daily; blends browsing with GPT-5 agents, tab memory, and automation.",
+        why: "Previously my primary AI-native browser; I moved to Chrome for its Gemini integration and Codex browser control.",
         links: [{ label: "Website", href: "https://atlas.openai.com/" }],
         tags: ["browser", "ai", "automation"],
-        current: true,
       },
       {
         name: "Dia",
@@ -65,13 +64,13 @@ export const TOOLBOX: ToolboxSection[] = [
           { label: "Copilot", href: "https://copilot.microsoft.com/" },
         ],
         tags: ["browser", "copilot", "work"],
-        current: true,
       },
       {
         name: "Chrome",
-        why: "Primarily for web development now.",
+        why: "My current browser. The Gemini subscription makes Chrome a natural fit, and the Codex extension can drive the browser for computer-use workflows.",
         links: [{ label: "Website", href: "https://www.google.com/chrome/" }],
-        tags: ["browser", "dev"],
+        tags: ["browser", "gemini", "computer-use"],
+        current: true,
       },
     ],
   },
@@ -151,7 +150,7 @@ export const TOOLBOX: ToolboxSection[] = [
     tools: [
       {
         name: "VS Code",
-        why: "Used for work and personal. Copilot Pro license.",
+        why: "Still used for work and personal editing, with GitHub Copilot mainly serving my work workflow now.",
         links: [
           { label: "Website", href: "https://code.visualstudio.com/" },
           {
@@ -160,6 +159,25 @@ export const TOOLBOX: ToolboxSection[] = [
           },
         ],
         tags: ["ide", "copilot", "work", "personal"],
+      },
+      {
+        name: "OpenAI Codex",
+        why: "My primary personal coding agent nowadays. I use the Codex app heavily for building and maintaining software.",
+        links: [{ label: "Website", href: "https://openai.com/codex/" }],
+        tags: ["coding-agent", "openai", "personal"],
+        current: true,
+      },
+      {
+        name: "GitHub Copilot CLI",
+        why: "Still useful as a coding agent at work, but I rarely use it as my personal coding agent now.",
+        links: [
+          { label: "Website", href: "https://github.com/features/copilot" },
+          {
+            label: "CLI documentation",
+            href: "https://docs.github.com/en/copilot/how-tos/use-ai-models/use-copilot-agents/use-copilot-cli",
+          },
+        ],
+        tags: ["coding-agent", "cli", "work"],
       },
       {
         name: "Zed",
@@ -175,28 +193,59 @@ export const TOOLBOX: ToolboxSection[] = [
       },
     ],
   },
-  // New: Automation Tools section (n8n)
+  {
+    id: "ai-coding-models",
+    title: "AI Coding & Models",
+    tools: [
+      {
+        name: "T3 Code",
+        why: "A unified interface for running and switching between different coding agents, including remote access from web and mobile clients.",
+        links: [
+          { label: "Website", href: "https://t3.codes/" },
+          { label: "GitHub", href: "https://github.com/pingdotgg/t3code" },
+        ],
+        tags: ["coding-agent", "multi-agent", "remote"],
+        current: true,
+      },
+      {
+        name: "OpenCode",
+        why: "An open-source coding agent I use with open-weight models and different model providers.",
+        links: [
+          { label: "Website", href: "https://opencode.ai/" },
+          { label: "GitHub", href: "https://github.com/anomalyco/opencode" },
+        ],
+        tags: ["coding-agent", "open-source", "open-models"],
+        current: true,
+      },
+      {
+        name: "OpenRouter",
+        why: "The model gateway I use to access open-weight models from different providers.",
+        links: [{ label: "Website", href: "https://openrouter.ai/" }],
+        tags: ["models", "open-models", "api"],
+        current: true,
+      },
+    ],
+  },
+  // Automation Tools
   {
     id: "automation-tools",
     title: "Automation Tools",
     tools: [
       {
-        name: "n8n",
-        why: "Low-code automation platform to build workflows. Supports schedule triggers, webhooks, and even a chatbot interface.",
+        name: "Temporal",
+        why: "My current workflow orchestration platform, replacing n8n for durable and reliable long-running workflows.",
         links: [
-          { label: "Website", href: "https://n8n.io/" },
-          { label: "Docs", href: "https://docs.n8n.io/" },
-          { label: "GitHub", href: "https://github.com/n8n-io/n8n" },
+          { label: "Website", href: "https://temporal.io/" },
+          { label: "Docs", href: "https://docs.temporal.io/" },
+          { label: "GitHub", href: "https://github.com/temporalio/temporal" },
         ],
         tags: [
           "automation",
-          "low-code",
-          "workflows",
-          "webhook",
-          "scheduler",
-          "chatbot",
+          "workflow-orchestration",
+          "durable-execution",
+          "distributed-systems",
         ],
-        // current will be auto-marked since this section has a single tool
+        current: true,
       },
     ],
   },
@@ -235,6 +284,40 @@ export const TOOLBOX: ToolboxSection[] = [
           },
         ],
         tags: ["resources", "llm", "ai-models", "comparison"],
+      },
+    ],
+  },
+  {
+    id: "infrastructure",
+    title: "Infrastructure",
+    tools: [
+      {
+        name: "Pocket ID",
+        why: "My internal identity provider. Passkey-based sign-in gives me a secure system without memorizing every username and password.",
+        links: [{ label: "Website", href: "https://pocket-id.org/" }],
+        tags: ["identity", "oidc", "passkeys", "self-hosted"],
+        current: true,
+      },
+      {
+        name: "OpenObserve",
+        why: "My OpenTelemetry server for basic tracing and logging across my internal systems.",
+        links: [{ label: "Website", href: "https://openobserve.ai/" }],
+        tags: ["observability", "opentelemetry", "logging", "tracing"],
+        current: true,
+      },
+      {
+        name: "Tailscale",
+        why: "The private network layer I use to connect and access internal services securely.",
+        links: [{ label: "Website", href: "https://tailscale.com/" }],
+        tags: ["networking", "vpn", "self-hosted"],
+        current: true,
+      },
+      {
+        name: "Caddy",
+        why: "My reverse proxy for exposing internal services with simple configuration and automatic HTTPS.",
+        links: [{ label: "Website", href: "https://caddyserver.com/" }],
+        tags: ["reverse-proxy", "https", "self-hosted"],
+        current: true,
       },
     ],
   },
