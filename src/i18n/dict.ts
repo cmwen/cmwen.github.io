@@ -41,6 +41,7 @@ type Dict = {
       desktop: string;
       android: string;
       webapps: string;
+      embedded: string;
     };
     projects: {
       japaneseLearningSuffix: string;
@@ -69,6 +70,7 @@ type Dict = {
       privateChatHubDesktopDescription: string;
       everyPayAppTitle: string;
       everyPayAppDescription: string;
+      fnk0104bDescription: string;
     };
     tech: {
       pwaPwa: string;
@@ -128,6 +130,7 @@ export const messages: Record<Locale, Dict> = {
         desktop: "Desktop Apps",
         android: "Android Apps",
         webapps: "Web Applications",
+        embedded: "Embedded Systems",
       },
       projects: {
         japaneseLearningSuffix: "Japanese Learning (Kanji-Go)",
@@ -171,6 +174,8 @@ export const messages: Record<Locale, Dict> = {
         everyPayAppTitle: "Every-Pay App",
         everyPayAppDescription:
           "A Flutter application for payment management. Designed for efficient handling of transactions and payments on Android devices.",
+        fnk0104bDescription:
+          "Building for embedded systems and connecting software to the physical world.",
       },
       tech: {
         pwaPwa: "PWA/offline-first; GitHub Pages deployment",
@@ -228,6 +233,7 @@ export const messages: Record<Locale, Dict> = {
         desktop: "桌面應用程式",
         android: "Android 應用程式",
         webapps: "網頁應用程式",
+        embedded: "嵌入式系統",
       },
       projects: {
         japaneseLearningSuffix: "日語學習 (Kanji-Go)",
@@ -269,6 +275,7 @@ export const messages: Record<Locale, Dict> = {
         everyPayAppTitle: "Every-Pay 應用程式",
         everyPayAppDescription:
           "一個用於支付管理的 Flutter 應用程式，專為 Android 裝置上的高效交易和付款處理而設計。",
+        fnk0104bDescription: "為嵌入式系統打造軟體，連結數位世界與實體世界。",
       },
       tech: {
         pwaPwa: "PWA/離線優先；GitHub Pages 部署",
