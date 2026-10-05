@@ -154,6 +154,32 @@ draft: false
 
 Images go in `public/` or reference external URLs. Draft posts are excluded from build.
 
+## Embedding infographics
+
+Use `src/components/Infographic.astro` in Astro pages or MDX posts and notebooks:
+
+```mdx
+import Infographic from "@components/Infographic.astro";
+import documentJson from "@data/my-infographic.json";
+
+<Infographic document={documentJson} />
+```
+
+Documents follow the [Min Infograph format](https://github.com/min-infograph/min-infograph)
+(`version: "0.1"`) and are validated at build time. Text, images, and poster blocks
+render as static HTML. Mermaid diagrams load when visible, with a readable source
+fallback. Package styles are scoped to each infographic. Use `headingLevel={3}`
+when embedding below a second-level heading, and `sourceLabel` to localize the
+diagram source disclosure. Poster layouts retain their fixed canvas width in a
+keyboard-accessible scroll region. Bilingual examples live at
+`/toolbox/infographics/` and `/zh-hant/toolbox/infographics/`.
+
+The default `theme="site"` uses the site's monospace font and existing light/dark
+color tokens. Its reusable overrides live in `src/styles/infographic-theme.css`.
+Use `theme="library"` to retain the package's original palette and typography.
+Heading anchors derive from the document title. If the same document is embedded
+more than once on a page, give each instance a distinct `id` prop.
+
 ## CI/CD
 
 GitHub Actions builds and deploys to `gh-pages` and runs basic Playwright smoke tests (see `.github/workflows/`). Use `pnpm run cz` for conventional commit messages.

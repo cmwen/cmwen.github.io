@@ -1,0 +1,84 @@
+---
+title: "A Small ESP32 Board and the Opportunity AI Opens Up"
+description: "I bought an ESP32-S3 board with little embedded experience and rusty C++. Exploring its touchscreen, audio and connectivity showed me a different kind of AI opportunity."
+lang: "en"
+pubDatetime: 2026-10-05T10:45:00Z
+tags: ["ai", "coding-agents", "embedded-systems", "esp32", "side-projects"]
+baseSlug: "a-small-esp32-board-and-opportunity-ai"
+llmKeyIdeas:
+  - "AI-assisted exploration of unfamiliar engineering fields"
+  - "ESP32-S3 peripheral diagnostics before integration"
+  - "Device evidence versus successful firmware builds"
+  - "A physical dashboard for coding-agent activity"
+---
+
+import Infographic from "@components/Infographic.astro";
+import boardOpportunity from "@data/esp32-opportunity-ai.json";
+
+I bought an ESP32 board and was surprised by how much I could try with it.
+
+I do not have a background in writing embedded systems. I also cannot reliably remember the C++ I would need to write firmware from scratch. Before coding agents, those gaps would have made this a project I might read about and then leave for another day.
+
+Instead, I started experimenting.
+
+The board is a Freenove FNK0104B, built around an ESP32-S3. It has a 2.8-inch touchscreen, Wi-Fi, Bluetooth LE, and an onboard microphone and audio codec. There is enough there to explore several kinds of interaction without first assembling a collection of separate modules. The [project field guide](https://cmwen.dev/FNK0104B/) describes the board and the experiments collected around it.
+
+What interested me most was the expanding set of possibilities. A screen suggested a dashboard. Touch suggested controls. USB suggested a small keyboard. A microphone suggested voice interaction. Each capability made me curious about the next one.
+
+This is what I mean by **opportunity AI**: AI lowers the cost of attempting something outside the work I already know how to do.
+
+<Infographic document={boardOpportunity} theme="site" />
+
+## The opportunity is getting started
+
+There is a familiar way to talk about coding agents: how much faster can they help an experienced developer finish a known task?
+
+That question is useful, but it misses what made this project interesting to me. Embedded development was unfamiliar territory. I needed help connecting an intended behavior to a toolchain, a board API, and firmware I could build and inspect.
+
+I could describe an outcome: put something on the display, respond to a touch, or show what the microphone was receiving. A coding agent could help turn that into a first implementation and explain the pieces along the way. I still needed to work out whether the result behaved as intended.
+
+The first experiment became easier to attempt. Once there was something concrete to inspect, the next question became easier to ask.
+
+I find that more interesting than a claim about how many lines of code AI can produce. A modest reduction in the effort needed to start can change which projects I am willing to try at all.
+
+## One board, several directions
+
+The [firmware lab](https://github.com/cmwen/FNK0104B) keeps small applications independently buildable. Display, touch, networking and audio diagnostics provide a way to examine individual capabilities before combining them.
+
+That structure leaves room for quite different experiments. A calculator uses the display and touch interface. A file manager explores SD storage. Browser-based Bluetooth setup offers another way to configure the board. A USB keyboard turns the same touchscreen into a number pad and a set of emoji shortcuts.
+
+The keyboard is a good example of why details matter. The [USB HID guide](https://cmwen.dev/FNK0104B/features/usb-hid/) records direct touchscreen keyboard input working on Windows 11. It also records that a remote Windows session did not receive input as expected. Emoji selection and the other operating-system modes still need separate checks. “It works as a keyboard” is a useful observation, but it does not settle every host interaction.
+
+Audio opens another direction. The project includes microphone and speaker diagnostics, a recorder, and a local speech diagnostic. Its [speech guide](https://cmwen.dev/FNK0104B/features/speech/) distinguishes wake-word detection, voice activity detection and a small command vocabulary from open-ended transcription. The first pieces run on the board; free-form messages use a separately configured service.
+
+That distinction keeps the experiment understandable. Recognizing a few commands locally is already useful. It does not imply that the board runs a general conversational model.
+
+## A small device for a software workflow
+
+The [Codex monitor](https://cmwen.dev/FNK0104B/monitor/) brings several of those capabilities together into a desk dashboard for usage and agent activity, with voice-message controls.
+
+The architecture gives the board a clear job. It connects over Wi-Fi to a local Python bridge, which communicates with the signed-in Codex app-server. Recorded messages travel through the bridge to a configured transcription service and then to a selected thread. The project website serves the guide and firmware files; the computer runs the bridge.
+
+I like the possibility of giving a software workflow a small physical presence. A status display on a desk is a different kind of interface from another browser tab. The board makes it possible to explore that idea with a screen, touch and audio in one place.
+
+There is device evidence for the monitor reconnecting to saved Wi-Fi, initializing speech models, processing audio and receiving live status updates. The guide also includes an actual LCD capture. Sustained memory stability, spoken recognition accuracy and some message interactions remain open checks. The [readiness record](https://github.com/cmwen/FNK0104B/blob/main/docs/monitor-readiness.md) is part of the project, because those limits matter as much as the interface.
+
+## Hardware makes the learning concrete
+
+AI can help produce firmware that compiles. A board can still reveal a problem the build never encountered.
+
+The [build journal](https://cmwen.dev/FNK0104B/journey/) records lessons about microphone input, audio timing, worker stacks, touch latency and memory allocation. Those are useful reminders of what embedded development asks us to observe. Total free memory, for example, does not tell us whether a particular allocation will succeed.
+
+This gives me a practical way to approach unfamiliar work: isolate a capability, make its behavior visible, and combine it with other pieces only after there is evidence to examine.
+
+The coding agent helps with implementation and explanation. A diagnostic gives us a narrower question. The physical device supplies feedback that neither a generated answer nor a successful compilation can replace.
+
+That process also gives my learning a purpose. I do not need to remember all of C++ before trying the first display experiment. I do need to understand the particular behavior I am asking the board to perform, and gradually learn the constraints that affect it.
+
+## More projects become worth trying
+
+My side project is still a collection of experiments, with a field guide that records what exists and what remains uncertain. That is part of its appeal. I can follow a capability, try an application, and find another question worth exploring.
+
+The surprising part was how much room for experimentation there was in one small board. AI made that room more accessible to me.
+
+I bought an ESP32 without being ready to write an embedded system from scratch. Now there is a concrete project I can inspect, change and learn from. That is the opportunity I want to keep pursuing: being able to start in a field I would previously have put off, then let real experiments teach me what to learn next.

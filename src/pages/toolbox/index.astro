@@ -31,6 +31,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 >
   <Header activeNav="toolbox" activeSubNav="tools" {lang} />
   <Main pageTitle={title} pageDesc={description}>
+    <p class="mb-6">
+      <a href="/toolbox/infographics/" class="underline"
+        >Explore the Min Infograph example</a
+      >
+    </p>
     <div class="space-y-10">
       {
         TOOLBOX.map(section => (

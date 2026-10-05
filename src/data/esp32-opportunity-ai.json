@@ -1,0 +1,42 @@
+{
+  "version": "0.1",
+  "title": "A small board opens a new field",
+  "subtitle": "Opportunity AI: lower the cost of a first experiment, then learn from the hardware.",
+  "style": "technical",
+  "shape": "rounded",
+  "layout": { "type": "grid", "columns": 2 },
+  "blocks": [
+    {
+      "id": "starting-point",
+      "type": "text",
+      "title": "1. Start with curiosity",
+      "text": "An ESP32-S3 board with a touchscreen, connectivity and audio. Little embedded experience, and rusty C++."
+    },
+    {
+      "id": "first-experiment",
+      "type": "text",
+      "title": "2. Make one thing observable",
+      "text": "Use a coding agent to help build a small diagnostic: display pixels, read a touch, inspect a microphone signal."
+    },
+    {
+      "id": "capabilities",
+      "type": "text",
+      "title": "3. Explore what becomes possible",
+      "text": "Try a calculator, a USB number pad, browser setup, or local speech commands. Keep each capability independently testable."
+    },
+    {
+      "id": "combination",
+      "type": "text",
+      "title": "4. Combine the pieces",
+      "text": "The Codex monitor brings display, networking and audio together. A local computer bridge supplies agent status and routes messages."
+    },
+    {
+      "id": "evidence",
+      "type": "callout",
+      "span": 2,
+      "title": "The board gets the final vote",
+      "text": "A successful build proves compilation. Device checks establish behavior. AI makes the experiment easier to start; evidence makes its lessons trustworthy.",
+      "tone": "info"
+    }
+  ]
+}

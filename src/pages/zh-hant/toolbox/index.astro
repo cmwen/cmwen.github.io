@@ -25,6 +25,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 >
   <Header activeNav="toolbox" activeSubNav="tools" {lang} />
   <Main pageTitle={title} pageDesc={description}>
+    <p class="mb-6">
+      <a href="/zh-hant/toolbox/infographics/" class="underline"
+        >查看 Min Infograph 資訊圖表範例</a
+      >
+    </p>
     <div class="space-y-10">
       {
         TOOLBOX.map(section => (

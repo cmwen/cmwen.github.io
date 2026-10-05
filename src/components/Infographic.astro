@@ -1,0 +1,170 @@
+---
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { Infographic, validateIR } from "@min-infograph/core";
+import packageStyles from "@min-infograph/core/styles.css?inline";
+import siteTheme from "@styles/infographic-theme.css?inline";
+import { slug } from "github-slugger";
+
+export interface Props {
+  document: unknown;
+  headingLevel?: 2 | 3 | 4;
+  sourceLabel?: string;
+  theme?: "site" | "library";
+  id?: string;
+}
+
+const {
+  document,
+  headingLevel = 2,
+  sourceLabel = "Diagram source",
+  theme = "site",
+} = Astro.props;
+const ir = validateIR(document);
+const id = Astro.props.id ?? `infographic-${slug(ir.title)}`;
+let headingIndex = 0;
+const shiftHeading = (tag: string) =>
+  `h${Math.min(6, Number(tag.slice(1)) + headingLevel - 1)}`;
+const html = renderToStaticMarkup(
+  createElement(Infographic, {
+    ir,
+    assetBase: import.meta.env.BASE_URL,
+    renderers: {
+      mermaid: ({ block, style, shape }) => {
+        if (block.type !== "mermaid") return null;
+        return createElement(
+          "section",
+          { className: "diagram-block" },
+          createElement("h2", { className: "block-heading" }, block.title),
+          createElement("div", {
+            "data-infograph-diagram": JSON.stringify({
+              diagram: block.diagram,
+              style,
+              shape,
+              appearance: block.appearance,
+            }),
+            className: "mermaid-svg",
+            role: "img",
+            "aria-label": block.title,
+          }),
+          createElement(
+            "details",
+            null,
+            createElement("summary", null, sourceLabel),
+            createElement(
+              "pre",
+              null,
+              createElement("code", null, block.diagram)
+            )
+          )
+        );
+      },
+    },
+  })
+)
+  .replace(
+    /<h[1-6](?=[\s>])/g,
+    (tag: string) =>
+      `${tag} id="${id.replace(/[&"<>]/g, "")}-heading-${headingIndex++}"`
+  )
+  .replace(
+    /<(\/?)(h[1-6])(?=[\s>])/g,
+    (_: string, closing: string, tag: string) =>
+      `<${closing}${shiftHeading(tag)}`
+  );
+// The published CSS includes workbench styles and global resets. Keep every
+// rule inside this component, and use the site's existing font loading.
+const styles = packageStyles
+  .replace(/@import\s+url\([^)]*\)\s*;/g, "")
+  .replace(/:root/g, ":scope")
+  .replace(/\bh[1-6]\b/g, shiftHeading);
+---
+
+<style
+  is:inline
+  set:html={`@scope (.min-infograph) { ${styles} ${theme === "site" ? siteTheme : ""} }`}
+></style>
+<div class="min-infograph" tabindex="0" role="region" aria-label={ir.title}>
+  <Fragment set:html={html} />
+</div>
+
+<style>
+  .min-infograph {
+    max-width: 100%;
+    overflow-x: auto;
+    color: #14222a;
+    line-height: 1.5;
+  }
+  .min-infograph:focus-visible {
+    outline: 2px solid rgb(var(--color-accent));
+    outline-offset: 4px;
+  }
+  .min-infograph :global(.infographic-hero :is(h2, h3, h4)) {
+    font-size: clamp(1.75rem, 5vw, 3rem);
+    line-height: 1.15;
+  }
+  .min-infograph :global(pre) {
+    overflow-x: auto;
+    white-space: pre;
+  }
+  @media (max-width: 600px) {
+    .min-infograph :global(.infographic-body) {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+    .min-infograph :global(.infographic-block) {
+      grid-column: span 1 !important;
+    }
+  }
+</style>
+
+<script>
+  import type {
+    MermaidBlock,
+    TechnicalStyle,
+    InfographicShape,
+  } from "@min-infograph/core";
+
+  let observer: IntersectionObserver | undefined;
+  function observeDiagrams() {
+    observer?.disconnect();
+    observer = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        observer?.unobserve(entry.target);
+        const element = entry.target as HTMLElement;
+        const options = JSON.parse(element.dataset.infographDiagram!) as {
+          diagram: string;
+          style: TechnicalStyle;
+          shape: InfographicShape;
+          appearance?: MermaidBlock["appearance"];
+        };
+        void import("@min-infograph/core")
+          .then(({ renderMermaid }) =>
+            renderMermaid(
+              options.diagram,
+              options.style,
+              options.shape,
+              options.appearance
+            )
+          )
+          .then(svg => {
+            if (element.isConnected) element.innerHTML = svg;
+          })
+          .catch(() => {
+            // Keep the authored diagram available if rendering fails.
+            if (element.isConnected) {
+              element.removeAttribute("role");
+              element.parentElement
+                ?.querySelector("details")
+                ?.setAttribute("open", "");
+            }
+          });
+      }
+    });
+    document
+      .querySelectorAll("[data-infograph-diagram]:empty")
+      .forEach(element => observer?.observe(element));
+  }
+  document.addEventListener("astro:page-load", observeDiagrams);
+  document.addEventListener("astro:before-swap", () => observer?.disconnect());
+</script>

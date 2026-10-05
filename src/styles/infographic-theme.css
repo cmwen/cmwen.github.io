@@ -1,0 +1,141 @@
+/* Applied after the library styles inside the component's CSS scope. */
+:scope {
+  color: rgb(var(--color-text-base));
+  background: transparent;
+  font-family: inherit;
+}
+
+.infographic.infographic {
+  color: rgb(var(--color-text-base));
+  background: rgb(var(--color-fill)) !important;
+  border: 1px solid rgb(var(--color-border));
+  border-radius: 0.75rem;
+  box-shadow: none;
+  font-family: inherit !important;
+  --sheet-padding: clamp(1rem, 3vw, 1.75rem);
+}
+
+.infographic .infographic-hero {
+  min-height: auto;
+  background: rgb(var(--color-card));
+  color: rgb(var(--color-text-base));
+  border-bottom: 1px solid rgb(var(--color-border));
+}
+
+.infographic
+  :is(
+    .hero-grid,
+    .hero-orbit,
+    .hero-mark,
+    .hero-eyebrow,
+    .hero-footer,
+    .infographic-footer
+  ) {
+  display: none;
+}
+
+.infographic
+  :is(
+    .hero-eyebrow,
+    .hero-footer,
+    .block-kicker,
+    .block-index,
+    .infographic-footer
+  ) {
+  font-family: inherit;
+  letter-spacing: 0.04em;
+  color: rgb(var(--color-text-muted));
+}
+
+.infographic .hero-content > :is(h2, h3, h4) {
+  font-family: inherit;
+  letter-spacing: -0.035em;
+  font-weight: 700;
+  margin: 1rem 0;
+}
+
+.infographic .hero-subtitle {
+  color: rgb(var(--color-text-muted));
+  font-size: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+.infographic .infographic-block {
+  background: rgb(var(--color-card));
+  border-color: rgb(var(--color-border));
+  box-shadow: none;
+  border-radius: 0.5rem;
+}
+
+.infographic .infographic-block--callout {
+  border-left: 4px solid rgb(var(--color-accent));
+  background: rgb(var(--color-card-muted));
+}
+
+.infographic .block-heading {
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-style: normal;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  color: rgb(var(--color-text-base));
+}
+
+.infographic :is(.native-block p, .callout-content p, .metric-content span) {
+  font-family: inherit;
+  color: rgb(var(--color-text-base));
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.7;
+  letter-spacing: normal;
+}
+
+.infographic :is(.callout-quote, .metric-content strong) {
+  color: rgb(var(--color-accent));
+  font-family: inherit;
+}
+
+.infographic .kicker-dot {
+  background: rgb(var(--color-accent));
+}
+
+.infographic details {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+}
+
+.infographic summary {
+  cursor: pointer;
+  color: rgb(var(--color-link));
+}
+
+.infographic summary:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 4px;
+}
+
+/* Mermaid embeds palette rules in its SVG; override those within this scope. */
+.infographic .mermaid-svg svg {
+  background: transparent !important;
+}
+
+.infographic .mermaid-svg .node :is(rect, circle, ellipse, polygon, path) {
+  fill: rgb(var(--color-card)) !important;
+  stroke: rgb(var(--color-accent)) !important;
+}
+
+.infographic .mermaid-svg :is(text, .nodeLabel, .edgeLabel, .edgeLabel p) {
+  color: rgb(var(--color-text-base)) !important;
+  fill: rgb(var(--color-text-base)) !important;
+  background: rgb(var(--color-fill)) !important;
+  font-family: inherit !important;
+}
+
+.infographic .mermaid-svg .flowchart-link {
+  stroke: rgb(var(--color-accent)) !important;
+}
+
+.infographic .mermaid-svg marker path {
+  fill: rgb(var(--color-accent)) !important;
+  stroke: rgb(var(--color-accent)) !important;
+}
