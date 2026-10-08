@@ -5,8 +5,8 @@ lang: "en"
 author: "Min Wen"
 pubDatetime: 2026-10-08T00:00:00Z
 tags: ["ai", "open-source", "oauth", "developer-experience"]
-featured: false
-draft: true
+featured: true
+draft: false
 baseSlug: "sign-in-with-chatgpt-and-the-open-source-ai-billing-gap"
 llmKeyIdeas:
   [

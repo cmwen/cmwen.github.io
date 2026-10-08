@@ -7,8 +7,8 @@ description: "Sign in with ChatGPT 提供一種不同的做法，讓符合資格
 author: "Min Wen"
 pubDatetime: 2026-10-08T00:00:00Z
 tags: ["ai", "open-source", "oauth", "developer-experience"]
-featured: false
-draft: true
+featured: true
+draft: false
 llmKeyIdeas:
   [
     "Sign in with ChatGPT 可授權符合資格的開源應用，使用使用者的 ChatGPT 方案進行推論",
