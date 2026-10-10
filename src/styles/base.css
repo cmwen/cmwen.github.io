@@ -235,9 +235,6 @@
 }
 
 @layer components {
-  .display-none {
-    @apply hidden;
-  }
   .focus-outline {
     outline-width: 2px;
     outline-style: solid;
