@@ -9,7 +9,7 @@ import { messages } from "@i18n/dict";
 const lang = "zh-hant" as const;
 const t = messages[lang];
 const title = t.nav.portfolio;
-const description = "個人應用與 MCP 伺服器的簡要作品集。";
+const description = "個人應用、嵌入式裝置與 MCP 伺服器的簡要作品集。";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -23,6 +23,47 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 >
   <Header activeNav="portfolio" {lang} />
   <Main pageTitle={title} pageDesc={description}>
+    <section class="mb-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">嵌入式裝置</h2>
+      <div class="rounded-md border border-skin-line bg-skin-card p-4">
+        <h3 class="text-lg font-semibold">
+          <a
+            class="text-skin-accent hover:underline"
+            href="https://cmwen.dev/FNK0104B/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            FNK0104B — ESP32-S3 韌體實驗專案
+          </a>
+        </h3>
+        <p class="mt-1 text-sm text-skin-muted">
+          透過 AI 協作，把 Freenove 觸控開發板做成自己用得上的小工具。從顯示、觸控、網路與音訊的獨立實驗，逐步組合出呈現用量和 agent 活動、支援語音控制的 Codex 桌上儀表板。專案指南記錄設定方式、實機驗證結果與待確認項目。
+        </p>
+        <div class="mt-2 text-sm">
+          <span class="font-medium">技術堆疊：</span>
+          <ul class="mt-1 list-disc pl-5">
+            <li>ESP32-S3, C++, PlatformIO, Arduino / ESP-IDF</li>
+            <li>LVGL, Wi-Fi, Bluetooth LE, Python</li>
+          </ul>
+        </div>
+        <p class="mt-2 text-sm">
+          原始碼：
+          <a
+            class="text-skin-accent hover:underline"
+            href="https://github.com/cmwen/FNK0104B"
+            target="_blank"
+            rel="noopener noreferrer">github.com/cmwen/FNK0104B</a
+          >
+        </p>
+        <p class="mt-2 text-sm">
+          <a
+            class="text-skin-accent hover:underline"
+            href="/zh-hant/posts/a-small-esp32-board-and-opportunity-ai/">閱讀這個專案的心得</a
+          >
+        </p>
+      </div>
+    </section>
+
     <section class="space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">PWA 應用</h2>
       <div class="space-y-4">

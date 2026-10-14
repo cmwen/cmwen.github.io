@@ -14,8 +14,8 @@ const t = messages[lang];
 const title = t.nav.portfolio;
 const description =
   lang === "zh-hant"
-    ? "個人應用與 MCP 伺服器的簡要作品集。"
-    : "A small portfolio of personal apps and MCP servers.";
+    ? "個人應用、嵌入式裝置與 MCP 伺服器的簡要作品集。"
+    : "A small portfolio of personal apps, embedded devices, and MCP servers.";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
@@ -29,6 +29,53 @@ const canonical = new URL(Astro.url.pathname, Astro.site).href;
 >
   <Header activeNav="portfolio" {lang} />
   <Main pageTitle={title} pageDesc={description}>
+    <section class="mb-8 space-y-5">
+      <h2 class="mb-2 text-2xl font-semibold tracking-wide">Embedded devices</h2>
+      <div class="rounded-md border border-skin-line bg-skin-card p-4">
+        <h3 class="text-lg font-semibold">
+          <a
+            class="text-skin-accent hover:underline"
+            href="https://cmwen.dev/FNK0104B/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            FNK0104B — ESP32-S3 firmware lab
+          </a>
+        </h3>
+        <p class="mt-1 text-sm text-skin-muted">
+          An AI-assisted project turning a Freenove touchscreen board into
+          useful personal gadgets. Independent display, touch, networking, and
+          audio experiments support a Codex desk monitor for usage and agent
+          activity, with voice controls. The field guide records setup, device
+          verification, and remaining checks.
+        </p>
+        <div class="mt-2 text-sm">
+          <span class="font-medium">Tech stack:</span>
+          <ul class="mt-1 list-disc pl-5">
+            <li>ESP32-S3, C++, PlatformIO, Arduino / ESP-IDF</li>
+            <li>LVGL, Wi-Fi, Bluetooth LE, Python</li>
+          </ul>
+        </div>
+        <p class="mt-2 text-sm">
+          Source:
+          <a
+            class="text-skin-accent hover:underline"
+            href="https://github.com/cmwen/FNK0104B"
+            target="_blank"
+            rel="noopener noreferrer">github.com/cmwen/FNK0104B</a
+          >
+        </p>
+        <p class="mt-2 text-sm">
+          <a
+            class="text-skin-accent hover:underline"
+            href="/posts/a-small-esp32-board-and-opportunity-ai/"
+            >Read the project story</a
+          >
+        </p>
+      </div>
+    </section>
+
+
     <section class="space-y-5">
       <h2 class="mb-2 text-2xl font-semibold tracking-wide">
         {t.portfolio.sections.pwa}
