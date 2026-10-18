@@ -7,6 +7,7 @@ lang: "zh-hant"
 draft: false
 tags: ["MCP","ChatGPT","AI Agents","Developer Tools","GitHub Pages"]
 baseSlug: "building-min-connect-chatgpt-sites-mcp-publishing"
+translatedFrom: "building-min-connect-chatgpt-sites-mcp-publishing"
 ---
 
 我不少想法，其實都是從跟 ChatGPT 討論開始的。可能是在思考 AI coding agent 是否還需要完整的 IDE，也可能是研究某個架構的取捨。聊到一半，常常會覺得：「這個觀點應該可以整理成一篇文章。」
