@@ -1,109 +1,181 @@
-/** Schedule PCM continuously while the worker generates ahead of playback. */
+/** Package streamed mono PCM for native, pitch-preserving media playback. */
+function wav(chunks: Float32Array[], sampleRate: number): Blob {
+  const samples = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  const bytes = new ArrayBuffer(44 + samples * 2);
+  const view = new DataView(bytes);
+  const label = (offset: number, text: string) => {
+    for (let i = 0; i < text.length; i++)
+      view.setUint8(offset + i, text.charCodeAt(i));
+  };
+  label(0, "RIFF");
+  view.setUint32(4, 36 + samples * 2, true);
+  label(8, "WAVEfmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, 1, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * 2, true);
+  view.setUint16(32, 2, true);
+  view.setUint16(34, 16, true);
+  label(36, "data");
+  view.setUint32(40, samples * 2, true);
+  let offset = 44;
+  for (const chunk of chunks)
+    for (const value of chunk) {
+      const sample = Math.max(-1, Math.min(1, value));
+      view.setInt16(offset, sample * (sample < 0 ? 32768 : 32767), true);
+      offset += 2;
+    }
+  return new Blob([bytes], { type: "audio/wav" });
+}
+
+/** Generate ahead, preload the next segment, and preserve pitch at every speed. */
 export class StreamingSpeech {
-  private queue: {
-    buffer: AudioBuffer;
-    offset: number;
-    start: number;
-    source: AudioBufferSourceNode;
-  }[] = [];
-  private rate = 1;
-  private tail = 0;
-  private stopped = false;
-  private started = false;
+  readonly elements = [new Audio(), new Audio()];
+  private queue: { url: string; seconds: number }[] = [];
   private pending: Float32Array[] = [];
   private pendingSeconds = 0;
-  constructor(
-    readonly context: AudioContext,
-    private sampleRate: number
-  ) {}
+  private slot = 0;
+  private stopped = false;
+  private error: unknown;
+  private rate = 1;
+  private primed = false;
+  paused = false;
+
+  constructor(private sampleRate: number) {
+    for (const audio of this.elements) {
+      audio.preload = "auto";
+      audio.preservesPitch = true;
+      audio.onerror = () => {
+        this.error = new Error("Audio playback failed");
+      };
+    }
+  }
+
+  /** Unlock both reusable media elements inside the Listen click gesture. */
+  async resume() {
+    this.paused = false;
+    if (!this.primed) {
+      this.primed = true;
+      const silent = URL.createObjectURL(
+        wav([new Float32Array(240)], this.sampleRate)
+      );
+      try {
+        await Promise.all(
+          this.elements.map(async audio => {
+            audio.src = silent;
+            await audio.play();
+            audio.pause();
+            audio.removeAttribute("src");
+            audio.load();
+          })
+        );
+      } finally {
+        URL.revokeObjectURL(silent);
+      }
+    } else if (this.queue.length && !this.stopped) {
+      await this.elements[this.slot].play();
+    }
+  }
+
+  pause() {
+    this.paused = true;
+    this.elements[this.slot].pause();
+  }
 
   get bufferedSeconds() {
+    const consumed = this.queue.length
+      ? this.elements[this.slot].currentTime
+      : 0;
     return (
-      Math.max(0, this.tail - this.context.currentTime) + this.pendingSeconds
+      (Math.max(
+        0,
+        this.queue.reduce((sum, entry) => sum + entry.seconds, 0) - consumed
+      ) +
+        this.pendingSeconds) /
+      this.rate
     );
   }
 
   setRate(rate: number) {
-    const now = this.context.currentTime;
-    const remaining = this.queue
-      .map(item => ({
-        buffer: item.buffer,
-        offset: item.offset + Math.max(0, now - item.start) * this.rate,
-      }))
-      .filter(item => item.offset < item.buffer.duration);
-    for (const item of this.queue) {
-      item.source.onended = null;
-      item.source.stop();
-      item.source.disconnect();
-    }
-    this.queue = [];
-    this.tail = now;
     this.rate = rate;
-    for (const item of remaining) this.schedule(item.buffer, item.offset);
+    for (const audio of this.elements) audio.playbackRate = rate;
   }
 
-  private schedule(buffer: AudioBuffer, offset = 0) {
-    const source = this.context.createBufferSource();
-    source.buffer = buffer;
-    source.playbackRate.value = this.rate;
-    source.connect(this.context.destination);
-    const start = Math.max(this.tail, this.context.currentTime + 0.02);
-    const item = { buffer, offset, start, source };
-    this.queue.push(item);
-    source.onended = () => {
-      source.disconnect();
-      this.queue = this.queue.filter(entry => entry !== item);
+  private prepareNext() {
+    if (this.queue.length > 1)
+      this.elements[1 - this.slot].src = this.queue[1].url;
+  }
+
+  private playNext() {
+    if (!this.queue.length || this.stopped) return;
+    const audio = this.elements[this.slot];
+    if (audio.src !== this.queue[0].url) audio.src = this.queue[0].url;
+    audio.playbackRate = this.rate;
+    audio.onended = () => {
+      const finished = this.queue.shift();
+      if (finished) URL.revokeObjectURL(finished.url);
+      audio.onended = null;
+      audio.removeAttribute("src");
+      audio.load();
+      this.slot = 1 - this.slot;
+      this.playNext();
     };
-    source.start(start, offset);
-    this.tail = start + (buffer.duration - offset) / this.rate;
+    this.prepareNext();
+    if (!this.paused)
+      void audio.play().catch(error => {
+        this.error = error;
+      });
   }
 
   append(pcm: Float32Array) {
     if (this.stopped) return;
     this.pending.push(pcm);
     this.pendingSeconds += pcm.length / this.sampleRate;
-    // A short initial cushion absorbs model jitter; later frames schedule immediately.
-    if (this.started || this.pendingSeconds >= 2) this.flush();
+    // Two-second segments let the next buffer fill during current playback.
+    if (this.pendingSeconds >= 2) this.flush();
   }
 
   flush() {
     if (!this.pending.length || this.stopped) return;
-    this.started = true;
-    const length = this.pending.reduce((sum, pcm) => sum + pcm.length, 0);
-    const buffer = this.context.createBuffer(1, length, this.sampleRate);
-    const data = buffer.getChannelData(0);
-    let offset = 0;
-    for (const pcm of this.pending) {
-      data.set(pcm, offset);
-      offset += pcm.length;
-    }
+    const wasEmpty = this.queue.length === 0;
+    this.queue.push({
+      url: URL.createObjectURL(wav(this.pending, this.sampleRate)),
+      seconds: this.pendingSeconds,
+    });
     this.pending = [];
     this.pendingSeconds = 0;
-    this.schedule(buffer);
+    if (wasEmpty) this.playNext();
+    else if (this.queue.length === 2) this.prepareNext();
   }
 
   async waitForRoom() {
     while (!this.stopped && this.bufferedSeconds > 10) {
+      if (this.error) throw this.error;
       await new Promise(resolve => setTimeout(resolve, 100));
     }
+    if (this.error) throw this.error;
   }
 
   async finish() {
     this.flush();
     while (!this.stopped && this.queue.length) {
+      if (this.error) throw this.error;
       await new Promise(resolve => setTimeout(resolve, 100));
     }
   }
 
   stop() {
     this.stopped = true;
-    for (const item of this.queue) {
-      item.source.onended = null;
-      item.source.stop();
-      item.source.disconnect();
+    for (const audio of this.elements) {
+      audio.onended = null;
+      audio.onerror = null;
+      audio.pause();
+      audio.removeAttribute("src");
+      audio.load();
     }
+    for (const entry of this.queue) URL.revokeObjectURL(entry.url);
     this.queue = [];
     this.pending = [];
-    void this.context.close();
   }
 }

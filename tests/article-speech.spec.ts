@@ -115,7 +115,7 @@ test("browser with no English voices explains how to recover", async ({
   ).toBeEnabled();
 });
 
-test("stream schedules ahead continuously and supports rate, pause and stop", async ({
+test("buffered speech preserves pitch at faster speeds and supports pause and stop", async ({
   page,
 }) => {
   const { readFile } = await import("node:fs/promises");
@@ -127,67 +127,112 @@ test("stream schedules ahead continuously and supports rate, pause and stop", as
   const compiled = ts.transpileModule(source.replace("export class", "class"), {
     compilerOptions: {
       target: ts.ScriptTarget.ES2022,
-      module: ts.ModuleKind.None,
+      module: ts.ModuleKind.ESNext,
     },
   }).outputText;
   await page.goto("/posts/postgresql-ai-agents/");
   await page.addScriptTag({
     content: `${compiled}\nwindow.TestStreamingSpeech = StreamingSpeech;`,
   });
-  const result = await page.evaluate(async () => {
-    const context = new AudioContext();
-    const planned: { start: number; duration: number }[] = [];
-    const create = context.createBufferSource.bind(context);
-    context.createBufferSource = () => {
-      const source = create();
-      const start = source.start.bind(source);
-      source.start = (when = 0, offset = 0) => {
-        planned.push({
-          start: when,
-          duration:
-            (source.buffer!.duration - offset) / source.playbackRate.value,
-        });
-        start(when, offset);
-      };
-      return source;
-    };
-    const Class = (
-      window as unknown as {
-        TestStreamingSpeech: new (
-          context: AudioContext,
-          rate: number
-        ) => {
+  await page.evaluate(() => {
+    const button = document.createElement("button");
+    button.id = "test-audio";
+    button.textContent = "Test audio";
+    document.body.append(button);
+    button.onclick = async () => {
+      const scope = window as unknown as {
+        TestStreamingSpeech: new (sampleRate: number) => {
+          elements: HTMLAudioElement[];
           append(pcm: Float32Array): void;
-          bufferedSeconds: number;
+          flush(): void;
+          resume(): Promise<void>;
+          pause(): void;
           setRate(rate: number): void;
           stop(): void;
+          bufferedSeconds: number;
         };
+        audioResult: {
+          frequency: number;
+          paused: boolean;
+          rate: number;
+          preservesPitch: boolean;
+          buffered: number;
+          stopped: boolean;
+        };
+      };
+      const context = new AudioContext();
+      await context.resume();
+      const player = new scope.TestStreamingSpeech(24000);
+      const analyser = context.createAnalyser();
+      analyser.fftSize = 8192;
+      for (const element of player.elements)
+        context.createMediaElementSource(element).connect(analyser);
+      analyser.connect(context.destination);
+      await player.resume();
+      player.setRate(1.5);
+      for (let frame = 0; frame < 100; frame++) {
+        const pcm = Float32Array.from(
+          { length: 1920 },
+          (_, i) =>
+            0.3 * Math.sin((2 * Math.PI * 440 * (frame * 1920 + i)) / 24000)
+        );
+        player.append(pcm);
       }
-    ).TestStreamingSpeech;
-    const player = new Class(context, 24000);
-    await context.resume();
-    for (let i = 0; i < 40; i++) player.append(new Float32Array(1920));
-    const count = planned.length;
-    const gap = Math.max(
-      ...planned
-        .slice(1)
-        .map((item, i) =>
-          Math.abs(item.start - planned[i].start - planned[i].duration)
-        )
-    );
-    const buffered = player.bufferedSeconds;
-    await context.suspend();
-    const time = context.currentTime;
-    player.setRate(1.5);
-    const rescheduled = planned.length > count;
-    const paused =
-      context.state === "suspended" && context.currentTime === time;
-    player.stop();
-    return { count, gap, buffered, rescheduled, paused };
+      player.flush();
+      await new Promise(resolve =>
+        player.elements[0].addEventListener("ended", resolve, { once: true })
+      );
+      await new Promise(resolve => setTimeout(resolve, 300));
+      const bins = new Float32Array(analyser.frequencyBinCount);
+      analyser.getFloatFrequencyData(bins);
+      let peak = 0;
+      for (let i = 1; i < bins.length; i++) if (bins[i] > bins[peak]) peak = i;
+      const buffered = player.bufferedSeconds;
+      const rate =
+        player.elements.find(element => !element.paused)?.playbackRate ?? 0;
+      player.pause();
+      const paused = player.elements.every(element => element.paused);
+      const preservesPitch = player.elements.every(
+        element => element.preservesPitch
+      );
+      await player.resume();
+      player.stop();
+      scope.audioResult = {
+        frequency: (peak * context.sampleRate) / analyser.fftSize,
+        paused,
+        rate,
+        preservesPitch,
+        buffered,
+        stopped: player.elements.every(element => !element.hasAttribute("src")),
+      };
+      await context.close();
+    };
   });
-  expect(result.count).toBeGreaterThan(1);
-  expect(result.gap).toBeLessThan(0.001);
-  expect(result.buffered).toBeGreaterThan(2);
-  expect(result.rescheduled).toBe(true);
+  await page.locator("#test-audio").click();
+  await page.waitForFunction(() =>
+    Boolean((window as unknown as { audioResult?: unknown }).audioResult)
+  );
+  const result = await page.evaluate(
+    () =>
+      (
+        window as unknown as {
+          audioResult: {
+            frequency: number;
+            paused: boolean;
+            rate: number;
+            preservesPitch: boolean;
+            buffered: number;
+            stopped: boolean;
+          };
+        }
+      ).audioResult
+  );
+  // A 440 Hz source must stay near 440 Hz, rather than rising to 660 Hz at 1.5×.
+  expect(result.frequency).toBeGreaterThan(410);
+  expect(result.frequency).toBeLessThan(470);
   expect(result.paused).toBe(true);
+  expect(result.rate).toBe(1.5);
+  expect(result.preservesPitch).toBe(true);
+  expect(result.buffered).toBeGreaterThan(3);
+  expect(result.stopped).toBe(true);
 });

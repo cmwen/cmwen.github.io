@@ -154,15 +154,14 @@ export default function ArticleSpeech({ title }: { title: string }) {
     }
     setState("loading");
     setMessage("Loading Phonon and its voice model for on-device speech…");
-    // Resume Web Audio inside the click gesture before model downloads begin.
-    const context = new AudioContext();
-    const player = new StreamingSpeech(context, 24000);
+    // Unlock native audio inside the click gesture before model downloads begin.
+    const player = new StreamingSpeech(24000);
     player.setRate(rate.current);
     audio.current = player;
     controller.current = new AbortController();
     const signal = controller.current.signal;
     try {
-      await context.resume();
+      await player.resume();
       const { PhononTTS } = await import("phonon-tts");
       if (id !== generation.current) return;
       const tts = await PhononTTS.load({
@@ -190,7 +189,7 @@ export default function ArticleSpeech({ title }: { title: string }) {
       for await (const pcm of stream) {
         if (id !== generation.current) return;
         player.append(pcm);
-        if (context.state === "running" && player.bufferedSeconds >= 2) {
+        if (!player.paused && player.bufferedSeconds >= 2) {
           setState("playing");
           setMessage(
             `Reading article (${tts.device === "webgpu" ? "WebGPU" : "CPU"})`
@@ -220,14 +219,14 @@ export default function ArticleSpeech({ title }: { title: string }) {
     if (state === "paused") {
       if (engine === "browser") window.speechSynthesis.resume();
       else
-        void audio.current?.context.resume().catch(() => {
+        void audio.current?.resume().catch(() => {
           stop();
           setMessage("Playback could not resume. Select Listen to restart.");
         });
       setState("playing");
     } else {
       if (engine === "browser") window.speechSynthesis.pause();
-      else void audio.current?.context.suspend();
+      else audio.current?.pause();
       setState("paused");
     }
   }
@@ -357,7 +356,7 @@ export default function ArticleSpeech({ title }: { title: string }) {
       {engine === "phonon" && (
         <p className="mt-1 text-sm">
           Speech streams as it is generated. WebGPU may help on some devices.
-          Faster playback can change voice pitch.
+          Reading speed preserves the voice’s pitch.
         </p>
       )}
       {engine === "browser" && (

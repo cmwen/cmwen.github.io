@@ -206,12 +206,13 @@ and WebAssembly generate audio locally. The default English Phonon 31m model is
 downloaded from Hugging Face on first use and cached by the package. No article
 text is sent to a speech API. Model downloads require connectivity on first use.
 
-Phonon streams PCM into a Web Audio queue with an initial two-second cushion,
+Phonon streams PCM into a native audio queue with an initial two-second cushion,
 so generation continues during playback rather than stopping between passages.
 The Processing selector offers CPU or opt-in WebGPU with automatic CPU fallback.
 WebGPU is device dependent and is not always faster. If generation is slower than
-playback, buffering gaps are still possible. Web Audio playback rate supports
-0.75×–2× and can change voice pitch.
+playback, buffering gaps are still possible. Native audio playback supports 0.75×–2× with `preservesPitch` enabled.
+The next two-second segment is preloaded during playback; generation continues
+through segment boundaries.
 
 Browser TTS loads English voices asynchronously, prefers an on-device voice, and
 offers a voice selector. It reports missing voices, synthesis errors, and a voice
