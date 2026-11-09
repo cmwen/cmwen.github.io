@@ -33,6 +33,7 @@
     "@astrojs/rss": "^4.0.18",
     "@min-infograph/core": "0.2.2",
     "@resvg/resvg-js": "^2.6.2",
+    "@soundtouchjs/audio-worklet": "2.1.1",
     "astro": "^7.0.0",
     "dotenv": "^17.4.2",
     "fuse.js": "^7.3.0",

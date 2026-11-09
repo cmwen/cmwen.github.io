@@ -154,7 +154,7 @@ export default function ArticleSpeech({ title }: { title: string }) {
     }
     setState("loading");
     setMessage("Loading Phonon and its voice model for on-device speech…");
-    // Unlock native audio inside the click gesture before model downloads begin.
+    // Resume the continuous audio graph inside the click gesture.
     const player = new StreamingSpeech(24000);
     player.setRate(rate.current);
     audio.current = player;
