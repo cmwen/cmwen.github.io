@@ -12,6 +12,7 @@ import { SITE } from "@config";
 import { defaultLocale, type Locale } from "@i18n/config";
 import ChatLink from "@components/ChatLink";
 import AudioPlayer from "@components/AudioPlayer";
+import ArticleSpeech from "@components/ArticleSpeech";
 import type { WebMCPContentPageContext } from "../types/webmcp";
 
 export interface Props {
@@ -107,6 +108,7 @@ const layoutProps = {
     <!-- Sidebar that moves to top on mobile -->
     <aside class="post-sidebar order-1 lg:order-2 lg:w-80 xl:w-96">
       <div class="sidebar-sticky lg:sticky lg:top-24">
+        {lang === "en" && <ArticleSpeech client:idle title={title} />}
         <AudioPlayer client:only="react" slug={slug} lang={lang} />
         {
           Array.isArray(llmKeyIdeas) && llmKeyIdeas.length > 0 && (

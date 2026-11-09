@@ -197,3 +197,20 @@ When Dependabot raises a pull request, run `pnpm install` locally to verify the 
 
 MIT
 Made with 🤍 by [Sat Naing](https://satnaing.dev) 👨🏻‍💻 and [contributors](https://github.com/satnaing/astro-paper/graphs/contributors).
+
+### Article narration
+
+English posts offer opt-in **Listen to this article** controls, separate from podcast
+recordings. `phonon-tts` 0.6.0 is imported only after Listen is selected; its worker
+and WebAssembly generate audio locally. The default English Phonon 31m model is
+downloaded from Hugging Face on first use and cached by the package. No article
+text is sent to a speech API. Model downloads require connectivity on first use.
+
+Phonon's browser synthesis API has no direct speaking-rate parameter. The player
+uses pitch-preserving HTML audio playback at 0.75×–2× instead. Browser TTS uses
+`SpeechSynthesisUtterance.rate`; speed changes apply to the next passage. Browser
+voices may depend on online services provided by the device. Readers can select
+Browser TTS directly, and a Phonon failure offers that fallback without starting
+it automatically. Stop, navigation, and unmount release playback and the model.
+
+API reference: <https://github.com/gradium-ai/xn-ptts/tree/main/ptts-wasm/js#api>.

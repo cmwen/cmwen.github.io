@@ -38,6 +38,9 @@ importers:
       mermaid:
         specifier: ^11.15.0
         version: 11.15.0
+      phonon-tts:
+        specifier: 0.6.0
+        version: 0.6.0
       remark-collapse:
         specifier: ^0.1.2
         version: 0.1.2
@@ -137,6 +140,9 @@ importers:
         version: 4.22.3
 
 packages:
+
+  phonon-tts@0.6.0:
+    resolution: {integrity: sha512-e0laQ2j9CRkTuio+t+ySlGpq7hqPYnPp9VREzvVaHGCj0yglql6TPyT5M0j9hSpq+p/OFB6OeIOGxl4s+OMwSw==}
 
   '@antfu/install-pkg@1.1.0':
     resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
@@ -4167,6 +4173,8 @@ packages:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
 snapshots:
+
+  phonon-tts@0.6.0: {}
 
   '@antfu/install-pkg@1.1.0':
     dependencies:
