@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { PhononTTS } from "phonon-tts";
+import { StreamingSpeech } from "@utils/streamingSpeech";
 
 /** Read visible prose only; omit diagrams, code, and decorative controls. */
 function articleChunks(title: string): string[] {
@@ -18,7 +19,7 @@ function articleChunks(title: string): string[] {
     .trim();
   // Bound synthesis memory and browser utterance length, including long sentences.
   return (
-    text.match(/.{1,350}(?:\s|$)|.{1,350}/g)?.map(chunk => chunk.trim()) ?? []
+    text.match(/.{1,160}(?:\s|$)|.{1,160}/g)?.map(chunk => chunk.trim()) ?? []
   );
 }
 
@@ -31,37 +32,50 @@ export default function ArticleSpeech({ title }: { title: string }) {
   );
   const [message, setMessage] = useState("");
   const model = useRef<PhononTTS | null>(null);
-  const audio = useRef<HTMLAudioElement | null>(null);
+  const audio = useRef<StreamingSpeech | null>(null);
+  const controller = useRef<AbortController | null>(null);
+  const startupTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceUri, setVoiceUri] = useState("");
+  const [device, setDevice] = useState<"cpu" | "auto">("cpu");
   const utterance = useRef<SpeechSynthesisUtterance | null>(null);
   const generation = useRef(0);
   const rate = useRef(1);
-  const finishPlayback = useRef<(() => void) | null>(null);
-  const objectUrl = useRef<string | null>(null);
 
   function stop() {
     generation.current++;
-    finishPlayback.current?.();
-    finishPlayback.current = null;
-    audio.current?.pause();
-    if (audio.current) audio.current.removeAttribute("src");
+    if (startupTimer.current) clearTimeout(startupTimer.current);
+    controller.current?.abort();
+    controller.current = null;
+    audio.current?.stop();
     audio.current = null;
     if (utterance.current) window.speechSynthesis?.cancel();
     utterance.current = null;
     model.current?.dispose();
     model.current = null;
-    if (objectUrl.current) URL.revokeObjectURL(objectUrl.current);
-    objectUrl.current = null;
     setState("idle");
   }
 
   useEffect(() => {
     setReady(true);
+    const refreshVoices = () =>
+      setVoices(
+        window.speechSynthesis
+          ?.getVoices()
+          .filter(voice => /^en(?:-|$)/i.test(voice.lang)) ?? []
+      );
+    refreshVoices();
+    window.speechSynthesis?.addEventListener?.("voiceschanged", refreshVoices);
     const cleanup = () => stop();
     window.addEventListener("pagehide", cleanup);
     document.addEventListener("astro:before-swap", cleanup);
     return () => {
       window.removeEventListener("pagehide", cleanup);
       document.removeEventListener("astro:before-swap", cleanup);
+      window.speechSynthesis?.removeEventListener?.(
+        "voiceschanged",
+        refreshVoices
+      );
       cleanup();
     };
   }, []);
@@ -80,6 +94,18 @@ export default function ArticleSpeech({ title }: { title: string }) {
         setMessage("Browser speech is unavailable on this device. Try Phonon.");
         return;
       }
+      const available = window.speechSynthesis
+        .getVoices()
+        .filter(voice => /^en(?:-|$)/i.test(voice.lang));
+      if (!available.length) {
+        setMessage(
+          "No English browser voice is available yet. Install or enable an English system voice, then try again, or use Phonon."
+        );
+        return;
+      }
+      // cancel() does not reset a paused speech engine in all browsers.
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.resume();
       const read = (index: number) => {
         if (id !== generation.current) return;
         if (index === chunks.length) {
@@ -90,61 +116,96 @@ export default function ArticleSpeech({ title }: { title: string }) {
         const speech = new SpeechSynthesisUtterance(chunks[index]);
         speech.lang = "en-US";
         speech.voice =
-          window.speechSynthesis
-            .getVoices()
-            .find(voice => /^en(?:-|$)/i.test(voice.lang)) ?? null;
+          available.find(voice => voice.voiceURI === voiceUri) ??
+          available.find(voice => voice.localService) ??
+          available[0];
         speech.rate = rate.current;
-        speech.onend = () => read(index + 1);
-        speech.onerror = () => {
+        speech.onstart = () => {
+          if (id !== generation.current) return;
+          if (startupTimer.current) clearTimeout(startupTimer.current);
+          setState("playing");
+          setMessage("");
+        };
+        speech.onend = () => {
+          if (startupTimer.current) clearTimeout(startupTimer.current);
+          read(index + 1);
+        };
+        speech.onerror = event => {
           if (id !== generation.current) return;
           stop();
-          setMessage("Browser speech failed. Try Phonon or another browser.");
+          setMessage(
+            `Browser speech failed (${event.error}). Try another English voice or Phonon.`
+          );
         };
         utterance.current = speech;
+        startupTimer.current = setTimeout(() => {
+          if (id !== generation.current) return;
+          stop();
+          setMessage(
+            "The browser voice did not start. Try another English voice, check your device audio, or use Phonon."
+          );
+        }, 10000);
         window.speechSynthesis.speak(speech);
       };
-      setState("playing");
+      setState("loading");
+      setMessage("Starting browser voice…");
       read(0);
       return;
     }
     setState("loading");
     setMessage("Loading Phonon and its voice model for on-device speech…");
-    // Create playback during the user gesture; reuse it for each bounded chunk.
-    const player = new Audio();
-    player.preservesPitch = true;
+    // Resume Web Audio inside the click gesture before model downloads begin.
+    const context = new AudioContext();
+    const player = new StreamingSpeech(context, 24000);
+    player.setRate(rate.current);
     audio.current = player;
+    controller.current = new AbortController();
+    const signal = controller.current.signal;
     try {
+      await context.resume();
       const { PhononTTS } = await import("phonon-tts");
       if (id !== generation.current) return;
-      const tts = await PhononTTS.load({ lang: "en" });
+      const tts = await PhononTTS.load({
+        lang: "en",
+        device,
+        onProgress: progress => {
+          if (id !== generation.current) return;
+          const amount = progress.total
+            ? `${Math.round((progress.loaded / progress.total) * 100)}%`
+            : `${(progress.loaded / 1048576).toFixed(1)} MB`;
+          setMessage(
+            `Loading voice model: ${progress.file} ${amount}${progress.cached ? " (cached)" : ""}`
+          );
+        },
+      });
       if (id !== generation.current) {
         tts.dispose();
         return;
       }
       model.current = tts;
-      for (const chunk of chunks) {
+      setMessage(
+        `Buffering speech (${tts.device === "webgpu" ? "WebGPU" : "CPU"})…`
+      );
+      const stream = tts.stream(chunks.join(" "), { signal });
+      for await (const pcm of stream) {
         if (id !== generation.current) return;
-        setState("loading");
-        setMessage("Preparing speech on your device…");
-        const wav = await tts.synthWav(chunk);
-        if (id !== generation.current) return;
-        objectUrl.current = URL.createObjectURL(wav);
-        player.src = objectUrl.current;
-        player.playbackRate = rate.current;
-        setMessage("");
-        setState("playing");
-        await new Promise<void>((resolve, reject) => {
-          finishPlayback.current = resolve;
-          player.onended = () => resolve();
-          player.onerror = () => reject(new Error("Audio playback failed"));
-          player.play().catch(reject);
-        });
-        if (id !== generation.current) return;
-        finishPlayback.current = null;
-        URL.revokeObjectURL(objectUrl.current);
-        objectUrl.current = null;
+        player.append(pcm);
+        if (context.state === "running" && player.bufferedSeconds >= 2) {
+          setState("playing");
+          setMessage(
+            `Reading article (${tts.device === "webgpu" ? "WebGPU" : "CPU"})`
+          );
+        }
+        await player.waitForRoom();
       }
-      if (id === generation.current) stop();
+      if (id !== generation.current) return;
+      player.flush();
+      setState(current => (current === "paused" ? current : "playing"));
+      await player.finish();
+      if (id === generation.current) {
+        stop();
+        setMessage("Finished reading.");
+      }
     } catch {
       if (id !== generation.current) return;
       stop();
@@ -159,14 +220,14 @@ export default function ArticleSpeech({ title }: { title: string }) {
     if (state === "paused") {
       if (engine === "browser") window.speechSynthesis.resume();
       else
-        void audio.current?.play().catch(() => {
+        void audio.current?.context.resume().catch(() => {
           stop();
           setMessage("Playback could not resume. Select Listen to restart.");
         });
       setState("playing");
     } else {
       if (engine === "browser") window.speechSynthesis.pause();
-      else audio.current?.pause();
+      else void audio.current?.context.suspend();
       setState("paused");
     }
   }
@@ -198,6 +259,44 @@ export default function ArticleSpeech({ title }: { title: string }) {
             <option value="browser">Browser TTS</option>
           </select>
         </label>
+        {engine === "browser" && (
+          <label>
+            English voice{" "}
+            <select
+              className="focus-outline bg-skin-fill"
+              value={voiceUri}
+              onChange={event => {
+                stop();
+                setMessage("");
+                setVoiceUri(event.target.value);
+              }}
+            >
+              <option value="">Automatic (prefer on-device)</option>
+              {voices.map(voice => (
+                <option key={voice.voiceURI} value={voice.voiceURI}>
+                  {voice.name}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {engine === "phonon" && (
+          <label>
+            Processing{" "}
+            <select
+              className="focus-outline bg-skin-fill"
+              value={device}
+              onChange={event => {
+                stop();
+                setMessage("");
+                setDevice(event.target.value as "cpu" | "auto");
+              }}
+            >
+              <option value="cpu">CPU</option>
+              <option value="auto">Try WebGPU (CPU fallback)</option>
+            </select>
+          </label>
+        )}
         <label>
           Reading speed{" "}
           <select
@@ -207,7 +306,7 @@ export default function ArticleSpeech({ title }: { title: string }) {
               const next = Number(event.target.value);
               rate.current = next;
               setSpeed(next);
-              if (audio.current) audio.current.playbackRate = next;
+              audio.current?.setRate(next);
             }}
           >
             {[0.75, 1, 1.25, 1.5, 1.75, 2].map(value => (
@@ -255,6 +354,12 @@ export default function ArticleSpeech({ title }: { title: string }) {
               ? "Reading article"
               : "")}
       </p>
+      {engine === "phonon" && (
+        <p className="mt-1 text-sm">
+          Speech streams as it is generated. WebGPU may help on some devices.
+          Faster playback can change voice pitch.
+        </p>
+      )}
       {engine === "browser" && (
         <p className="mt-1 text-sm">Speed changes apply to the next passage.</p>
       )}

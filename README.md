@@ -206,11 +206,17 @@ and WebAssembly generate audio locally. The default English Phonon 31m model is
 downloaded from Hugging Face on first use and cached by the package. No article
 text is sent to a speech API. Model downloads require connectivity on first use.
 
-Phonon's browser synthesis API has no direct speaking-rate parameter. The player
-uses pitch-preserving HTML audio playback at 0.75×–2× instead. Browser TTS uses
-`SpeechSynthesisUtterance.rate`; speed changes apply to the next passage. Browser
-voices may depend on online services provided by the device. Readers can select
-Browser TTS directly, and a Phonon failure offers that fallback without starting
-it automatically. Stop, navigation, and unmount release playback and the model.
+Phonon streams PCM into a Web Audio queue with an initial two-second cushion,
+so generation continues during playback rather than stopping between passages.
+The Processing selector offers CPU or opt-in WebGPU with automatic CPU fallback.
+WebGPU is device dependent and is not always faster. If generation is slower than
+playback, buffering gaps are still possible. Web Audio playback rate supports
+0.75×–2× and can change voice pitch.
+
+Browser TTS loads English voices asynchronously, prefers an on-device voice, and
+offers a voice selector. It reports missing voices, synthesis errors, and a voice
+that fails to start rather than silently displaying playback. Browser speed changes
+apply to the next passage. Browser voices may depend on online services provided
+by the device. Stop, navigation, and unmount release playback and the model.
 
 API reference: <https://github.com/gradium-ai/xn-ptts/tree/main/ptts-wasm/js#api>.
